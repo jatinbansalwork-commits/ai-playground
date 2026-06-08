@@ -380,12 +380,12 @@ main.index-root[data-debug="true"] .manifest-panel {
 
 /* Wireframe: stroke on text containers only, not every nested wrapper. */
 .wireframe-mode h1,
-.wireframe-mode h3,
+.wireframe-mode h3:not(.section-monogram),
 .wireframe-mode p,
 .wireframe-mode .contact-frame a,
 .wireframe-mode .contact-frame button,
 main.index-root[data-debug="true"] h1,
-main.index-root[data-debug="true"] h3,
+main.index-root[data-debug="true"] h3:not(.section-monogram),
 main.index-root[data-debug="true"] p,
 main.index-root[data-debug="true"] .contact-frame a,
 main.index-root[data-debug="true"] .contact-frame button {
@@ -404,18 +404,50 @@ main.index-root[data-debug="true"] .contact-frame button {
 }
 
 .wireframe-mode h1 *,
-.wireframe-mode h3 *,
+.wireframe-mode h3:not(.section-monogram) *,
 .wireframe-mode p *,
 .wireframe-mode .contact-frame a *,
 .wireframe-mode .contact-frame button *,
 main.index-root[data-debug="true"] h1 *,
-main.index-root[data-debug="true"] h3 *,
+main.index-root[data-debug="true"] h3:not(.section-monogram) *,
 main.index-root[data-debug="true"] p *,
 main.index-root[data-debug="true"] .contact-frame a *,
 main.index-root[data-debug="true"] .contact-frame button * {
   color: inherit !important;
   -webkit-text-fill-color: inherit !important;
   -webkit-text-stroke: inherit;
+}
+
+/* Section monograms: preserve filled-text metrics; stroke on a pseudo-layer. */
+.wireframe-mode h3.section-monogram,
+main.index-root[data-debug="true"] h3.section-monogram {
+  position: relative;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-text-stroke: 0 transparent !important;
+  text-rendering: geometricPrecision;
+}
+
+.wireframe-mode h3.section-monogram::before,
+main.index-root[data-debug="true"] h3.section-monogram::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: max-content;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px var(--wireframe-stroke);
+  paint-order: stroke fill;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .wireframe-mode .frame-label,

@@ -50,10 +50,11 @@ export function SectionFramePanel({
           panDuration={frame.monogramPanDuration}
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center overflow-hidden">
+        <div className="section-monogram-mask flex h-full w-full items-center justify-center overflow-hidden">
           <motion.h3
             aria-hidden
-            className="pointer-events-none max-w-full leading-none font-normal tracking-tighter whitespace-nowrap text-black"
+            data-text={monogram}
+            className="section-monogram pointer-events-none max-w-full leading-none font-normal tracking-tighter whitespace-nowrap text-black"
             style={{ fontSize }}
             whileHover={{ x: 8, opacity: 0.85 }}
             transition={springSlider}

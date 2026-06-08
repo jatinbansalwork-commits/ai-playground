@@ -54,13 +54,14 @@ export function SectionFrameMonogram({
   return (
     <div
       ref={maskRef}
-      className="relative h-full w-full overflow-hidden"
+      className="section-monogram-mask relative h-full w-full overflow-hidden"
       aria-hidden
     >
-      <div className="absolute top-1/2 left-0 -translate-y-1/2">
+      <div className="section-monogram-rail absolute top-1/2 left-0 -translate-y-1/2">
         <motion.h3
           ref={textRef}
-          className="leading-none font-normal tracking-tighter whitespace-nowrap text-black"
+          data-text={text}
+          className="section-monogram leading-none font-normal tracking-tighter whitespace-nowrap text-black"
           style={{ fontSize }}
           initial={false}
           animate={shouldPan ? { x: [0, -panRange, 0] } : { x: 0 }}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import CacheManager from "@/components/CacheManager";
 import ScrollToTop from "@/components/ScrollToTop";
 import { SITE_NAME } from "@/lib/constants";
@@ -28,6 +29,7 @@ export default function RootLayout({
         <CacheManager />
         <ScrollToTop />
         {children}
+        <Analytics />
       </body>
     </html>
   );
