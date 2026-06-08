@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
 import type { ExperimentFilterId } from "@/lib/experiments-filters";
 import { ExperimentsBentoGrid } from "@/components/experiments/experiments-bento-grid";
 import { ExperimentsFilterBar } from "@/components/experiments/experiments-filter-bar";
+import { randomShuffleSeed } from "@/lib/shuffle-seed";
 
 interface ExperimentsGalleryClientProps {
   items: ExperimentGalleryItem[];
@@ -18,6 +19,11 @@ export function ExperimentsGalleryClient({
   articleSlugs,
 }: ExperimentsGalleryClientProps) {
   const [filter, setFilter] = useState<ExperimentFilterId>("all");
+  const [shuffleSeed, setShuffleSeed] = useState(0);
+
+  useEffect(() => {
+    setShuffleSeed(randomShuffleSeed());
+  }, []);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-8">
@@ -31,6 +37,7 @@ export function ExperimentsGalleryClient({
         sectionHref={sectionHref}
         articleSlugs={articleSlugs}
         filter={filter}
+        shuffleSeed={shuffleSeed}
       />
     </div>
   );

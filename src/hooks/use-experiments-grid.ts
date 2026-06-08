@@ -7,38 +7,18 @@ import {
   type ExperimentDisplayEntry,
 } from "@/lib/experiments-filters";
 import { sortExperimentsBentoItems } from "@/lib/experiments-bento";
+import { shuffleWithSeed } from "@/lib/shuffle-seed";
 
 interface UseExperimentsGridOptions<T extends { slug: string }> {
   items: T[];
   filter: ExperimentFilterId;
   articleSlugs?: string[];
+  /** Changes re-order cards via seeded Fisher–Yates shuffle. `0` keeps registry order. */
+  shuffleSeed?: number;
 }
 
 interface UseExperimentsGridResult<T extends { slug: string }> {
   randomizedCards: ExperimentDisplayEntry<T>[];
-}
-
-function hashInstanceKey(seed: string, instanceKey: string): number {
-  const value = `${seed}::${instanceKey}`;
-  let hash = 0;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash = (hash * 31 + value.charCodeAt(index)) | 0;
-  }
-
-  return hash;
-}
-
-/** Stable pseudo-random order — pure, hydration-safe, scales to large collections. */
-function shuffleDisplayEntries<T extends { slug: string }>(
-  entries: ExperimentDisplayEntry<T>[],
-  seed: string,
-): ExperimentDisplayEntry<T>[] {
-  return [...entries].sort(
-    (left, right) =>
-      hashInstanceKey(seed, left.instanceKey) -
-      hashInstanceKey(seed, right.instanceKey),
-  );
 }
 
 /** Resolves any-length card collections and shuffles client-side. */
@@ -46,6 +26,7 @@ export function useExperimentsGrid<T extends { slug: string }>({
   items,
   filter,
   articleSlugs = [],
+  shuffleSeed = 0,
 }: UseExperimentsGridOptions<T>): UseExperimentsGridResult<T> {
   const allCardsCollection = useMemo(() => {
     const orderedItems = sortExperimentsBentoItems(items);
@@ -65,16 +46,12 @@ export function useExperimentsGrid<T extends { slug: string }>({
     );
   }, [filter, allCardsCollection, items, articleSlugs]);
 
-  const collectionKey = useMemo(
-    () =>
-      `${filter}::${filteredCards.map((entry) => entry.instanceKey).join("|")}`,
-    [filter, filteredCards],
-  );
+  const randomizedCards = useMemo(() => {
+    if (shuffleSeed === 0) return filteredCards;
 
-  const randomizedCards = useMemo(
-    () => shuffleDisplayEntries(filteredCards, collectionKey),
-    [collectionKey, filteredCards],
-  );
+    const seed = shuffleSeed ^ filteredCards.length;
+    return shuffleWithSeed(filteredCards, seed);
+  }, [filteredCards, shuffleSeed]);
 
   return {
     randomizedCards,

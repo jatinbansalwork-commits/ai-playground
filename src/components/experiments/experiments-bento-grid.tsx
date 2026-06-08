@@ -19,6 +19,7 @@ interface ExperimentsBentoGridProps {
   sectionHref: string;
   articleSlugs?: string[];
   filter?: ExperimentFilterId;
+  shuffleSeed?: number;
 }
 
 export function ExperimentsBentoGrid({
@@ -26,12 +27,14 @@ export function ExperimentsBentoGrid({
   sectionHref,
   articleSlugs = [],
   filter = "all",
+  shuffleSeed = 0,
 }: ExperimentsBentoGridProps) {
   const articleSet = new Set(articleSlugs);
   const { randomizedCards } = useExperimentsGrid({
     items,
     filter,
     articleSlugs,
+    shuffleSeed,
   });
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const isMotionGraphicTab = filter === "motion-graphic";
