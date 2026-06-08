@@ -19,9 +19,10 @@ export default function DesignPollingContent() {
   return (
     <div className="w-full space-y-16">
       <CaseStudyHero
-        title="Design Polling Workspace"
+        title={content.title}
         year={content.year}
         overview={content.overviewText}
+        meta={content.meta}
       />
 
       <CaseStudyProse>

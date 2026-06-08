@@ -13,7 +13,7 @@ const ASPECT_CLASS = {
 } as const;
 
 export function CaseStudyMedia({
-  label = "Media placeholder",
+  label,
   aspect = "video",
   className = "",
 }: CaseStudyMediaProps) {

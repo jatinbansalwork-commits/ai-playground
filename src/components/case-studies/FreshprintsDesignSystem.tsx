@@ -2,11 +2,14 @@
 
 import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyH3,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudySubheading,
+  CaseStudyYear,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -22,9 +25,16 @@ export default function FreshprintsDesignSystemContent() {
         title={content.title}
         year={content.year}
         overview={content.overviewText}
+        meta={content.meta}
       />
 
+      <CaseStudyWide>
+        <CaseStudyMedia aspect="video" />
+      </CaseStudyWide>
+
       <CaseStudyProse>
+        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyH3>Principles behind the design system</CaseStudyH3>
         <CaseStudyParagraph>
           A design system only earns trust when tokens, components, and documentation
           read as one continuous language. We audited hundreds of one-off UI patterns
@@ -37,7 +47,6 @@ export default function FreshprintsDesignSystemContent() {
       <CaseStudyWide>
         <CaseStudyBento
           cells={[
-            { label: "Token architecture", aspect: "video", span: "full" },
             { label: "Component primitives", aspect: "square" },
             { label: "Documentation surfaces", aspect: "square" },
           ]}

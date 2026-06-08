@@ -22,6 +22,7 @@ export default function PiggyMutualFundContent() {
         title={content.title}
         year={content.year}
         overview={content.overviewText}
+        meta={content.meta}
       />
 
       <CaseStudyProse>

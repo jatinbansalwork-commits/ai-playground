@@ -23,6 +23,7 @@ export default function CiscoPolicyCopilotContent() {
         title={content.title}
         year={content.year}
         overview={content.overviewText}
+        meta={content.meta}
       />
 
       <CaseStudyProse>
