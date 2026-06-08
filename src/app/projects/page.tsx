@@ -1,7 +1,8 @@
+import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import { ProjectsList } from "@/components/projects/projects-list";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { BACK_LINK_CLASS } from "@/lib/a11y";
-import { SITE_NAME } from "@/lib/constants";
+import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import { ROUTES } from "@/lib/constants";
 import { PROJECTS_REGISTRY } from "@/lib/projects-registry";
 
 export default function ProjectsPage() {
@@ -12,12 +13,11 @@ export default function ProjectsPage() {
       className="projects-page fixed inset-0 flex min-h-screen w-full flex-col items-center justify-center bg-[#1a1a1a] px-4 text-white"
     >
       <ScrollResetLink
-        href="/"
+        href={ROUTES.home}
         scroll={true}
-        aria-label={`Back to ${SITE_NAME}`}
-        className={`absolute top-8 left-8 z-50 md:top-12 md:left-12 ${BACK_LINK_CLASS}`}
+        className={NAV_BACK_LINK_CLASS}
       >
-        ←
+        <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
       <div className="mx-auto flex w-full max-w-md flex-col md:w-[480px]">

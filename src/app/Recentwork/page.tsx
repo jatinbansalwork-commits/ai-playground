@@ -1,25 +1,12 @@
-import { CiscoCaseStudiesPage } from "@/components/models/cisco-platform-page";
-import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { BACK_LINK_CLASS } from "@/lib/a11y";
-import { SITE_NAME } from "@/lib/constants";
+import CiscoPolicyCopilotContent from "@/components/case-studies/CiscoPolicyCopilot";
+import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell";
+import { ROUTES } from "@/lib/constants";
 
+/** Track A — featured case study entry from the index "Recent Work" slide. */
 export default function RecentWorkPage() {
   return (
-    <main
-      id="main-content"
-      data-sheet="models"
-      className="relative flex min-h-screen w-full flex-col items-start justify-start bg-[#1a1a1a] px-8 pb-12 pt-24 text-white"
-    >
-      <ScrollResetLink
-        href="/"
-        scroll={true}
-        aria-label={`Back to ${SITE_NAME}`}
-        className={`absolute top-8 left-8 z-50 md:top-12 md:left-12 ${BACK_LINK_CLASS}`}
-      >
-        ←
-      </ScrollResetLink>
-
-      <CiscoCaseStudiesPage />
-    </main>
+    <CaseStudyPageShell backHref={ROUTES.home} backDestination="Home">
+      <CiscoPolicyCopilotContent />
+    </CaseStudyPageShell>
   );
 }

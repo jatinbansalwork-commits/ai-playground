@@ -79,7 +79,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
   {
     slug: "wireframe-mode",
     title: "Wireframe Mode",
-    categories: ["illustration"],
+    categories: ["illustration", "article"],
     media: EXPERIMENT_CDN_MEDIA["wireframe-mode"],
     article: {
       date: "May 2026",
@@ -112,7 +112,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
   {
     slug: "spring-physics",
     title: "Miner Gift",
-    categories: ["article", "ai-experiment"],
+    categories: ["ai-experiment"],
     media: EXPERIMENT_CDN_MEDIA["spring-physics"],
     external: true,
     href: "https://miner-seven-rho.vercel.app/",

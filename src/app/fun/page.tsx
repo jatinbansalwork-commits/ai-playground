@@ -1,7 +1,8 @@
 import { ExperimentsGalleryClient } from "@/components/experiments/experiments-gallery-client";
+import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { BACK_LINK_CLASS } from "@/lib/a11y";
-import { SITE_NAME } from "@/lib/constants";
+import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import { ROUTES } from "@/lib/constants";
 import {
   EXPERIMENTS_PAGE,
   getExperimentArticleSlugs,
@@ -16,12 +17,11 @@ export default function FunPage() {
       className="relative flex min-h-screen w-full flex-col items-center justify-start bg-[#1a1a1a] pt-24 pb-24 text-white"
     >
       <ScrollResetLink
-        href="/"
+        href={ROUTES.home}
         scroll={true}
-        aria-label={`Back to ${SITE_NAME}`}
-        className={`absolute top-8 left-8 z-50 md:top-12 md:left-12 ${BACK_LINK_CLASS}`}
+        className={NAV_BACK_LINK_CLASS}
       >
-        ←
+        <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
       <ExperimentsGalleryClient

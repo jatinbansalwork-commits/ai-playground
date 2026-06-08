@@ -1,7 +1,7 @@
 "use client";
 
 import { FRAMES } from "@/lib/constants";
-import { FOCUS_RING } from "@/lib/a11y";
+import { FOCUS_RING, TARGET_HIT_AREA } from "@/lib/a11y";
 
 interface IndexSlideNavProps {
   activeIndex: number;
@@ -24,7 +24,7 @@ export function IndexSlideNav({
     >
       <button
         type="button"
-        className={`rounded-md px-3 py-2 text-neutral-200 enabled:hover:text-white disabled:opacity-40 ${FOCUS_RING}`}
+        className={`rounded-md px-3 text-neutral-200 enabled:hover:text-white disabled:opacity-40 ${TARGET_HIT_AREA} ${FOCUS_RING}`}
         onClick={() => onSelect(activeIndex - 1)}
         disabled={activeIndex <= 0}
         aria-label="Previous slide"
@@ -42,7 +42,7 @@ export function IndexSlideNav({
 
       <button
         type="button"
-        className={`rounded-md px-3 py-2 text-neutral-200 enabled:hover:text-white disabled:opacity-40 ${FOCUS_RING}`}
+        className={`rounded-md px-3 text-neutral-200 enabled:hover:text-white disabled:opacity-40 ${TARGET_HIT_AREA} ${FOCUS_RING}`}
         onClick={() => onSelect(activeIndex + 1)}
         disabled={activeIndex >= frameCount - 1}
         aria-label="Next slide"

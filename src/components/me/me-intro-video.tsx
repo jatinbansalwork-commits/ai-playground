@@ -9,11 +9,14 @@ import { MeIntroPreview } from "@/components/me/me-intro-preview";
 interface MeIntroVideoProps {
   config?: MeIntroConfig;
   variant?: "frame" | "page";
+  /** Preview-only on index slider — no modal when true. */
+  decorative?: boolean;
 }
 
 export function MeIntroVideo({
   config = ME_INTRO_CONFIG,
   variant = "frame",
+  decorative = false,
 }: MeIntroVideoProps) {
   const [open, setOpen] = useState(false);
 
@@ -25,10 +28,13 @@ export function MeIntroVideo({
       <MeIntroPreview
         config={config}
         variant={variant}
+        decorative={decorative}
         hidden={open}
-        onOpen={handleOpen}
+        onOpen={decorative ? undefined : handleOpen}
       />
-      <MeIntroModal open={open} config={config} onClose={handleClose} />
+      {!decorative ? (
+        <MeIntroModal open={open} config={config} onClose={handleClose} />
+      ) : null}
     </>
   );
 }

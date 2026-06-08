@@ -1,6 +1,3 @@
-import { CRAFT_PREVIEW } from "@/lib/craft-colors";
-import { ROUTES } from "@/lib/constants";
-
 export type CraftCta = "View Prototype" | "Read Essay" | "View Production";
 
 export interface CraftItem {
@@ -38,65 +35,8 @@ export interface CraftSection {
   articles: Record<string, CraftArticle>;
 }
 
-const MODELS_ITEMS: CraftItem[] = [
-  {
-    slug: "inference-v3",
-    title: "Inference v3.2",
-    date: "June 2026",
-    previewClass: CRAFT_PREVIEW.blue,
-    cta: "View Production",
-  },
-  {
-    slug: "latency-bench",
-    title: "Latency Bench",
-    date: "May 2026",
-    previewClass: CRAFT_PREVIEW.graySoft,
-    cta: "View Prototype",
-  },
-  {
-    slug: "token-stream",
-    title: "Token Stream",
-    date: "April 2026",
-    previewClass: CRAFT_PREVIEW.dark,
-    cta: "View Prototype",
-  },
-];
-
-const ARCHIVE_ITEMS: CraftItem[] = [
-  {
-    slug: "playground-v1",
-    title: "Playground v1",
-    date: "January 2026",
-    previewClass: CRAFT_PREVIEW.grayLight,
-    cta: "View Production",
-  },
-  {
-    slug: "vertical-stack",
-    title: "Vertical Stack",
-    date: "December 2025",
-    previewClass: CRAFT_PREVIEW.grayMid,
-    cta: "Read Essay",
-  },
-];
-
-export const CRAFT_SECTIONS: Record<string, CraftSection> = {
-  models: {
-    id: "models",
-    title: "Models",
-    href: ROUTES.recentWork,
-    description: "Model interfaces and inference tooling.",
-    items: MODELS_ITEMS,
-    articles: {},
-  },
-  archive: {
-    id: "archive",
-    title: "Me",
-    href: "/archive",
-    description: "Previous iterations and retired experiments.",
-    items: ARCHIVE_ITEMS,
-    articles: {},
-  },
-};
+/** Unmounted craft galleries — kept for `article-pages` fallback typing only. */
+export const CRAFT_SECTIONS: Record<string, CraftSection> = {};
 
 export const SECTION_IDS = Object.keys(CRAFT_SECTIONS) as Array<
   keyof typeof CRAFT_SECTIONS

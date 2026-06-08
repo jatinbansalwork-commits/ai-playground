@@ -386,20 +386,19 @@ main.index-root[data-debug="true"] .manifest-panel {
   background-color: transparent !important;
 }
 
-/* Wireframe: stroke outline only — font metrics come from .index-slide-type. */
+/* Wireframe: solid white fill — font metrics come from .index-slide-type. */
 .wireframe-mode .index-slide-type,
 main.index-root[data-debug="true"] .index-slide-type {
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 1px var(--wireframe-stroke);
-  paint-order: stroke fill;
+  color: var(--wireframe-stroke) !important;
+  -webkit-text-fill-color: var(--wireframe-stroke) !important;
+  -webkit-text-stroke: 0;
 }
 
 .wireframe-mode .index-slide-type *,
 main.index-root[data-debug="true"] .index-slide-type * {
   color: inherit !important;
   -webkit-text-fill-color: inherit !important;
-  -webkit-text-stroke: inherit;
+  -webkit-text-stroke: 0;
 }
 
 .wireframe-mode[data-cancel-animation="true"] .frame-panel:not([data-variant="main"]),
@@ -436,6 +435,15 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* WCAG 2.4.11 — keep focused main landmark clear of fixed chrome */
+#main-content {
+  scroll-margin-top: 1rem;
+}
+
+#main-content:focus {
+  outline: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

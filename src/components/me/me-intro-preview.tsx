@@ -10,13 +10,15 @@ interface MeIntroPreviewProps {
   config: MeIntroConfig;
   variant?: "frame" | "page";
   hidden?: boolean;
-  onOpen: () => void;
+  decorative?: boolean;
+  onOpen?: () => void;
 }
 
 export function MeIntroPreview({
   config,
   variant = "frame",
   hidden = false,
+  decorative = false,
   onOpen,
 }: MeIntroPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -41,23 +43,21 @@ export function MeIntroPreview({
 
   function handleClick() {
     videoRef.current?.pause();
-    onOpen();
+    onOpen?.();
   }
 
-  return (
-    <motion.button
-      type="button"
-      aria-label={`${config.alt}. ${config.hoverTooltip}`}
-      className={`${shellClass} relative shrink-0 cursor-pointer p-2 text-left ${EXPERIMENTS_CARD.shell} ${
-        hidden ? "invisible" : ""
-      }`}
-      animate={{ scale: hovered && !hidden ? 1.02 : 1 }}
-      transition={springBentoHover}
-      style={{ zIndex: hovered ? 10 : 1 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={handleClick}
-    >
+  const shellProps = {
+    className: `${shellClass} relative shrink-0 p-2 text-left ${EXPERIMENTS_CARD.shell} ${
+      hidden ? "invisible" : ""
+    } ${decorative ? "pointer-events-none cursor-default" : "cursor-pointer"}`,
+    animate: { scale: hovered && !hidden && !decorative ? 1.02 : 1 },
+    transition: springBentoHover,
+    style: { zIndex: hovered ? 10 : 1 },
+    onMouseEnter: decorative ? undefined : () => setHovered(true),
+    onMouseLeave: decorative ? undefined : () => setHovered(false),
+  };
+
+  const previewBody = (
       <div
         className={`relative aspect-square w-full overflow-hidden ${EXPERIMENTS_CARD.preview}`}
       >
@@ -97,6 +97,24 @@ export function MeIntroPreview({
           </span>
         </motion.div>
       </div>
+  );
+
+  if (decorative) {
+    return (
+      <motion.div aria-hidden {...shellProps}>
+        {previewBody}
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.button
+      type="button"
+      aria-label={`${config.alt}. ${config.hoverTooltip}`}
+      onClick={handleClick}
+      {...shellProps}
+    >
+      {previewBody}
     </motion.button>
   );
 }

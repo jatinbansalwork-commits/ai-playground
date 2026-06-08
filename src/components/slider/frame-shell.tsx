@@ -82,6 +82,7 @@ export function FrameShell({
       </div>
 
       {frame.type === "section" &&
+        frame.href &&
         !frame.videoThumbnail &&
         (isExternalHref(frame.href) ? (
           <a href={frame.href} {...sectionLinkProps(frame, onInteract)}>

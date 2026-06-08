@@ -13,7 +13,7 @@ function ProjectRow({ project }: ProjectRowProps) {
 
   return (
     <Link
-      href={getProjectCaseStudyHref(project.title)}
+      href={getProjectCaseStudyHref(project.slug)}
       className="projects-row group flex w-full flex-row items-center justify-between py-1 text-lg"
       aria-label={label}
     >

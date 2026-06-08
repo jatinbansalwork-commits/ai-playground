@@ -1,6 +1,6 @@
 /**
  * Locked slider typography — normal and wireframe modes share these classes
- * so glyph bounds stay identical when toggling outline rendering.
+ * so glyph bounds stay identical when toggling wireframe fill rendering.
  */
 export const INDEX_SLIDE_TYPE = "index-slide-type font-sans";
 
