@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
+import { ScrollResetLink } from "@/components/scroll-reset-link";
+import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
 import {
   FRAME_HEIGHT,
   FRAME_STRIDE,
@@ -28,6 +29,7 @@ function sectionLinkProps(frame: SectionFrame, onInteract: () => void) {
     className: "absolute inset-0 z-10",
     "aria-label": frame.label,
     onMouseDown: onInteract,
+    onClick: openInNewTab ? undefined : () => resetDocumentScroll(),
     ...(openInNewTab
       ? { target: "_blank" as const, rel: "noopener noreferrer" }
       : {}),
@@ -85,9 +87,13 @@ export function FrameShell({
             <span className="sr-only">{frame.label}</span>
           </a>
         ) : (
-          <Link href={frame.href} {...sectionLinkProps(frame, onInteract)}>
+          <ScrollResetLink
+            href={frame.href}
+            scroll={true}
+            {...sectionLinkProps(frame, onInteract)}
+          >
             <span className="sr-only">{frame.label}</span>
-          </Link>
+          </ScrollResetLink>
         ))}
     </motion.article>
   );

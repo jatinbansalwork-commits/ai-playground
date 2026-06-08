@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { CONTACT_EMAIL, CONTACT_LINKS } from "@/lib/constants";
+import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
 import { springLabel } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
 import type { ContactFrame } from "@/types";
@@ -47,8 +48,9 @@ export function ContactFramePanel({
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={externalLinkLabel(link.label)}
             onMouseDown={onInteract}
-            className={`absolute rounded-xl text-[85px] leading-none text-black ${POSITION_CLASSES[link.position]}`}
+            className={`absolute rounded-xl text-[85px] leading-none text-black ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
           >
             {link.label}
           </a>

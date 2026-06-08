@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CraftItem } from "@/lib/craft-content";
+import { externalLinkLabel } from "@/lib/a11y";
 import { getCraftMetaPosition, getCraftTheme } from "@/lib/craft-theme";
 
 interface CraftCardProps {
@@ -58,7 +59,7 @@ export function CraftCard({
         target="_blank"
         rel="noopener noreferrer"
         className={className}
-        aria-label={item.title}
+        aria-label={externalLinkLabel(item.title)}
       >
         {content}
       </a>

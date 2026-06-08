@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { ScrollManager } from "@/hooks/use-index-scroll-reset";
+import CacheManager from "@/components/CacheManager";
+import ScrollToTop from "@/components/ScrollToTop";
 import { SITE_NAME } from "@/lib/constants";
 import "./globals.css";
 
@@ -22,9 +23,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="h-full font-sans">
-        <ScrollManager />
+    <html lang="en" className={`${geistSans.variable} min-h-screen`}>
+      <body className="scroll-smooth font-sans antialiased">
+        <CacheManager />
+        <ScrollToTop />
         {children}
       </body>
     </html>

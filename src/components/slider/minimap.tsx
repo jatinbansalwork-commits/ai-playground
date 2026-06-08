@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { motion, useTransform } from "framer-motion";
 import {
   MINIMAP_LINE_COUNT,
@@ -50,8 +50,9 @@ export function Minimap({
 
   if (href) {
     return (
-      <Link
+      <ScrollResetLink
         href={href}
+        scroll={true}
         aria-label={`Back to ${SITE_NAME}`}
         className={
           linkClassName ??
@@ -59,7 +60,7 @@ export function Minimap({
         }
       >
         {track}
-      </Link>
+      </ScrollResetLink>
     );
   }
 

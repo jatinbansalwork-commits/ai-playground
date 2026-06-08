@@ -15,7 +15,7 @@ export const EXPERIMENTS_CARD = {
     "bg-[#262626] border border-white/[0.04] rounded-2xl",
   preview: "rounded-xl bg-[#262626] ring-1 ring-inset ring-white/[0.04]",
   title: "text-white",
-  date: "text-neutral-500",
+  date: "text-neutral-400",
   cta: "bg-[#333333] text-neutral-100 ring-1 ring-inset ring-white/[0.08] transition-colors group-hover:bg-[#3f3f3f] group-hover:text-white group-hover:ring-white/[0.12]",
 } as const;
 
@@ -24,11 +24,11 @@ export const EXPERIMENTS_TOGGLE = {
   track:
     "experiments-filter-bar inline-flex max-w-full flex-wrap gap-1 rounded-xl border border-white/[0.04] bg-[#262626] p-1",
   button:
-    "relative rounded-lg px-3 py-1.5 text-xs font-medium tracking-normal whitespace-nowrap",
+    "relative min-h-11 rounded-lg px-3 py-2 text-xs font-medium tracking-normal whitespace-nowrap",
   pill: "absolute inset-0 rounded-lg bg-[#333333] ring-1 ring-inset ring-white/[0.08]",
   labelActive: "relative z-10 text-neutral-100",
   labelInactive:
-    "relative z-10 text-neutral-500 transition-colors hover:text-neutral-100",
+    "relative z-10 text-neutral-400 transition-colors hover:text-neutral-100",
 } as const;
 
 export function getExperimentsBentoConfig(

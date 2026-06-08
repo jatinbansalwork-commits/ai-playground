@@ -1,5 +1,5 @@
 import { CRAFT_PREVIEW } from "@/lib/craft-colors";
-import { EXPERIMENTS_REGISTRY } from "@/lib/experiments-registry";
+import { ROUTES } from "@/lib/constants";
 
 export type CraftCta = "View Prototype" | "Read Essay" | "View Production";
 
@@ -79,40 +79,11 @@ const ARCHIVE_ITEMS: CraftItem[] = [
   },
 ];
 
-function buildExperimentsCraftSection(): CraftSection {
-  return {
-    id: "experiments",
-    title: "Experiments",
-    href: "/experiments",
-    description: "Interaction prototypes and interface studies.",
-    items: EXPERIMENTS_REGISTRY.map((entry) => ({
-      slug: entry.slug,
-      title: entry.title,
-      date: entry.article?.date ?? "",
-      previewClass: CRAFT_PREVIEW.grayMid,
-      external: entry.external,
-      href: entry.href,
-    })),
-    articles: Object.fromEntries(
-      EXPERIMENTS_REGISTRY.filter((entry) => entry.article).map((entry) => [
-        entry.slug,
-        {
-          slug: entry.slug,
-          title: entry.title,
-          date: entry.article!.date,
-          sections: entry.article!.sections,
-        },
-      ]),
-    ),
-  };
-}
-
 export const CRAFT_SECTIONS: Record<string, CraftSection> = {
-  experiments: buildExperimentsCraftSection(),
   models: {
     id: "models",
     title: "Models",
-    href: "/models",
+    href: ROUTES.recentWork,
     description: "Model interfaces and inference tooling.",
     items: MODELS_ITEMS,
     articles: {},

@@ -1,20 +1,27 @@
-import Link from "next/link";
+"use client";
+
+import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
+import { BACK_LINK_CLASS } from "@/lib/a11y";
 import { SITE_NAME } from "@/lib/constants";
 
 export function MePage() {
   return (
     <main
+      id="main-content"
       data-sheet="me"
-      className="relative flex min-h-screen items-center justify-center bg-[#1a1a1a] px-8 py-24 text-white"
+      className="relative flex min-h-screen items-center justify-start bg-[#1a1a1a] px-8 pt-24 pb-16 text-white"
     >
-      <Link
+      <h1 className="sr-only">Me</h1>
+
+      <ScrollResetLink
         href="/"
+        scroll={true}
         aria-label={`Back to ${SITE_NAME}`}
-        className="absolute top-8 left-8 z-20 flex size-12 items-center justify-center text-4xl leading-none text-neutral-500 transition-colors hover:text-white md:left-12"
+        className={`absolute top-8 left-8 z-20 md:left-12 ${BACK_LINK_CLASS}`}
       >
         ←
-      </Link>
+      </ScrollResetLink>
 
       <MeIntroVideo variant="page" />
     </main>

@@ -6,6 +6,7 @@ import { useScrollSlider } from "@/hooks/use-scroll-slider";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import {
   getGhostSpacerSize,
+  resetDocumentScroll,
   useIndexScrollReset,
 } from "@/hooks/use-index-scroll-reset";
 import { SliderProvider } from "@/context/slider-context";
@@ -16,7 +17,10 @@ import {
   FRAMES,
 } from "@/lib/constants";
 import { springContainer } from "@/lib/spring";
+import { IndexSlideNav } from "@/components/slider/index-slide-nav";
 import { Minimap } from "@/components/slider/minimap";
+import { FOCUS_RING } from "@/lib/a11y";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { HeroFramePanel } from "@/components/slider/hero-frame";
 import { SectionFramePanel } from "@/components/slider/section-frame";
 import { ContactFramePanel } from "@/components/slider/contact-frame";
@@ -24,8 +28,16 @@ import { ManifestFramePanel } from "@/components/slider/manifest-frame";
 
 function IndexCanvas() {
   useIndexScrollReset();
-  const { springTrackX, springScaleValue, playClick } = useScrollSlider();
+  const {
+    springTrackX,
+    springScaleValue,
+    playClick,
+    activeFrameIndex,
+    snapToIndex,
+    frameCount,
+  } = useScrollSlider();
   const { wireframe, toggleWireframe } = useWireframe();
+  const reducedMotion = useReducedMotion();
   const [ghostSize, setGhostSize] = useState(getGhostSpacerSize);
 
   useEffect(() => {
@@ -35,12 +47,16 @@ function IndexCanvas() {
 
     updateGhostSize();
     window.addEventListener("resize", updateGhostSize);
-    return () => window.removeEventListener("resize", updateGhostSize);
+    return () => {
+      window.removeEventListener("resize", updateGhostSize);
+      resetDocumentScroll();
+    };
   }, []);
 
   return (
     <>
       <main
+        id="main-content"
         data-sheet="index"
         data-debug={wireframe ? "true" : undefined}
         data-cancel-animation={wireframe ? "true" : undefined}
@@ -117,7 +133,18 @@ function IndexCanvas() {
           wireframe={wireframe}
           onToggle={toggleWireframe}
           onInteract={playClick}
+          reducedMotion={reducedMotion}
         />
+
+        <IndexSlideNav
+          activeIndex={activeFrameIndex}
+          frameCount={frameCount}
+          onSelect={snapToIndex}
+        />
+
+        <p className="sr-only">
+          Use arrow keys, Page Up, Page Down, Home, or End to move between slides.
+        </p>
       </main>
 
       <div
@@ -134,10 +161,12 @@ function CrossOverlay({
   wireframe,
   onToggle,
   onInteract,
+  reducedMotion,
 }: {
   wireframe: boolean;
   onToggle: () => void;
   onInteract: () => void;
+  reducedMotion: boolean;
 }) {
   const mounted = useIsMounted();
 
@@ -154,10 +183,10 @@ function CrossOverlay({
         event.stopPropagation();
         onToggle();
       }}
-      className="pointer-events-auto fixed top-1/2 left-1/2 z-50 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center mix-blend-difference"
+      className={`pointer-events-auto fixed top-1/2 left-1/2 z-50 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center mix-blend-difference ${FOCUS_RING}`}
       initial={false}
       animate={{ opacity: mounted ? 1 : 0 }}
-      transition={springContainer}
+      transition={reducedMotion ? { duration: 0 } : springContainer}
     >
       <svg
         aria-hidden

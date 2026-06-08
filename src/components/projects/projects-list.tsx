@@ -1,53 +1,27 @@
 import Link from "next/link";
-import type { ProjectEntry } from "@/lib/projects-registry";
-
-function isExternalHref(href: string): boolean {
-  return /^https?:\/\//i.test(href);
-}
+import {
+  getProjectCaseStudyHref,
+  type ProjectEntry,
+} from "@/lib/projects-registry";
 
 interface ProjectRowProps {
   project: ProjectEntry;
 }
 
 function ProjectRow({ project }: ProjectRowProps) {
-  const content = (
-    <>
+  const label = `${project.title} (${project.year})`;
+
+  return (
+    <Link
+      href={getProjectCaseStudyHref(project.title)}
+      className="projects-row group flex w-full flex-row items-center justify-between py-1 text-lg"
+      aria-label={label}
+    >
       <span className="projects-row-title">{project.title}</span>
       <span className="projects-row-spacer" aria-hidden />
       <time className="projects-row-year" dateTime={project.year}>
         {project.year}
       </time>
-    </>
-  );
-
-  const className = "projects-row group";
-  const label = `${project.title} (${project.year})`;
-  const newTabProps = {
-    target: "_blank" as const,
-    rel: "noopener noreferrer",
-  };
-
-  if (isExternalHref(project.href) || project.external) {
-    return (
-      <a
-        href={project.href}
-        className={className}
-        aria-label={label}
-        {...newTabProps}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <Link
-      href={project.href}
-      className={className}
-      aria-label={label}
-      {...newTabProps}
-    >
-      {content}
     </Link>
   );
 }
@@ -58,7 +32,7 @@ interface ProjectsListProps {
 
 export function ProjectsList({ projects }: ProjectsListProps) {
   return (
-    <nav className="projects-list" aria-label="Projects">
+    <nav className="flex w-full flex-col space-y-8" aria-label="Projects">
       {projects.map((project) => (
         <ProjectRow key={project.slug} project={project} />
       ))}

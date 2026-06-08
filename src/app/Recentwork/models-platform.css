@@ -1,12 +1,12 @@
-/* Case study platform shell (/models) */
+/* Case study platform shell (/Recentwork) */
 
 html:has(main[data-sheet="models"]) {
   color-scheme: light;
 }
 
 html:has(main[data-sheet="models"]) body {
-  background: #1e1e1e;
-  color: #171717;
+  background: #1a1a1a;
+  color: #ffffff;
 }
 
 .platform-home-root {
@@ -24,7 +24,7 @@ html:has(main[data-sheet="models"]) body {
   --platform-nav-leading: clamp(1.5rem, 2.2vw, 2rem);
   --platform-media-radius: clamp(0.75rem, 2vw, 1.5rem);
   --platform-caption-size: 1rem;
-  background: #1e1e1e;
+  background: transparent;
   overflow-x: clip;
 }
 
@@ -215,56 +215,6 @@ html:has(main[data-sheet="models"]) body {
   border-radius: var(--platform-media-radius);
   background: #f8f8f8;
   box-shadow: 0 0 0 1px #ededed;
-}
-
-/* Fixed scroll chrome */
-.platform-scroll-chrome {
-  position: fixed;
-  top: 50%;
-  left: 0;
-  z-index: 30;
-  width: 100%;
-  translate: 0 -50%;
-  pointer-events: none;
-}
-
-.platform-minimap {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-inline: 2rem;
-}
-
-@media (max-width: 960px) {
-  .platform-minimap {
-    visibility: hidden;
-  }
-
-  .platform-minimap .platform-minimap-tick:nth-child(odd) {
-    display: none;
-  }
-}
-
-.platform-minimap-tick {
-  display: block;
-  height: 1px;
-  transform-origin: 0 0;
-  background: var(--platform-gray9);
-}
-
-.platform-minimap-tick.is-major {
-  width: 40px;
-  background: var(--platform-gray12);
-}
-
-.platform-minimap-tick.is-minor {
-  width: 24px;
-}
-
-.platform-minimap-tick.is-active {
-  background: var(--platform-orange);
 }
 
 /* Radial timeline */

@@ -15,7 +15,11 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
+}
+
+html:has(main[data-sheet="index"]) {
+  color-scheme: dark;
 }
 
 html:has(main[data-sheet="craft"]),
@@ -48,38 +52,19 @@ html:has(main[data-sheet="projects"]) body {
 }
 
 .projects-page {
-  background: #161616;
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.projects-page-content {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.projects-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-  margin-inline: auto;
-}
-
 .projects-row {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 52px;
   text-decoration: none;
   color: inherit;
 }
 
 .projects-row-title {
   flex: 0 1 auto;
-  font-size: 14px;
-  line-height: 28px;
+  text-align: left;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: #ededed;
@@ -102,11 +87,10 @@ html:has(main[data-sheet="projects"]) body {
 
 .projects-row-year {
   flex: 0 1 auto;
-  font-size: 14px;
-  line-height: 28px;
+  text-align: right;
   font-weight: 400;
   letter-spacing: -0.01em;
-  color: #707070;
+  color: #a3a3a3;
   font-variant-numeric: tabular-nums;
   transition: color 150ms ease;
 }
@@ -310,7 +294,7 @@ html:has(main[data-sheet="projects"]) body {
 
 /* —— Experiments deep bento —— */
 .experiments-bento-grid {
-  --bento-track-gap: 16px;
+  --bento-track-gap: 24px;
 }
 
 .experiments-filter-bar button:focus-visible {
@@ -330,6 +314,13 @@ html:has(main[data-sheet="index"]),
 html:has(main[data-sheet="index"]) body {
   overscroll-behavior: none;
   touch-action: pan-x pan-y;
+}
+
+html,
+body {
+  min-height: 100%;
+  height: auto;
+  overflow-x: clip;
 }
 
 body {
@@ -475,5 +466,20 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 

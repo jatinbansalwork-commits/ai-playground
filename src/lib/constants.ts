@@ -1,4 +1,12 @@
-export const SITE_NAME = "Cisco-Policy Copliot";
+export const SITE_NAME = "JB Portfolio";
+
+export const ROUTES = {
+  home: "/",
+  recentWork: "/Recentwork",
+  fun: "/fun",
+  projects: "/projects",
+  archive: "/archive",
+} as const;
 
 export const FRAME_WIDTH = 1200;
 export const FRAME_HEIGHT = 720;
@@ -66,7 +74,7 @@ export const FRAMES = [
     monogramPan: true,
     monogramPanDuration: 14,
     badge: "v3.2",
-    href: "/models",
+    href: ROUTES.recentWork,
   },
   {
     id: "experiments",
@@ -75,7 +83,7 @@ export const FRAMES = [
     label: "Fun",
     lottie: "/assets/lottie/experiments-fun.json",
     lottieFillAccent: "#6B36FF",
-    href: "/experiments",
+    href: ROUTES.fun,
   },
   {
     id: "projects",
@@ -87,7 +95,7 @@ export const FRAMES = [
     monogramFontOffset: 400,
     monogramPan: true,
     monogramPanDuration: 15,
-    href: "/projects",
+    href: ROUTES.projects,
   },
   {
     id: "archive",
@@ -95,7 +103,7 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Me",
     videoThumbnail: true,
-    href: "/archive",
+    href: ROUTES.archive,
   },
   {
     id: "contact",

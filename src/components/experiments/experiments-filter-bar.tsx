@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { ExperimentFilterId } from "@/lib/experiments-filters";
 import { EXPERIMENTS_FILTERS } from "@/lib/experiments-filters";
 import { EXPERIMENTS_TOGGLE } from "@/lib/experiments-bento";
+import { FOCUS_RING } from "@/lib/a11y";
 import { springSnappy } from "@/lib/spring";
 
 interface ExperimentsFilterBarProps {
@@ -30,7 +31,7 @@ export function ExperimentsFilterBar({
             type="button"
             aria-pressed={active}
             onClick={() => onChange(option.id)}
-            className={EXPERIMENTS_TOGGLE.button}
+            className={`${EXPERIMENTS_TOGGLE.button} ${FOCUS_RING}`}
           >
             {active ? (
               <motion.span

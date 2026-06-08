@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const CLICK_SOUND_PATH = "/assets/click.mp3";
 
 export function useClickSound() {
+  const reducedMotion = useReducedMotion();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -18,6 +20,8 @@ export function useClickSound() {
   }, []);
 
   const playClick = useCallback(() => {
+    if (reducedMotion) return;
+
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -25,7 +29,7 @@ export function useClickSound() {
     void audio.play().catch(() => {
       // Autoplay or missing asset — fail silently.
     });
-  }, []);
+  }, [reducedMotion]);
 
   return playClick;
 }

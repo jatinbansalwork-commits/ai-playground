@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   animate,
   useMotionValueEvent,
@@ -20,6 +20,8 @@ import {
 } from "@/lib/constants";
 import { springScale, springScrollSnap } from "@/lib/spring";
 import { useClickSound } from "@/hooks/use-click-sound";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
 import { useSliderContext } from "@/context/slider-context";
 
 function clamp(value: number, min: number, max: number) {
@@ -69,6 +71,8 @@ export function useScrollSlider() {
   const maxOffset = (frameCount - 1) * FRAME_STRIDE;
 
   const playClick = useClickSound();
+  const reducedMotion = useReducedMotion();
+  const [activeFrameIndex, setActiveFrameIndex] = useState(0);
 
   const frameIndexRef = useRef(0);
   const isSnappingRef = useRef(false);
@@ -101,11 +105,12 @@ export function useScrollSlider() {
       scale.set(computeScaleFromScroll(clamped, baseScaleRef.current));
 
       if (frameIndex !== frameIndexRef.current) {
-        playClick();
+        if (!reducedMotion) playClick();
         frameIndexRef.current = frameIndex;
+        setActiveFrameIndex(frameIndex);
       }
     },
-    [frameCount, maxOffset, minimapX, playClick, scale, trackX],
+    [frameCount, maxOffset, minimapX, playClick, reducedMotion, scale, trackX],
   );
 
   const syncScrollPosition = useCallback((value: number) => {
@@ -131,6 +136,12 @@ export function useScrollSlider() {
       const clampedIndex = clamp(index, 0, frameCount - 1);
       const targetScroll = clampedIndex * SCROLL_PER_FRAME;
 
+      if (reducedMotion) {
+        const synced = syncScrollPosition(targetScroll);
+        updateFromScroll(synced);
+        return;
+      }
+
       isSnappingRef.current = true;
 
       animate(readScrollOffset(), targetScroll, {
@@ -144,7 +155,7 @@ export function useScrollSlider() {
         },
       });
     },
-    [frameCount, syncScrollPosition, updateFromScroll],
+    [frameCount, reducedMotion, syncScrollPosition, updateFromScroll],
   );
 
   useLayoutEffect(() => {
@@ -222,9 +233,7 @@ export function useScrollSlider() {
       window.removeEventListener("scroll", onScrollWithSnap);
       window.removeEventListener("resize", syncBaseScale);
       if (snapTimer) clearTimeout(snapTimer);
-      if ("scrollRestoration" in history) {
-        history.scrollRestoration = "auto";
-      }
+      resetDocumentScroll();
     };
   }, [
     clampScrollOffset,
@@ -277,6 +286,50 @@ export function useScrollSlider() {
     };
   }, [clampScrollOffset, frameCount, snapToIndex, syncScrollPosition, updateFromScroll]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT")
+      ) {
+        return;
+      }
+
+      let nextIndex: number | null = null;
+
+      switch (event.key) {
+        case "ArrowRight":
+        case "ArrowDown":
+        case "PageDown":
+          nextIndex = frameIndexRef.current + 1;
+          break;
+        case "ArrowLeft":
+        case "ArrowUp":
+        case "PageUp":
+          nextIndex = frameIndexRef.current - 1;
+          break;
+        case "Home":
+          nextIndex = 0;
+          break;
+        case "End":
+          nextIndex = frameCount - 1;
+          break;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      snapToIndex(nextIndex);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [frameCount, snapToIndex]);
+
   useMotionValueEvent(trackX, "change", (value) => {
     const progress = clamp(-value / maxOffset, 0, 1);
     minimapX.set(progress * MINIMAP_RANGE);
@@ -285,7 +338,7 @@ export function useScrollSlider() {
   return {
     springTrackX: clampedTrackX,
     springScaleValue,
-    activeIndex: frameIndexRef,
+    activeFrameIndex,
     snapToIndex,
     playClick,
     scrollRange: (frameCount - 1) * SCROLL_PER_FRAME,

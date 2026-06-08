@@ -6,10 +6,17 @@ import { SectionChrome } from "@/components/navigation/section-chrome";
 interface ArticleLayoutProps {
   section: CraftSection;
   article: CraftArticle;
+  getAdjacentArticles?: (slug: string) => { prev: string | null; next: string | null };
 }
 
-export function ArticleLayout({ section, article }: ArticleLayoutProps) {
-  const { prev, next } = getAdjacentArticles(section.id, article.slug);
+export function ArticleLayout({
+  section,
+  article,
+  getAdjacentArticles: resolveAdjacentArticles,
+}: ArticleLayoutProps) {
+  const { prev, next } = resolveAdjacentArticles
+    ? resolveAdjacentArticles(article.slug)
+    : getAdjacentArticles(section.id, article.slug);
 
   return (
     <main

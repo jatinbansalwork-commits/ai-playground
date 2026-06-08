@@ -2,10 +2,10 @@ import { getExperimentCategories } from "@/lib/experiments-registry";
 
 export const EXPERIMENTS_FILTERS = [
   { id: "all", label: "All" },
-  { id: "article", label: "Article" },
-  { id: "ai-experiment", label: "AI Experiment" },
-  { id: "illustration", label: "illustration" },
   { id: "motion-graphic", label: "Motion Graphic" },
+  { id: "ai-experiment", label: "AI Experiment" },
+  { id: "illustration", label: "Illustration" },
+  { id: "article", label: "Article" },
 ] as const;
 
 export type ExperimentFilterId = (typeof EXPERIMENTS_FILTERS)[number]["id"];
@@ -25,7 +25,10 @@ export function filterExperimentItems<T extends { slug: string }>(
 
   return items.filter((item) => {
     if (filter === "article") {
-      return articleSet.has(item.slug);
+      return (
+        articleSet.has(item.slug) &&
+        getExperimentCategories(item.slug).includes("article")
+      );
     }
 
     return getExperimentCategories(item.slug).includes(filter);
@@ -142,8 +145,19 @@ export function getExperimentPreviewAspectRatio(
 
 export function getExperimentPreviewAspectClass(
   category: ExperimentCategory,
+  filter: ExperimentFilterId = "all",
 ): string {
-  return EXPERIMENT_CATEGORY_LAYOUT[category].aspectClass;
+  return getExperimentAspectClass(category, filter);
+}
+
+/** Category + active filter drive preview shell dimensions. */
+export function getExperimentAspectClass(
+  category: ExperimentCategory,
+  filter: ExperimentFilterId,
+): string {
+  if (category === "illustration") return "w-full aspect-[3/4]";
+  if (category === "motion-graphic") return "w-full aspect-video";
+  return "w-full aspect-[3/2]";
 }
 
 export function getExperimentGridSpan(
@@ -156,6 +170,23 @@ export function getExperimentGridSpan(
   ].span;
 }
 
+/** Only Article and AI Experiment containers render a CTA button. */
+const EXPERIMENT_CTA_CATEGORIES = new Set<ExperimentCategory>([
+  "article",
+  "ai-experiment",
+]);
+
+export function shouldShowExperimentCta(category: ExperimentCategory): boolean {
+  return EXPERIMENT_CTA_CATEGORIES.has(category);
+}
+
+/** Article & AI Experiment — interactive shell with metadata + CTA. */
+export function isFunctionalExperimentCategory(
+  category: ExperimentCategory,
+): boolean {
+  return shouldShowExperimentCta(category);
+}
+
 /** Illustration and motion graphic containers are media-only — no links or CTAs. */
 export function shouldDisableExperimentNavigation(
   filter: ExperimentFilterId,
@@ -163,7 +194,7 @@ export function shouldDisableExperimentNavigation(
   displayCategory?: ExperimentCategory,
 ): boolean {
   const category = getExperimentDisplayCategory(slug, filter, displayCategory);
-  return category === "illustration" || category === "motion-graphic";
+  return !shouldShowExperimentCta(category);
 }
 
 export function shouldHideExperimentCta(
@@ -171,27 +202,22 @@ export function shouldHideExperimentCta(
   slug: string,
   displayCategory?: ExperimentCategory,
 ): boolean {
-  return shouldDisableExperimentNavigation(filter, slug, displayCategory);
+  const category = getExperimentDisplayCategory(slug, filter, displayCategory);
+  return !shouldShowExperimentCta(category);
 }
 
 export function getExperimentCtaLabel(
   filter: ExperimentFilterId,
   slug: string,
-  articleSlugs: string[] = [],
+  _articleSlugs: string[] = [],
   displayCategory?: ExperimentCategory,
 ): string | null {
   const category = getExperimentDisplayCategory(slug, filter, displayCategory);
 
-  if (category === "illustration" || category === "motion-graphic") {
-    return null;
-  }
-
+  if (!shouldShowExperimentCta(category)) return null;
   if (category === "article") return "Read Essay";
   if (category === "ai-experiment") return "Try Now";
 
-  if (filter === "article") return "Read Essay";
-  if (filter === "ai-experiment") return "Try Now";
-
-  return articleSlugs.includes(slug) ? "Read Essay" : "Try Now";
+  return null;
 }
 
