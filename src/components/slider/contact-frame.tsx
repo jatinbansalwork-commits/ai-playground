@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { CONTACT_EMAIL, CONTACT_LINKS } from "@/lib/constants";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
+import { INDEX_SLIDE_CONTACT } from "@/lib/index-typography";
 import { springLabel } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
 import type { ContactFrame } from "@/types";
@@ -50,7 +51,7 @@ export function ContactFramePanel({
             rel="noopener noreferrer"
             aria-label={externalLinkLabel(link.label)}
             onMouseDown={onInteract}
-            className={`absolute rounded-xl text-[85px] leading-none text-black ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
+            className={`absolute rounded-xl text-[85px] ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
           >
             {link.label}
           </a>
@@ -61,18 +62,18 @@ export function ContactFramePanel({
           aria-label="Copy email"
           onMouseDown={onInteract}
           onClick={() => void handleCopyEmail()}
-          className="contact-center cursor-copy rounded-xl text-[85px] leading-none text-black"
+          className={`contact-center cursor-copy rounded-xl text-[85px] ${INDEX_SLIDE_CONTACT}`}
         >
           <div className="grid h-[102px] grid-cols-1 grid-rows-[102px] place-items-center overflow-hidden">
             <motion.p
-              className="col-start-1 row-start-1 flex h-[102px] items-center leading-none"
+              className={`col-start-1 row-start-1 flex h-[102px] items-center ${INDEX_SLIDE_CONTACT}`}
               animate={{ y: copied ? -90 : 0 }}
               transition={springLabel}
             >
               Email
             </motion.p>
             <motion.p
-              className="col-start-1 row-start-1 flex h-[102px] items-center leading-none"
+              className={`col-start-1 row-start-1 flex h-[102px] items-center ${INDEX_SLIDE_CONTACT}`}
               animate={{ y: copied ? 0 : 90 }}
               transition={springLabel}
             >

@@ -346,6 +346,14 @@ body {
   --background: #1e1e1e;
 }
 
+/* Single font stack for all index slider copy — never swap families in wireframe. */
+.index-slide-type {
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .wireframe-mode,
 main.index-root[data-debug="true"] {
   --wireframe-stroke: #ffffff;
@@ -378,90 +386,20 @@ main.index-root[data-debug="true"] .manifest-panel {
   background-color: transparent !important;
 }
 
-/* Wireframe: stroke on text containers only, not every nested wrapper. */
-.wireframe-mode h1,
-.wireframe-mode h3:not(.section-monogram),
-.wireframe-mode p,
-.wireframe-mode .contact-frame a,
-.wireframe-mode .contact-frame button,
-main.index-root[data-debug="true"] h1,
-main.index-root[data-debug="true"] h3:not(.section-monogram),
-main.index-root[data-debug="true"] p,
-main.index-root[data-debug="true"] .contact-frame a,
-main.index-root[data-debug="true"] .contact-frame button {
+/* Wireframe: stroke outline only — font metrics come from .index-slide-type. */
+.wireframe-mode .index-slide-type,
+main.index-root[data-debug="true"] .index-slide-type {
   color: transparent !important;
   -webkit-text-fill-color: transparent !important;
   -webkit-text-stroke: 1px var(--wireframe-stroke);
   paint-order: stroke fill;
-  font-family:
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    "Segoe UI",
-    sans-serif;
-  font-weight: 400;
-  text-rendering: geometricPrecision;
 }
 
-.wireframe-mode h1 *,
-.wireframe-mode h3:not(.section-monogram) *,
-.wireframe-mode p *,
-.wireframe-mode .contact-frame a *,
-.wireframe-mode .contact-frame button *,
-main.index-root[data-debug="true"] h1 *,
-main.index-root[data-debug="true"] h3:not(.section-monogram) *,
-main.index-root[data-debug="true"] p *,
-main.index-root[data-debug="true"] .contact-frame a *,
-main.index-root[data-debug="true"] .contact-frame button * {
+.wireframe-mode .index-slide-type *,
+main.index-root[data-debug="true"] .index-slide-type * {
   color: inherit !important;
   -webkit-text-fill-color: inherit !important;
   -webkit-text-stroke: inherit;
-}
-
-/* Section monograms: preserve filled-text metrics; stroke on a pseudo-layer. */
-.wireframe-mode h3.section-monogram,
-main.index-root[data-debug="true"] h3.section-monogram {
-  position: relative;
-  font-family: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 0 transparent !important;
-  text-rendering: geometricPrecision;
-}
-
-.wireframe-mode h3.section-monogram::before,
-main.index-root[data-debug="true"] h3.section-monogram::before {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: max-content;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px var(--wireframe-stroke);
-  paint-order: stroke fill;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-.wireframe-mode .frame-label,
-main.index-root[data-debug="true"] .frame-label {
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  -webkit-text-stroke: 1px var(--wireframe-stroke);
-  paint-order: stroke fill;
-  font-family:
-    "Helvetica Neue",
-    Helvetica,
-    Arial,
-    "Segoe UI",
-    sans-serif;
 }
 
 .wireframe-mode[data-cancel-animation="true"] .frame-panel:not([data-variant="main"]),

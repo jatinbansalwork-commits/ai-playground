@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useLayoutEffect, useRef, useState } from "react";
+import { useWireframe } from "@/context/wireframe-context";
+import { INDEX_SLIDE_MONOGRAM } from "@/lib/index-typography";
 
 interface SectionFrameMonogramProps {
   text: string;
@@ -18,6 +20,7 @@ export function SectionFrameMonogram({
   pan = false,
   panDuration = 14,
 }: SectionFrameMonogramProps) {
+  const { wireframe } = useWireframe();
   const maskRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const [panRange, setPanRange] = useState(0);
@@ -47,21 +50,20 @@ export function SectionFrameMonogram({
     if (textRef.current) observer.observe(textRef.current);
 
     return () => observer.disconnect();
-  }, [pan, text, fontSize]);
+  }, [pan, text, fontSize, wireframe]);
 
   const shouldPan = pan && panRange > 0;
 
   return (
     <div
       ref={maskRef}
-      className="section-monogram-mask relative h-full w-full overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
       aria-hidden
     >
-      <div className="section-monogram-rail absolute top-1/2 left-0 -translate-y-1/2">
+      <div className="absolute top-1/2 left-0 -translate-y-1/2">
         <motion.h3
           ref={textRef}
-          data-text={text}
-          className="section-monogram leading-none font-normal tracking-tighter whitespace-nowrap text-black"
+          className={INDEX_SLIDE_MONOGRAM}
           style={{ fontSize }}
           initial={false}
           animate={shouldPan ? { x: [0, -panRange, 0] } : { x: 0 }}

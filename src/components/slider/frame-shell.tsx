@@ -9,6 +9,7 @@ import {
   FRAME_WIDTH,
 } from "@/lib/constants";
 import { ClipReveal } from "@/components/slider/clip-reveal";
+import { INDEX_SLIDE_LABEL } from "@/lib/index-typography";
 import type { Frame, SectionFrame } from "@/types";
 
 interface FrameShellProps {
@@ -60,7 +61,7 @@ export function FrameShell({
       {isSlide && (
         <span
           aria-hidden
-          className="frame-label pointer-events-none absolute -top-7 left-0 text-sm text-neutral-500"
+          className={`frame-label pointer-events-none absolute -top-7 left-0 ${INDEX_SLIDE_LABEL}`}
         >
           <ClipReveal>{frame.label}</ClipReveal>
         </span>

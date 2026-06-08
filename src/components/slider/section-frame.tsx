@@ -6,6 +6,7 @@ import { springSlider } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { SectionFrameLottie } from "@/components/slider/section-frame-lottie";
 import { SectionFrameMonogram } from "@/components/slider/section-frame-monogram";
+import { INDEX_SLIDE_MONOGRAM } from "@/lib/index-typography";
 import type { SectionFrame } from "@/types";
 
 interface SectionFramePanelProps {
@@ -50,11 +51,10 @@ export function SectionFramePanel({
           panDuration={frame.monogramPanDuration}
         />
       ) : (
-        <div className="section-monogram-mask flex h-full w-full items-center justify-center overflow-hidden">
+        <div className="flex h-full w-full items-center justify-center overflow-hidden">
           <motion.h3
             aria-hidden
-            data-text={monogram}
-            className="section-monogram pointer-events-none max-w-full leading-none font-normal tracking-tighter whitespace-nowrap text-black"
+            className={`pointer-events-none max-w-full ${INDEX_SLIDE_MONOGRAM}`}
             style={{ fontSize }}
             whileHover={{ x: 8, opacity: 0.85 }}
             transition={springSlider}

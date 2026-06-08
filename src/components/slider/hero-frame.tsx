@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { HERO_COPY, HERO_LINES } from "@/lib/constants";
+import { INDEX_SLIDE_HERO } from "@/lib/index-typography";
 import { springCircle, springContainer } from "@/lib/spring";
 import { ClipReveal } from "@/components/slider/clip-reveal";
 import { FrameShell } from "@/components/slider/frame-shell";
@@ -41,7 +42,7 @@ export function HeroFramePanel({
         />
 
         <div className="relative z-10 max-w-[85%]">
-          <h1 className="text-[79.94px] leading-[1.05] font-normal tracking-tight">
+          <h1 className={`text-[79.94px] ${INDEX_SLIDE_HERO}`}>
             {HERO_LINES.map((line, lineIndex) => (
               <span key={line} className="block whitespace-nowrap">
                 <ClipReveal
