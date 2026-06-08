@@ -2,6 +2,13 @@
 
 import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import {
+  CaseStudyList,
+  CaseStudyParagraph,
+  CaseStudyProse,
+  CaseStudySubheading,
+  CaseStudyWide,
+} from "@/components/case-studies/case-study-prose";
 import { getCaseStudyContent } from "@/lib/project-content";
 
 const SLUG = "design-tool";
@@ -16,14 +23,40 @@ export default function DesignToolContent() {
         year={content.year}
         overview={content.overviewText}
       />
-      <CaseStudyBento
-        cells={[
-          { label: "Canvas editor", aspect: "video", span: "full" },
-          { label: "Layer inspector", aspect: "portrait" },
-          { label: "Collaboration cursors", aspect: "portrait" },
-          { label: "Export and handoff", aspect: "video", span: "full" },
-        ]}
-      />
+
+      <CaseStudyProse>
+        <CaseStudyParagraph>
+          Canvas editors fail when structure and spontaneity fight each other. We
+          mapped how designers move between freeform exploration and precise layout
+          passes, then shaped toolbars, inspectors, and collaboration cues around
+          those mode shifts instead of forcing a single workflow metaphor.
+        </CaseStudyParagraph>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            { label: "Canvas editor", aspect: "video", span: "full" },
+            { label: "Layer inspector", aspect: "portrait" },
+            { label: "Collaboration cursors", aspect: "portrait" },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse>
+        <CaseStudySubheading>Designing for parallel attention</CaseStudySubheading>
+        <CaseStudyList
+          items={[
+            "Reduced context switching by anchoring layer metadata beside the active artboard.",
+            "Surfaced live collaborator presence without obscuring the objects being edited.",
+          ]}
+        />
+        <CaseStudyParagraph>
+          Export and handoff flows close the loop — annotated specs leave the canvas
+          with the same hierarchy designers used while exploring, so engineering
+          handoffs stay legible under deadline pressure.
+        </CaseStudyParagraph>
+      </CaseStudyProse>
     </div>
   );
 }

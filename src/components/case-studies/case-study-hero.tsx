@@ -1,3 +1,5 @@
+import { CASE_STUDY_LEAD, CASE_STUDY_PROSE_WRAPPER } from "@/components/case-studies/case-study-editorial";
+
 interface CaseStudyHeroProps {
   title: string;
   year: string;
@@ -12,12 +14,12 @@ export function CaseStudyHero({
   className = "",
 }: CaseStudyHeroProps) {
   return (
-    <header className={`space-y-6 ${className}`}>
-      <p className="text-sm font-medium tracking-wide text-white/50">{year}</p>
-      <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
-      <p className="max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
-        {overview}
-      </p>
+    <header className={`${CASE_STUDY_PROSE_WRAPPER} ${className}`.trim()}>
+      <p className="text-sm font-medium tracking-wide text-neutral-400">{year}</p>
+      <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
+        {title}
+      </h1>
+      <p className={CASE_STUDY_LEAD}>{overview}</p>
     </header>
   );
 }

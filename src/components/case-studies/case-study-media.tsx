@@ -1,3 +1,5 @@
+import { CASE_STUDY_CAPTION } from "@/components/case-studies/case-study-editorial";
+
 interface CaseStudyMediaProps {
   label?: string;
   aspect?: "video" | "square" | "portrait";
@@ -22,7 +24,7 @@ export function CaseStudyMedia({
         aria-hidden
       />
       {label ? (
-        <figcaption className="text-xs tracking-wide text-white/45">{label}</figcaption>
+        <figcaption className={CASE_STUDY_CAPTION}>{label}</figcaption>
       ) : null}
     </figure>
   );

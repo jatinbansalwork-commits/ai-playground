@@ -53,7 +53,7 @@ export function getBlobCdnBase(): string {
 export const EXPERIMENT_CDN_MEDIA = {
   "scroll-slider": cdnAsset("/assets/experiments/scroll-slider-cover.jpg"),
   "wireframe-mode": cdnAsset("/kddVPtRKUV1wGirlo4ho2RIypg.webp"),
-  "minimap-tracker": cdnAsset("/don%27t%20burn%20youself.gif"),
+  "minimap-tracker": cdnAsset("/IMG_6656.mp4"),
   "clip-reveal": {
     "ai-experiment": cdnAsset("/assets/experiments/clip-reveal-cover.jpg"),
     "motion-graphic": cdnAsset("/pDBtnxUzJmrLJ2YlDXld932Skhs.mp4"),
@@ -77,4 +77,6 @@ export const EXPERIMENT_CDN_MEDIA = {
   "motion-graphic-slot-02": cdnAsset("/WRfEXvj0Fy7XlCGS1DPYVnLD6OM.mp4"),
   "motion-graphic-slot-03": cdnAsset("/UaoftDpqn187UvBDpp6GsCDVFyU.mp4"),
   "motion-graphic-slot-04": cdnAsset("/UP3Nn2hAjJmYcjYDyozMbtBA8D4.mp4"),
+  "motion-graphic-slot-05": cdnAsset("/IMG_6657.mp4"),
+  "motion-graphic-slot-07": cdnAsset("/IMG_6658.mp4"),
 } as const;
