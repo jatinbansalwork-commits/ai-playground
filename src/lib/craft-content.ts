@@ -25,7 +25,7 @@ export interface CraftArticleSection {
 export interface CraftArticle {
   slug: string;
   title: string;
-  date: string;
+  date?: string;
   sections: CraftArticleSection[];
 }
 

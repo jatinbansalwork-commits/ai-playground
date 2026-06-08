@@ -58,9 +58,11 @@ export function ArticleLayout({
               ← {section.title}
             </Link>
             <h1 className="text-4xl font-normal tracking-tight">{article.title}</h1>
-            <time className="mt-3 block text-sm text-neutral-500">
-              {article.date}
-            </time>
+            {article.date ? (
+              <time className="mt-3 block text-sm text-neutral-500">
+                {article.date}
+              </time>
+            ) : null}
           </header>
 
           <div className="space-y-12">
