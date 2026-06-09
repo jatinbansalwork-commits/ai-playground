@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { isRemoteCdnUrl } from "@/lib/asset-cdn";
+import { ROUTES } from "@/lib/constants";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface ExperimentsPreviewMediaProps {
@@ -11,6 +13,125 @@ interface ExperimentsPreviewMediaProps {
 }
 
 const LAZY_ROOT_MARGIN = "240px";
+const PLAYBACK_ROOT_MARGIN = "50px";
+const MOUSE_IDLE_MS = 2000;
+
+interface ExperimentsPreviewVideoProps {
+  media: ExperimentMedia;
+  title: string;
+  shouldLoad: boolean;
+}
+
+/**
+ * /fun bento previews — play only when on-route, in view, and mouse is active.
+ * Pauses after 2s of pointer idle or when the card leaves the viewport.
+ */
+function ExperimentsPreviewVideo({
+  media,
+  title,
+  shouldLoad,
+}: ExperimentsPreviewVideoProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const pathname = usePathname();
+  const reducedMotion = useReducedMotion();
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isMouseActive, setIsMouseActive] = useState(false);
+  const idleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldLoad) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { rootMargin: PLAYBACK_ROOT_MARGIN, threshold: 0.1 },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [shouldLoad, media.src]);
+
+  useEffect(() => {
+    if (!isIntersecting || pathname !== ROUTES.fun) {
+      setIsMouseActive(false);
+      return;
+    }
+
+    const handleMouseMove = () => {
+      setIsMouseActive(true);
+
+      if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current);
+
+      idleTimeoutRef.current = setTimeout(() => {
+        setIsMouseActive(false);
+      }, MOUSE_IDLE_MS);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (idleTimeoutRef.current) clearTimeout(idleTimeoutRef.current);
+    };
+  }, [isIntersecting, pathname]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const isTargetPage = pathname === ROUTES.fun;
+    const shouldPlay =
+      isTargetPage && isIntersecting && isMouseActive && !reducedMotion;
+
+    if (shouldPlay) {
+      void video.play().catch(() => undefined);
+    } else {
+      video.pause();
+    }
+  }, [pathname, isIntersecting, isMouseActive, reducedMotion]);
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      if (!document.hidden) return;
+      videoRef.current?.pause();
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+  }, []);
+
+  if (!shouldLoad) {
+    return media.poster ? (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={media.poster}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover"
+        decoding="async"
+        loading="lazy"
+      />
+    ) : null;
+  }
+
+  return (
+    <video
+      ref={videoRef}
+      src={media.src}
+      poster={media.poster}
+      className="pointer-events-none absolute inset-0 h-full w-full object-cover will-change-transform transform-gpu"
+      style={{ contentVisibility: "auto" }}
+      muted
+      loop={!reducedMotion}
+      playsInline
+      preload="metadata"
+      aria-label={media.alt ?? title}
+    />
+  );
+}
 
 /**
  * Defers remote CDN byte fetch until the card nears the viewport.
@@ -22,7 +143,6 @@ export function ExperimentsPreviewMedia({
 }: ExperimentsPreviewMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isRemote = isRemoteCdnUrl(media.src);
-  const reducedMotion = useReducedMotion();
   const [shouldLoad, setShouldLoad] = useState(!isRemote);
 
   useEffect(() => {
@@ -51,30 +171,11 @@ export function ExperimentsPreviewMedia({
         className="absolute inset-0 bg-[#262626]"
         aria-hidden={!shouldLoad}
       >
-        {shouldLoad ? (
-          <video
-            src={media.src}
-            poster={media.poster}
-            className="absolute inset-0 h-full w-full object-cover will-change-transform transform-gpu"
-            style={{ contentVisibility: "auto" }}
-            autoPlay={!reducedMotion}
-            muted
-            loop={!reducedMotion}
-            playsInline
-            preload="metadata"
-            aria-label={media.alt ?? title}
-          />
-        ) : media.poster ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={media.poster}
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover"
-            decoding="async"
-            loading="lazy"
-          />
-        ) : null}
+        <ExperimentsPreviewVideo
+          media={media}
+          title={title}
+          shouldLoad={shouldLoad}
+        />
       </div>
     );
   }

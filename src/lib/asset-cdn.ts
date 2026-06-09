@@ -88,7 +88,9 @@ export const EXPERIMENT_CDN_MEDIA = {
   "motion-graphic-slot-05": cdnAsset("/IMG_6657.mp4"),
   "motion-graphic-slot-07": cdnAsset("/IMG_6658.mp4"),
   "motion-graphic-slot-08": cdnAsset("/1425XAHPiav1RbL3397N87ens.mp4"),
-  "motion-graphic-slot-09": cdnAsset("/assets/experiments/motion-graphic-slot-09.mp4"),
+  "motion-graphic-slot-09": cdnAsset(
+    "/Motion%20graphic/WRfEXvj0Fy7XlCGS1DPYVnLD6OM%20%281%29.mp4",
+  ),
 } as const;
 
 /** Case study hero / showcase media — keyed by project slug. */
