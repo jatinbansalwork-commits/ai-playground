@@ -51,7 +51,9 @@ export function getBlobCdnBase(): string {
  * never share paths with article / ai-experiment previews.
  */
 export const EXPERIMENT_CDN_MEDIA = {
-  "scroll-slider": cdnAsset("/assets/experiments/scroll-slider-cover.jpg"),
+  "scroll-slider": cdnAsset(
+    "/AI%20experiment/Screenshot%202026-06-09%20at%204.08.20%E2%80%AFPM.png",
+  ),
   "wireframe-mode": cdnAsset("/kddVPtRKUV1wGirlo4ho2RIypg.webp"),
   "minimap-tracker": cdnAsset("/IMG_6656.mp4"),
   "clip-reveal": {
@@ -61,11 +63,14 @@ export const EXPERIMENT_CDN_MEDIA = {
     },
     "motion-graphic": cdnAsset("/pDBtnxUzJmrLJ2YlDXld932Skhs.mp4"),
   },
-  "spring-physics": cdnAsset("/assets/experiments/spring-physics.jpg"),
+  "spring-physics": cdnAsset("/AI%20experiment/miner.mp4"),
   "ghost-spacer": cdnAsset("/AI%20experiment/ALERT.mp4"),
-  "click-sound": cdnAsset("/assets/experiments/click-sound.mp4"),
+  "click-sound": cdnAsset("/AI%20experiment/doodlelab.mp4"),
   "scale-on-scroll": {
-    "ai-experiment": cdnAsset("/assets/experiments/scale-on-scroll-cover.jpg"),
+    "ai-experiment": {
+      src: cdnAsset("/AI%20experiment/super%20bros"),
+      type: "video" as const,
+    },
     "motion-graphic": cdnAsset("/mgSFjnByFieompNVtqKVZ5gRE0.mp4"),
   },
   "illustration-gold-jar": cdnAsset("/jar.png"),
