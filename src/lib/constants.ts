@@ -126,7 +126,7 @@ export const CONTACT_LINKS = [
     position: "top-left" as const,
   },
   {
-    label: "JB Mannul",
+    label: "JB Manual",
     href: "https://uxjatin.notion.site/Jatin-user-manual-4026f4a37be346d98265f180d53ce38e",
     position: "top-right" as const,
   },

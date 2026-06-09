@@ -51,6 +51,26 @@ html:has(main[data-sheet="projects"]) body {
   color: #ededed;
 }
 
+/* Isolate subpage scroll inside viewport-locked shells — never inherit index ghost scroll. */
+html:has(main[data-sheet="projects"]),
+html:has(main[data-sheet="projects"]) body,
+html:has(main[data-sheet="experiments"]),
+html:has(main[data-sheet="experiments"]) body,
+html:has(main[data-sheet="case-study"]),
+html:has(main[data-sheet="case-study"]) body {
+  overflow: hidden;
+  height: 100%;
+}
+
+html:has(main[data-sheet="recent-work"]) {
+  color-scheme: dark;
+}
+
+html:has(main[data-sheet="recent-work"]) body {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
 .projects-page {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;

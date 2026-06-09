@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE_NAME } from "@/lib/constants";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { FEATURED_CASE_STUDY_SLUG } from "@/lib/projects-registry";
+import { RecentWorkLayoutShell } from "./recent-work-layout-shell";
 
 const featured = getCaseStudyContent(FEATURED_CASE_STUDY_SLUG);
 
@@ -17,5 +18,5 @@ export default function RecentWorkLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return <RecentWorkLayoutShell>{children}</RecentWorkLayoutShell>;
 }

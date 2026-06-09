@@ -14,7 +14,7 @@ export default function FunPage() {
     <main
       id="main-content"
       data-sheet="experiments"
-      className="relative flex min-h-screen w-full flex-col items-center justify-start bg-[#1a1a1a] pt-24 pb-24 text-white"
+      className="fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
       <ScrollResetLink
         href={ROUTES.home}
@@ -24,11 +24,13 @@ export default function FunPage() {
         <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
-      <ExperimentsGalleryClient
-        items={getExperimentGalleryItems()}
-        sectionHref={EXPERIMENTS_PAGE.href}
-        articleSlugs={getExperimentArticleSlugs()}
-      />
+      <div className="flex w-full flex-col items-center px-4 pb-24 pt-24">
+        <ExperimentsGalleryClient
+          items={getExperimentGalleryItems()}
+          sectionHref={EXPERIMENTS_PAGE.href}
+          articleSlugs={getExperimentArticleSlugs()}
+        />
+      </div>
     </main>
   );
 }

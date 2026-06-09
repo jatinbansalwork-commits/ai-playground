@@ -19,7 +19,7 @@ export function CaseStudyPageShell({
     <main
       id="main-content"
       data-sheet="case-study"
-      className="relative flex min-h-screen w-full flex-col items-start justify-start bg-[#1a1a1a] px-8 pb-12 pt-24 text-white"
+      className="fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
       <ScrollResetLink
         href={backHref}
@@ -31,7 +31,7 @@ export function CaseStudyPageShell({
 
       <ScrollMinimapRuler />
 
-      <div className="mx-auto w-full max-w-5xl">{children}</div>
+      <div className="mx-auto w-full max-w-5xl px-8 pb-12 pt-24">{children}</div>
     </main>
   );
 }
