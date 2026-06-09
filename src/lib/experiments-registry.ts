@@ -212,6 +212,18 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
     categories: ["motion-graphic"],
     media: EXPERIMENT_CDN_MEDIA["motion-graphic-slot-07"],
   },
+  {
+    slug: "motion-graphic-slot-08",
+    title: "Motion Graphic Slot 08",
+    categories: ["motion-graphic"],
+    media: EXPERIMENT_CDN_MEDIA["motion-graphic-slot-08"],
+  },
+  {
+    slug: "motion-graphic-slot-09",
+    title: "Motion Graphic Slot 09",
+    categories: ["motion-graphic"],
+    media: EXPERIMENT_CDN_MEDIA["motion-graphic-slot-09"],
+  },
 ];
 
 /** Slugs in gallery order — derived from registry. */

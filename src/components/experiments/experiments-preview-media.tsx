@@ -14,7 +14,7 @@ const LAZY_ROOT_MARGIN = "240px";
 
 /**
  * Defers remote CDN byte fetch until the card nears the viewport.
- * Videos mount with `preload="none"` so the browser does not pull stream data early.
+ * Videos use `preload="metadata"` for dimensions only, plus GPU compositing hints.
  */
 export function ExperimentsPreviewMedia({
   media,
@@ -55,12 +55,13 @@ export function ExperimentsPreviewMedia({
           <video
             src={media.src}
             poster={media.poster}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover will-change-transform transform-gpu"
+            style={{ contentVisibility: "auto" }}
             autoPlay={!reducedMotion}
             muted
             loop={!reducedMotion}
             playsInline
-            preload="none"
+            preload="metadata"
             aria-label={media.alt ?? title}
           />
         ) : media.poster ? (

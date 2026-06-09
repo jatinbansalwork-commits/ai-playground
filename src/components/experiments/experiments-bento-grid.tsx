@@ -37,7 +37,6 @@ export function ExperimentsBentoGrid({
     shuffleSeed,
   });
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-  const isMotionGraphicTab = filter === "motion-graphic";
 
   const leftColumnCards = useMemo(
     () => randomizedCards.filter((_, idx) => idx % 2 === 0),
@@ -77,14 +76,6 @@ export function ExperimentsBentoGrid({
           )}
         />
       </motion.div>
-    );
-  }
-
-  if (isMotionGraphicTab) {
-    return (
-      <div className="experiments-bento-grid mx-auto flex w-full max-w-3xl flex-col gap-6">
-        {randomizedCards.map((entry) => renderCard(entry))}
-      </div>
     );
   }
 

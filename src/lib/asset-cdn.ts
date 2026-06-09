@@ -82,11 +82,13 @@ export const EXPERIMENT_CDN_MEDIA = {
   "illustration-slot-01": cdnAsset("/Frame%201321314914.png"),
   "illustration-slot-02": cdnAsset("/Frame%201321314967.png"),
   "motion-graphic-slot-01": cdnAsset("/9L4mIylEa79TkW75HIuwCzQxE.mp4"),
-  "motion-graphic-slot-02": cdnAsset("/WRfEXvj0Fy7XlCGS1DPYVnLD6OM.mp4"),
+  "motion-graphic-slot-02": cdnAsset("/JGAEwcjrlYlecJ5u9sucL6bfCXI.mp4"),
   "motion-graphic-slot-03": cdnAsset("/UaoftDpqn187UvBDpp6GsCDVFyU.mp4"),
   "motion-graphic-slot-04": cdnAsset("/UP3Nn2hAjJmYcjYDyozMbtBA8D4.mp4"),
   "motion-graphic-slot-05": cdnAsset("/IMG_6657.mp4"),
   "motion-graphic-slot-07": cdnAsset("/IMG_6658.mp4"),
+  "motion-graphic-slot-08": cdnAsset("/1425XAHPiav1RbL3397N87ens.mp4"),
+  "motion-graphic-slot-09": cdnAsset("/assets/experiments/motion-graphic-slot-09.mp4"),
 } as const;
 
 /** Case study hero / showcase media — keyed by project slug. */

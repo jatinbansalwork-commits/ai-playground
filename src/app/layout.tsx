@@ -29,7 +29,6 @@ export default function RootLayout({
         <SkipToContentLink />
         <CacheManager />
         <ScrollToTop />
-        <div className="global-grain-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>
