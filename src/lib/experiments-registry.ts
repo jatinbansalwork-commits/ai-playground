@@ -121,14 +121,6 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
     href: "https://doodlelab-ai.vercel.app/",
   },
   {
-    slug: "scale-on-scroll",
-    title: "Super Opinion bros",
-    categories: ["ai-experiment", "motion-graphic"],
-    media: EXPERIMENT_CDN_MEDIA["scale-on-scroll"],
-    external: true,
-    href: "https://super-opinion-bros.vercel.app/",
-  },
-  {
     slug: "illustration-gold-jar",
     title: "Gold Jar",
     categories: ["illustration"],

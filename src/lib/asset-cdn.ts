@@ -66,13 +66,6 @@ export const EXPERIMENT_CDN_MEDIA = {
   "spring-physics": cdnAsset("/AI%20experiment/miner.mp4"),
   "ghost-spacer": cdnAsset("/AI%20experiment/ALERT.mp4"),
   "click-sound": cdnAsset("/AI%20experiment/doodlelab.mp4"),
-  "scale-on-scroll": {
-    "ai-experiment": {
-      src: cdnAsset("/AI%20experiment/super%20bros"),
-      type: "video" as const,
-    },
-    "motion-graphic": cdnAsset("/mgSFjnByFieompNVtqKVZ5gRE0.mp4"),
-  },
   "illustration-gold-jar": cdnAsset("/jar.png"),
   "illustration-ticket-mark": cdnAsset("/TIcket.png"),
   "illustration-coin-stack": cdnAsset("/mWI4cFrnSgDolWqxydcUnfyhaE.avif"),
