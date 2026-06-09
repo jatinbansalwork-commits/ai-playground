@@ -56,13 +56,13 @@ export const EXPERIMENT_CDN_MEDIA = {
   "minimap-tracker": cdnAsset("/IMG_6656.mp4"),
   "clip-reveal": {
     "ai-experiment": {
-      src: cdnAsset("/AI%20experiment/froggy%20mode"),
+      src: cdnAsset("/AI%20experiment/Froggy"),
       type: "video" as const,
     },
     "motion-graphic": cdnAsset("/pDBtnxUzJmrLJ2YlDXld932Skhs.mp4"),
   },
   "spring-physics": cdnAsset("/assets/experiments/spring-physics.jpg"),
-  "ghost-spacer": cdnAsset("/assets/experiments/ghost-spacer.jpg"),
+  "ghost-spacer": cdnAsset("/AI%20experiment/ALERT.mp4"),
   "click-sound": cdnAsset("/assets/experiments/click-sound.mp4"),
   "scale-on-scroll": {
     "ai-experiment": cdnAsset("/assets/experiments/scale-on-scroll-cover.jpg"),

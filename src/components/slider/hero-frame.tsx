@@ -35,10 +35,7 @@ export function HeroFramePanel({
           initial={mounted ? { scale: 0 } : false}
           animate={{ scale: 1 }}
           transition={{ ...springCircle, delay: 0.4 }}
-          drag
-          dragMomentum={false}
-          onMouseDown={onInteract}
-          className="absolute top-0 right-0 aspect-square h-full cursor-grab rounded-full bg-[#6B36FF] hero-circle active:cursor-grabbing"
+          className="absolute top-0 right-0 aspect-square h-full rounded-full bg-[#6B36FF] hero-circle pointer-events-none"
         />
 
         <div className="relative z-10 max-w-[85%]">

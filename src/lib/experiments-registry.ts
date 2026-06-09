@@ -106,7 +106,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
   },
   {
     slug: "ghost-spacer",
-    title: "Ghost Spacer",
+    title: "Lock in Police",
     categories: ["ai-experiment"],
     media: EXPERIMENT_CDN_MEDIA["ghost-spacer"],
     external: true,
