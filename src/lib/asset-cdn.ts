@@ -80,3 +80,8 @@ export const EXPERIMENT_CDN_MEDIA = {
   "motion-graphic-slot-05": cdnAsset("/IMG_6657.mp4"),
   "motion-graphic-slot-07": cdnAsset("/IMG_6658.mp4"),
 } as const;
+
+/** Case study hero / showcase media — keyed by project slug. */
+export const CASE_STUDY_CDN_MEDIA = {
+  "freshprints-design-system": cdnAsset("/Freshprints_Design%20system.mp4"),
+} as const;

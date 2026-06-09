@@ -30,21 +30,16 @@ export function useExperimentsGrid<T extends { slug: string }>({
 }: UseExperimentsGridOptions<T>): UseExperimentsGridResult<T> {
   const allCardsCollection = useMemo(() => {
     const orderedItems = sortExperimentsBentoItems(items);
-    return getExperimentDisplayEntries(orderedItems, "all", articleSlugs);
-  }, [items, articleSlugs]);
+    return getExperimentDisplayEntries(orderedItems, "all");
+  }, [items]);
 
   const filteredCards = useMemo(() => {
     if (filter === "all") return allCardsCollection;
 
-    if (filter === "article") {
-      const orderedItems = sortExperimentsBentoItems(items);
-      return getExperimentDisplayEntries(orderedItems, "article", articleSlugs);
-    }
-
     return allCardsCollection.filter(
       (entry) => entry.displayCategory === filter,
     );
-  }, [filter, allCardsCollection, items, articleSlugs]);
+  }, [filter, allCardsCollection]);
 
   const randomizedCards = useMemo(() => {
     if (shuffleSeed === 0) return filteredCards;

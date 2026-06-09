@@ -25,6 +25,7 @@ import { HeroFramePanel } from "@/components/slider/hero-frame";
 import { SectionFramePanel } from "@/components/slider/section-frame";
 import { ContactFramePanel } from "@/components/slider/contact-frame";
 import { ManifestFramePanel } from "@/components/slider/manifest-frame";
+import { SiteFooter } from "@/components/site-footer";
 
 function IndexCanvas() {
   useIndexScrollReset();
@@ -141,6 +142,8 @@ function IndexCanvas() {
           frameCount={frameCount}
           onSelect={snapToIndex}
         />
+
+        <SiteFooter pinned />
 
         <p className="sr-only">
           Use arrow keys, Page Up, Page Down, Home, or End to move between slides.

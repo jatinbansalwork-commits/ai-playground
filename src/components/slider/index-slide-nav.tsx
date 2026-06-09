@@ -20,7 +20,7 @@ export function IndexSlideNav({
   return (
     <nav
       aria-label="Slide navigation"
-      className="pointer-events-auto fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white backdrop-blur-sm"
+      className="pointer-events-auto fixed bottom-14 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white backdrop-blur-sm"
     >
       <button
         type="button"

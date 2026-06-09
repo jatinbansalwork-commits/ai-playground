@@ -5,13 +5,12 @@ import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyH3,
-  CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
-  CaseStudySubheading,
   CaseStudyYear,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
+import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
 
 const SLUG = "freshprints-design-system";
@@ -29,18 +28,29 @@ export default function FreshprintsDesignSystemContent() {
       />
 
       <CaseStudyWide>
-        <CaseStudyMedia aspect="video" />
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["freshprints-design-system"]}
+          alt="FreshPrints design system overview"
+        />
       </CaseStudyWide>
 
       <CaseStudyProse>
         <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
         <CaseStudyH3>Principles behind the design system</CaseStudyH3>
         <CaseStudyParagraph>
-          A design system only earns trust when tokens, components, and documentation
-          read as one continuous language. We audited hundreds of one-off UI patterns
-          across merchant tooling and consolidated them into a single spec surface
-          designers and engineers could ship from without renegotiating spacing every
-          sprint.
+          As the FreshPrints platform expanded across multiple products and teams,
+          maintaining consistency, accessibility, and scalability became increasingly
+          challenging. Different teams were building features independently, which created
+          variations in components, interaction patterns, and visual language across the
+          product.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          To address this, the design system was guided by three core principles:
+          accessibility first, scalable components, and consistent patterns. These values
+          ensured that every component not only looked unified but also behaved predictably
+          across products, helping teams build faster while delivering inclusive and
+          reliable user experiences.
         </CaseStudyParagraph>
       </CaseStudyProse>
 
@@ -49,24 +59,38 @@ export default function FreshprintsDesignSystemContent() {
           cells={[
             { label: "Component primitives", aspect: "square" },
             { label: "Documentation surfaces", aspect: "square" },
+            { label: "Design tokens", aspect: "square" },
+            { label: "Pattern library", aspect: "square" },
           ]}
         />
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>From scattered specs to shared primitives</CaseStudySubheading>
-        <CaseStudyList
-          items={[
-            "Unified color, type, and elevation tokens across web and internal admin tools.",
-            "Documented variant matrices so new contributors ship consistent states on first pass.",
-          ]}
-        />
+        <CaseStudyYear>{content.year}</CaseStudyYear>
+        <CaseStudyH3>Improving speed and product quality</CaseStudyH3>
         <CaseStudyParagraph>
-          Density modes and theming hooks let product squads adapt the library without
-          forking base components — the system scales with seasonal campaigns while the
-          core grammar stays intact.
+          Building the design system required aligning multiple product teams around a
+          shared foundation of reusable components, patterns, and documentation. By
+          introducing structured components designers could build interfaces faster while
+          maintaining consistency across the platform.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          This reduced duplicated design work, improved collaboration with engineers, and
+          helped teams move from designing individual screens to building scalable product
+          experiences.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          The impact became measurable after launch. The new system helped reduce
+          design-to-development and release cycles, contributing to a 2× reduction in
+          go-to-market time for new features. Adoption grew quickly across teams, with
+          design system usage increasing 4× after launch as more designers and engineers
+          relied on shared components.
         </CaseStudyParagraph>
       </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyMedia aspect="video" />
+      </CaseStudyWide>
     </div>
   );
 }

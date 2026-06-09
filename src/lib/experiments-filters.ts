@@ -17,21 +17,12 @@ export { getExperimentCategories };
 export function filterExperimentItems<T extends { slug: string }>(
   items: T[],
   filter: ExperimentFilterId,
-  articleSlugs: string[] = [],
 ): T[] {
   if (filter === "all") return items;
 
-  const articleSet = new Set(articleSlugs);
-
   return items.filter((item) => {
-    if (filter === "article") {
-      return (
-        articleSet.has(item.slug) &&
-        getExperimentCategories(item.slug).includes("article")
-      );
-    }
-
-    return getExperimentCategories(item.slug).includes(filter);
+    const categories = getExperimentCategories(item.slug);
+    return categories.includes(filter);
   });
 }
 
@@ -53,9 +44,8 @@ export interface ExperimentDisplayEntry<T extends { slug: string }> {
 export function getExperimentDisplayEntries<T extends { slug: string }>(
   items: T[],
   filter: ExperimentFilterId,
-  articleSlugs: string[] = [],
 ): ExperimentDisplayEntry<T>[] {
-  const filtered = filterExperimentItems(items, filter, articleSlugs);
+  const filtered = filterExperimentItems(items, filter);
 
   if (filter !== "all") {
     const displayCategory: ExperimentCategory =

@@ -79,21 +79,8 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
   {
     slug: "wireframe-mode",
     title: "Wireframe Mode",
-    categories: ["illustration", "article"],
+    categories: ["illustration"],
     media: EXPERIMENT_CDN_MEDIA["wireframe-mode"],
-    article: {
-      date: "May 2026",
-      sections: [
-        {
-          id: "debug-toggle",
-          title: "Debug Toggle",
-          paragraphs: [
-            "The center cross toggles wireframe mode — transparent fills, 1px strokes, all frames visible at once.",
-            "On dark backgrounds, strokes switch to white for contrast.",
-          ],
-        },
-      ],
-    },
   },
   {
     slug: "minimap-tracker",

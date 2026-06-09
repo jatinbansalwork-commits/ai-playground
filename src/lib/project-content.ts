@@ -52,7 +52,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "Audited hundreds of one-off UI patterns across merchant tooling and consolidated them into a unified token, component, and documentation library designers and engineers could ship from without renegotiating spacing every sprint.",
+        "Fresh Prints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design and UI technology are struggling with scalability and consistency. As Fresh Prints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "design-tool": entry(

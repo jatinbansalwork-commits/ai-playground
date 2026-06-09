@@ -24,11 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} min-h-screen`}>
-      <body className="scroll-smooth font-sans antialiased">
+    <html lang="en" className={`${geistSans.variable} bg-[#1a1a1a]`}>
+      <body className="relative min-h-screen text-white antialiased">
         <SkipToContentLink />
         <CacheManager />
         <ScrollToTop />
+        <div className="global-grain-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>
