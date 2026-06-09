@@ -84,7 +84,7 @@ function MinimapTrack({
   const trackerClass =
     variant === "craft"
       ? "border border-[#FFEF00] bg-[#FFEF00]"
-      : "border border-neutral-400 bg-transparent";
+      : "border border-[#6B36FF] bg-[#6B36FF]";
 
   return (
     <div aria-hidden style={style}>

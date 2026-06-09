@@ -55,7 +55,10 @@ export const EXPERIMENT_CDN_MEDIA = {
   "wireframe-mode": cdnAsset("/kddVPtRKUV1wGirlo4ho2RIypg.webp"),
   "minimap-tracker": cdnAsset("/IMG_6656.mp4"),
   "clip-reveal": {
-    "ai-experiment": cdnAsset("/assets/experiments/clip-reveal-cover.jpg"),
+    "ai-experiment": {
+      src: cdnAsset("/AI%20experiment/froggy%20mode"),
+      type: "video" as const,
+    },
     "motion-graphic": cdnAsset("/pDBtnxUzJmrLJ2YlDXld932Skhs.mp4"),
   },
   "spring-physics": cdnAsset("/assets/experiments/spring-physics.jpg"),
@@ -83,5 +86,8 @@ export const EXPERIMENT_CDN_MEDIA = {
 
 /** Case study hero / showcase media — keyed by project slug. */
 export const CASE_STUDY_CDN_MEDIA = {
-  "freshprints-design-system": cdnAsset("/Freshprints_Design%20system.mp4"),
+  "freshprints-design-system": cdnAsset("/Freshprints/FP_DS.mp4"),
+  "freshprints-design-system-swatch": cdnAsset("/Freshprints/swatch.png"),
+  "freshprints-design-system-tokens": cdnAsset("/Freshprints/Token%201.png"),
+  "freshprints-design-system-impact": cdnAsset("/Freshprints/Dp.png"),
 } as const;

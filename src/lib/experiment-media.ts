@@ -86,10 +86,6 @@ export function getExperimentMedia(
     const media = normalizeMediaInput(categoryEntry);
     if (!media) return null;
 
-    if (isVideoBlockedForCategory(media, category, entry.categories)) {
-      return null;
-    }
-
     return media;
   }
 

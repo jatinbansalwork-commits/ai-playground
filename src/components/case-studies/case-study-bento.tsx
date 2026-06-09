@@ -4,6 +4,8 @@ export interface CaseStudyBentoCell {
   label: string;
   aspect?: "video" | "square" | "portrait";
   span?: "full" | "half";
+  src?: string;
+  alt?: string;
 }
 
 interface CaseStudyBentoProps {
@@ -22,6 +24,8 @@ export function CaseStudyBento({ cells, className = "" }: CaseStudyBentoProps) {
           key={cell.label}
           label={cell.label}
           aspect={cell.aspect}
+          src={cell.src}
+          alt={cell.alt}
           className={cell.span === "full" ? "md:col-span-2" : undefined}
         />
       ))}

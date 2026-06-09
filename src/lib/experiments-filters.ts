@@ -77,29 +77,31 @@ export function getExperimentDisplayEntries<T extends { slug: string }>(
   return entries;
 }
 
+/** Unified 1:1 media shell — all experiment preview slots use a square ratio. */
+const EXPERIMENT_MEDIA_SQUARE = {
+  aspectRatio: "1 / 1",
+  aspectClass: "aspect-square",
+} as const;
+
 /** Hard layout rules per category — aspect ratio + grid width. */
 export const EXPERIMENT_CATEGORY_LAYOUT: Record<
   ExperimentCategory,
   { aspectRatio: string; span: string; aspectClass: string }
 > = {
   "motion-graphic": {
-    aspectRatio: "16 / 9",
-    aspectClass: "aspect-video",
+    ...EXPERIMENT_MEDIA_SQUARE,
     span: "md:col-span-2 md:row-span-1",
   },
   illustration: {
-    aspectRatio: "3 / 4",
-    aspectClass: "aspect-[3/4]",
+    ...EXPERIMENT_MEDIA_SQUARE,
     span: "md:col-span-1 md:row-span-1",
   },
   article: {
-    aspectRatio: "3 / 2",
-    aspectClass: "aspect-[3/2]",
+    ...EXPERIMENT_MEDIA_SQUARE,
     span: "md:col-span-1 md:row-span-1",
   },
   "ai-experiment": {
-    aspectRatio: "3 / 2",
-    aspectClass: "aspect-[3/2]",
+    ...EXPERIMENT_MEDIA_SQUARE,
     span: "md:col-span-1 md:row-span-1",
   },
 };
@@ -142,12 +144,10 @@ export function getExperimentPreviewAspectClass(
 
 /** Category + active filter drive preview shell dimensions. */
 export function getExperimentAspectClass(
-  category: ExperimentCategory,
-  filter: ExperimentFilterId,
+  _category: ExperimentCategory,
+  _filter: ExperimentFilterId,
 ): string {
-  if (category === "illustration") return "w-full aspect-[3/4]";
-  if (category === "motion-graphic") return "w-full aspect-video";
-  return "w-full aspect-[3/2]";
+  return `w-full ${EXPERIMENT_MEDIA_SQUARE.aspectClass}`;
 }
 
 export function getExperimentGridSpan(

@@ -59,8 +59,18 @@ export default function FreshprintsDesignSystemContent() {
           cells={[
             { label: "Component primitives", aspect: "square" },
             { label: "Documentation surfaces", aspect: "square" },
-            { label: "Design tokens", aspect: "square" },
-            { label: "Pattern library", aspect: "square" },
+            {
+              label: "Design tokens",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-tokens"],
+              alt: "FreshPrints design tokens",
+            },
+            {
+              label: "Swatch",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-swatch"],
+              alt: "FreshPrints color swatch",
+            },
           ]}
         />
       </CaseStudyWide>
@@ -89,7 +99,11 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyProse>
 
       <CaseStudyWide>
-        <CaseStudyMedia aspect="video" />
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["freshprints-design-system-impact"]}
+          alt="FreshPrints design system impact"
+        />
       </CaseStudyWide>
     </div>
   );
