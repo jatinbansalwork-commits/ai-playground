@@ -44,7 +44,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-design-system": entry(
     "freshprints-design-system",
-    "FreshPrints - Design System",
+    "✅ FreshPrints - Design System",
     "2025",
     "Built a scalable design system from 0 to 1",
     {
@@ -83,20 +83,29 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-image-gen": entry(
     "freshprints-image-gen",
-    "FreshPrints - Image Gen AI",
+    "✅ FreshPrints - Image Gen AI",
     "2025",
     "Generative image tooling, prompt flows, and asset review interfaces.",
     {
-      services: ["Product Design", "AI UX", "Design Systems"],
+      services: [
+        "UX / UI for desktop + mobile",
+        "Shipped MVP",
+        "Design",
+        "Conceptualization",
+        "Dev handoff",
+        "Discovery",
+        "Audit",
+        "Motion Graphic",
+      ],
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "Designed generative image tooling that keeps prompt craft, asset review, and governance in one continuous flow — so teams can iterate on AI output without leaving the production pipeline.",
+        "Fresh Prints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design and UI technology are struggling with scalability and consistency. As Fresh Prints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   saltbot: entry(
     "saltbot",
-    "Saltbot AI (Saltmine)",
+    "✅ Saltbot AI (Saltmine)",
     "2024",
     "Saltbot conversational assistant flows and automation guardrails.",
     {

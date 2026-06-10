@@ -7,32 +7,45 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface CaseStudyMediaProps {
   label?: ReactNode;
-  aspect?: "video" | "square" | "portrait";
+  /** Loading placeholder shape only — loaded media always uses intrinsic dimensions. */
+  aspect?: "video" | "square" | "portrait" | "natural";
   className?: string;
   src?: string;
   poster?: string;
   alt?: string;
+  /**
+   * Clip empty pixels from the top of a loaded image (fraction of intrinsic height, 0–1).
+   * Pair with `intrinsicAspect` (width ÷ height) so the frame keeps the cropped proportions.
+   */
+  trimTop?: number;
+  intrinsicAspect?: number;
 }
 
 const ASPECT_CLASS = {
   video: "aspect-video",
   square: "aspect-square",
   portrait: "aspect-[3/4]",
+  natural: "aspect-video",
 } as const;
 
 const VIDEO_EXT = /\.(mp4|webm|mov)(\?|#|$)/i;
+const IMAGE_EXT = /\.(png|jpe?g|gif|webp|avif|svg)(\?|#|$)/i;
 
-function isVideoSrc(src: string): boolean {
-  return VIDEO_EXT.test(src);
+function isVideoSrc(src: string, aspect: CaseStudyMediaProps["aspect"]): boolean {
+  if (VIDEO_EXT.test(src)) return true;
+  if (IMAGE_EXT.test(src)) return false;
+  return aspect === "video";
 }
 
 export function CaseStudyMedia({
   label,
-  aspect = "video",
+  aspect = "natural",
   className = "",
   src,
   poster,
   alt,
+  trimTop,
+  intrinsicAspect,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
@@ -60,23 +73,44 @@ export function CaseStudyMedia({
     return () => observer.disconnect();
   }, [isRemote, resolvedSrc]);
 
-  const shellClass = `relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#1a1a1a] ${ASPECT_CLASS[aspect]}`;
-  const videoClass = "absolute inset-0 h-full w-full object-contain";
+  const shellBase =
+    "relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#1a1a1a]";
+  const isVideo = Boolean(resolvedSrc && isVideoSrc(resolvedSrc, aspect));
+  const hasTrimConfig =
+    Boolean(trimTop && intrinsicAspect) &&
+    !isVideo &&
+    trimTop! > 0 &&
+    trimTop! < 1;
+  const usesTrim = hasTrimConfig && Boolean(shouldLoad && resolvedSrc);
+  const usesIntrinsicSize = Boolean(shouldLoad && resolvedSrc) && !hasTrimConfig;
+  const shellClass = `${shellBase} ${
+    usesIntrinsicSize || hasTrimConfig ? "" : ASPECT_CLASS[aspect]
+  }`;
+  const mediaClass = usesTrim
+    ? "absolute left-0 w-full h-auto"
+    : "block h-auto w-full";
+  const trimTopOffset = hasTrimConfig
+    ? `${-(trimTop! / (1 - trimTop!)) * 100}%`
+    : undefined;
+  const trimShellStyle = hasTrimConfig
+    ? { aspectRatio: intrinsicAspect! / (1 - trimTop!) }
+    : undefined;
+  const trimMediaStyle = usesTrim ? { top: trimTopOffset } : undefined;
 
   return (
     <figure className={`space-y-3 ${className}`}>
-      <div ref={containerRef} className={shellClass}>
-        {resolvedSrc && isVideoSrc(resolvedSrc) ? (
+      <div ref={containerRef} className={shellClass} style={trimShellStyle}>
+        {isVideo ? (
           shouldLoad ? (
             <video
               src={resolvedSrc}
               poster={resolvedPoster}
-              className={videoClass}
+              className={mediaClass}
               autoPlay={!reducedMotion}
               muted
               loop={!reducedMotion}
               playsInline
-              preload="none"
+              preload="metadata"
               aria-label={alt ?? "Case study media"}
             />
           ) : resolvedPoster ? (
@@ -85,7 +119,7 @@ export function CaseStudyMedia({
               src={resolvedPoster}
               alt=""
               aria-hidden
-              className={videoClass}
+              className={mediaClass}
               decoding="async"
               loading="lazy"
             />
@@ -95,7 +129,8 @@ export function CaseStudyMedia({
           <img
             src={resolvedSrc}
             alt={alt ?? ""}
-            className="absolute inset-0 h-full w-full object-cover"
+            className={mediaClass}
+            style={trimMediaStyle}
             loading="lazy"
             decoding="async"
           />

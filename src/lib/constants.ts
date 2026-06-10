@@ -131,11 +131,6 @@ export const CONTACT_LINKS = [
     position: "top-right" as const,
   },
   {
-    label: "Portfolio 2.0",
-    href: "https://jatins-exceptional-site-de44c3.webflow.io/",
-    position: "bottom-left" as const,
-  },
-  {
     label: "Resume",
     href: "https://drive.google.com/file/d/18SdU4YHBhYxfRyWCt6I7oXBoFVxGPcvT/view?usp=sharing",
     position: "bottom-right" as const,

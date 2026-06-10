@@ -4,7 +4,7 @@ import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 export interface CaseStudyBentoCell {
   label: string;
   caption?: ReactNode;
-  aspect?: "video" | "square" | "portrait";
+  aspect?: "video" | "square" | "portrait" | "natural";
   span?: "full" | "half";
   src?: string;
   alt?: string;
