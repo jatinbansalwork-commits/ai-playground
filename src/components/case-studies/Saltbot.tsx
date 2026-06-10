@@ -2,13 +2,18 @@
 
 import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
-  CaseStudyList,
+  CaseStudyH2,
+  CaseStudyH3,
   CaseStudyParagraph,
   CaseStudyProse,
-  CaseStudySubheading,
+  CaseStudyQuote,
+  CaseStudyTightStack,
   CaseStudyWide,
+  CaseStudyYear,
 } from "@/components/case-studies/case-study-prose";
+import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
 
 const SLUG = "saltbot";
@@ -25,34 +30,200 @@ export default function SaltbotContent() {
         meta={content.meta}
       />
 
-      <CaseStudyProse>
-        <CaseStudyParagraph>
-          Conversational assistants earn trust through predictable escalation, not
-          endless small talk. We mapped Saltbot&apos;s highest-risk automation paths
-          and designed thread states that make guardrails visible before a user commits
-          to an irreversible action.
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA.saltbot}
+          alt="Saltbot project overview"
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse dense>
+        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyH2>Why Saltbot?</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Have you ever wished your workspace could talk back to you?
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Not with dashboard or filters — but with clarity.
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            A moment where data stops feeling heavy, and suddenly everything makes
+            sense.
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            A moment when you ask a question, and the answer feels like it was already
+            waiting for you.
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            A moment when complexity shifts into confidence.
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            That&apos;s where Saltbot comes in.
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
+        <CaseStudyParagraph dense>
+          Saltbot helps you capture the right signal from your workspace — the ones
+          hidden behind layers of data, layouts, and decisions. It sets the lens just
+          right, cuts through the noise, and brings the most meaningful insight into
+          focus.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          So every time you ask, &ldquo;What should I do next?&rdquo; and Saltbot reveals
+          the path forward, you pause and go,
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;Ah. That&apos;s exactly what I needed.&rdquo;
+        </CaseStudyQuote>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["saltbot-conversation-thread"]}
+          alt="Saltbot conversation thread"
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse dense>
+        <CaseStudyH2>Just ask Saltbot?</CaseStudyH2>
+        <CaseStudyParagraph dense>
+          You shouldn&apos;t need dashboards, filters, or multiple tools to understand
+          how your workspace is performing. With Saltbot, you simply ask — and get the
+          answer in seconds.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          Saltbot turns natural prompts into insights, explains what&apos;s happening,
+          and guides your next step.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>No complexity. No digging.</CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          Just ask Saltbot, and make decisions faster with the information you actually
+          need.
+        </CaseStudyParagraph>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["saltbot-automation-guardrails"]}
+          alt="Saltbot automation guardrails"
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse dense>
+        <CaseStudyH2>Only what you need to know</CaseStudyH2>
+        <CaseStudyParagraph dense>
+          Workspace data gets complicated quickly. The more offices you manage, the
+          harder it becomes to spot what truly matters.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>Saltbot cuts through that complexity.</CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          It highlights important changes — a sudden drop in usage, a spike in demand,
+          or an unusual pattern in a floorplan — and explains them clearly. Instead of
+          searching through charts, Saltbot tells you exactly what&apos;s worth paying
+          attention to. You don&apos;t just see the data. You understand it.
+        </CaseStudyParagraph>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["saltbot-insights-video-1"]}
+          alt="Saltbot insights preview still"
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse dense>
+        <CaseStudyH2>See the signal, not the spreadsheet</CaseStudyH2>
+        <CaseStudyParagraph dense>
+          In fast-moving workplaces, timing is everything. Saltbot helps you stay ahead
+          by sending real-time alerts when something important changes.
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          Want to know when a floor hits capacity?
+          <br />
+          When meeting rooms stay empty?
+          <br />
+          Or when a space suddenly gets overused?
+        </CaseStudyQuote>
+        <CaseStudyParagraph dense>
+          Saltbot lets you set the exact triggers you care about — and notifies you
+          instantly when they happen.
+        </CaseStudyParagraph>
+        <CaseStudyH3>Set smart alerts</CaseStudyH3>
+        <CaseStudyParagraph dense>
+          Choose the workspace signals you want Saltbot to monitor, from usage drops to
+          capacity limits.
+        </CaseStudyParagraph>
+        <CaseStudyH3>Customise your alerts</CaseStudyH3>
+        <CaseStudyParagraph dense>
+          Get notified the moment something crosses a threshold.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          No constant checking. No surprises. Saltbot watches it for you.
         </CaseStudyParagraph>
       </CaseStudyProse>
 
       <CaseStudyWide>
         <CaseStudyBento
           cells={[
-            { label: "Conversation thread", aspect: "video", span: "full" },
-            { label: "Automation guardrails", aspect: "square" },
-            { label: "Escalation handoff", aspect: "square" },
+            {
+              label: "Usage pattern detail",
+              caption: (
+                <>
+                  Sets Smart Alerts
+                  <br />
+                  Select precisely what you want to be alerted about
+                </>
+              ),
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["saltbot-insights-grid-01"],
+              alt: "Saltbot usage pattern detail",
+            },
+            {
+              label: "Floorplan anomaly view",
+              caption: (
+                <>
+                  Customize Your Alerts
+                  <br />
+                  Get notified whenever a metric is broken
+                </>
+              ),
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["saltbot-insights-grid-02"],
+              alt: "Saltbot floorplan anomaly view",
+            },
           ]}
         />
       </CaseStudyWide>
 
-      <CaseStudyProse>
-        <CaseStudySubheading>When the bot should step aside</CaseStudySubheading>
-        <CaseStudyList
-          items={[
-            "Inline confidence cues before executing account-level changes.",
-            "One-tap human handoff preserving full thread context for support agents.",
-          ]}
-        />
+      <CaseStudyProse dense>
+        <CaseStudyH2>All your insights, only made clearer</CaseStudyH2>
+        <CaseStudyParagraph dense>
+          Workspace tools often feel complicated — especially when data sits in different
+          places. Saltbot solves this by connecting directly to the tools and information
+          you already use inside Saltmine.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          It brings occupancy data, layouts, and workspace patterns together into one
+          simple conversation.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph dense>
+          So you always know what&apos;s happening, what it means, and what you should do
+          next. Saltbot doesn&apos;t add more tools. It makes the ones you have easier to
+          understand.
+        </CaseStudyParagraph>
       </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="video"
+          src={CASE_STUDY_CDN_MEDIA["saltbot-insights-video-2"]}
+          alt="Saltbot action workflow"
+        />
+      </CaseStudyWide>
     </div>
   );
 }

@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { CASE_STUDY_CAPTION } from "@/components/case-studies/case-study-editorial";
 import { isRemoteCdnUrl, resolveAssetUrl } from "@/lib/asset-cdn";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface CaseStudyMediaProps {
-  label?: string;
+  label?: ReactNode;
   aspect?: "video" | "square" | "portrait";
   className?: string;
   src?: string;

@@ -2,6 +2,10 @@
 export const CASE_STUDY_PROSE_INNER =
   "w-full space-y-6 md:col-span-3";
 
+/** Tighter vertical rhythm — half the default prose gap (space-y-3, no paragraph tail margin). */
+export const CASE_STUDY_PROSE_INNER_DENSE =
+  "w-full space-y-3 md:col-span-3";
+
 /** Wide media / gallery band inside the case study canvas. */
 export const CASE_STUDY_WIDE_WRAPPER = "w-full max-w-5xl mx-auto";
 
@@ -15,6 +19,18 @@ export const CASE_STUDY_HERO_COLUMN = "space-y-6 md:col-span-3";
 
 export const CASE_STUDY_PARAGRAPH =
   "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal mb-6 antialiased";
+
+export const CASE_STUDY_PARAGRAPH_DENSE =
+  "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal mb-3 antialiased";
+
+/** Half dense gap — pairs with CASE_STUDY_TIGHT_STACK (space-y-1.5). */
+export const CASE_STUDY_PARAGRAPH_TIGHT =
+  "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal mb-0 antialiased";
+
+export const CASE_STUDY_TIGHT_STACK = "space-y-1.5";
+
+export const CASE_STUDY_QUOTE =
+  "text-lg md:text-xl text-white font-medium leading-relaxed tracking-tight border-l-2 border-[#6B36FF] pl-6 my-2 antialiased";
 
 export const CASE_STUDY_LEAD =
   "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal antialiased";

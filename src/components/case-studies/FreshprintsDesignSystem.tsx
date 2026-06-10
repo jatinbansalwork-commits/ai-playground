@@ -57,8 +57,18 @@ export default function FreshprintsDesignSystemContent() {
       <CaseStudyWide>
         <CaseStudyBento
           cells={[
-            { label: "Component primitives", aspect: "square" },
-            { label: "Documentation surfaces", aspect: "square" },
+            {
+              label: "Component primitives",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-primitives"],
+              alt: "FreshPrints component primitives",
+            },
+            {
+              label: "Documentation surfaces",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-documentation"],
+              alt: "FreshPrints documentation surfaces",
+            },
             {
               label: "Design tokens",
               aspect: "square",

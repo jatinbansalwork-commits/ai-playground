@@ -100,11 +100,18 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "2024",
     "Saltbot conversational assistant flows and automation guardrails.",
     {
-      services: ["Conversation Design", "Product Design", "Prototyping"],
+      services: [
+        "Micro-Interaction",
+        "Dev handoff",
+        "Discovery",
+        "Early tech explores",
+        "UX / UI for desktop + mobile",
+        "Conceptualization",
+      ],
       client: "Saltmine",
-      location: "Remote",
+      location: "Bengaluru",
       infoText:
-        "Designed conversational assistant flows with predictable escalation paths and automation guardrails — earning trust through clarity about when the bot acts and when a human should step in.",
+        "Our first AI-powered Report Analytics Tool at Saltmine. Saltbot makes it easy to generate detailed reports on employee headcount—no more tedious data pulling or complicated navigation. With just a few clicks, you can create and visualize exactly the data you need, all in 5 seconds or less. Say goodbye to cluttered spreadsheets and hello to clear, actionable insights!",
     },
   ),
   "saltmine-sync": entry(

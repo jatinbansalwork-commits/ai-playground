@@ -89,7 +89,18 @@ export const EXPERIMENT_CDN_MEDIA = {
 /** Case study hero / showcase media — keyed by project slug. */
 export const CASE_STUDY_CDN_MEDIA = {
   "freshprints-design-system": cdnAsset("/Freshprints/FP_DS.mp4"),
-  "freshprints-design-system-swatch": cdnAsset("/Freshprints/swatch.png"),
+  "freshprints-design-system-primitives": cdnAsset("/Freshprints/Image.png"),
+  "freshprints-design-system-swatch": cdnAsset("/Freshprints/swatch1.png"),
   "freshprints-design-system-tokens": cdnAsset("/Freshprints/Token%201.png"),
+  "freshprints-design-system-documentation": cdnAsset(
+    "/Freshprints/documentation.png",
+  ),
   "freshprints-design-system-impact": cdnAsset("/Freshprints/Dp.png"),
+  saltbot: cdnAsset("/Saltbot/saltbot.mp4"),
+  "saltbot-conversation-thread": cdnAsset("/Saltbot/saltbot%202.mp4"),
+  "saltbot-automation-guardrails": cdnAsset("/Saltbot/saltbot%203.mp4"),
+  "saltbot-insights-video-1": cdnAsset("/Saltbot/saltbot%205.avif"),
+  "saltbot-insights-grid-01": cdnAsset("/Saltbot/2345.png"),
+  "saltbot-insights-grid-02": cdnAsset("/Saltbot/1234.png"),
+  "saltbot-insights-video-2": cdnAsset("/Saltbot/saltbot%204.mp4"),
 } as const;

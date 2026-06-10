@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 
 export interface CaseStudyBentoCell {
   label: string;
+  caption?: ReactNode;
   aspect?: "video" | "square" | "portrait";
   span?: "full" | "half";
   src?: string;
@@ -22,10 +24,10 @@ export function CaseStudyBento({ cells, className = "" }: CaseStudyBentoProps) {
       {cells.map((cell) => (
         <CaseStudyMedia
           key={cell.label}
-          label={cell.label}
+          label={cell.caption}
           aspect={cell.aspect}
           src={cell.src}
-          alt={cell.alt}
+          alt={cell.alt ?? cell.label}
           className={cell.span === "full" ? "md:col-span-2" : undefined}
         />
       ))}
