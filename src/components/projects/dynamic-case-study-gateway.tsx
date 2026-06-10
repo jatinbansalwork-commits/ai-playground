@@ -9,7 +9,9 @@ import DesignToolContent from "@/components/case-studies/DesignTool";
 import FreshprintsDesignSystemContent from "@/components/case-studies/FreshprintsDesignSystem";
 import FreshprintsImageGenContent from "@/components/case-studies/FreshprintsImageGen";
 import KalashRewardsContent from "@/components/case-studies/KalashRewards";
+import NewProjectContent from "@/components/case-studies/NewProject";
 import OpenMoneyContent from "@/components/case-studies/OpenMoney";
+import ProjectTwoContent from "@/components/case-studies/ProjectTwo";
 import PiggyMutualFundContent from "@/components/case-studies/PiggyMutualFund";
 import SaltbotContent from "@/components/case-studies/Saltbot";
 import SaltmineSyncContent from "@/components/case-studies/SaltmineSync";
@@ -25,6 +27,8 @@ const caseStudyComponents: Record<string, ComponentType> = {
   "saltmine-sync": SaltmineSyncContent,
   "kalash-rewards": KalashRewardsContent,
   "piggy-mutual-fund": PiggyMutualFundContent,
+  "new-project": NewProjectContent,
+  "project-2": ProjectTwoContent,
   "open-money": OpenMoneyContent,
 };
 

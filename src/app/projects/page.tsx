@@ -20,7 +20,7 @@ export default function ProjectsIndexPage() {
         <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
-      <div className="mx-auto flex w-full max-w-md flex-col space-y-6 md:w-[480px]">
+      <div className="mx-auto flex w-full max-w-2xl flex-col space-y-6 md:w-[672px]">
         <h1 className="sr-only">Projects</h1>
         <ProjectsList projects={PROJECTS_REGISTRY} />
       </div>

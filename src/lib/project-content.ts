@@ -57,7 +57,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "design-tool": entry(
     "design-tool",
-    "FreshPrints - Design Tool",
+    "FreshPrints - Heal Tool",
     "2025",
     "Design Tool canvas workflows, editor surfaces, and collaboration patterns.",
     {
@@ -151,8 +151,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-mutual-fund": entry(
     "piggy-mutual-fund",
-    "Piggy - Mutual Fund",
-    "2023",
+    "Kalash - Year end recap",
+    "2024",
     "Piggy Mutual Fund onboarding, portfolio summaries, and investment education.",
     {
       services: ["Product Design", "UX Research", "UI Design"],
@@ -162,9 +162,33 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Designed mutual fund onboarding and portfolio summaries that weave investment education into action — building confidence for first-time investors through progressive disclosure, not bolt-on tutorials.",
     },
   ),
+  "new-project": entry(
+    "new-project",
+    "Piggy - Reduced Mutual Fund Support Ticket",
+    "2023",
+    "Case study overview coming soon.",
+    {
+      services: ["Product Design"],
+      client: "TBD",
+      location: "TBD",
+      infoText: "Project details will be published here.",
+    },
+  ),
+  "project-2": entry(
+    "project-2",
+    "Piggy - Personalised Mutual Fund Recomendation",
+    "2022",
+    "Case study overview coming soon.",
+    {
+      services: ["Product Design"],
+      client: "TBD",
+      location: "TBD",
+      infoText: "Project details will be published here.",
+    },
+  ),
   "open-money": entry(
     "open-money",
-    "Open Money",
+    "✅ Open Money",
     "2021",
     "Open Money payments infrastructure, account flows, and trust patterns.",
     {
