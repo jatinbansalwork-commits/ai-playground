@@ -1,14 +1,11 @@
 import {
-  getAllCaseStudies,
   getCaseStudySlugs,
   type ProjectContentSlug,
 } from "@/lib/project-content";
+import { PROJECTS_LIST, type ProjectRowItem } from "@/lib/projects-list-data";
 
-export interface ProjectEntry {
-  slug: string;
-  title: string;
-  year: string;
-}
+/** @deprecated Use `ProjectRowItem` from `projects-list-data.ts`. */
+export type ProjectEntry = ProjectRowItem;
 
 export const PROJECTS_PAGE = {
   title: "Projects",
@@ -27,10 +24,5 @@ export function getProjectCaseStudyHref(slug: string): string {
   return `/projects/${slug}`;
 }
 
-/**
- * Professional case studies — index rows derived from `project-content.ts`.
- * Edit per-project copy in `projectDataRegistry`, not here.
- */
-export const PROJECTS_REGISTRY: ProjectEntry[] = getAllCaseStudies().map(
-  ({ slug, title, year }) => ({ slug, title, year }),
-);
+/** @deprecated Use `PROJECTS_LIST` from `projects-list-data.ts`. */
+export const PROJECTS_REGISTRY: ProjectRowItem[] = PROJECTS_LIST;

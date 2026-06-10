@@ -3,7 +3,7 @@ import { ProjectsList } from "@/components/projects/projects-list";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
 import { ROUTES } from "@/lib/constants";
-import { PROJECTS_REGISTRY } from "@/lib/projects-registry";
+import { PROJECTS_LIST } from "@/lib/projects-list-data";
 
 export default function ProjectsIndexPage() {
   return (
@@ -22,7 +22,7 @@ export default function ProjectsIndexPage() {
 
       <div className="mx-auto flex w-full max-w-2xl flex-col space-y-6 md:w-[672px]">
         <h1 className="sr-only">Projects</h1>
-        <ProjectsList projects={PROJECTS_REGISTRY} />
+        <ProjectsList projects={PROJECTS_LIST} />
       </div>
     </main>
   );

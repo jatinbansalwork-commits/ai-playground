@@ -131,6 +131,52 @@ html:has(main[data-sheet="recent-work"]) body {
   border-radius: 2px;
 }
 
+.projects-list-shell {
+  isolation: isolate;
+}
+
+.projects-hover-preview {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  overflow: visible;
+  width: 25.74rem;
+  height: 25.74rem;
+  opacity: 0;
+  transition: opacity 240ms ease-out;
+  will-change: transform, opacity;
+}
+
+.projects-hover-preview--visible {
+  opacity: 1;
+}
+
+.projects-hover-preview-bento {
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+  .projects-hover-preview {
+    width: 28.6rem;
+    height: 28.6rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .projects-hover-preview {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-hover-preview {
+    transition: none;
+  }
+}
+
 .craft-page {
   background: #282828;
 }

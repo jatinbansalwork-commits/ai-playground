@@ -33,6 +33,7 @@ export function cdnAsset(path: string): string {
  */
 export function resolveAssetUrl(src: string): string {
   if (!src) return src;
+  if (src.startsWith("data:")) return src;
   if (isAbsoluteAssetUrl(src)) return src;
 
   const normalizedPath = src.startsWith("/") ? src : `/${src}`;
