@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} bg-[#1a1a1a]`}>
-      <body className="relative min-h-screen text-white antialiased">
+      <body className="relative min-h-screen bg-[#1a1a1a] text-white antialiased">
         <SkipToContentLink />
         <CacheManager />
         <ScrollToTop />

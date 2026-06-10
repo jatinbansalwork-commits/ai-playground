@@ -10,7 +10,7 @@ export default function ProjectsIndexPage() {
     <main
       id="main-content"
       data-sheet="projects"
-      className="projects-page fixed inset-0 z-10 flex h-screen w-full flex-col items-center justify-center overflow-hidden bg-[#1a1a1a] px-4 text-white"
+      className="projects-page fixed inset-0 z-10 flex h-screen w-full flex-col overflow-y-auto overflow-x-hidden bg-[#1a1a1a] px-4 py-24 text-white"
     >
       <ScrollResetLink
         href={ROUTES.home}
@@ -20,7 +20,7 @@ export default function ProjectsIndexPage() {
         <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-col space-y-6 md:w-[672px]">
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center space-y-6 md:w-[672px]">
         <h1 className="sr-only">Projects</h1>
         <ProjectsList projects={PROJECTS_LIST} />
       </div>

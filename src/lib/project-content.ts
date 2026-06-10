@@ -156,11 +156,20 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "2024",
     "Piggy Mutual Fund onboarding, portfolio summaries, and investment education.",
     {
-      services: ["Product Design", "UX Research", "UI Design"],
-      client: "Piggy",
+      services: [
+        "Discovery",
+        "Illustration",
+        "Branding",
+        "UX Research",
+        "Fintech B2C",
+        "Dev handoff",
+        "Motion Graphics",
+        "Product Strategy",
+      ],
+      client: "Kalash",
       location: "Bangalore, India",
       infoText:
-        "Designed mutual fund onboarding and portfolio summaries that weave investment education into action — building confidence for first-time investors through progressive disclosure, not bolt-on tutorials.",
+        "We at Kalash think \"Everyone can Buy Digital Gold\", starting from ₹10 by using our Gold App. Saving Money is crucial to a financially secure future. Start your gold buying journey now with India's Digital Kalash App. You can buy 24K Digital Gold on a daily, weekly & monthly basis and grow your Money with gold price appreciation. Your gold is 100% secure in a gold vault.",
     },
   ),
   "new-project": entry(

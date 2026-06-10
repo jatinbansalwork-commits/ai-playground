@@ -4,7 +4,7 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
-  CaseStudyH3,
+  CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyYear,
@@ -37,7 +37,7 @@ export default function FreshprintsDesignSystemContent() {
 
       <CaseStudyProse>
         <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
-        <CaseStudyH3>Principles Behind the Design System</CaseStudyH3>
+        <CaseStudyH2>Principles Behind the Design System</CaseStudyH2>
         <CaseStudyParagraph>
           As the FreshPrints platform expanded across multiple products and teams,
           maintaining consistency, accessibility, and scalability became increasingly
@@ -86,8 +86,7 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyYear>{content.year}</CaseStudyYear>
-        <CaseStudyH3>Improving Speed and Product Quality</CaseStudyH3>
+        <CaseStudyH2>Improving Speed and Product Quality</CaseStudyH2>
         <CaseStudyParagraph>
           Building the design system required aligning multiple product teams around a
           shared foundation of reusable components, patterns, and documentation. By

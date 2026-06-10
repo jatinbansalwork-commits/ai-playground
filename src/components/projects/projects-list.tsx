@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ProjectsHoverPreview } from "@/components/projects/projects-hover-preview";
 import type { ProjectRowItem } from "@/lib/projects-list-data";
+import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
+import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
 
 interface ProjectRowProps {
@@ -13,13 +15,10 @@ interface ProjectRowProps {
 }
 
 function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
-  const label = `${project.title} (${project.year})`;
-
   return (
     <Link
       href={getProjectCaseStudyHref(project.slug)}
-      className="projects-row group flex w-full flex-row items-center justify-between py-1 text-lg"
-      aria-label={label}
+      className={PROJECTS_ROW_LINK_CLASS}
       onMouseEnter={() => onHoverStart(project)}
       onMouseLeave={onHoverEnd}
       onFocus={() => onHoverStart(project)}
@@ -39,6 +38,7 @@ interface ProjectsListProps {
 }
 
 export function ProjectsList({ projects }: ProjectsListProps) {
+  useSubpageScrollReset();
   const [hoveredProject, setHoveredProject] = useState<ProjectRowItem | null>(
     null,
   );

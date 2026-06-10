@@ -164,7 +164,7 @@ export default function FreshprintsImageGenContent() {
         <CaseStudyMedia
           src={M["freshprints-image-gen-06"]}
           alt="FreshPrints brand guardrails"
-          label="Early concept mock in FreshPrints :"
+          label="Early concept mock in FreshPrints"
         />
       </CaseStudyWide>
 

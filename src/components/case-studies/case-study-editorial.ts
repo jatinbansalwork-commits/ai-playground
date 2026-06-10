@@ -51,7 +51,7 @@ export const CASE_STUDY_CAPTION =
   "text-xs tracking-wide text-neutral-400 antialiased";
 
 export const CASE_STUDY_META_LABEL =
-  "text-[11px] font-mono tracking-wider text-neutral-500 uppercase";
+  "text-xs font-mono tracking-wider text-neutral-400 uppercase";
 
 export const CASE_STUDY_META_VALUE =
   "text-sm text-neutral-300 font-sans leading-relaxed";

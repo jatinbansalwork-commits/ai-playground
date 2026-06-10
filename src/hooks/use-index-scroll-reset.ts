@@ -53,8 +53,10 @@ export function getGhostSpacerSize() {
     };
   }
 
+  // Pad past SCROLL_RANGE so max scroll always covers every slide after resize.
+  const pad = 32;
   return {
-    width: window.innerWidth + SCROLL_RANGE,
-    height: window.innerHeight + SCROLL_RANGE,
+    width: window.innerWidth + SCROLL_RANGE + pad,
+    height: window.innerHeight + SCROLL_RANGE + pad,
   };
 }

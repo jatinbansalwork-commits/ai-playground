@@ -47,8 +47,10 @@ function IndexCanvas() {
     };
 
     updateGhostSize();
+    const settleFrame = requestAnimationFrame(updateGhostSize);
     window.addEventListener("resize", updateGhostSize);
     return () => {
+      cancelAnimationFrame(settleFrame);
       window.removeEventListener("resize", updateGhostSize);
       resetDocumentScroll();
     };

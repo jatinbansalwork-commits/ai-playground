@@ -1,4 +1,6 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useRef, type ReactNode } from "react";
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import ScrollMinimapRuler from "@/components/ScrollMinimapRuler";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
@@ -15,8 +17,11 @@ export function CaseStudyPageShell({
   backDestination,
   children,
 }: CaseStudyPageShellProps) {
+  const scrollRootRef = useRef<HTMLElement>(null);
+
   return (
     <main
+      ref={scrollRootRef}
       id="main-content"
       data-sheet="case-study"
       className="fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
@@ -29,7 +34,7 @@ export function CaseStudyPageShell({
         <NavBackLinkLabel destination={backDestination} />
       </ScrollResetLink>
 
-      <ScrollMinimapRuler />
+      <ScrollMinimapRuler scrollRootRef={scrollRootRef} />
 
       <div className="mx-auto w-full max-w-5xl px-8 pb-12 pt-24">{children}</div>
     </main>

@@ -56,7 +56,15 @@ export const BACK_LINK_CLASS =
  * Hit area padded to 44×44 while label remains text-sized (2.5.8).
  */
 export const NAV_BACK_LINK_CLASS =
-  `absolute top-8 left-8 z-50 ${TARGET_HIT_AREA} px-3 text-sm text-neutral-500 transition-colors hover:text-white ${FOCUS_RING}`;
+  `absolute top-8 left-8 z-50 ${TARGET_HIT_AREA} px-3 text-sm text-neutral-400 transition-colors hover:text-white ${FOCUS_RING}`;
+
+/** Full-width list row — 44px min height for pointer targets (2.5.8). */
+export const PROJECTS_ROW_LINK_CLASS =
+  "projects-row group flex w-full min-h-11 flex-row items-center justify-between py-2 text-lg";
+
+/** External text link in case study meta — contrast + focus + hit area. */
+export const CASE_STUDY_EXTERNAL_LINK_CLASS =
+  `inline-flex min-h-11 items-center px-1 font-sans text-sm font-medium text-neutral-400 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-white hover:decoration-white ${FOCUS_RING}`;
 
 /**
  * Skip link — bypasses chrome to main content (2.4.1).

@@ -2,6 +2,7 @@
 
 import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyList,
   CaseStudyParagraph,
@@ -24,6 +25,13 @@ export default function PiggyMutualFundContent() {
         overview={content.overviewText}
         meta={content.meta}
       />
+
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="natural"
+          alt="Piggy mutual fund onboarding overview"
+        />
+      </CaseStudyWide>
 
       <CaseStudyProse>
         <CaseStudyParagraph>

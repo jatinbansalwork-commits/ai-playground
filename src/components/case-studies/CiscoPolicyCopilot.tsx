@@ -37,7 +37,11 @@ export default function CiscoPolicyCopilotContent() {
       </CaseStudyProse>
 
       <CaseStudyWide>
-        <CaseStudyMedia label="Policy workflow overview" aspect="video" />
+        <CaseStudyMedia
+          label="Policy workflow overview"
+          alt="Policy workflow overview"
+          aspect="video"
+        />
       </CaseStudyWide>
 
       <CaseStudyProse>

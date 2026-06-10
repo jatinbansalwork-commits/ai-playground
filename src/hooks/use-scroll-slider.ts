@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
-  animate,
   useMotionValueEvent,
   useSpring,
   useTransform,
@@ -19,6 +18,8 @@ import {
   SCROLL_PER_FRAME,
 } from "@/lib/constants";
 import { springScale, springScrollSnap } from "@/lib/spring";
+
+const SNAP_DURATION_MS = 720;
 import { useClickSound } from "@/hooks/use-click-sound";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
@@ -79,6 +80,7 @@ export function useScrollSlider() {
   const isReadyRef = useRef(false);
   const scrollRangeRef = useRef(0);
   const baseScaleRef = useRef(1);
+  const snapFrameRef = useRef<number | null>(null);
 
   const springScaleValue = useSpring(scale, springScale);
   const springTrackX = useSpring(trackX, springScrollSnap);
@@ -131,31 +133,59 @@ export function useScrollSlider() {
     return clamped;
   }, [clampScrollOffset]);
 
+  const cancelSnapAnimation = useCallback(() => {
+    if (snapFrameRef.current !== null) {
+      cancelAnimationFrame(snapFrameRef.current);
+      snapFrameRef.current = null;
+    }
+  }, []);
+
   const snapToIndex = useCallback(
     (index: number) => {
       const clampedIndex = clamp(index, 0, frameCount - 1);
       const targetScroll = clampedIndex * SCROLL_PER_FRAME;
+      const start = readScrollOffset();
 
-      if (reducedMotion) {
+      cancelSnapAnimation();
+      isSnappingRef.current = true;
+
+      if (reducedMotion || start === targetScroll) {
         const synced = syncScrollPosition(targetScroll);
         updateFromScroll(synced);
+        isSnappingRef.current = false;
         return;
       }
 
-      isSnappingRef.current = true;
+      const delta = targetScroll - start;
+      const startTime = performance.now();
 
-      animate(readScrollOffset(), targetScroll, {
-        ...springScrollSnap,
-        onUpdate: (value) => {
-          const synced = syncScrollPosition(value);
-          updateFromScroll(synced);
-        },
-        onComplete: () => {
-          isSnappingRef.current = false;
-        },
-      });
+      const tick = (now: number) => {
+        const progress = Math.min((now - startTime) / SNAP_DURATION_MS, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        const value = start + delta * eased;
+        const synced = syncScrollPosition(value);
+        updateFromScroll(synced);
+
+        if (progress < 1) {
+          snapFrameRef.current = requestAnimationFrame(tick);
+          return;
+        }
+
+        syncScrollPosition(targetScroll);
+        updateFromScroll(targetScroll);
+        isSnappingRef.current = false;
+        snapFrameRef.current = null;
+      };
+
+      snapFrameRef.current = requestAnimationFrame(tick);
     },
-    [frameCount, reducedMotion, syncScrollPosition, updateFromScroll],
+    [
+      cancelSnapAnimation,
+      frameCount,
+      reducedMotion,
+      syncScrollPosition,
+      updateFromScroll,
+    ],
   );
 
   useLayoutEffect(() => {
@@ -229,13 +259,14 @@ export function useScrollSlider() {
 
     return () => {
       isReadyRef.current = false;
+      cancelSnapAnimation();
       window.clearTimeout(readyTimer);
       window.removeEventListener("scroll", onScrollWithSnap);
       window.removeEventListener("resize", syncBaseScale);
       if (snapTimer) clearTimeout(snapTimer);
-      resetDocumentScroll();
     };
   }, [
+    cancelSnapAnimation,
     clampScrollOffset,
     frameCount,
     scale,
@@ -243,6 +274,13 @@ export function useScrollSlider() {
     syncScrollPosition,
     updateFromScroll,
   ]);
+
+  useEffect(() => {
+    return () => {
+      cancelSnapAnimation();
+      resetDocumentScroll();
+    };
+  }, [cancelSnapAnimation]);
 
   useEffect(() => {
     let snapTimer: ReturnType<typeof setTimeout> | null = null;

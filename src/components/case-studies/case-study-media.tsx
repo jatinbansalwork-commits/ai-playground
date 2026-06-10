@@ -31,6 +31,11 @@ const ASPECT_CLASS = {
 const VIDEO_EXT = /\.(mp4|webm|mov)(\?|#|$)/i;
 const IMAGE_EXT = /\.(png|jpe?g|gif|webp|avif|svg)(\?|#|$)/i;
 
+function labelToAlt(label: ReactNode | undefined): string | undefined {
+  if (typeof label === "string" && label.trim().length > 0) return label.trim();
+  return undefined;
+}
+
 function isVideoSrc(src: string, aspect: CaseStudyMediaProps["aspect"]): boolean {
   if (VIDEO_EXT.test(src)) return true;
   if (IMAGE_EXT.test(src)) return false;
@@ -96,6 +101,7 @@ export function CaseStudyMedia({
     ? { aspectRatio: intrinsicAspect! / (1 - trimTop!) }
     : undefined;
   const trimMediaStyle = usesTrim ? { top: trimTopOffset } : undefined;
+  const effectiveAlt = alt ?? labelToAlt(label);
 
   return (
     <figure className={`space-y-3 ${className}`}>
@@ -111,7 +117,7 @@ export function CaseStudyMedia({
               loop={!reducedMotion}
               playsInline
               preload="metadata"
-              aria-label={alt ?? "Case study media"}
+              aria-label={effectiveAlt ?? "Case study media"}
             />
           ) : resolvedPoster ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -128,7 +134,7 @@ export function CaseStudyMedia({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={resolvedSrc}
-            alt={alt ?? ""}
+            alt={effectiveAlt ?? ""}
             className={mediaClass}
             style={trimMediaStyle}
             loading="lazy"

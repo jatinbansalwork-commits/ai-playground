@@ -57,7 +57,9 @@ html:has(main[data-sheet="projects"]) body,
 html:has(main[data-sheet="experiments"]),
 html:has(main[data-sheet="experiments"]) body,
 html:has(main[data-sheet="case-study"]),
-html:has(main[data-sheet="case-study"]) body {
+html:has(main[data-sheet="case-study"]) body,
+html:has(main[data-sheet="recent-work"]),
+html:has(main[data-sheet="recent-work"]) body {
   overflow: hidden;
   height: 100%;
 }
@@ -80,6 +82,7 @@ html:has(main[data-sheet="recent-work"]) body {
 .projects-row {
   text-decoration: none;
   color: inherit;
+  border-radius: 2px;
 }
 
 .projects-row-title {
@@ -98,11 +101,11 @@ html:has(main[data-sheet="recent-work"]) body {
   margin-inline: 12px;
   background: linear-gradient(
     90deg,
-    hsla(0 0% 100% / 0.08),
-    hsla(0 0% 100% / 0.04) 50%,
-    hsla(0 0% 100% / 0.08)
+    hsla(0 0% 100% / 0.14),
+    hsla(0 0% 100% / 0.08) 50%,
+    hsla(0 0% 100% / 0.14)
   );
-  opacity: 0.35;
+  opacity: 0.55;
 }
 
 .projects-row-year {
@@ -517,12 +520,12 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
     scroll-behavior: auto;
   }
 
-  *,
-  *::before,
-  *::after {
+  /* Scope to CSS animations — avoid breaking Framer Motion / WAAPI springs. */
+  .frame-panel,
+  .projects-hover-preview,
+  .projects-hover-preview-bento {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
