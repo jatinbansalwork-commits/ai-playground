@@ -10,7 +10,6 @@ import FreshprintsDesignSystemContent from "@/components/case-studies/Freshprint
 import FreshprintsImageGenContent from "@/components/case-studies/FreshprintsImageGen";
 import KalashRewardsContent from "@/components/case-studies/KalashRewards";
 import NewProjectContent from "@/components/case-studies/NewProject";
-import OpenMoneyContent from "@/components/case-studies/OpenMoney";
 import ProjectTwoContent from "@/components/case-studies/ProjectTwo";
 import PiggyMutualFundContent from "@/components/case-studies/PiggyMutualFund";
 import SaltbotContent from "@/components/case-studies/Saltbot";
@@ -29,7 +28,6 @@ const caseStudyComponents: Record<string, ComponentType> = {
   "piggy-mutual-fund": PiggyMutualFundContent,
   "new-project": NewProjectContent,
   "project-2": ProjectTwoContent,
-  "open-money": OpenMoneyContent,
 };
 
 /** Track B step 2 — deep-dive case study; back returns to the projects index. */

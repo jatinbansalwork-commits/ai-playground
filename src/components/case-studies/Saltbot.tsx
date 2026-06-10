@@ -46,7 +46,7 @@ export default function SaltbotContent() {
             Have you ever wished your workspace could talk back to you?
           </CaseStudyParagraph>
           <CaseStudyParagraph tight>
-            Not with dashboard or filters — but with clarity.
+            Not with dashboards or filters — but with clarity.
           </CaseStudyParagraph>
           <CaseStudyParagraph tight>
             A moment where data stops feeling heavy, and suddenly everything makes
@@ -64,7 +64,7 @@ export default function SaltbotContent() {
           </CaseStudyParagraph>
         </CaseStudyTightStack>
         <CaseStudyParagraph dense>
-          Saltbot helps you capture the right signal from your workspace — the ones
+          Saltbot helps you capture the right signals from your workspace — the ones
           hidden behind layers of data, layouts, and decisions. It sets the lens just
           right, cuts through the noise, and brings the most meaningful insight into
           focus.

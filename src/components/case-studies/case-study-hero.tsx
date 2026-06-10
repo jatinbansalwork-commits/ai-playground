@@ -27,7 +27,7 @@ export function CaseStudyHero({
       <header className={`${CASE_STUDY_PAGE_GRID} ${className}`.trim()}>
         <div className={CASE_STUDY_HERO_COLUMN}>
           <CaseStudyYear>{year}</CaseStudyYear>
-          <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl md:whitespace-nowrap">
+          <h1 className="text-balance text-4xl font-semibold tracking-tight text-white md:text-5xl">
             {title}
           </h1>
           <p className={`${CASE_STUDY_LEAD} md:whitespace-nowrap`}>{overview}</p>

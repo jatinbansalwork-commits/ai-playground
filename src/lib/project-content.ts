@@ -4,6 +4,7 @@ export interface CaseStudyMetaSpecs {
   location: string;
   infoText: string;
   liveLinkUrl?: string;
+  figmaUrl?: string;
 }
 
 export interface CaseStudyContent {
@@ -52,7 +53,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "Fresh Prints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design and UI technology are struggling with scalability and consistency. As Fresh Prints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
+        "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "design-tool": entry(
@@ -70,7 +71,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "design-polling": entry(
     "design-polling",
-    "FreshPrints - Poll on your design",
+    "FreshPrints - Poll on Your Design",
     "2025",
     "Design Polling specific canvas layouts and user engagement workflows.",
     {
@@ -95,12 +96,12 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Dev handoff",
         "Discovery",
         "Audit",
-        "Motion Graphic",
+        "Motion Graphics",
       ],
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "Fresh Prints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design and UI technology are struggling with scalability and consistency. As Fresh Prints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
+        "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   saltbot: entry(
@@ -110,10 +111,10 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "Saltbot conversational assistant flows and automation guardrails.",
     {
       services: [
-        "Micro-Interaction",
+        "Micro-interactions",
         "Dev handoff",
         "Discovery",
-        "Early tech explores",
+        "Early tech exploration",
         "UX / UI for desktop + mobile",
         "Conceptualization",
       ],
@@ -151,7 +152,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-mutual-fund": entry(
     "piggy-mutual-fund",
-    "Kalash - Year end recap",
+    "Kalash - Year-end Recap",
     "2024",
     "Piggy Mutual Fund onboarding, portfolio summaries, and investment education.",
     {
@@ -164,7 +165,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "new-project": entry(
     "new-project",
-    "Piggy - Reduced Mutual Fund Support Ticket",
+    "Piggy - Reduced Mutual Fund Support Tickets",
     "2023",
     "Case study overview coming soon.",
     {
@@ -176,27 +177,20 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "project-2": entry(
     "project-2",
-    "Piggy - Personalised Mutual Fund Recomendation",
+    "✅ Piggy - Personalised Mutual Fund Recommendation",
     "2022",
     "Case study overview coming soon.",
     {
-      services: ["Product Design"],
-      client: "TBD",
-      location: "TBD",
-      infoText: "Project details will be published here.",
-    },
-  ),
-  "open-money": entry(
-    "open-money",
-    "✅ Open Money",
-    "2021",
-    "Open Money payments infrastructure, account flows, and trust patterns.",
-    {
-      services: ["Product Design", "Brand Design", "UI Design"],
-      client: "Open Money",
-      location: "Bangalore, India",
+      services: [
+        "Micro-interactions",
+        "Conceptualization",
+        "UX / UI for Mobile",
+        "Research",
+      ],
+      client: "Piggy",
+      location: "Bengaluru",
       infoText:
-        "Designed payments infrastructure and account flows that feel calm even when rails are complex — establishing trust as a designed system across verification, transfers, and account management.",
+        "Piggy is a mutual fund app that helps people start investing with small, regular contributions. This project focused on personalised fund recommendations—matching users to the right schemes based on their goals, risk appetite, and experience through a simple mobile flow.",
     },
   ),
 };

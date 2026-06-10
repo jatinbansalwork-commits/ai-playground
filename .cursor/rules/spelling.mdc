@@ -1,0 +1,42 @@
+---
+description: Spelling and copy standards for all user-facing website content
+globs: src/**/*.{ts,tsx,md}
+alwaysApply: true
+---
+
+# Spelling & copy
+
+All user-visible text must be spell-checked before finishing edits. This includes case study copy, project metadata, nav labels, buttons, alt text, and page titles.
+
+## Language
+
+- Use **British English** spelling unless matching an existing proper noun or quoted product name (e.g. `Personalised`, `behaviour` if already used nearby).
+- Prefer **sentence case** for body copy; **title case** for project titles and section headings where already established.
+
+## Brand & product names (do not “fix” these)
+
+- **FreshPrints** — one word, capital F and P (not “Fresh Prints”).
+- **Saltbot**, **Saltmine**, **Kalash**, **Piggy**, **Cisco**, **DALL-E**, **Mixpanel**.
+
+## Services & metadata conventions
+
+Match existing case study patterns in `src/lib/project-content.ts`:
+
+- `Micro-interactions` (hyphenated, plural)
+- `Conceptualization`
+- `UX / UI for Mobile` or `UX / UI for desktop + mobile`
+- `Motion Graphics`, `UX Research`, `Dev handoff`
+
+## Before committing copy changes
+
+1. Re-read every string you added or changed aloud.
+2. Fix typos in titles, services, client/location fields, and long-form paragraphs.
+3. Run `npm run spellcheck` and resolve or add legitimate terms to `cspell.json`.
+
+## Common mistakes to catch
+
+- Recommendation (not Recomendation)
+- Research (not Reserch)
+- Conceptualization (not Conceptulaization)
+- dashboards, signals, ecosystem — plural/agreement and capitalization
+- Duplicate vs duplicated — use the form that fits the sentence

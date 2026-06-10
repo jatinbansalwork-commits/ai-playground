@@ -44,7 +44,7 @@ export default function FreshprintsImageGenContent() {
           While auditing I started noticing something important in Mixpanel. Nothing
           dramatic at first—just a small pattern that kept repeating. When I spoke with
           a few of our users, the story became clearer. They come in with all kinds of
-          creative plan, but our image library isn&apos;t always ready for what they have
+          creative plans, but our image library isn&apos;t always ready for what they have
           in mind. So when they scroll through the options and don&apos;t find anything
           that fits, the excitement fades. That initial spark disappears—and many users
           simply don&apos;t return.
@@ -79,7 +79,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyProse dense>
         <CaseStudyParagraph dense>
-          This wasn&apos;t a usability issue. It was a confidence problem. User
+          This wasn&apos;t a usability issue. It was a confidence problem. Users
           didn&apos;t trust that they could create something good from scratch.
         </CaseStudyParagraph>
       </CaseStudyProse>
@@ -201,7 +201,7 @@ export default function FreshprintsImageGenContent() {
         </CaseStudyQuote>
         <CaseStudyParagraph dense>
           Testing led to the hypothesis this was because we had initially built the feature
-          as an mobile app to save development time we refined our discovery
+          as a mobile app to save development time. We refined our discovery
           experience—plus added new and improved styles, and removed a limit to free usage
         </CaseStudyParagraph>
         <CaseStudyParagraph dense>
@@ -219,7 +219,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyProse dense>
         <CaseStudyParagraph dense>
-          we also welcomed DALL-E to our Ecosystem. We can&apos;t wait to see where it goes
+          We also welcomed DALL-E to our ecosystem. We can&apos;t wait to see where it goes
           from here!
         </CaseStudyParagraph>
       </CaseStudyProse>

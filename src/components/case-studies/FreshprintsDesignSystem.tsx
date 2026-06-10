@@ -42,8 +42,8 @@ export default function FreshprintsDesignSystemContent() {
           As the FreshPrints platform expanded across multiple products and teams,
           maintaining consistency, accessibility, and scalability became increasingly
           challenging. Different teams were building features independently, which created
-          variations in components, interaction patterns, and visual language across the
-          product.
+          variations in components, interaction patterns, and visual language across
+          products.
         </CaseStudyParagraph>
         <CaseStudyParagraph>
           To address this, the design system was guided by three core principles:
@@ -91,11 +91,11 @@ export default function FreshprintsDesignSystemContent() {
         <CaseStudyParagraph>
           Building the design system required aligning multiple product teams around a
           shared foundation of reusable components, patterns, and documentation. By
-          introducing structured components designers could build interfaces faster while
+          introducing structured components, designers could build interfaces faster while
           maintaining consistency across the platform.
         </CaseStudyParagraph>
         <CaseStudyParagraph>
-          This reduced duplicated design work, improved collaboration with engineers, and
+          This reduced duplicate design work, improved collaboration with engineers, and
           helped teams move from designing individual screens to building scalable product
           experiences.
         </CaseStudyParagraph>
