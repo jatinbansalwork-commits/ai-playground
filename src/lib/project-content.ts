@@ -96,7 +96,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   saltbot: entry(
     "saltbot",
-    "Saltbot (Saltmine)",
+    "Saltbot AI (Saltmine)",
     "2024",
     "Saltbot conversational assistant flows and automation guardrails.",
     {
