@@ -77,7 +77,7 @@ export function CaseStudyMedia({
               loop={!reducedMotion}
               playsInline
               preload="none"
-              aria-label={alt ?? label ?? "Case study media"}
+              aria-label={alt ?? "Case study media"}
             />
           ) : resolvedPoster ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -94,7 +94,7 @@ export function CaseStudyMedia({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={resolvedSrc}
-            alt={alt ?? label ?? ""}
+            alt={alt ?? ""}
             className="absolute inset-0 h-full w-full object-cover"
             loading="lazy"
             decoding="async"
