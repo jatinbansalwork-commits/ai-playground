@@ -41,7 +41,7 @@ export default function CiscoPolicyCopilotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Tracing policy at the speed of thought</CaseStudySubheading>
+        <CaseStudySubheading>Tracing Policy at the Speed of Thought</CaseStudySubheading>
         <CaseStudyList
           items={[
             "Streamlined complex automated policy adjustments into clear, readable natural language logs.",

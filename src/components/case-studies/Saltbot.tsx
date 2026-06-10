@@ -87,7 +87,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>Just ask Saltbot?</CaseStudyH2>
+        <CaseStudyH2>Just Ask Saltbot?</CaseStudyH2>
         <CaseStudyParagraph dense>
           You shouldn&apos;t need dashboards, filters, or multiple tools to understand
           how your workspace is performing. With Saltbot, you simply ask — and get the
@@ -113,7 +113,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>Only what you need to know</CaseStudyH2>
+        <CaseStudyH2>Only What You Need to Know</CaseStudyH2>
         <CaseStudyParagraph dense>
           Workspace data gets complicated quickly. The more offices you manage, the
           harder it becomes to spot what truly matters.
@@ -136,7 +136,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>See the signal, not the spreadsheet</CaseStudyH2>
+        <CaseStudyH2>See the Signal, Not the Spreadsheet</CaseStudyH2>
         <CaseStudyParagraph dense>
           In fast-moving workplaces, timing is everything. Saltbot helps you stay ahead
           by sending real-time alerts when something important changes.
@@ -152,12 +152,12 @@ export default function SaltbotContent() {
           Saltbot lets you set the exact triggers you care about — and notifies you
           instantly when they happen.
         </CaseStudyParagraph>
-        <CaseStudyH3>Set smart alerts</CaseStudyH3>
+        <CaseStudyH3>Set Smart Alerts</CaseStudyH3>
         <CaseStudyParagraph dense>
           Choose the workspace signals you want Saltbot to monitor, from usage drops to
           capacity limits.
         </CaseStudyParagraph>
-        <CaseStudyH3>Customise your alerts</CaseStudyH3>
+        <CaseStudyH3>Customise Your Alerts</CaseStudyH3>
         <CaseStudyParagraph dense>
           Get notified the moment something crosses a threshold.
         </CaseStudyParagraph>
@@ -200,7 +200,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>All your insights, only made clearer</CaseStudyH2>
+        <CaseStudyH2>All Your Insights, Only Made Clearer</CaseStudyH2>
         <CaseStudyParagraph dense>
           Workspace tools often feel complicated — especially when data sits in different
           places. Saltbot solves this by connecting directly to the tools and information

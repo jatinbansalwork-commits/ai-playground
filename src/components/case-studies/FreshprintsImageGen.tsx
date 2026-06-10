@@ -39,7 +39,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyProse dense>
         <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
-        <CaseStudyH2>The problem</CaseStudyH2>
+        <CaseStudyH2>The Problem</CaseStudyH2>
         <CaseStudyParagraph dense>
           While auditing I started noticing something important in Mixpanel. Nothing
           dramatic at first—just a small pattern that kept repeating. When I spoke with
@@ -101,7 +101,7 @@ export default function FreshprintsImageGenContent() {
           competitor audits, and real user shadowing. These insights revealed major
           friction points in engagement.
         </CaseStudyParagraph>
-        <CaseStudyH2>The solution</CaseStudyH2>
+        <CaseStudyH2>The Solution</CaseStudyH2>
         <CaseStudyParagraph dense>
           By creating an AI image generation feature, we can supply our users with any
           images they need—and inspire them to keep creating. And our users loved the
@@ -126,7 +126,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>The process</CaseStudyH2>
+        <CaseStudyH2>The Process</CaseStudyH2>
         <CaseStudyParagraph dense>
           As AI image generation rapidly developed in quality, we hypothesised that it
           could solve one of our most important problems—supplying every user with any
@@ -137,7 +137,7 @@ export default function FreshprintsImageGenContent() {
           users who experienced a 0 result search while looking for content were 4.4%
           less likely to return.
         </CaseStudyParagraph>
-        <CaseStudyH2>The problem with prompting</CaseStudyH2>
+        <CaseStudyH2>The Problem with Prompting</CaseStudyH2>
         <CaseStudyQuote>
           I jumped into fast research on other existing AI image tools, and saw users often
           struggled with describing what they wanted to create.
@@ -191,7 +191,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyH2>The launch</CaseStudyH2>
+        <CaseStudyH2>The Launch</CaseStudyH2>
         <CaseStudyParagraph dense>
           Text to Image launched on April 4th 2025, with a quarter of a million images
           published in the first month.

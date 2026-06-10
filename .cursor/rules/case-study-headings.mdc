@@ -1,0 +1,57 @@
+---
+description: Case study heading casing and component conventions
+globs: src/components/case-studies/**/*.tsx
+alwaysApply: true
+---
+
+# Case study headings
+
+Use the editorial components in `case-study-prose.tsx` — do not invent new heading styles.
+
+## Component map
+
+| Component | Use for |
+|-----------|---------|
+| `CaseStudyYear` | Year above hero title, or editorial band labels |
+| `CaseStudyH2` | Main section headings in long-form case studies |
+| `CaseStudyH3` | Subsections inside a prose band |
+| `CaseStudySubheading` | Section headings in shorter / bento case studies |
+
+## Casing rules
+
+### `CaseStudyYear` labels → ALL CAPS only
+
+Use for fixed editorial labels, not body copy:
+
+```tsx
+<CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+```
+
+Numeric years stay as-is: `<CaseStudyYear>{content.year}</CaseStudyYear>`.
+
+### `CaseStudyH2`, `CaseStudyH3`, `CaseStudySubheading` → title case
+
+- Capitalise major words (nouns, verbs, adjectives, adverbs).
+- Lowercase short articles, conjunctions, and prepositions (`a`, `an`, `the`, `and`, `but`, `or`, `for`, `at`, `in`, `on`, `to`, `with`) unless they are the first word.
+- Keep proper nouns and brand names as-is: **Saltbot**, **FreshPrints**, **Piggy**.
+- **Never** use ALL CAPS for these components.
+
+```tsx
+// ✅ GOOD
+<CaseStudyH2>Clarity at First Glance</CaseStudyH2>
+<CaseStudyH2>The Problem with Prompting</CaseStudyH2>
+<CaseStudyH2>Why Saltbot?</CaseStudyH2>
+
+// ❌ BAD
+<CaseStudyH2>CLARITY AT FIRST GLANCE</CaseStudyH2>
+<CaseStudyH2>The problem</CaseStudyH2>
+<CaseStudyH2>the solution</CaseStudyH2>
+```
+
+## British English
+
+Match body copy: `Customise`, `Personalised`, `behaviour` where appropriate. Brand names follow project spelling rules in `spelling.mdc`.
+
+## Before finishing case study edits
+
+Scan every `CaseStudyH2`, `CaseStudyH3`, and `CaseStudySubheading` string for sentence case or ALL CAPS and normalise to title case.

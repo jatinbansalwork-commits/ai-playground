@@ -45,7 +45,7 @@ export default function SaltmineSyncContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Operational clarity under load</CaseStudySubheading>
+        <CaseStudySubheading>Operational Clarity Under Load</CaseStudySubheading>
         <CaseStudyList
           items={[
             "At-a-glance pipeline status with drill-down to per-entity mismatch logs.",

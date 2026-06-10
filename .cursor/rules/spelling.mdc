@@ -11,7 +11,8 @@ All user-visible text must be spell-checked before finishing edits. This include
 ## Language
 
 - Use **British English** spelling unless matching an existing proper noun or quoted product name (e.g. `Personalised`, `behaviour` if already used nearby).
-- Prefer **sentence case** for body copy; **title case** for project titles and section headings where already established.
+- Prefer **sentence case** for body copy.
+- Case study section headings (`CaseStudyH2`, `CaseStudyH3`, `CaseStudySubheading`): follow **title case** — see `case-study-headings.mdc`.
 
 ## Brand & product names (do not “fix” these)
 

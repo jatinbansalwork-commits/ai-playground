@@ -45,7 +45,7 @@ export default function KalashRewardsContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Motivation without noise</CaseStudySubheading>
+        <CaseStudySubheading>Motivation Without Noise</CaseStudySubheading>
         <CaseStudyList
           items={[
             "Tier storytelling that highlights earned status instead of hidden point math.",

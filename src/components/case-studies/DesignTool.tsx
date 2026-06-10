@@ -45,7 +45,7 @@ export default function DesignToolContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Designing for parallel attention</CaseStudySubheading>
+        <CaseStudySubheading>Designing for Parallel Attention</CaseStudySubheading>
         <CaseStudyList
           items={[
             "Reduced context switching by anchoring layer metadata beside the active artboard.",

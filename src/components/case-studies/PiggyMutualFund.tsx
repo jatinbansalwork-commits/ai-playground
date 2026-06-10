@@ -45,7 +45,7 @@ export default function PiggyMutualFundContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Confidence through progressive disclosure</CaseStudySubheading>
+        <CaseStudySubheading>Confidence Through Progressive Disclosure</CaseStudySubheading>
         <CaseStudyList
           items={[
             "Portfolio summaries that translate fund composition into everyday analogies.",

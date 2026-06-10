@@ -52,7 +52,7 @@ export default function DesignPollingContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Closing the loop between vote and revision</CaseStudySubheading>
+        <CaseStudySubheading>Closing the Loop Between Vote and Revision</CaseStudySubheading>
         <CaseStudyList
           items={[
             "Aggregated preference signals into a single panel designers could act on immediately.",
