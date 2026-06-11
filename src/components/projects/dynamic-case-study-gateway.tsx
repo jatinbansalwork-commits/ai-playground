@@ -4,7 +4,6 @@ import type { ComponentType } from "react";
 import { notFound, useParams } from "next/navigation";
 import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell";
 import CiscoPolicyCopilotContent from "@/components/case-studies/CiscoPolicyCopilot";
-import DesignPollingContent from "@/components/case-studies/DesignPolling";
 import DesignToolContent from "@/components/case-studies/DesignTool";
 import FreshprintsDesignSystemContent from "@/components/case-studies/FreshprintsDesignSystem";
 import FreshprintsImageGenContent from "@/components/case-studies/FreshprintsImageGen";
@@ -20,7 +19,6 @@ const caseStudyComponents: Record<string, ComponentType> = {
   "cisco-policy-copilot": CiscoPolicyCopilotContent,
   "freshprints-design-system": FreshprintsDesignSystemContent,
   "freshprints-heal-tool": DesignToolContent,
-  "freshprints-poll-on-your-design": DesignPollingContent,
   "freshprints-image-gen-ai": FreshprintsImageGenContent,
   "saltbot-ai-saltmine": SaltbotContent,
   "saltmine-sync": SaltmineSyncContent,

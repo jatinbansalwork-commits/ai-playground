@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { isRemoteCdnUrl } from "@/lib/asset-cdn";
 import { ROUTES } from "@/lib/constants";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
 
 interface ExperimentsPreviewMediaProps {
   media: ExperimentMedia;
@@ -33,7 +33,7 @@ function ExperimentsPreviewVideo({
 }: ExperimentsPreviewVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
-  const reducedMotion = useReducedMotion();
+  const autoplay = useMediaAutoplay();
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMouseActive, setIsMouseActive] = useState(false);
   const idleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -83,14 +83,14 @@ function ExperimentsPreviewVideo({
 
     const isTargetPage = pathname === ROUTES.fun;
     const shouldPlay =
-      isTargetPage && isIntersecting && isMouseActive && !reducedMotion;
+      isTargetPage && isIntersecting && isMouseActive && autoplay;
 
     if (shouldPlay) {
       void video.play().catch(() => undefined);
     } else {
       video.pause();
     }
-  }, [pathname, isIntersecting, isMouseActive, reducedMotion]);
+  }, [pathname, isIntersecting, isMouseActive, autoplay]);
 
   useEffect(() => {
     const onVisibilityChange = () => {
@@ -125,7 +125,7 @@ function ExperimentsPreviewVideo({
       className="pointer-events-none absolute inset-0 h-full w-full object-cover will-change-transform transform-gpu"
       style={{ contentVisibility: "auto" }}
       muted
-      loop={!reducedMotion}
+      loop={autoplay}
       playsInline
       preload="metadata"
       aria-label={media.alt ?? title}

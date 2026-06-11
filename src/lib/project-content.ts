@@ -69,19 +69,6 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Designed canvas editor workflows that balance structure and spontaneity — enabling parallel attention across layers, assets, and live collaboration without overwhelming the editing surface.",
     },
   ),
-  "freshprints-poll-on-your-design": entry(
-    "freshprints-poll-on-your-design",
-    "FreshPrints - Poll on Your Design",
-    "2025",
-    "Design Polling specific canvas layouts and user engagement workflows.",
-    {
-      services: ["Product Design", "UX Research", "UI Design"],
-      client: "FreshPrints",
-      location: "New York, NY",
-      infoText:
-        "Built async design review flows that close the loop between vote and revision — surfacing aggregated feedback and participant states directly inside the canvas workspace.",
-    },
-  ),
   "freshprints-image-gen-ai": entry(
     "freshprints-image-gen-ai",
     "✅ FreshPrints - Image Gen AI",
@@ -139,15 +126,26 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "kalash-rewards": entry(
     "kalash-rewards",
-    "Kalash - Rewards",
+    "✅ Kalash - Your New Gold",
     "2024",
-    "Kalash Rewards loyalty mechanics, redemption paths, and member dashboards.",
+    "Helping 1M+ users from their wealth with Digital gold",
     {
-      services: ["Product Design", "UX Research", "UI Design"],
+      services: [
+        "Discovery",
+        "Illustration",
+        "Branding",
+        "UX Research",
+        "Fintech B2C",
+        "Dev handoff",
+        "Motion Graphic",
+        "Product Strategy",
+        "Shipped MVP",
+        "Usability Testing",
+      ],
       client: "Kalash",
-      location: "Mumbai, India",
+      location: "Bangalore, India",
       infoText:
-        "Designed loyalty mechanics and member dashboards that make redemption paths obvious — motivating engagement without noise through progressive disclosure and clear reward states.",
+        "We at Kalash think \"Everyone can Buy Digital Gold\", starting from ₹10 by using our Gold App. Saving Money is crucial to a financially secure future. Start your gold buying journey now with India's Digital Kalash App. You can buy 24K Digital Gold on a daily, weekly & monthly basis and grow your Money with gold price appreciation. Your gold is 100% secure in a gold vault.",
     },
   ),
   "kalash-year-end-recap": entry(
@@ -159,9 +157,10 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       services: [
         "Discovery",
         "Illustration",
-        "Fintech B2C",
+        "Branding",
         "Dev handoff",
-        "Motion Graphics",
+        "Motion Graphic",
+        "Product Strategy",
       ],
       client: "Kalash",
       location: "Bangalore, India",
@@ -183,7 +182,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-personalised-mutual-fund-recommendation": entry(
     "piggy-personalised-mutual-fund-recommendation",
-    "✅ Piggy - Personalised Mutual Fund Recommendation",
+    "Piggy - Personalised Mutual Fund Recommendation",
     "2022",
     "Case study overview coming soon.",
     {

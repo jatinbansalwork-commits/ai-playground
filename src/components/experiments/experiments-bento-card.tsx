@@ -10,6 +10,7 @@ import {
   getExperimentCtaLabel,
   getExperimentDisplayCategory,
   getExperimentPreviewAspectClass,
+  getExperimentCardId,
   isFunctionalExperimentCategory,
 } from "@/lib/experiments-filters";
 import { getExperimentMedia } from "@/lib/experiment-media";
@@ -49,11 +50,13 @@ export function ExperimentsBentoCard({
   const aspectClass = getExperimentPreviewAspectClass(
     resolvedCategory,
     filter,
+    item.slug,
   );
   const resolvedCtaLabel = isFunctionalBlock
     ? (ctaLabel ??
       getExperimentCtaLabel(filter, item.slug, articleSlugs, displayCategory))
     : null;
+  const cardId = getExperimentCardId(item.slug, resolvedCategory);
 
   const className = [
     `experiments-bento-cell group relative flex w-full shrink-0 flex-col overflow-hidden p-2 transition-colors ${FOCUS_RING}`,
@@ -102,7 +105,7 @@ export function ExperimentsBentoCard({
 
   if (!isFunctionalBlock) {
     return (
-      <article className={className}>
+      <article id={cardId} className={className}>
         <h2 className="sr-only">{item.title}</h2>
         {inner}
       </article>
@@ -111,7 +114,7 @@ export function ExperimentsBentoCard({
 
   if (!interactive) {
     return (
-      <article className={className} aria-label={item.title}>
+      <article id={cardId} className={className} aria-label={item.title}>
         {inner}
       </article>
     );
@@ -120,6 +123,7 @@ export function ExperimentsBentoCard({
   if (item.external) {
     return (
       <a
+        id={cardId}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
@@ -133,14 +137,14 @@ export function ExperimentsBentoCard({
 
   if (resolvedCategory === "article" && !hasArticle) {
     return (
-      <article className={className} aria-label={item.title}>
+      <article id={cardId} className={className} aria-label={item.title}>
         {inner}
       </article>
     );
   }
 
   return (
-    <Link href={href} className={className} aria-label={item.title}>
+    <Link id={cardId} href={href} className={className} aria-label={item.title}>
       {inner}
     </Link>
   );

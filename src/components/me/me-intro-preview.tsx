@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { MeIntroConfig } from "@/lib/me-intro";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
+import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
 import { springBentoHover } from "@/lib/spring";
 
 interface MeIntroPreviewProps {
@@ -23,18 +24,19 @@ export function MeIntroPreview({
 }: MeIntroPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hovered, setHovered] = useState(false);
+  const autoplay = useMediaAutoplay();
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (hidden) {
+    if (hidden || !autoplay) {
       video.pause();
       return;
     }
 
     void video.play().catch(() => undefined);
-  }, [hidden]);
+  }, [hidden, autoplay]);
 
   const shellClass =
     variant === "page"
@@ -66,9 +68,9 @@ export function MeIntroPreview({
           src={config.previewSrc}
           poster={config.poster}
           className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
+          autoPlay={autoplay}
           muted
-          loop
+          loop={autoplay}
           playsInline
           preload="auto"
           aria-hidden

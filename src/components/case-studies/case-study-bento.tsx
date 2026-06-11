@@ -8,18 +8,26 @@ export interface CaseStudyBentoCell {
   span?: "full" | "half";
   src?: string;
   alt?: string;
+  paragraph?: ReactNode;
 }
 
 interface CaseStudyBentoProps {
   cells: CaseStudyBentoCell[];
   className?: string;
+  columns?: 2 | 3;
 }
 
-export function CaseStudyBento({ cells, className = "" }: CaseStudyBentoProps) {
+export function CaseStudyBento({
+  cells,
+  className = "",
+  columns = 2,
+}: CaseStudyBentoProps) {
+  const columnClass = columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+
   return (
     <section
       aria-label="Case study gallery"
-      className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${className}`}
+      className={`grid grid-cols-1 gap-6 ${columnClass} ${className}`.trim()}
     >
       {cells.map((cell) => (
         <CaseStudyMedia
@@ -28,6 +36,7 @@ export function CaseStudyBento({ cells, className = "" }: CaseStudyBentoProps) {
           aspect={cell.aspect}
           src={cell.src}
           alt={cell.alt ?? cell.label}
+          paragraph={cell.paragraph}
           className={cell.span === "full" ? "md:col-span-2" : undefined}
         />
       ))}

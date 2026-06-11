@@ -24,6 +24,8 @@ export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
+  "kalash-year-end-recap": cdnAsset("/Hover/k1"),
+  "kalash-rewards": cdnAsset("/Hover/ticker"),
 };
 
 /** Square 1:1 placeholder until real hover assets are uploaded. */

@@ -83,6 +83,35 @@ const EXPERIMENT_MEDIA_SQUARE = {
   aspectClass: "aspect-square",
 } as const;
 
+const EXPERIMENT_MEDIA_VIDEO = {
+  aspectRatio: "16 / 9",
+  aspectClass: "aspect-video",
+} as const;
+
+const EXPERIMENT_MEDIA_WIDESCREEN = {
+  aspectRatio: "16 / 10",
+  aspectClass: "aspect-[16/10]",
+} as const;
+
+interface ExperimentAspectOverride {
+  /** Omit to apply on every category tab for this slug. */
+  category?: ExperimentCategory;
+  aspectClass: string;
+}
+
+/** Per-slug preview aspect overrides. */
+const EXPERIMENT_PREVIEW_ASPECT_OVERRIDES: Partial<
+  Record<string, ExperimentAspectOverride>
+> = {
+  "click-sound": { aspectClass: EXPERIMENT_MEDIA_VIDEO.aspectClass },
+  "clip-reveal": {
+    category: "ai-experiment",
+    aspectClass: EXPERIMENT_MEDIA_VIDEO.aspectClass,
+  },
+  "motion-graphic-2": { aspectClass: EXPERIMENT_MEDIA_WIDESCREEN.aspectClass },
+  "motion-graphic-7": { aspectClass: EXPERIMENT_MEDIA_WIDESCREEN.aspectClass },
+};
+
 /** Hard layout rules per category — aspect ratio + grid width. */
 export const EXPERIMENT_CATEGORY_LAYOUT: Record<
   ExperimentCategory,
@@ -138,15 +167,22 @@ export function getExperimentPreviewAspectRatio(
 export function getExperimentPreviewAspectClass(
   category: ExperimentCategory,
   filter: ExperimentFilterId = "all",
+  slug?: string,
 ): string {
-  return getExperimentAspectClass(category, filter);
+  return getExperimentAspectClass(category, filter, slug);
 }
 
 /** Category + active filter drive preview shell dimensions. */
 export function getExperimentAspectClass(
-  _category: ExperimentCategory,
+  category: ExperimentCategory,
   _filter: ExperimentFilterId,
+  slug?: string,
 ): string {
+  const override = slug ? EXPERIMENT_PREVIEW_ASPECT_OVERRIDES[slug] : undefined;
+  if (override && (!override.category || override.category === category)) {
+    return `w-full ${override.aspectClass}`;
+  }
+
   return `w-full ${EXPERIMENT_MEDIA_SQUARE.aspectClass}`;
 }
 
@@ -168,6 +204,77 @@ const EXPERIMENT_CTA_CATEGORIES = new Set<ExperimentCategory>([
 
 export function shouldShowExperimentCta(category: ExperimentCategory): boolean {
   return EXPERIMENT_CTA_CATEGORIES.has(category);
+}
+
+/** Stable DOM ids for motion-graphic bento cards (browser preview / deep links). */
+const MOTION_GRAPHIC_CARD_IDS: Record<string, string> = {
+  "minimap-tracker": "motion-graphic-minimap-tracker",
+  "clip-reveal": "motion-graphic-focus-mode",
+  "motion-graphic-1": "motion-graphic-1",
+  "motion-graphic-2": "motion-graphic-2",
+  "motion-graphic-3": "motion-graphic-3",
+  "motion-graphic-4": "motion-graphic-4",
+  "motion-graphic-5": "motion-graphic-5",
+  "motion-graphic-6": "motion-graphic-6",
+  "motion-graphic-7": "motion-graphic-7",
+  "motion-graphic-8": "motion-graphic-8",
+};
+
+export function getMotionGraphicCardId(
+  slug: string,
+  category: ExperimentCategory,
+): string | undefined {
+  if (category !== "motion-graphic") return undefined;
+  return MOTION_GRAPHIC_CARD_IDS[slug];
+}
+
+/** Stable DOM ids for ai-experiment bento cards (registry order). */
+const AI_EXPERIMENT_CARD_IDS: Record<string, string> = {
+  "scroll-slider": "ai-experiment-1",
+  "clip-reveal": "ai-experiment-2",
+  "spring-physics": "ai-experiment-3",
+  "ghost-spacer": "ai-experiment-4",
+  "click-sound": "ai-experiment-5",
+};
+
+export function getAiExperimentCardId(
+  slug: string,
+  category: ExperimentCategory,
+): string | undefined {
+  if (category !== "ai-experiment") return undefined;
+  return AI_EXPERIMENT_CARD_IDS[slug];
+}
+
+/** Stable DOM ids for illustration bento cards (registry order). */
+const ILLUSTRATION_CARD_IDS: Record<string, string> = {
+  "wireframe-mode": "illustration-1",
+  "illustration-gold-jar": "illustration-2",
+  "illustration-ticket-mark": "illustration-3",
+  "illustration-coin-stack": "illustration-4",
+  "illustration-pass-stub": "illustration-5",
+  "illustration-savings-vault": "illustration-6",
+  "illustration-brand-ticket": "illustration-7",
+  "illustration-8": "illustration-8",
+  "illustration-9": "illustration-9",
+};
+
+export function getIllustrationCardId(
+  slug: string,
+  category: ExperimentCategory,
+): string | undefined {
+  if (category !== "illustration") return undefined;
+  return ILLUSTRATION_CARD_IDS[slug];
+}
+
+export function getExperimentCardId(
+  slug: string,
+  category: ExperimentCategory,
+): string | undefined {
+  return (
+    getMotionGraphicCardId(slug, category) ??
+    getAiExperimentCardId(slug, category) ??
+    getIllustrationCardId(slug, category)
+  );
 }
 
 /** Article & AI Experiment — interactive shell with metadata + CTA. */

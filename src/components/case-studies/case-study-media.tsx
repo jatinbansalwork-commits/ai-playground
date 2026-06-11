@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { CASE_STUDY_CAPTION } from "@/components/case-studies/case-study-editorial";
+import {
+  CASE_STUDY_CAPTION,
+  CASE_STUDY_PARAGRAPH_DENSE,
+} from "@/components/case-studies/case-study-editorial";
 import { isRemoteCdnUrl, resolveAssetUrl } from "@/lib/asset-cdn";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
 
 interface CaseStudyMediaProps {
   label?: ReactNode;
@@ -19,6 +22,10 @@ interface CaseStudyMediaProps {
    */
   trimTop?: number;
   intrinsicAspect?: number;
+  /** Omit the default frame border (and background shell). */
+  borderless?: boolean;
+  /** Optional body copy rendered below the caption. */
+  paragraph?: ReactNode;
 }
 
 const ASPECT_CLASS = {
@@ -51,9 +58,11 @@ export function CaseStudyMedia({
   alt,
   trimTop,
   intrinsicAspect,
+  borderless = false,
+  paragraph,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
+  const autoplay = useMediaAutoplay();
   const resolvedSrc = src ? resolveAssetUrl(src) : undefined;
   const resolvedPoster = poster ? resolveAssetUrl(poster) : undefined;
   const isRemote = resolvedSrc ? isRemoteCdnUrl(resolvedSrc) : false;
@@ -78,8 +87,9 @@ export function CaseStudyMedia({
     return () => observer.disconnect();
   }, [isRemote, resolvedSrc]);
 
-  const shellBase =
-    "relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#1a1a1a]";
+  const shellBase = borderless
+    ? "relative w-full overflow-hidden rounded-lg"
+    : "relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#1a1a1a]";
   const isVideo = Boolean(resolvedSrc && isVideoSrc(resolvedSrc, aspect));
   const hasTrimConfig =
     Boolean(trimTop && intrinsicAspect) &&
@@ -112,9 +122,9 @@ export function CaseStudyMedia({
               src={resolvedSrc}
               poster={resolvedPoster}
               className={mediaClass}
-              autoPlay={!reducedMotion}
+              autoPlay={autoplay}
               muted
-              loop={!reducedMotion}
+              loop={autoplay}
               playsInline
               preload="metadata"
               aria-label={effectiveAlt ?? "Case study media"}
@@ -146,6 +156,9 @@ export function CaseStudyMedia({
       </div>
       {label ? (
         <figcaption className={CASE_STUDY_CAPTION}>{label}</figcaption>
+      ) : null}
+      {paragraph ? (
+        <p className={`${CASE_STUDY_PARAGRAPH_DENSE} mt-2`}>{paragraph}</p>
       ) : null}
     </figure>
   );

@@ -20,7 +20,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/projects/design-polling",
-        destination: "/projects/freshprints-poll-on-your-design",
+        destination: "/projects",
+        permanent: true,
+      },
+      {
+        source: "/projects/freshprints-poll-on-your-design",
+        destination: "/projects",
         permanent: true,
       },
       {
