@@ -4,15 +4,16 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
-  CaseStudyList,
+  CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudySubheading,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
+import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "piggy-mutual-fund";
+const SLUG = "kalash-year-end-recap";
 
 export default function PiggyMutualFundContent() {
   const content = getCaseStudyContent(SLUG)!;
@@ -29,37 +30,123 @@ export default function PiggyMutualFundContent() {
       <CaseStudyWide>
         <CaseStudyMedia
           aspect="natural"
-          alt="Piggy mutual fund onboarding overview"
+          src={CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-hero"]}
+          alt="Kalash Year-End Recap overview"
         />
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyH2>Our Goal</CaseStudyH2>
         <CaseStudyParagraph>
-          First-time investors need education woven into action, not bolted on as
-          disclaimers. Piggy&apos;s onboarding sequences pair each funding decision
-          with plain-language context so users understand risk before they commit
-          capital.
+          Financial products often focus on numbers and performance, but rarely help
+          users appreciate the journey behind them.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          The objective was to create a personalized Year-End Recap that transforms
+          complex financial activity into meaningful stories, helping users recognize
+          their growth, celebrate achievements, and strengthen their connection with
+          the platform.
+        </CaseStudyParagraph>
+        <CaseStudyH2>A Year Worth Looking Back On</CaseStudyH2>
+        <CaseStudyParagraph>
+          Led the end-to-end design process—from concept exploration and storytelling
+          framework to visual design, interaction design, and delivery.
         </CaseStudyParagraph>
       </CaseStudyProse>
 
       <CaseStudyWide>
         <CaseStudyBento
           cells={[
-            { label: "Onboarding funnel", aspect: "video", span: "full" },
-            { label: "Portfolio summary", aspect: "square" },
-            { label: "Investment education modules", aspect: "square" },
+            {
+              label: "Year-End Recap overview",
+              aspect: "natural",
+              span: "full",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-rewards"],
+              alt: "Kalash Year-End Recap rewards overview",
+            },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            {
+              label: "Recap milestone highlights",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-milestones"],
+              alt: "Kalash Year-End Recap milestone highlights",
+            },
+            {
+              label: "Shareable year-end moments",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-shareable"],
+              alt: "Kalash Year-End Recap shareable moments",
+            },
           ]}
         />
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudySubheading>Confidence Through Progressive Disclosure</CaseStudySubheading>
-        <CaseStudyList
-          items={[
-            "Portfolio summaries that translate fund composition into everyday analogies.",
-            "Education modules unlocked alongside milestones, not dumped upfront.",
+        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            {
+              label: "Recap engagement metrics",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-engagement"],
+              alt: "Kalash Year-End Recap engagement metrics",
+            },
+            {
+              label: "Share card templates",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-share-cards"],
+              alt: "Kalash Year-End Recap share card templates",
+            },
           ]}
         />
+      </CaseStudyWide>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            {
+              label: "Year-End Recap closing showcase",
+              aspect: "natural",
+              span: "full",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-closing"],
+              alt: "Kalash Year-End Recap closing showcase",
+            },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            {
+              label: "Year-End Recap impact summary",
+              aspect: "natural",
+              span: "full",
+              src: CASE_STUDY_CDN_MEDIA["kalash-year-end-recap-impact"],
+              alt: "Kalash Year-End Recap impact summary",
+            },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse>
+        <CaseStudySubheading>Outcome</CaseStudySubheading>
+        <CaseStudyParagraph>
+          The Year-End Recap turned a year&apos;s worth of financial activity into a
+          personalized narrative that users could explore, celebrate, and share. By
+          combining storytelling with data visualization, Kalash strengthened
+          engagement while helping users build a deeper connection with their financial
+          progress.
+        </CaseStudyParagraph>
       </CaseStudyProse>
     </div>
   );

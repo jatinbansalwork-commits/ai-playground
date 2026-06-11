@@ -16,7 +16,7 @@ import {
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "saltbot";
+const SLUG = "saltbot-ai-saltmine";
 
 export default function SaltbotContent() {
   const content = getCaseStudyContent(SLUG)!;

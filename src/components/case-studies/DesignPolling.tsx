@@ -11,7 +11,7 @@ import {
 } from "@/components/case-studies/case-study-prose";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "design-polling";
+const SLUG = "freshprints-poll-on-your-design";
 
 export default function DesignPollingContent() {
   const content = getCaseStudyContent(SLUG)!;

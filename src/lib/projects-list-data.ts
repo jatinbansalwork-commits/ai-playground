@@ -22,8 +22,8 @@ export interface ProjectRowItem {
  */
 export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
-  "freshprints-image-gen": cdnAsset("/Hover/FP%20AI"),
-  saltbot: cdnAsset("/Hover/saltbot"),
+  "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
+  "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
 };
 
 /** Square 1:1 placeholder until real hover assets are uploaded. */

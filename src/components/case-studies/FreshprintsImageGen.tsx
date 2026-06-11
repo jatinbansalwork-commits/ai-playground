@@ -13,7 +13,7 @@ import {
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "freshprints-image-gen";
+const SLUG = "freshprints-image-gen-ai";
 
 const M = CASE_STUDY_CDN_MEDIA;
 

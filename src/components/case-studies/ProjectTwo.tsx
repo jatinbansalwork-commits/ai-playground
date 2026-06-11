@@ -11,7 +11,7 @@ import {
 } from "@/components/case-studies/case-study-prose";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "project-2";
+const SLUG = "piggy-personalised-mutual-fund-recommendation";
 
 export default function ProjectTwoContent() {
   const content = getCaseStudyContent(SLUG)!;

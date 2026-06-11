@@ -117,4 +117,28 @@ export const CASE_STUDY_CDN_MEDIA = {
   "saltbot-insights-grid-01": cdnAsset("/Saltbot/2345.png"),
   "saltbot-insights-grid-02": cdnAsset("/Saltbot/1234.png"),
   "saltbot-insights-video-2": cdnAsset("/Saltbot/saltbot%204.mp4"),
+  "kalash-year-end-recap-hero": cdnAsset(
+    "/Kalash%20year%20end%20rewards/2.png",
+  ),
+  "kalash-year-end-recap-rewards": cdnAsset(
+    "/Kalash%20year%20end%20rewards/1.png",
+  ),
+  "kalash-year-end-recap-milestones": cdnAsset(
+    "/Kalash%20year%20end%20rewards/3.1.png",
+  ),
+  "kalash-year-end-recap-shareable": cdnAsset(
+    "/Kalash%20year%20end%20rewards/3.2.png",
+  ),
+  "kalash-year-end-recap-engagement": cdnAsset(
+    "/Kalash%20year%20end%20rewards/8.png",
+  ),
+  "kalash-year-end-recap-share-cards": cdnAsset(
+    "/Kalash%20year%20end%20rewards/9.png",
+  ),
+  "kalash-year-end-recap-closing": cdnAsset(
+    "/Kalash%20year%20end%20rewards/7.png",
+  ),
+  "kalash-year-end-recap-impact": cdnAsset(
+    "/Kalash%20year%20end%20rewards/6.png",
+  ),
 } as const;

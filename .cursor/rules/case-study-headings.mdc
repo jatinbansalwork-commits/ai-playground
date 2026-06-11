@@ -36,6 +36,34 @@ Numeric years stay as-is: `<CaseStudyYear>{content.year}</CaseStudyYear>`.
 - Keep proper nouns and brand names as-is: **Saltbot**, **FreshPrints**, **Piggy**.
 - **Never** use ALL CAPS for these components.
 
+### `CaseStudyMedia` / `CaseStudyBento` image `caption` → title case
+
+Captions render as `<figcaption>` via `CaseStudyMedia` (`caption` on bento cells, or `label` when used as caption text).
+
+Apply the **same title case rules** as headings:
+
+- Capitalise major words; lowercase short articles, conjunctions, and prepositions unless first word.
+- **Never** use ALL CAPS for captions.
+- Multi-line captions (`<>...</>`): title-case the lead line; supporting lines may stay sentence case when they read as body copy.
+
+```tsx
+// ✅ GOOD
+caption: "Rewarding Users on Their Decisions"
+caption: "Recognition for Their Consistency"
+caption: (
+  <>
+    Customize Your Alerts
+    <br />
+    Get notified whenever a metric is broken
+  </>
+)
+
+// ❌ BAD
+caption: "REWARDING USERS ON THEIR DECISIONS"
+caption: "Celebrating their wins"
+caption: "recognition for their consistency"
+```
+
 ```tsx
 // ✅ GOOD
 <CaseStudyH2>Clarity at First Glance</CaseStudyH2>
@@ -54,4 +82,4 @@ Match body copy: `Customise`, `Personalised`, `behaviour` where appropriate. Bra
 
 ## Before finishing case study edits
 
-Scan every `CaseStudyH2`, `CaseStudyH3`, and `CaseStudySubheading` string for sentence case or ALL CAPS and normalise to title case.
+Scan every `CaseStudyH2`, `CaseStudyH3`, `CaseStudySubheading`, and image `caption` string for sentence case or ALL CAPS and normalise to title case.

@@ -56,8 +56,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
-  "design-tool": entry(
-    "design-tool",
+  "freshprints-heal-tool": entry(
+    "freshprints-heal-tool",
     "FreshPrints - Heal Tool",
     "2025",
     "Design Tool canvas workflows, editor surfaces, and collaboration patterns.",
@@ -69,8 +69,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Designed canvas editor workflows that balance structure and spontaneity — enabling parallel attention across layers, assets, and live collaboration without overwhelming the editing surface.",
     },
   ),
-  "design-polling": entry(
-    "design-polling",
+  "freshprints-poll-on-your-design": entry(
+    "freshprints-poll-on-your-design",
     "FreshPrints - Poll on Your Design",
     "2025",
     "Design Polling specific canvas layouts and user engagement workflows.",
@@ -82,8 +82,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Built async design review flows that close the loop between vote and revision — surfacing aggregated feedback and participant states directly inside the canvas workspace.",
     },
   ),
-  "freshprints-image-gen": entry(
-    "freshprints-image-gen",
+  "freshprints-image-gen-ai": entry(
+    "freshprints-image-gen-ai",
     "✅ FreshPrints - Image Gen AI",
     "2025",
     "Generative image tooling, prompt flows, and asset review interfaces.",
@@ -104,8 +104,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
-  saltbot: entry(
-    "saltbot",
+  "saltbot-ai-saltmine": entry(
+    "saltbot-ai-saltmine",
     "✅ Saltbot AI (Saltmine)",
     "2024",
     "Saltbot conversational assistant flows and automation guardrails.",
@@ -150,30 +150,27 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Designed loyalty mechanics and member dashboards that make redemption paths obvious — motivating engagement without noise through progressive disclosure and clear reward states.",
     },
   ),
-  "piggy-mutual-fund": entry(
-    "piggy-mutual-fund",
-    "Kalash - Year-end Recap",
+  "kalash-year-end-recap": entry(
+    "kalash-year-end-recap",
+    "✅ Kalash - Year-end Recap",
     "2024",
-    "Piggy Mutual Fund onboarding, portfolio summaries, and investment education.",
+    "Years of investment history, distilled into one delightful experience",
     {
       services: [
         "Discovery",
         "Illustration",
-        "Branding",
-        "UX Research",
         "Fintech B2C",
         "Dev handoff",
         "Motion Graphics",
-        "Product Strategy",
       ],
       client: "Kalash",
       location: "Bangalore, India",
       infoText:
-        "We at Kalash think \"Everyone can Buy Digital Gold\", starting from ₹10 by using our Gold App. Saving Money is crucial to a financially secure future. Start your gold buying journey now with India's Digital Kalash App. You can buy 24K Digital Gold on a daily, weekly & monthly basis and grow your Money with gold price appreciation. Your gold is 100% secure in a gold vault.",
+        "Kalash Year-End Recap transforms a year of transactions, investments, and achievements into a personalized experience that helps users reflect on their progress, celebrate wins, and stay motivated for the year ahead.",
     },
   ),
-  "new-project": entry(
-    "new-project",
+  "piggy-reduced-mutual-fund-support-tickets": entry(
+    "piggy-reduced-mutual-fund-support-tickets",
     "Piggy - Reduced Mutual Fund Support Tickets",
     "2023",
     "Case study overview coming soon.",
@@ -184,8 +181,8 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       infoText: "Project details will be published here.",
     },
   ),
-  "project-2": entry(
-    "project-2",
+  "piggy-personalised-mutual-fund-recommendation": entry(
+    "piggy-personalised-mutual-fund-recommendation",
     "✅ Piggy - Personalised Mutual Fund Recommendation",
     "2022",
     "Case study overview coming soon.",

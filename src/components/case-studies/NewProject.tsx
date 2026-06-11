@@ -3,7 +3,7 @@
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "new-project";
+const SLUG = "piggy-reduced-mutual-fund-support-tickets";
 
 export default function NewProjectContent() {
   const content = getCaseStudyContent(SLUG)!;

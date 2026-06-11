@@ -19,15 +19,15 @@ import { ROUTES } from "@/lib/constants";
 const caseStudyComponents: Record<string, ComponentType> = {
   "cisco-policy-copilot": CiscoPolicyCopilotContent,
   "freshprints-design-system": FreshprintsDesignSystemContent,
-  "design-tool": DesignToolContent,
-  "design-polling": DesignPollingContent,
-  "freshprints-image-gen": FreshprintsImageGenContent,
-  saltbot: SaltbotContent,
+  "freshprints-heal-tool": DesignToolContent,
+  "freshprints-poll-on-your-design": DesignPollingContent,
+  "freshprints-image-gen-ai": FreshprintsImageGenContent,
+  "saltbot-ai-saltmine": SaltbotContent,
   "saltmine-sync": SaltmineSyncContent,
   "kalash-rewards": KalashRewardsContent,
-  "piggy-mutual-fund": PiggyMutualFundContent,
-  "new-project": NewProjectContent,
-  "project-2": ProjectTwoContent,
+  "kalash-year-end-recap": PiggyMutualFundContent,
+  "piggy-reduced-mutual-fund-support-tickets": NewProjectContent,
+  "piggy-personalised-mutual-fund-recommendation": ProjectTwoContent,
 };
 
 /** Track B step 2 — deep-dive case study; back returns to the projects index. */

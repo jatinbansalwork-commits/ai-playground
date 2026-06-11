@@ -11,7 +11,7 @@ import {
 } from "@/components/case-studies/case-study-prose";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-const SLUG = "design-tool";
+const SLUG = "freshprints-heal-tool";
 
 export default function DesignToolContent() {
   const content = getCaseStudyContent(SLUG)!;
