@@ -216,6 +216,15 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
     categories: ["motion-graphic"],
     media: EXPERIMENT_CDN_MEDIA["motion-graphic-8"],
   },
+  {
+    slug: "motion-graphic-9",
+    title: "Motion Graphic 9",
+    categories: ["motion-graphic"],
+    media: {
+      src: EXPERIMENT_CDN_MEDIA["motion-graphic-9"],
+      type: "video",
+    },
+  },
 ];
 
 /** Slugs in gallery order — derived from registry. */

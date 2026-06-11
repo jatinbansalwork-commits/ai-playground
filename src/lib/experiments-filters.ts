@@ -110,6 +110,7 @@ const EXPERIMENT_PREVIEW_ASPECT_OVERRIDES: Partial<
   },
   "motion-graphic-2": { aspectClass: EXPERIMENT_MEDIA_WIDESCREEN.aspectClass },
   "motion-graphic-7": { aspectClass: EXPERIMENT_MEDIA_WIDESCREEN.aspectClass },
+  "motion-graphic-9": { aspectClass: EXPERIMENT_MEDIA_WIDESCREEN.aspectClass },
 };
 
 /** Hard layout rules per category — aspect ratio + grid width. */
@@ -218,6 +219,7 @@ const MOTION_GRAPHIC_CARD_IDS: Record<string, string> = {
   "motion-graphic-6": "motion-graphic-6",
   "motion-graphic-7": "motion-graphic-7",
   "motion-graphic-8": "motion-graphic-8",
+  "motion-graphic-9": "motion-graphic-9",
 };
 
 export function getMotionGraphicCardId(
