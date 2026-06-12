@@ -5,8 +5,11 @@ import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyH2,
+  CaseStudyH3,
+  CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
+  CaseStudyQuote,
   CaseStudyYear,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
@@ -39,12 +42,12 @@ export default function FreshprintsDesignSystemContent() {
         <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
         <CaseStudyH2>Principles Behind the Design System</CaseStudyH2>
         <CaseStudyParagraph>
-          As the FreshPrints platform expanded across multiple products and teams,
-          maintaining consistency, accessibility, and scalability became increasingly
-          challenging. Different teams were building features independently, which created
-          variations in components, interaction patterns, and visual language across
-          products.
+          At FreshPrints, Systems Design supports a wide range of internal and external
+          products. Most of this work involves designing, managing, and deploying
+          components, as well as building the core architecture that supports these
+          complex design systems.
         </CaseStudyParagraph>
+        <CaseStudyH2>Approach</CaseStudyH2>
         <CaseStudyParagraph>
           To address this, the design system was guided by three core principles:
           accessibility first, scalable components, and consistent patterns. These values
@@ -86,30 +89,135 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyH2>Improving Speed and Product Quality</CaseStudyH2>
+        <CaseStudyH2>Making Component Docs Easy & Automated</CaseStudyH2>
         <CaseStudyParagraph>
-          Building the design system required aligning multiple product teams around a
-          shared foundation of reusable components, patterns, and documentation. By
-          introducing structured components, designers could build interfaces faster while
-          maintaining consistency across the platform.
+          Component documentation in Figma helps designers and developers understand how
+          to use each UI component. However, FreshPrint&apos;s design system &amp; docs
+          both were incomplete and hard to understand. Our goal was to create clear,
+          consistent, and automated component documentation that&apos;s easy to read and
+          update.
         </CaseStudyParagraph>
         <CaseStudyParagraph>
-          This reduced duplicate design work, improved collaboration with engineers, and
-          helped teams move from designing individual screens to building scalable product
-          experiences.
+          <span className="font-semibold text-white">
+            Understanding how teams use component docs
+          </span>
         </CaseStudyParagraph>
         <CaseStudyParagraph>
-          The impact became measurable after launch. The new system helped reduce
-          design-to-development and release cycles, contributing to a 2× reduction in
-          go-to-market time for new features. Adoption grew quickly across teams, with
-          design system usage increasing 4× after launch as more designers and engineers
-          relied on shared components.
+          Each design system&apos;s component docs look different. To learn what patterns
+          worked and what didn&apos;t, I reached out to design system teams across
+          various companies.
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;We need to prioritize a method that is at least 100% modular to adapt
+          to constant updates across our products.&rdquo;
+          <span className="mt-2 block text-base font-normal text-neutral-400">
+            — Director of design
+          </span>
+        </CaseStudyQuote>
+      </CaseStudyProse>
+
+      <CaseStudyProse>
+        <CaseStudyH2>Creating Measurable design features</CaseStudyH2>
+        <CaseStudyList
+          items={[
+            "Increase editing efficiency",
+            "Understand for designer & engineers",
+            "Scalable across other design systems",
+          ]}
+        />
+        <CaseStudyParagraph>
+          To make sure my design aligns with product team&apos;s needs, I created
+          goals that I could use to ensure my solution addressed the prior mentioned
+          pain points successfully.
+        </CaseStudyParagraph>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          columns={3}
+          cells={[
+            {
+              label: "Component docs detail 1",
+              caption: "Colors",
+              aspect: "square",
+              alt: "Component docs detail 1",
+            },
+            {
+              label: "Component docs detail 2",
+              caption: "Typography",
+              aspect: "square",
+              alt: "Component docs detail 2",
+            },
+            {
+              label: "Component docs detail 3",
+              caption: "Shadows",
+              aspect: "square",
+              alt: "Component docs detail 3",
+            },
+            {
+              label: "Component docs detail 4",
+              caption: "Avatar",
+              aspect: "square",
+              alt: "Component docs detail 4",
+            },
+            {
+              label: "Component docs detail 5",
+              caption: "Icons",
+              aspect: "square",
+              alt: "Component docs detail 5",
+            },
+            {
+              label: "Component docs detail 6",
+              caption: "14+",
+              aspect: "square",
+              alt: "Component docs detail 6",
+            },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse>
+        <CaseStudyYear>Goal 1</CaseStudyYear>
+        <CaseStudyH3>Increase editing efficiency</CaseStudyH3>
+        <CaseStudyParagraph>
+          In order for the design system to adapt to the ever-changing needs of Fresh
+          Prints Platforms, any documentation should be equally adaptive to reflect new
+          updates.
+        </CaseStudyParagraph>
+        <CaseStudyYear>Goal 2</CaseStudyYear>
+        <CaseStudyH3>Understandable across teams</CaseStudyH3>
+        <CaseStudyParagraph>
+          Any team, such as product design or engineering should easily understand the
+          documentation without adding any additional learning curve.
+        </CaseStudyParagraph>
+        <CaseStudyYear>Goal 3</CaseStudyYear>
+        <CaseStudyH3>Scalable across all products</CaseStudyH3>
+        <CaseStudyParagraph>
+          With many internal and consumer-based product FreshPrints, the documentation
+          should act as unifying guide, recognisable from file to file.
+        </CaseStudyParagraph>
+        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyH2>Conclusion &amp; Learnings</CaseStudyH2>
+        <CaseStudyParagraph>
+          This project is still a work in progress — we&apos;re about 30% through the
+          design process. But so far, I&apos;ve already learned some key lessons:
+        </CaseStudyParagraph>
+        <CaseStudyList
+          items={[
+            "Prioritizing User-Centricity: Early insights into user needs have guided the initial design direction.",
+            "Strategic Design Systems: Laying the groundwork for a structured system has been crucial for scaling our efforts.",
+            "Collaborative Approach: Strong teamwork has been vital to make steady progress and align design with development.",
+          ]}
+        />
+        <CaseStudyParagraph>
+          Even at this early stage, these lessons are shaping the project&apos;s
+          direction and helping ensure it stays focused on user impact.
         </CaseStudyParagraph>
       </CaseStudyProse>
 
       <CaseStudyWide>
         <CaseStudyMedia
-          aspect="video"
+          aspect="natural"
           src={CASE_STUDY_CDN_MEDIA["freshprints-design-system-impact"]}
           alt="FreshPrints design system impact"
         />
