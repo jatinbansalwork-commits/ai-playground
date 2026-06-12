@@ -59,30 +59,49 @@ export default function FreshprintsDesignSystemContent() {
 
       <CaseStudyWide>
         <CaseStudyBento
+          columns={3}
           cells={[
             {
-              label: "Component primitives",
+              label: "Colors",
+              caption: "Colors",
               aspect: "square",
-              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-primitives"],
-              alt: "FreshPrints component primitives",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-1"],
+              alt: "FreshPrints design system colors",
             },
             {
-              label: "Documentation surfaces",
+              label: "Typography",
+              caption: "Typography",
               aspect: "square",
-              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-documentation"],
-              alt: "FreshPrints documentation surfaces",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-2"],
+              alt: "FreshPrints design system typography",
             },
             {
-              label: "Design tokens",
+              label: "Shadows",
+              caption: "Shadows",
               aspect: "square",
-              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-tokens"],
-              alt: "FreshPrints design tokens",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-3"],
+              alt: "FreshPrints design system shadows",
             },
             {
-              label: "Swatch",
+              label: "Avatar",
+              caption: "Avatar",
               aspect: "square",
-              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-swatch"],
-              alt: "FreshPrints color swatch",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-4"],
+              alt: "FreshPrints design system avatar",
+            },
+            {
+              label: "Menu",
+              caption: "Menu",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-5"],
+              alt: "FreshPrints design system menu",
+            },
+            {
+              label: "Component docs detail 6",
+              caption: "14+",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-6"],
+              alt: "FreshPrints design system 14+ components",
             },
           ]}
         />
@@ -132,50 +151,6 @@ export default function FreshprintsDesignSystemContent() {
         </CaseStudyParagraph>
       </CaseStudyProse>
 
-      <CaseStudyWide>
-        <CaseStudyBento
-          columns={3}
-          cells={[
-            {
-              label: "Component docs detail 1",
-              caption: "Colors",
-              aspect: "square",
-              alt: "Component docs detail 1",
-            },
-            {
-              label: "Component docs detail 2",
-              caption: "Typography",
-              aspect: "square",
-              alt: "Component docs detail 2",
-            },
-            {
-              label: "Component docs detail 3",
-              caption: "Shadows",
-              aspect: "square",
-              alt: "Component docs detail 3",
-            },
-            {
-              label: "Component docs detail 4",
-              caption: "Avatar",
-              aspect: "square",
-              alt: "Component docs detail 4",
-            },
-            {
-              label: "Component docs detail 5",
-              caption: "Icons",
-              aspect: "square",
-              alt: "Component docs detail 5",
-            },
-            {
-              label: "Component docs detail 6",
-              caption: "14+",
-              aspect: "square",
-              alt: "Component docs detail 6",
-            },
-          ]}
-        />
-      </CaseStudyWide>
-
       <CaseStudyProse>
         <CaseStudyYear>Goal 1</CaseStudyYear>
         <CaseStudyH3>Increase editing efficiency</CaseStudyH3>
@@ -196,6 +171,40 @@ export default function FreshprintsDesignSystemContent() {
           With many internal and consumer-based product FreshPrints, the documentation
           should act as unifying guide, recognisable from file to file.
         </CaseStudyParagraph>
+      </CaseStudyProse>
+
+      <CaseStudyWide>
+        <CaseStudyBento
+          cells={[
+            {
+              label: "Component primitives",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-primitives"],
+              alt: "FreshPrints component primitives",
+            },
+            {
+              label: "Documentation surfaces",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-documentation"],
+              alt: "FreshPrints documentation surfaces",
+            },
+            {
+              label: "Design tokens",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-tokens"],
+              alt: "FreshPrints design tokens",
+            },
+            {
+              label: "Swatch",
+              aspect: "square",
+              src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-swatch"],
+              alt: "FreshPrints color swatch",
+            },
+          ]}
+        />
+      </CaseStudyWide>
+
+      <CaseStudyProse>
         <div className="border-t border-neutral-800/40 pt-6" role="separator" />
         <CaseStudyH2>Conclusion &amp; Learnings</CaseStudyH2>
         <CaseStudyParagraph>
