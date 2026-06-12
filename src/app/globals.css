@@ -5,6 +5,9 @@
   --foreground: #000000;
   --frame-width: 1200px;
   --frame-height: 720px;
+  --brand-accent: #6b36ff;
+  --site-cursor-size: 14px;
+  --site-cursor-size-hover: 22px;
 }
 
 @theme inline {
@@ -527,5 +530,53 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom brand circle cursor — enabled via SiteCursor (pointer: fine only). */
+html.site-custom-cursor,
+html.site-custom-cursor * {
+  cursor: none !important;
+}
+
+html.site-custom-cursor input,
+html.site-custom-cursor textarea,
+html.site-custom-cursor select,
+html.site-custom-cursor [contenteditable="true"] {
+  cursor: text !important;
+}
+
+.site-cursor {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: var(--site-cursor-size);
+  height: var(--site-cursor-size);
+  border-radius: 9999px;
+  background: var(--brand-accent);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.22);
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  transition:
+    width 160ms ease,
+    height 160ms ease,
+    opacity 120ms ease;
+  will-change: transform, width, height;
+}
+
+.site-cursor--visible {
+  opacity: 1;
+}
+
+.site-cursor--hover {
+  width: var(--site-cursor-size-hover);
+  height: var(--site-cursor-size-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-cursor {
+    transition: none;
   }
 }

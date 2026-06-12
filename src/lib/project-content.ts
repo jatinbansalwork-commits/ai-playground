@@ -174,10 +174,19 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "2023",
     "Case study overview coming soon.",
     {
-      services: ["Product Design"],
-      client: "TBD",
-      location: "TBD",
-      infoText: "Project details will be published here.",
+      services: [
+        "UX Research",
+        "Fintech B2C",
+        "Dev handoff",
+        "Motion Graphic",
+        "Product Strategy",
+        "Usability Testing",
+        "Product Design",
+      ],
+      client: "Piggy",
+      location: "Bangalore, India",
+      infoText:
+        "Piggy is a fintech investment platform that helps users grow their wealth through products such as Mutual Funds and Digital Gold. Piggy Mutual Funds offer a wide range of investment options, including low-cost index funds, ELSS, and funds across various sectors, market capitalizations, and geographies, catering to different financial goals and risk appetites. Digital Gold enables users to seamlessly buy, sell, and securely store gold online through the Piggy app, eliminating the complexities and risks associated with owning physical gold.",
     },
   ),
   "piggy-personalised-mutual-fund-recommendation": entry(

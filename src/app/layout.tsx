@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import CacheManager from "@/components/CacheManager";
 import ScrollToTop from "@/components/ScrollToTop";
+import { SiteCursor } from "@/components/site-cursor";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
 import { SITE_NAME } from "@/lib/constants";
 import "./globals.css";
@@ -29,6 +30,7 @@ export default function RootLayout({
         <SkipToContentLink />
         <CacheManager />
         <ScrollToTop />
+        <SiteCursor />
         {children}
       </body>
     </html>

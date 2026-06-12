@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import {
   CASE_STUDY_HERO_COLUMN,
   CASE_STUDY_LEAD,
@@ -12,6 +13,7 @@ interface CaseStudyHeroProps {
   year: string;
   overview: string;
   meta?: CaseStudyMetaSpecs;
+  metaBottom?: ReactNode;
   className?: string;
 }
 
@@ -20,6 +22,7 @@ export function CaseStudyHero({
   year,
   overview,
   meta,
+  metaBottom,
   className = "",
 }: CaseStudyHeroProps) {
   return (
@@ -34,7 +37,9 @@ export function CaseStudyHero({
         </div>
       </header>
 
-      {meta ? <ProjectMetaSpecs {...meta} /> : null}
+      {meta ? (
+        <ProjectMetaSpecs {...meta}>{metaBottom}</ProjectMetaSpecs>
+      ) : null}
     </>
   );
 }

@@ -4,6 +4,7 @@ import {
   CASE_STUDY_META_LABEL,
   CASE_STUDY_META_VALUE,
 } from "@/components/case-studies/case-study-editorial";
+import type { ReactNode } from "react";
 import {
   CASE_STUDY_EXTERNAL_LINK_CLASS,
   FOCUS_RING,
@@ -12,7 +13,9 @@ import {
 } from "@/lib/a11y";
 import type { CaseStudyMetaSpecs as CaseStudyMetaSpecsData } from "@/lib/project-content";
 
-interface ProjectMetaSpecsProps extends CaseStudyMetaSpecsData {}
+interface ProjectMetaSpecsProps extends CaseStudyMetaSpecsData {
+  children?: ReactNode;
+}
 
 export function ProjectMetaSpecs({
   services,
@@ -21,6 +24,7 @@ export function ProjectMetaSpecs({
   infoText,
   liveLinkUrl,
   figmaUrl,
+  children,
 }: ProjectMetaSpecsProps) {
   return (
     <section className={CASE_STUDY_META_GRID} aria-label="Project details">
@@ -80,6 +84,8 @@ export function ProjectMetaSpecs({
           </dd>
         ) : null}
       </dl>
+
+      {children ? <div className="md:col-span-3">{children}</div> : null}
     </section>
   );
 }
