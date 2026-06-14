@@ -167,4 +167,5 @@ export const CASE_STUDY_CDN_MEDIA = {
   "kalash-rewards-k13": cdnAsset("/Kalash%20-%20gold/k13"),
   "kalash-rewards-k14": cdnAsset("/Kalash%20-%20gold/k14"),
   "kalash-rewards-k17": cdnAsset("/Kalash%20-%20gold/k17"),
+  "piggy-support-tickets-breakdown": cdnAsset("/Piggy-tickets/1.png"),
 } as const;

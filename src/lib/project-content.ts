@@ -170,9 +170,9 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-reduced-mutual-fund-support-tickets": entry(
     "piggy-reduced-mutual-fund-support-tickets",
-    "Piggy - Reduced Mutual Fund Support Tickets",
+    "✅ Piggy - Reduced Mutual Fund Support Tickets",
     "2023",
-    "Case study overview coming soon.",
+    "How we reduced mutual fund support tickets by 12% at Navi",
     {
       services: [
         "UX Research",

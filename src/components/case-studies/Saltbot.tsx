@@ -76,6 +76,16 @@ export default function SaltbotContent() {
         <CaseStudyQuote>
           &ldquo;Ah. That&apos;s exactly what I needed.&rdquo;
         </CaseStudyQuote>
+        <CaseStudyH2>Collaboration with</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Product Manager: Ajeya Mansabdar
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>Product &amp; Design Led by Me</CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Engineering: Hunor Nyeki &amp; Andrei Vogulkin
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
       </CaseStudyProse>
 
       <CaseStudyWide>

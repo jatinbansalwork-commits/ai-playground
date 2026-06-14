@@ -82,8 +82,8 @@ interface ProjectsHoverPreviewProps {
 
 export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
   const reduceMotion = useReducedMotion();
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [renderPos, setRenderPos] = useState({ x: 0, y: 0 });
+  const previewRef = useRef<HTMLDivElement>(null);
+  const mousePosRef = useRef({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
   const [scaledIn, setScaledIn] = useState(false);
 
@@ -94,6 +94,12 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
 
   const src = project?.hoverThumbnail ?? null;
 
+  const applyPosition = (x: number, y: number) => {
+    const node = previewRef.current;
+    if (!node) return;
+    node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+  };
+
   const syncTarget = (clientX: number, clientY: number) => {
     const size = getPreviewSize();
     const side = resolvePreviewSide(clientX, size, sideRef.current);
@@ -103,12 +109,15 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      setMousePos({ x: event.clientX, y: event.clientY });
+      mousePosRef.current = { x: event.clientX, y: event.clientY };
+      if (src) {
+        syncTarget(event.clientX, event.clientY);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [src]);
 
   useEffect(() => {
     if (!src) {
@@ -121,10 +130,11 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
       return;
     }
 
+    const { x, y } = mousePosRef.current;
     sideRef.current = pickRandomSide();
-    syncTarget(mousePos.x, mousePos.y);
+    syncTarget(x, y);
     currentRef.current = { ...targetRef.current };
-    setRenderPos({ ...currentRef.current });
+    applyPosition(currentRef.current.x, currentRef.current.y);
     setVisible(true);
     setScaledIn(false);
 
@@ -137,10 +147,7 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
         (targetRef.current.x - currentRef.current.x) * LERP;
       currentRef.current.y +=
         (targetRef.current.y - currentRef.current.y) * LERP;
-      setRenderPos({
-        x: currentRef.current.x,
-        y: currentRef.current.y,
-      });
+      applyPosition(currentRef.current.x, currentRef.current.y);
       frameRef.current = requestAnimationFrame(tick);
     };
 
@@ -155,11 +162,6 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
     };
   }, [src]);
 
-  useEffect(() => {
-    if (!src) return;
-    syncTarget(mousePos.x, mousePos.y);
-  }, [mousePos.x, mousePos.y, src]);
-
   if (!project || !src) return null;
 
   const resolved = resolveAssetUrl(src);
@@ -171,10 +173,8 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
 
   return (
     <div
+      ref={previewRef}
       className={`projects-hover-preview${visible ? " projects-hover-preview--visible" : ""}`}
-      style={{
-        transform: `translate3d(${renderPos.x}px, ${renderPos.y}px, 0)`,
-      }}
       aria-hidden
     >
       <motion.div
@@ -206,7 +206,7 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
               height={imageSize}
               className="absolute inset-0 h-full w-full object-cover"
               draggable={false}
-              priority
+              loading="lazy"
             />
           )}
         </div>

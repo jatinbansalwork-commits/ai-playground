@@ -11,6 +11,7 @@ import {
   CaseStudyProse,
   CaseStudyQuote,
   CaseStudySubheading,
+  CaseStudyTightStack,
   CaseStudyWide,
   CaseStudyYear,
 } from "@/components/case-studies/case-study-prose";
@@ -46,6 +47,16 @@ export default function KalashRewardsContent() {
           Drive better financial decisions through building trust, friendly
           design & delight from feature adoption & retention.
         </CaseStudyParagraph>
+        <CaseStudyH2>Collaboration with</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Product Manager: Aman Bansal, Gaurav Arora
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>Product &amp; Design Led by me</CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Engineering: Development Team
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
       </CaseStudyProse>
 
       <CaseStudyWide>

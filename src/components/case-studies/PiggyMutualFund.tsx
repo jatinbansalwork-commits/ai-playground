@@ -7,6 +7,7 @@ import {
   CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
+  CaseStudyTightStack,
   CaseStudySubheading,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
@@ -47,6 +48,16 @@ export default function PiggyMutualFundContent() {
           their growth, celebrate achievements, and strengthen their connection with
           the platform.
         </CaseStudyParagraph>
+        <CaseStudyH2>Collaboration with</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Product Manager: Aman Bansal, Gaurav Arora
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>Product &amp; Design Led by me</CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Engineering: Development Team
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
         <CaseStudyH2>A Year Worth Looking Back On</CaseStudyH2>
         <CaseStudyParagraph>
           Led the end-to-end design process—from concept exploration and storytelling

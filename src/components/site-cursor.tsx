@@ -13,6 +13,8 @@ function isCoarsePointer(): boolean {
 export function SiteCursor() {
   const reducedMotion = useReducedMotion();
   const cursorRef = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(false);
+  const hoveringRef = useRef(false);
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
@@ -35,16 +37,26 @@ export function SiteCursor() {
 
     const onMouseMove = (event: MouseEvent) => {
       moveCursor(event.clientX, event.clientY);
-      setVisible(true);
+      if (!visibleRef.current) {
+        visibleRef.current = true;
+        setVisible(true);
+      }
     };
 
     const onMouseOver = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      setHovering(Boolean(target.closest(INTERACTIVE_SELECTOR)));
+      const next = Boolean(target.closest(INTERACTIVE_SELECTOR));
+      if (next === hoveringRef.current) return;
+      hoveringRef.current = next;
+      setHovering(next);
     };
 
-    const onMouseLeave = () => setVisible(false);
+    const onMouseLeave = () => {
+      if (!visibleRef.current) return;
+      visibleRef.current = false;
+      setVisible(false);
+    };
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     window.addEventListener("mouseover", onMouseOver, { passive: true });

@@ -10,6 +10,7 @@ import {
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
+  CaseStudyTightStack,
   CaseStudyYear,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
@@ -47,6 +48,18 @@ export default function FreshprintsDesignSystemContent() {
           components, as well as building the core architecture that supports these
           complex design systems.
         </CaseStudyParagraph>
+        <CaseStudyH2>Collaboration with</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Director of Product Design: Tikshita Bharti
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Product &amp; Design: Team B Led by Me
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Engineering: Vivek Singh &amp; Team
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
         <CaseStudyH2>Approach</CaseStudyH2>
         <CaseStudyParagraph>
           To address this, the design system was guided by three core principles:

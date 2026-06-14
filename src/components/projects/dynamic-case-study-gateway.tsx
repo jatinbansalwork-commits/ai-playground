@@ -1,31 +1,36 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 import { notFound, useParams } from "next/navigation";
 import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell";
-import CiscoPolicyCopilotContent from "@/components/case-studies/CiscoPolicyCopilot";
-import DesignToolContent from "@/components/case-studies/DesignTool";
-import FreshprintsDesignSystemContent from "@/components/case-studies/FreshprintsDesignSystem";
-import FreshprintsImageGenContent from "@/components/case-studies/FreshprintsImageGen";
-import KalashRewardsContent from "@/components/case-studies/KalashRewards";
-import NewProjectContent from "@/components/case-studies/NewProject";
-import ProjectTwoContent from "@/components/case-studies/ProjectTwo";
-import PiggyMutualFundContent from "@/components/case-studies/PiggyMutualFund";
-import SaltbotContent from "@/components/case-studies/Saltbot";
-import SaltmineSyncContent from "@/components/case-studies/SaltmineSync";
 import { ROUTES } from "@/lib/constants";
 
 const caseStudyComponents: Record<string, ComponentType> = {
-  "cisco-policy-copilot": CiscoPolicyCopilotContent,
-  "freshprints-design-system": FreshprintsDesignSystemContent,
-  "freshprints-heal-tool": DesignToolContent,
-  "freshprints-image-gen-ai": FreshprintsImageGenContent,
-  "saltbot-ai-saltmine": SaltbotContent,
-  "saltmine-sync": SaltmineSyncContent,
-  "kalash-rewards": KalashRewardsContent,
-  "kalash-year-end-recap": PiggyMutualFundContent,
-  "piggy-reduced-mutual-fund-support-tickets": NewProjectContent,
-  "piggy-personalised-mutual-fund-recommendation": ProjectTwoContent,
+  "cisco-policy-copilot": dynamic(
+    () => import("@/components/case-studies/CiscoPolicyCopilot"),
+  ),
+  "freshprints-design-system": dynamic(
+    () => import("@/components/case-studies/FreshprintsDesignSystem"),
+  ),
+  "freshprints-heal-tool": dynamic(
+    () => import("@/components/case-studies/DesignTool"),
+  ),
+  "freshprints-image-gen-ai": dynamic(
+    () => import("@/components/case-studies/FreshprintsImageGen"),
+  ),
+  "saltbot-ai-saltmine": dynamic(() => import("@/components/case-studies/Saltbot")),
+  "saltmine-sync": dynamic(() => import("@/components/case-studies/SaltmineSync")),
+  "kalash-rewards": dynamic(() => import("@/components/case-studies/KalashRewards")),
+  "kalash-year-end-recap": dynamic(
+    () => import("@/components/case-studies/PiggyMutualFund"),
+  ),
+  "piggy-reduced-mutual-fund-support-tickets": dynamic(
+    () => import("@/components/case-studies/NewProject"),
+  ),
+  "piggy-personalised-mutual-fund-recommendation": dynamic(
+    () => import("@/components/case-studies/ProjectTwo"),
+  ),
 };
 
 /** Track B step 2 — deep-dive case study; back returns to the projects index. */

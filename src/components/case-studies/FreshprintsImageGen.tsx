@@ -7,6 +7,7 @@ import {
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
+  CaseStudyTightStack,
   CaseStudyWide,
   CaseStudyYear,
 } from "@/components/case-studies/case-study-prose";
@@ -49,6 +50,18 @@ export default function FreshprintsImageGenContent() {
           that fits, the excitement fades. That initial spark disappears—and many users
           simply don&apos;t return.
         </CaseStudyParagraph>
+        <CaseStudyH2>Collaboration with</CaseStudyH2>
+        <CaseStudyTightStack>
+          <CaseStudyParagraph tight>
+            Director of Product Design: Tikshita Bharti
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Product &amp; Design: Team B Led by Me
+          </CaseStudyParagraph>
+          <CaseStudyParagraph tight>
+            Engineering: Vivek Singh &amp; Team
+          </CaseStudyParagraph>
+        </CaseStudyTightStack>
       </CaseStudyProse>
 
       <CaseStudyWide>
