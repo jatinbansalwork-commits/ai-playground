@@ -410,12 +410,6 @@ body {
   color: #000000;
 }
 
-@keyframes frame-fade {
-  to {
-    opacity: 1;
-  }
-}
-
 .index-root {
   --background: #1e1e1e;
 }

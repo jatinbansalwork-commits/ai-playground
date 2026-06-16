@@ -49,7 +49,7 @@ export function FrameShell({
     <motion.article
       tabIndex={0}
       data-variant={frame.variant}
-      className="frame-panel outline-none select-none not-data-[variant=main]:opacity-0 not-data-[variant=main]:animate-[frame-fade_0.35s_ease-in-out_0.8s_forwards]"
+      className="frame-panel outline-none select-none"
       style={{
         width: FRAME_WIDTH,
         height: FRAME_HEIGHT,
