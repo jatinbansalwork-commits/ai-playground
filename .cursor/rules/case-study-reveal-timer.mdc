@@ -1,0 +1,37 @@
+---
+description: Global UTC case study reveal countdown — same unlock time for all users
+globs: src/lib/case-study-reveal-schedule.ts,src/hooks/use-case-study-reveal-countdown.ts,src/components/case-studies/case-study-reveal-countdown.tsx,src/components/case-studies/CiscoPolicyCopilot.tsx
+alwaysApply: false
+---
+
+# Case study reveal timer
+
+Case studies with a pre-launch blur gate use a **worldwide UTC schedule**, not per-user `localStorage`.
+
+## Source of truth
+
+`src/lib/case-study-reveal-schedule.ts`
+
+| Field | Meaning |
+|-------|---------|
+| `startsAtUtc` | UTC ISO-8601 instant when the countdown starts (same for every visitor) |
+| `CASE_STUDY_REVEAL_DURATION_MS` | Unlock window length — **20 hours** |
+
+Unlock instant: `Date.parse(startsAtUtc) + 20 hours`
+
+## Resetting the timer
+
+1. Set `startsAtUtc` to the new UTC start (e.g. `2026-06-16T22:00:00.000Z`).
+2. Do **not** bump storage keys or use `localStorage` for deadlines.
+3. All users worldwide see the same remaining time.
+
+## Wiring
+
+- Hook: `useCaseStudyRevealCountdownForSlug(slug)` or `useCaseStudyRevealCountdown(unlockAtMs)`
+- UI: `<CaseStudyRevealCountdown slug="cisco-policy-copilot" />`
+- Blur gate: `isRevealed` from the same hook / slug schedule
+
+## Do not
+
+- Per-browser countdown (`Date.now() + duration` in `localStorage`)
+- Different unlock times per user or timezone offset hacks — always UTC

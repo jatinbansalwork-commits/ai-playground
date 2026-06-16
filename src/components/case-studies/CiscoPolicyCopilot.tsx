@@ -20,14 +20,13 @@ import {
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
-import { useCaseStudyRevealCountdown } from "@/hooks/use-case-study-reveal-countdown";
+import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
 const SLUG = "cisco-policy-copilot";
-const REVEAL_STORAGE_KEY = `case-study-reveal:${SLUG}:v3`;
 
 export default function CiscoPolicyCopilotContent() {
   const content = getCaseStudyContent(SLUG)!;
-  const { isRevealed } = useCaseStudyRevealCountdown(REVEAL_STORAGE_KEY);
+  const { isRevealed } = useCaseStudyRevealCountdownForSlug(SLUG);
 
   return (
     <div className="w-full space-y-16">
@@ -36,9 +35,7 @@ export default function CiscoPolicyCopilotContent() {
         year={content.year}
         overview={content.overviewText}
         meta={content.meta}
-        metaBottom={
-          <CaseStudyRevealCountdown storageKey={REVEAL_STORAGE_KEY} />
-        }
+        metaBottom={<CaseStudyRevealCountdown slug={SLUG} />}
       />
 
       <div

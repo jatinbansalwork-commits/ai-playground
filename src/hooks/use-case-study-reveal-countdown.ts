@@ -1,23 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const REVEAL_DURATION_MS = 20 * 60 * 60 * 1000;
-
-function readDeadline(storageKey: string, durationMs: number): number {
-  const stored = localStorage.getItem(storageKey);
-
-  if (stored) {
-    const parsed = Number(stored);
-    if (!Number.isNaN(parsed) && parsed > Date.now()) {
-      return parsed;
-    }
-  }
-
-  const deadline = Date.now() + durationMs;
-  localStorage.setItem(storageKey, String(deadline));
-  return deadline;
-}
+import {
+  getCaseStudyRevealRemainingMs,
+  getCaseStudyRevealUnlockAtMs,
+} from "@/lib/case-study-reveal-schedule";
 
 export function formatRevealCountdown(remainingMs: number) {
   const totalSeconds = Math.max(0, Math.floor(remainingMs / 1000));
@@ -33,18 +20,16 @@ export function formatRevealCountdown(remainingMs: number) {
   };
 }
 
-export function useCaseStudyRevealCountdown(
-  storageKey: string,
-  durationMs: number = REVEAL_DURATION_MS,
-) {
-  const [remainingMs, setRemainingMs] = useState(durationMs);
+/** Worldwide countdown to a fixed UTC unlock instant — not per-browser storage. */
+export function useCaseStudyRevealCountdown(unlockAtMs: number) {
+  const [remainingMs, setRemainingMs] = useState(() =>
+    getCaseStudyRevealRemainingMs(unlockAtMs),
+  );
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const deadline = readDeadline(storageKey, durationMs);
-
     function tick() {
-      setRemainingMs(Math.max(0, deadline - Date.now()));
+      setRemainingMs(getCaseStudyRevealRemainingMs(unlockAtMs));
     }
 
     tick();
@@ -52,7 +37,7 @@ export function useCaseStudyRevealCountdown(
 
     const intervalId = window.setInterval(tick, 1000);
     return () => window.clearInterval(intervalId);
-  }, [durationMs, storageKey]);
+  }, [unlockAtMs]);
 
   const countdown = formatRevealCountdown(remainingMs);
 
@@ -62,4 +47,22 @@ export function useCaseStudyRevealCountdown(
     isRevealed: countdown.isComplete,
     countdown,
   };
+}
+
+export function useCaseStudyRevealCountdownForSlug(slug: string) {
+  const unlockAtMs = getCaseStudyRevealUnlockAtMs(slug);
+  const effectiveUnlockAtMs = unlockAtMs ?? Date.now();
+  const state = useCaseStudyRevealCountdown(effectiveUnlockAtMs);
+
+  if (unlockAtMs === null) {
+    return {
+      ready: true,
+      remainingMs: 0,
+      isRevealed: true,
+      countdown: formatRevealCountdown(0),
+      unlockAtMs: null,
+    };
+  }
+
+  return { ...state, unlockAtMs };
 }

@@ -3,10 +3,10 @@
 import {
   CASE_STUDY_META_LABEL,
 } from "@/components/case-studies/case-study-editorial";
-import { useCaseStudyRevealCountdown } from "@/hooks/use-case-study-reveal-countdown";
+import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
 interface CaseStudyRevealCountdownProps {
-  storageKey: string;
+  slug: string;
   label?: string;
 }
 
@@ -24,10 +24,10 @@ function CountdownUnit({ value, unit }: { value: string; unit: string }) {
 }
 
 export function CaseStudyRevealCountdown({
-  storageKey,
+  slug,
   label = "Full case study unlocks in",
 }: CaseStudyRevealCountdownProps) {
-  const { ready, isRevealed, countdown } = useCaseStudyRevealCountdown(storageKey);
+  const { ready, isRevealed, countdown } = useCaseStudyRevealCountdownForSlug(slug);
 
   if (!ready) {
     return (
