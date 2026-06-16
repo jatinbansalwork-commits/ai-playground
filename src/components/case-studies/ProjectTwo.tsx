@@ -134,9 +134,9 @@ export default function ProjectTwoContent() {
 
       <CaseStudyProse>
         <CaseStudyParagraph>
-          Sector-specific opportunities were further contextualized with prevailing
+          Sector-specific opportunities were further contextualised with prevailing
           market conditions, ensuring recommendations remained timely, relevant, and
-          actionable. The result was a more personalized experience that reduced
+          actionable. The result was a more personalised experience that reduced
           uncertainty and helped investors make allocation decisions with confidence.
         </CaseStudyParagraph>
       </CaseStudyProse>
@@ -171,7 +171,7 @@ export default function ProjectTwoContent() {
         <CaseStudyParagraph>
           What began as a mutual fund discovery project evolved into a broader exercise in
           simplifying complex financial decisions. By combining transparency,
-          personalization, and context, we helped investors move from uncertainty to
+          personalisation, and context, we helped investors move from uncertainty to
           confidence—one decision at a time.
         </CaseStudyParagraph>
       </CaseStudyProse>

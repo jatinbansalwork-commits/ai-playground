@@ -40,7 +40,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "Cisco",
       location: "San Jose, CA",
       infoText:
-        "Cisco is a global leader in networking and cybersecurity, building the infrastructure that connects organizations worldwide and secures their digital operations.",
+        "Cisco is a global leader in networking and cybersecurity, building the infrastructure that connects organisations worldwide and secures their digital operations.",
     },
   ),
   "freshprints-design-system": entry(
@@ -53,7 +53,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
+        "FreshPrints' e-commerce platform has been a favourite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "freshprints-heal-tool": entry(
@@ -88,7 +88,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "FreshPrints' e-commerce platform has been a favorite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
+        "FreshPrints' e-commerce platform has been a favourite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "saltbot-ai-saltmine": entry(
@@ -108,7 +108,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "Saltmine",
       location: "Bengaluru",
       infoText:
-        "Our first AI-powered Report Analytics Tool at Saltmine. Saltbot makes it easy to generate detailed reports on employee headcount—no more tedious data pulling or complicated navigation. With just a few clicks, you can create and visualize exactly the data you need, all in 5 seconds or less. Say goodbye to cluttered spreadsheets and hello to clear, actionable insights!",
+        "Our first AI-powered Report Analytics Tool at Saltmine. Saltbot makes it easy to generate detailed reports on employee headcount—no more tedious data pulling or complicated navigation. With just a few clicks, you can create and visualise exactly the data you need, all in 5 seconds or less. Say goodbye to cluttered spreadsheets and hello to clear, actionable insights!",
     },
   ),
   "saltmine-sync": entry(
@@ -117,7 +117,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "2024",
     "Saltmine-Sync data reconciliation views and sync health monitoring.",
     {
-      services: ["Product Design", "Data Visualization", "UI Design"],
+      services: ["Product Design", "Data Visualisation", "UI Design"],
       client: "Saltmine",
       location: "Remote",
       infoText:
@@ -165,12 +165,12 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "Kalash",
       location: "Bangalore, India",
       infoText:
-        "Kalash Year-End Recap transforms a year of transactions, investments, and achievements into a personalized experience that helps users reflect on their progress, celebrate wins, and stay motivated for the year ahead.",
+        "Kalash Year-End Recap transforms a year of transactions, investments, and achievements into a personalised experience that helps users reflect on their progress, celebrate wins, and stay motivated for the year ahead.",
     },
   ),
   "piggy-reduced-mutual-fund-support-tickets": entry(
     "piggy-reduced-mutual-fund-support-tickets",
-    "✅ Piggy - Reduced Mutual Fund Support Tickets",
+    "✅ Piggy - Reduced Support Tickets",
     "2023",
     "How we reduced mutual fund support tickets by 12% at Piggy",
     {
@@ -186,7 +186,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "Piggy",
       location: "Bangalore, India",
       infoText:
-        "Piggy is a fintech investment platform that helps users grow their wealth through products such as Mutual Funds and Digital Gold. Piggy Mutual Funds offer a wide range of investment options, including low-cost index funds, ELSS, and funds across various sectors, market capitalizations, and geographies, catering to different financial goals and risk appetites. Digital Gold enables users to seamlessly buy, sell, and securely store gold online through the Piggy app, eliminating the complexities and risks associated with owning physical gold.",
+        "Piggy is a fintech investment platform that helps users grow their wealth through products such as Mutual Funds and Digital Gold. Piggy Mutual Funds offer a wide range of investment options, including low-cost index funds, ELSS, and funds across various sectors, market capitalisations, and geographies, catering to different financial goals and risk appetites. Digital Gold enables users to seamlessly buy, sell, and securely store gold online through the Piggy app, eliminating the complexities and risks associated with owning physical gold.",
     },
   ),
   "piggy-personalised-mutual-fund-recommendation": entry(

@@ -28,7 +28,7 @@ export interface SectionFrame {
   /** Mask pan loop duration in seconds. */
   monogramPanDuration?: number;
   lottie?: string;
-  /** Remap near-black Lottie fills (e.g. bouncing ball) to this hex color. */
+  /** Remap near-black Lottie fills (e.g. bouncing ball) to this hex colour. */
   lottieFillAccent?: string;
   /** Bento 3:4 video thumbnail instead of monogram text. */
   videoThumbnail?: boolean;

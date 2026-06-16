@@ -44,8 +44,8 @@ export default function PiggyMutualFundContent() {
           users appreciate the journey behind them.
         </CaseStudyParagraph>
         <CaseStudyParagraph>
-          The objective was to create a personalized Year-End Recap that transforms
-          complex financial activity into meaningful stories, helping users recognize
+          The objective was to create a personalised Year-End Recap that transforms
+          complex financial activity into meaningful stories, helping users recognise
           their growth, celebrate achievements, and strengthen their connection with
           the platform.
         </CaseStudyParagraph>
@@ -154,8 +154,8 @@ export default function PiggyMutualFundContent() {
         <CaseStudySubheading>Outcome</CaseStudySubheading>
         <CaseStudyParagraph>
           The Year-End Recap turned a year&apos;s worth of financial activity into a
-          personalized narrative that users could explore, celebrate, and share. By
-          combining storytelling with data visualization, Kalash strengthened
+          personalised narrative that users could explore, celebrate, and share. By
+          combining storytelling with data visualisation, Kalash strengthened
           engagement while helping users build a deeper connection with their financial
           progress.
         </CaseStudyParagraph>

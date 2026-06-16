@@ -196,7 +196,7 @@ export default function SaltbotContent() {
               label: "Floorplan anomaly view",
               caption: (
                 <>
-                  Customize Your Alerts
+                  Customise Your Alerts
                   <br />
                   Get notified whenever a metric is broken
                 </>

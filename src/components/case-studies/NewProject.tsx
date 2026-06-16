@@ -123,7 +123,7 @@ export default function NewProjectContent() {
                 ),
                 title: "Quantitative Data",
                 description:
-                  "Analyzed support ticket data to identify patterns, trends, and peak time periods when investment-related issues were most frequently reported.",
+                  "Analysed support ticket data to identify patterns, trends, and peak time periods when investment-related issues were most frequently reported.",
               },
               {
                 icon: (
@@ -134,7 +134,7 @@ export default function NewProjectContent() {
                 ),
                 title: "User Calls",
                 description:
-                  "Conducted direct customer interviews and shadowed customer support executives to understand user concerns, behaviors, and pain points firsthand.",
+                  "Conducted direct customer interviews and shadowed customer support executives to understand user concerns, behaviours, and pain points first-hand.",
               },
             ]}
           />
@@ -280,7 +280,7 @@ export default function NewProjectContent() {
 
         <CaseStudyH2>A/B Testing &amp; Rollout Strategy</CaseStudyH2>
         <CaseStudyParagraph>
-          To minimize risk and validate impact, the redesigned experience was launched
+          To minimise risk and validate impact, the redesigned experience was launched
           through an A/B test before a full-scale rollout. The experiment compared the
           redesigned journey against the existing experience and focused on both user
           experience and business outcomes.
@@ -403,7 +403,7 @@ export default function NewProjectContent() {
       <CaseStudyProse>
         <CaseStudyList
           items={[
-            "Visual Reassurance: Leveraged color psychology and stronger success states to provide immediate transactional closure.",
+            "Visual Reassurance: Leveraged colour psychology and stronger success states to provide immediate transactional closure.",
             "Reduced Ambiguity: Eliminated misleading status terminology that caused users to interpret normal processing delays as transaction issues.",
             "Proactive Education: Embedded contextual education directly into the experience, transforming a support-ticket-generating question into a self-service learning moment.",
           ]}

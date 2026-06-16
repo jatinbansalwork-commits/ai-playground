@@ -6,7 +6,7 @@
  * | Criterion | Requirement | Implementation |
  * |-----------|-------------|----------------|
  * | 1.1.1 Non-text Content | Alt text for meaningful images/media | `experiment-media` alt, `aria-hidden` on decorative previews |
- * | 1.3.1 Info and Relationships | Semantic structure | `main`, `nav`, `h1`, `aria-label` on unlabeled controls |
+ * | 1.3.1 Info and Relationships | Semantic structure | `main`, `nav`, `h1`, `aria-label` on unlabelled controls |
  * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#1a1a1a` |
  * | 2.1.1 Keyboard | All functionality via keyboard | Slider Prev/Next, filter tabs, links, modals |
  * | 2.4.1 Bypass Blocks | Skip repetitive content | `SkipToContentLink` + `CaseStudySkipLink` → article body |
@@ -24,7 +24,7 @@
  * @see https://www.w3.org/TR/WCAG22/
  */
 
-/** Focus indicator color — 3:1+ against `#1a1a1a` (satisfies 2.4.7 / 2.4.11). */
+/** Focus indicator colour — 3:1+ against `#1a1a1a` (satisfies 2.4.7 / 2.4.11). */
 export const FOCUS_RING_COLOR = "#3291ff";
 
 /**

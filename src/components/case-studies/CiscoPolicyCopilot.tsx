@@ -97,7 +97,7 @@ export default function CiscoPolicyCopilotContent() {
             "Administrators understand security intent but struggle to translate it into policy rules.",
             "Risk validation, compliance checks, and impact analysis are often fragmented across workflows.",
             "Every policy mistake can introduce security vulnerabilities or business disruptions.",
-            "Existing tools optimize for configuration efficiency, not decision confidence.",
+            "Existing tools optimise for configuration efficiency, not decision confidence.",
           ]}
         />
         <CaseStudyWide className="!mt-4">
@@ -170,7 +170,7 @@ export default function CiscoPolicyCopilotContent() {
 
         <CaseStudyH2>From Copilot to Agent</CaseStudyH2>
         <CaseStudyParagraph>
-          During discovery, we realized policy creation was only one part of a much larger
+          During discovery, we realised policy creation was only one part of a much larger
           problem. Administrators weren&apos;t struggling with configuration screens. They were
           struggling with decision-making.
         </CaseStudyParagraph>
@@ -335,10 +335,10 @@ export default function CiscoPolicyCopilotContent() {
           ]}
         />
 
-        <CaseStudyH3>3. Summarize</CaseStudyH3>
+        <CaseStudyH3>3. Summarise</CaseStudyH3>
         <CaseStudyParagraph>
           Security workflows generate large amounts of information. To reduce analysis burden,
-          the system continuously summarizes:
+          the system continuously summarises:
         </CaseStudyParagraph>
         <CaseStudyTags
           tags={[
@@ -389,7 +389,7 @@ export default function CiscoPolicyCopilotContent() {
             "Compliance requirements",
             "Existing firewall rules",
             "Risk conditions",
-            "Organizational policies",
+            "Organisational policies",
           ]}
         />
         <CaseStudyParagraph>
@@ -458,7 +458,7 @@ export default function CiscoPolicyCopilotContent() {
         </CaseStudyParagraph>
         <CaseStudyDisplayLine>
           Designing for AI isn&apos;t just about connecting APIs—it&apos;s about trust,
-          context, and control. Especially when the stakes are high, human judgment still
+          context, and control. Especially when the stakes are high, human judgement still
           leads. The role of design is to bridge that gap with clarity.
         </CaseStudyDisplayLine>
       </CaseStudyProse>

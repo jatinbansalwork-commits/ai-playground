@@ -33,7 +33,7 @@ export function CaseStudyHero({
           <CaseStudyYear>{year}</CaseStudyYear>
           <h1
             id={CASE_STUDY_TITLE_ID}
-            className="text-balance text-4xl font-semibold tracking-tight text-white md:text-5xl"
+            className="text-balance text-4xl font-semibold tracking-normal text-white md:text-5xl"
           >
             {title}
           </h1>

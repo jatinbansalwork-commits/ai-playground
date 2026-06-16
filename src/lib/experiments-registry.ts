@@ -245,7 +245,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
             },
             {
               type: "paragraph",
-              text: "To support this growth, we introduced a Design System—a shared foundation of components, typography, colors, spacing standards, and interaction patterns. The goal was simple: create a common language that would help designers build consistent experiences more efficiently. The Design System gave teams a clear set of standards. But after several review cycles, I noticed an important gap.",
+              text: "To support this growth, we introduced a Design System—a shared foundation of components, typography, colours, spacing standards, and interaction patterns. The goal was simple: create a common language that would help designers build consistent experiences more efficiently. The Design System gave teams a clear set of standards. But after several review cycles, I noticed an important gap.",
             },
             {
               type: "image",
@@ -275,7 +275,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
             },
             {
               type: "paragraph",
-              text: "That's when I realized something important:",
+              text: "That's when I realised something important:",
             },
             {
               type: "quote",
@@ -289,7 +289,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
           blocks: [
             {
               type: "paragraph",
-              text: "While researching how mature design organizations maintain quality at scale, I noticed a common pattern. The best teams don't rely on memory. They rely on systems. Pilots use pre-flight checklists before takeoff. Surgeons use checklists before procedures. Engineers use deployment checklists before releasing software.",
+              text: "While researching how mature design organisations maintain quality at scale, I noticed a common pattern. The best teams don't rely on memory. They rely on systems. Pilots use pre-flight checklists before takeoff. Surgeons use checklists before procedures. Engineers use deployment checklists before releasing software.",
             },
             {
               type: "paragraph",
@@ -317,7 +317,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
             },
             {
               type: "paragraph",
-              text: "As we launched the Design System, I introduced a Design Review Checklist to act as a quality gate before any design entered formal review. The objective wasn't to add more process. The objective was to reduce review cycles, improve consistency, and create a shared definition of quality across the organization.",
+              text: "As we launched the Design System, I introduced a Design Review Checklist to act as a quality gate before any design entered formal review. The objective wasn't to add more process. The objective was to reduce review cycles, improve consistency, and create a shared definition of quality across the organisation.",
             },
             {
               type: "paragraph",
@@ -338,7 +338,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
                 {
                   title: "Accessibility",
                   questions: [
-                    "Is information communicated through more than color alone?",
+                    "Is information communicated through more than colour alone?",
                     "Does text meet contrast requirements?",
                     "Are interactive elements clearly identifiable?",
                   ],
@@ -539,7 +539,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
               type: "list",
               variant: "chips",
               items: [
-                "User behavior",
+                "User behaviour",
                 "Product decisions",
                 "Business goals",
                 "Trade-offs",
@@ -572,7 +572,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
             },
             {
               type: "paragraph",
-              text: "People, processes, and habits create consistency. The Design System provided the building blocks. The Review Checklist provided accountability. The Review Workflow ensured adoption. Together, they formed a scalable quality framework that helped Fresh Prints maintain design excellence as the organization continued to grow.",
+              text: "People, processes, and habits create consistency. The Design System provided the building blocks. The Review Checklist provided accountability. The Review Workflow ensured adoption. Together, they formed a scalable quality framework that helped FreshPrints maintain design excellence as the organisation continued to grow.",
             },
             {
               type: "paragraph",

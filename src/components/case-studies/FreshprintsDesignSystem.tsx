@@ -76,11 +76,11 @@ export default function FreshprintsDesignSystemContent() {
           columns={3}
           cells={[
             {
-              label: "Colors",
-              caption: "Colors",
+              label: "Colours",
+              caption: "Colours",
               aspect: "square",
               src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-ds-card-1"],
-              alt: "FreshPrints design system colors",
+              alt: "FreshPrints design system colours",
             },
             {
               label: "Typography",
@@ -141,7 +141,7 @@ export default function FreshprintsDesignSystemContent() {
           various companies.
         </CaseStudyParagraph>
         <CaseStudyQuote>
-          &ldquo;We need to prioritize a method that is at least 100% modular to adapt
+          &ldquo;We need to prioritise a method that is at least 100% modular to adapt
           to constant updates across our products.&rdquo;
           <span className="mt-2 block text-base font-normal text-neutral-400">
             — Director of design
@@ -212,7 +212,7 @@ export default function FreshprintsDesignSystemContent() {
               label: "Swatch",
               aspect: "square",
               src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-swatch"],
-              alt: "FreshPrints color swatch",
+              alt: "FreshPrints colour swatch",
             },
           ]}
         />
@@ -227,7 +227,7 @@ export default function FreshprintsDesignSystemContent() {
         </CaseStudyParagraph>
         <CaseStudyList
           items={[
-            "Prioritizing User-Centricity: Early insights into user needs have guided the initial design direction.",
+            "Prioritising User-Centricity: Early insights into user needs have guided the initial design direction.",
             "Strategic Design Systems: Laying the groundwork for a structured system has been crucial for scaling our efforts.",
             "Collaborative Approach: Strong teamwork has been vital to make steady progress and align design with development.",
           ]}
