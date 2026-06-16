@@ -1,17 +1,18 @@
 import { ROUTES } from "@/lib/constants";
-import { getExperimentCategories, hasExperimentArticle } from "@/lib/experiments-registry";
+import { getExperimentCategories } from "@/lib/experiments-registry";
 
 export const EXPERIMENTS_FILTERS = [
   { id: "all", label: "All" },
   { id: "motion-graphic", label: "Motion Graphic" },
   { id: "ai-experiment", label: "AI Experiment" },
   { id: "illustration", label: "Illustration" },
-  { id: "article", label: "Article" },
 ] as const;
 
 export type ExperimentFilterId = (typeof EXPERIMENTS_FILTERS)[number]["id"];
 
-export type ExperimentCategory = Exclude<ExperimentFilterId, "all">;
+export type ExperimentCategory =
+  | Exclude<ExperimentFilterId, "all">
+  | "article";
 
 export { getExperimentCategories };
 
@@ -20,13 +21,6 @@ export function filterExperimentItems<T extends { slug: string }>(
   filter: ExperimentFilterId,
 ): T[] {
   if (filter === "all") return items;
-
-  if (filter === "article") {
-    return items.filter((item) => {
-      const categories = getExperimentCategories(item.slug);
-      return categories.includes("article") || hasExperimentArticle(item.slug);
-    });
-  }
 
   return items.filter((item) => {
     const categories = getExperimentCategories(item.slug);
@@ -56,12 +50,9 @@ export function getExperimentDisplayEntries<T extends { slug: string }>(
   const filtered = filterExperimentItems(items, filter);
 
   if (filter !== "all") {
-    const displayCategory: ExperimentCategory =
-      filter === "article" ? "article" : filter;
-
     return filtered.map((item) => ({
       item,
-      displayCategory,
+      displayCategory: filter,
       instanceKey: item.slug,
     }));
   }
@@ -152,7 +143,7 @@ export function getExperimentDisplayCategory(
   if (displayCategory) return displayCategory;
 
   if (filter !== "all") {
-    return filter === "article" ? "article" : filter;
+    return filter;
   }
 
   const categories = getExperimentCategories(slug);
@@ -339,14 +330,15 @@ export function isExperimentFilterId(
 export function parseExperimentFilterId(
   value: string | null | undefined,
 ): ExperimentFilterId {
+  if (value === "article") return "all";
   return isExperimentFilterId(value) ? value : "all";
 }
 
 export function getExperimentsGalleryHref(
   filter: ExperimentFilterId = "all",
 ): string {
-  if (filter === "all") return ROUTES.fun;
-  return `${ROUTES.fun}?${EXPERIMENTS_GALLERY_FILTER_PARAM}=${filter}`;
+  if (filter === "all") return ROUTES.craft;
+  return `${ROUTES.craft}?${EXPERIMENTS_GALLERY_FILTER_PARAM}=${filter}`;
 }
 
 export function getExperimentsFilterLabel(filter: ExperimentFilterId): string {

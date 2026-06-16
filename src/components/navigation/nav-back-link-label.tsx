@@ -1,9 +1,13 @@
 interface NavBackLinkLabelProps {
   destination: string;
+  showBackPrefix?: boolean;
 }
 
 /** Arrow at 2× label size (28px), optically centered with `text-sm` copy. */
-export function NavBackLinkLabel({ destination }: NavBackLinkLabelProps) {
+export function NavBackLinkLabel({
+  destination,
+  showBackPrefix = true,
+}: NavBackLinkLabelProps) {
   return (
     <span className="inline-flex items-center gap-2 leading-none">
       <svg
@@ -20,7 +24,9 @@ export function NavBackLinkLabel({ destination }: NavBackLinkLabelProps) {
       >
         <path d="M15 18l-6-6 6-6" />
       </svg>
-      <span className="leading-none">Back to {destination}</span>
+      <span className="leading-none">
+        {showBackPrefix ? `Back to ${destination}` : destination}
+      </span>
     </span>
   );
 }

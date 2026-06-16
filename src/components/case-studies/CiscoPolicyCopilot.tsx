@@ -47,7 +47,7 @@ export default function CiscoPolicyCopilotContent() {
         }
         aria-hidden={!isRevealed}
       >
-        <CaseStudyProse>
+      <CaseStudyProse>
         <CaseStudyH1>
           Security policy creation is often slow, complex, and deeply manual, even for
           experienced network administrators.
@@ -57,7 +57,11 @@ export default function CiscoPolicyCopilotContent() {
           &ldquo;Allow the Engineering team to access GitHub securely&rdquo;
         </CaseStudyQuote>
         <CaseStudyWide className="!mt-4">
-          <CaseStudyMedia aspect="video" alt="Cisco Policy Copilot overview" />
+          <CaseStudyMedia
+            aspect="video"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-overview"]}
+            alt="Cisco Policy Copilot overview"
+          />
         </CaseStudyWide>
         <CaseStudyParagraph>
           can require administrators to manually configure users, applications, protocols,

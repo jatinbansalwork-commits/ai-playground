@@ -188,6 +188,7 @@ export const CASE_STUDY_CDN_MEDIA = {
   "piggy-support-tickets-post-purchase-2": cdnAsset(
     "/Piggy-tickets/old%20Post%20Purchase.png",
   ),
+  "cisco-policy-copilot-overview": cdnAsset("/Cisco/Main%20Comp.mp4"),
   "cisco-policy-copilot-trust": cdnAsset("/Cisco/1.png"),
   "cisco-policy-copilot-rating": cdnAsset("/Cisco/Rating.png"),
 } as const;

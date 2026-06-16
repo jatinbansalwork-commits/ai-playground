@@ -41,7 +41,7 @@ export function articleMetadata(sectionId: string, slug: string) {
     const article = getExperimentArticle(slug);
     if (!article) return { title: "Not Found" };
     return {
-      title: `${article.title} · Experiments · ${SITE_NAME}`,
+      title: `${article.title} · Craft · ${SITE_NAME}`,
     };
   }
 

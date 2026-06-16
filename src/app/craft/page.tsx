@@ -9,7 +9,7 @@ import {
   getExperimentGalleryItems,
 } from "@/lib/experiments-registry";
 
-export default function FunPage() {
+export default function CraftPage() {
   return (
     <main
       id="main-content"

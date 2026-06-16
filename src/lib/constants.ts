@@ -4,7 +4,7 @@ export const ROUTES = {
   home: "/",
   /** Track A — featured case study from the index "Recent Work" slide. */
   recentWork: "/Recentwork",
-  fun: "/fun",
+  craft: "/craft",
   projects: "/projects",
   archive: "/archive",
 } as const;
@@ -22,8 +22,6 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Recent Work",
     monogram: "Recent Work",
-    monogramScale: 1.5,
-    monogramFontOffset: 400,
     monogramPan: true,
     monogramPanDuration: 14,
     badge: "v3.2",
@@ -33,10 +31,19 @@ export const FRAMES = [
     id: "experiments",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Fun",
-    lottie: "/assets/lottie/experiments-fun.json",
-    lottieFillAccent: "#6B36FF",
-    href: ROUTES.fun,
+    label: "Craft",
+    monogram: "Craft",
+    monogramPan: true,
+    monogramPanDuration: 14,
+    href: ROUTES.craft,
+  },
+  {
+    id: "design-review-checklist",
+    type: "section" as const,
+    variant: "slide" as const,
+    label: "Design Review",
+    monogramImage: "/assets/index/article-cursor-hand.png",
+    href: `${ROUTES.craft}/design-review-checklist`,
   },
   {
     id: "projects",
@@ -44,10 +51,8 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Projects",
     monogram: "Projects",
-    monogramScale: 1.5,
-    monogramFontOffset: 400,
     monogramPan: true,
-    monogramPanDuration: 15,
+    monogramPanDuration: 14,
     href: ROUTES.projects,
   },
   {
@@ -121,7 +126,7 @@ export const MANIFEST_LINES = [
 
 export const CONTACT_LINKS = [
   {
-    label: "Linkedin",
+    label: "LinkedIn",
     href: "https://www.linkedin.com/in/jatin-bansal-design/",
     position: "top-left" as const,
   },

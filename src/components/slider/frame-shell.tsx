@@ -58,7 +58,7 @@ export function FrameShell({
         top: 0,
       }}
     >
-      {isSlide && (
+      {frame.type === "section" && isSlide && !frame.hideSlideLabel && (
         <span
           aria-hidden
           className={`frame-label pointer-events-none absolute -top-7 left-0 ${INDEX_SLIDE_LABEL}`}

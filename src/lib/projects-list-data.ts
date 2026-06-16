@@ -21,7 +21,7 @@ export interface ProjectRowItem {
  *   cdnAsset("/thumbnails/cisco-hover.jpg");
  */
 export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
-  "cisco-policy-copilot": cdnAsset("/Hover/cisco"),
+  "cisco-policy-copilot": cdnAsset("/Cisco/Ciscp.png"),
   "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),

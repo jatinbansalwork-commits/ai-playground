@@ -24,10 +24,12 @@ export function SectionFrameMonogram({
   const maskRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const [panRange, setPanRange] = useState(0);
+  const [maskWidth, setMaskWidth] = useState(0);
 
   useLayoutEffect(() => {
     if (!pan) {
       setPanRange(0);
+      setMaskWidth(0);
       return;
     }
 
@@ -38,6 +40,7 @@ export function SectionFrameMonogram({
 
       const overflow = label.offsetWidth - mask.clientWidth;
       setPanRange(Math.max(0, overflow));
+      setMaskWidth(mask.clientWidth);
     };
 
     measure();
@@ -53,6 +56,10 @@ export function SectionFrameMonogram({
   }, [pan, text, fontSize, wireframe]);
 
   const shouldPan = pan && panRange > 0;
+  const panCycleDuration =
+    shouldPan && maskWidth > 0
+      ? panDuration * (panRange / maskWidth)
+      : panDuration;
 
   return (
     <div
@@ -70,7 +77,7 @@ export function SectionFrameMonogram({
           transition={
             shouldPan
               ? {
-                  duration: panDuration,
+                  duration: panCycleDuration,
                   ease: [0.37, 0, 0.63, 1],
                   repeat: Infinity,
                   repeatDelay: 1.2,

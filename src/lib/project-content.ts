@@ -32,7 +32,7 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "⏳ Cisco - Policy Copilot",
+    "⏳ Cisco - AgentiOps Firewall Copilot",
     "2026",
     "Designing an AI-powered security teammate that transforms business intent into deployable firewall policies.",
     {

@@ -5,21 +5,21 @@ import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { springSlider } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { SectionFrameLottie } from "@/components/slider/section-frame-lottie";
+import { SectionFrameImage } from "@/components/slider/section-frame-image";
 import { SectionFrameMonogram } from "@/components/slider/section-frame-monogram";
-import { INDEX_SLIDE_MONOGRAM } from "@/lib/index-typography";
+import { SectionFrameTypingMonogram } from "@/components/slider/section-frame-typing-monogram";
+import {
+  getIndexMonogramFontSize,
+  INDEX_SLIDE_MONOGRAM,
+  INDEX_SLIDE_MONOGRAM_FONT_OFFSET,
+  INDEX_SLIDE_MONOGRAM_SCALE,
+} from "@/lib/index-typography";
 import type { SectionFrame } from "@/types";
 
 interface SectionFramePanelProps {
   frame: SectionFrame;
   index: number;
   onInteract: () => void;
-}
-
-function getMonogramFontSize(label: string): number {
-  if (label.length <= 1) return 720;
-  if (label.length <= 3) return 320;
-  if (label.length <= 8) return 180;
-  return 140;
 }
 
 export function SectionFramePanel({
@@ -29,8 +29,9 @@ export function SectionFramePanel({
 }: SectionFramePanelProps) {
   const monogram = frame.monogram ?? "";
   const fontSize =
-    getMonogramFontSize(monogram) * (frame.monogramScale ?? 1) +
-    (frame.monogramFontOffset ?? 0);
+    getIndexMonogramFontSize(monogram) *
+      (frame.monogramScale ?? INDEX_SLIDE_MONOGRAM_SCALE) +
+    (frame.monogramFontOffset ?? INDEX_SLIDE_MONOGRAM_FONT_OFFSET);
 
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
@@ -43,6 +44,10 @@ export function SectionFramePanel({
           strokeWidthScale={0.2}
           className="pointer-events-none h-[min(480px,70vh)] w-[min(480px,70vh)]"
         />
+      ) : frame.monogramImage ? (
+        <SectionFrameImage src={frame.monogramImage} />
+      ) : frame.monogramTyping ? (
+        <SectionFrameTypingMonogram text={monogram} fontSize={fontSize} />
       ) : frame.monogramPan ? (
         <SectionFrameMonogram
           text={monogram}

@@ -41,7 +41,7 @@ export interface ExperimentRegistryEntry {
   href?: string;
 }
 
-/** Lightweight row consumed by the /fun bento grid — not shared with projects. */
+/** Lightweight row consumed by the /craft bento grid — not shared with projects. */
 export interface ExperimentGalleryItem {
   slug: string;
   title: string;
@@ -51,9 +51,9 @@ export interface ExperimentGalleryItem {
 }
 
 export const EXPERIMENTS_PAGE = {
-  title: "Experiments",
+  title: "Craft",
   description: "Interaction prototypes and interface studies.",
-  href: ROUTES.fun,
+  href: ROUTES.craft,
 } as const;
 
 /**
@@ -654,8 +654,8 @@ export function getExperimentsArticleSection(): CraftSection {
     id: "experiments",
     title: EXPERIMENTS_PAGE.title,
     href: EXPERIMENTS_PAGE.href,
-    backHref: getExperimentsGalleryHref("article"),
-    backLabel: getExperimentsFilterLabel("article"),
+    backHref: ROUTES.home,
+    backLabel: "Home",
     description: EXPERIMENTS_PAGE.description,
     items: getExperimentGalleryItems().map((item) => ({
       ...item,

@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/fun",
+        destination: "/craft",
+        permanent: true,
+      },
+      {
+        source: "/fun/:path*",
+        destination: "/craft/:path*",
+        permanent: true,
+      },
+      {
         source: "/recent-work",
         destination: "/Recentwork",
         permanent: true,

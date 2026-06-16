@@ -19,6 +19,12 @@ export interface SectionFrame {
   monogramFontOffset?: number;
   /** Pan oversized text inside the frame mask. */
   monogramPan?: boolean;
+  /** Reveal monogram text with a typewriter effect. */
+  monogramTyping?: boolean;
+  /** Centered image instead of monogram text. */
+  monogramImage?: string;
+  /** Hide the small label above the slide panel. */
+  hideSlideLabel?: boolean;
   /** Mask pan loop duration in seconds. */
   monogramPanDuration?: number;
   lottie?: string;

@@ -2,7 +2,7 @@
 
 import { CONTACT_LINKS } from "@/lib/constants";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
-import { INDEX_SLIDE_CONTACT } from "@/lib/index-typography";
+import { INDEX_SLIDE_CONTACT, INDEX_SLIDE_CONTACT_SIZE_PX } from "@/lib/index-typography";
 import { ContactEmailButton } from "@/components/slider/contact-email-button";
 import { FrameShell } from "@/components/slider/frame-shell";
 import type { ContactFrame } from "@/types";
@@ -36,7 +36,8 @@ export function ContactFramePanel({
             rel="noopener noreferrer"
             aria-label={externalLinkLabel(link.label)}
             onMouseDown={onInteract}
-            className={`absolute rounded-xl text-[85px] ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
+            className={`absolute rounded-xl ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
+            style={{ fontSize: INDEX_SLIDE_CONTACT_SIZE_PX }}
           >
             {link.label}
           </a>

@@ -23,7 +23,7 @@ interface ExperimentsPreviewVideoProps {
 }
 
 /**
- * /fun bento previews — play only when on-route, in view, and mouse is active.
+ * /craft bento previews — play only when on-route, in view, and mouse is active.
  * Pauses after 2s of pointer idle or when the card leaves the viewport.
  */
 function ExperimentsPreviewVideo({
@@ -54,7 +54,7 @@ function ExperimentsPreviewVideo({
   }, [shouldLoad, media.src]);
 
   useEffect(() => {
-    if (!isIntersecting || pathname !== ROUTES.fun) {
+    if (!isIntersecting || pathname !== ROUTES.craft) {
       setIsMouseActive(false);
       return;
     }
@@ -81,7 +81,7 @@ function ExperimentsPreviewVideo({
     const video = videoRef.current;
     if (!video) return;
 
-    const isTargetPage = pathname === ROUTES.fun;
+    const isTargetPage = pathname === ROUTES.craft;
     const shouldPlay =
       isTargetPage && isIntersecting && isMouseActive && autoplay;
 

@@ -9,7 +9,6 @@ import {
   type ExperimentFilterId,
 } from "@/lib/experiments-filters";
 import { ExperimentsBentoGrid } from "@/components/experiments/experiments-bento-grid";
-import { ExperimentsArticleGrid } from "@/components/experiments/experiments-article-grid";
 import { ExperimentsFilterBar } from "@/components/experiments/experiments-filter-bar";
 import { randomShuffleSeed } from "@/lib/shuffle-seed";
 
@@ -58,22 +57,18 @@ function ExperimentsGalleryClientInner({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-8">
-      <h1 className="sr-only">Fun</h1>
+      <h1 className="sr-only">Craft</h1>
       <div className="mb-6 flex justify-center">
         <ExperimentsFilterBar value={filter} onChange={setFilter} />
       </div>
 
-      {filter === "article" ? (
-        <ExperimentsArticleGrid items={items} sectionHref={sectionHref} />
-      ) : (
-        <ExperimentsBentoGrid
-          items={items}
-          sectionHref={sectionHref}
-          articleSlugs={articleSlugs}
-          filter={filter}
-          shuffleSeed={shuffleSeed}
-        />
-      )}
+      <ExperimentsBentoGrid
+        items={items}
+        sectionHref={sectionHref}
+        articleSlugs={articleSlugs}
+        filter={filter}
+        shuffleSeed={shuffleSeed}
+      />
     </div>
   );
 }
