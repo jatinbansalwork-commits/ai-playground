@@ -238,7 +238,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyParagraph dense>
+        <CaseStudyParagraph dense className="!text-[2rem] md:!text-4xl">
           We also welcomed DALL-E to our ecosystem. We can&apos;t wait to see where it goes
           from here!
         </CaseStudyParagraph>

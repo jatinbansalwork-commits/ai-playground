@@ -508,6 +508,24 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
 /* WCAG 2.4.11 — case study sticky chrome + back link clearance */
 .case-study-main {
   scroll-padding-top: 8rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.case-study-main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Long-form sheets with ScrollMinimapRuler — native scrollbar is redundant */
+main[data-sheet="case-study"],
+main[data-sheet="recent-work"] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+main[data-sheet="case-study"]::-webkit-scrollbar,
+main[data-sheet="recent-work"]::-webkit-scrollbar {
+  display: none;
 }
 
 .case-study-main:focus {

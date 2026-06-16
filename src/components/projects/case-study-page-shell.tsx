@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { CaseStudyFooterActions } from "@/components/case-studies/case-study-footer-actions";
+import { CaseStudyScrollUpButton } from "@/components/case-studies/case-study-scroll-up-button";
 import { CaseStudySkipLink } from "@/components/case-studies/case-study-skip-link";
 import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-context";
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
@@ -56,6 +57,7 @@ export function CaseStudyPageShell({
       </main>
 
       <ScrollMinimapRuler scrollRootRef={scrollRootRef} />
+      <CaseStudyScrollUpButton scrollRootRef={scrollRootRef} />
     </CaseStudyTocProvider>
   );
 }

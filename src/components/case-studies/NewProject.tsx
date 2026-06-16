@@ -49,7 +49,7 @@ export default function NewProjectContent() {
               alt="Piggy reduced mutual fund support tickets overview"
             />
             <CaseStudyLabel>PROJECT OVERVIEW</CaseStudyLabel>
-            <CaseStudyH2 toc={false}>Outline</CaseStudyH2>
+            <CaseStudyH2 toc={false}>Let&apos;s Set the Context</CaseStudyH2>
             <CaseStudyParagraph>
               This project showcases how we identified critical gaps in both the
               pre-purchase and post-purchase journey of mutual fund investments. By
@@ -100,7 +100,7 @@ export default function NewProjectContent() {
         </CaseStudySection>
       </CaseStudyProse>
 
-      <CaseStudyWide>
+      <CaseStudyWide className="pb-12">
         <CaseStudyMedia
           aspect="square"
           borderless
@@ -333,18 +333,17 @@ export default function NewProjectContent() {
           label="Updated purchase journey"
         />
       </CaseStudyWide>
+      <CaseStudyWide>
+        <CaseStudyMedia
+          aspect="natural"
+          borderless
+          src={CASE_STUDY_CDN_MEDIA["piggy-support-tickets-updated-journey-card"]}
+          alt="Piggy updated purchase journey card"
+        />
+      </CaseStudyWide>
 
       <CaseStudyProse>
         <CaseStudyDivider />
-
-        <CaseStudyWide>
-          <CaseStudyMedia
-            aspect="natural"
-            borderless
-            src={CASE_STUDY_CDN_MEDIA["piggy-support-tickets-solution-3"]}
-            alt="Piggy solution — 3"
-          />
-        </CaseStudyWide>
 
         <CaseStudyParagraph>
           During our competitive analysis, we observed that most investment platforms only

@@ -1,4 +1,4 @@
-export const CASE_STUDY_TEXT_COLUMN = "max-w-3xl";
+export const CASE_STUDY_TEXT_COLUMN = "max-w-4xl";
 
 /** Readable line length for body copy, quotes, and lists. */
 export const CASE_STUDY_READING_COLUMN = CASE_STUDY_TEXT_COLUMN;
@@ -107,3 +107,7 @@ export const CASE_STUDY_META_INFO =
 
 export const CASE_STUDY_META_GRID =
   `${CASE_STUDY_PAGE_GRID} pt-12 pb-16 border-b border-neutral-800/40 my-12`;
+
+/** Fixed scroll-up control — inset from viewport right (offset from article rail). */
+export const CASE_STUDY_FOOTER_SCROLL_INSET =
+  "right-[max(1rem,calc((100vw-min(100vw,64rem))/2+2rem-350px))]";

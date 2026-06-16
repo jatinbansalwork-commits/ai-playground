@@ -112,7 +112,7 @@ export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
         </div>
 
         <motion.div
-          className="pointer-events-none absolute left-0 flex w-screen -translate-y-1/2 items-center"
+          className="pointer-events-none absolute left-0 flex w-[calc(100vw-1rem)] -translate-y-1/2 items-center"
           style={{ top: beamTop }}
         >
           <svg

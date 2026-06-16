@@ -3,6 +3,7 @@ import {
   CASE_STUDY_HERO_COLUMN,
   CASE_STUDY_LEAD,
   CASE_STUDY_PAGE_GRID,
+  CASE_STUDY_TEXT_COLUMN,
 } from "@/components/case-studies/case-study-editorial";
 import { ProjectMetaSpecs } from "@/components/case-studies/project-meta-specs";
 import { CaseStudyYear } from "@/components/case-studies/case-study-prose";
@@ -37,7 +38,7 @@ export function CaseStudyHero({
           >
             {title}
           </h1>
-          <p className={`${CASE_STUDY_LEAD} max-w-3xl`}>{overview}</p>
+          <p className={`${CASE_STUDY_LEAD} ${CASE_STUDY_TEXT_COLUMN}`}>{overview}</p>
         </div>
       </header>
 

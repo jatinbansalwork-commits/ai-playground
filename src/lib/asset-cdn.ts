@@ -180,7 +180,7 @@ export const CASE_STUDY_CDN_MEDIA = {
   "piggy-support-tickets-current-flow": cdnAsset("/Piggy-tickets/Current%20Flow.png"),
   "piggy-support-tickets-solution-1": cdnAsset("/Piggy-tickets/Current%20version.png"),
   "piggy-support-tickets-solution-2": cdnAsset("/Piggy-tickets/New"),
-  "piggy-support-tickets-solution-3": cdnAsset("/Piggy-tickets/card"),
+  "piggy-support-tickets-updated-journey-card": cdnAsset("/card.png"),
   "piggy-support-tickets-solution-4": cdnAsset("/Piggy-tickets/happy%20hour"),
   "piggy-support-tickets-post-purchase-1": cdnAsset(
     "/Piggy-tickets/New%20Post%20Purchase.png",
