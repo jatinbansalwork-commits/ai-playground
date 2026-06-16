@@ -2,16 +2,19 @@
 
 import { useEffect, useState } from "react";
 
-const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+const REVEAL_DURATION_MS = 20 * 60 * 60 * 1000;
 
-function readDeadline(storageKey: string): number {
+function readDeadline(storageKey: string, durationMs: number): number {
   const stored = localStorage.getItem(storageKey);
+
   if (stored) {
     const parsed = Number(stored);
-    if (!Number.isNaN(parsed)) return parsed;
+    if (!Number.isNaN(parsed) && parsed > Date.now()) {
+      return parsed;
+    }
   }
 
-  const deadline = Date.now() + TWENTY_FOUR_HOURS_MS;
+  const deadline = Date.now() + durationMs;
   localStorage.setItem(storageKey, String(deadline));
   return deadline;
 }
@@ -30,12 +33,15 @@ export function formatRevealCountdown(remainingMs: number) {
   };
 }
 
-export function useCaseStudyRevealCountdown(storageKey: string) {
-  const [remainingMs, setRemainingMs] = useState(TWENTY_FOUR_HOURS_MS);
+export function useCaseStudyRevealCountdown(
+  storageKey: string,
+  durationMs: number = REVEAL_DURATION_MS,
+) {
+  const [remainingMs, setRemainingMs] = useState(durationMs);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const deadline = readDeadline(storageKey);
+    const deadline = readDeadline(storageKey, durationMs);
 
     function tick() {
       setRemainingMs(Math.max(0, deadline - Date.now()));
@@ -46,7 +52,7 @@ export function useCaseStudyRevealCountdown(storageKey: string) {
 
     const intervalId = window.setInterval(tick, 1000);
     return () => window.clearInterval(intervalId);
-  }, [storageKey]);
+  }, [durationMs, storageKey]);
 
   const countdown = formatRevealCountdown(remainingMs);
 

@@ -23,7 +23,7 @@ import { getCaseStudyContent } from "@/lib/project-content";
 import { useCaseStudyRevealCountdown } from "@/hooks/use-case-study-reveal-countdown";
 
 const SLUG = "cisco-policy-copilot";
-const REVEAL_STORAGE_KEY = `case-study-reveal:${SLUG}`;
+const REVEAL_STORAGE_KEY = `case-study-reveal:${SLUG}:v3`;
 
 export default function CiscoPolicyCopilotContent() {
   const content = getCaseStudyContent(SLUG)!;
@@ -48,6 +48,13 @@ export default function CiscoPolicyCopilotContent() {
         aria-hidden={!isRevealed}
       >
       <CaseStudyProse>
+        <CaseStudyWide className="!mb-4">
+          <CaseStudyMedia
+            aspect="video"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-overview"]}
+            alt="Cisco Policy Copilot overview"
+          />
+        </CaseStudyWide>
         <CaseStudyH1>
           Security policy creation is often slow, complex, and deeply manual, even for
           experienced network administrators.
@@ -56,13 +63,6 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyQuote>
           &ldquo;Allow the Engineering team to access GitHub securely&rdquo;
         </CaseStudyQuote>
-        <CaseStudyWide className="!mt-4">
-          <CaseStudyMedia
-            aspect="video"
-            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-overview"]}
-            alt="Cisco Policy Copilot overview"
-          />
-        </CaseStudyWide>
         <CaseStudyParagraph>
           can require administrators to manually configure users, applications, protocols,
           security profiles, logging rules, compliance requirements, and deployment settings
@@ -70,11 +70,25 @@ export default function CiscoPolicyCopilotContent() {
           happen. The challenge was translating business intent into a safe, compliant, and
           deployable policy.
         </CaseStudyParagraph>
+        <CaseStudyWide className="!mt-4">
+          <CaseStudyMedia
+            aspect="natural"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-why-matters"]}
+            alt="Cisco Policy Copilot — why this matters"
+          />
+        </CaseStudyWide>
         <CaseStudyParagraph>
           I got an opportunity to transform this workflow into an AI-assisted experience that
           helps administrators create policies faster while maintaining trust, compliance, and
           full control over every decision.
         </CaseStudyParagraph>
+        <CaseStudyWide className="!mt-4">
+          <CaseStudyMedia
+            aspect="natural"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-workflow-transformation"]}
+            alt="Cisco Policy Copilot — workflow transformation"
+          />
+        </CaseStudyWide>
         <CaseStudyDivider />
       </CaseStudyProse>
 
@@ -100,9 +114,6 @@ export default function CiscoPolicyCopilotContent() {
             "Existing tools optimise for configuration efficiency, not decision confidence.",
           ]}
         />
-        <CaseStudyWide className="!mt-4">
-          <CaseStudyMedia aspect="natural" alt="Cisco Policy Copilot — why this matters" />
-        </CaseStudyWide>
         <CaseStudyDivider />
 
         <CaseStudyH2>MY ROLE</CaseStudyH2>

@@ -15,12 +15,19 @@ import { CASE_STUDY_BODY_ID, CASE_STUDY_TITLE_ID } from "@/lib/case-study-a11y";
 interface CaseStudyPageShellProps {
   backHref: string;
   backDestination: string;
+  /** Top-left back control — defaults to `backHref` / `backDestination`. */
+  navBackHref?: string;
+  navBackDestination?: string;
+  dataSheet?: "case-study" | "recent-work";
   children: ReactNode;
 }
 
 export function CaseStudyPageShell({
   backHref,
   backDestination,
+  navBackHref = backHref,
+  navBackDestination = backDestination,
+  dataSheet = "case-study",
   children,
 }: CaseStudyPageShellProps) {
   const scrollRootRef = useRef<HTMLElement>(null);
@@ -31,18 +38,18 @@ export function CaseStudyPageShell({
       <main
         ref={scrollRootRef}
         id="main-content"
-        data-sheet="case-study"
+        data-sheet={dataSheet}
         className="case-study-main fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
         tabIndex={-1}
       >
         <CaseStudySkipLink />
         <ScrollResetLink
-          href={backHref}
+          href={navBackHref}
           scroll={true}
           className={NAV_BACK_LINK_CLASS}
-          aria-label={backNavigationLabel(backDestination)}
+          aria-label={backNavigationLabel(navBackDestination)}
         >
-          <NavBackLinkLabel destination={backDestination} />
+          <NavBackLinkLabel destination={navBackDestination} />
         </ScrollResetLink>
 
         <article
