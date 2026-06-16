@@ -4,6 +4,7 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyDivider,
   CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -49,7 +50,7 @@ export default function ProjectTwoContent() {
           to market.
         </CaseStudyParagraph>
 
-        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyDivider />
 
         <CaseStudyH2>Clarity at First Glance</CaseStudyH2>
         <CaseStudyParagraph>
@@ -164,7 +165,7 @@ export default function ProjectTwoContent() {
           don&apos;t just provide information—they create clarity.
         </CaseStudyParagraph>
 
-        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyDivider />
 
         <CaseStudyH2>Thanks for Reading</CaseStudyH2>
         <CaseStudyParagraph>

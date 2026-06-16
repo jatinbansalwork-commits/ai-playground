@@ -28,17 +28,19 @@ export function ProjectMetaSpecs({
 }: ProjectMetaSpecsProps) {
   return (
     <section className={CASE_STUDY_META_GRID} aria-label="Project details">
-      <dl className="flex flex-col space-y-8 md:col-span-1">
-        <div className="space-y-2">
-          <dt className={CASE_STUDY_META_LABEL}>Services</dt>
-          <dd>
-            <ul className={`${CASE_STUDY_META_VALUE} space-y-1`}>
-              {services.map((service) => (
-                <li key={service}>{service}</li>
-              ))}
-            </ul>
-          </dd>
-        </div>
+      <dl className="flex flex-col space-y-8 md:col-span-1 max-md:rounded-xl max-md:border max-md:border-white/10 max-md:bg-white/[0.03] max-md:p-4">
+        {services.length > 0 ? (
+          <div className="space-y-2">
+            <dt className={CASE_STUDY_META_LABEL}>Services</dt>
+            <dd>
+              <ul className={`${CASE_STUDY_META_VALUE} space-y-1`}>
+                {services.map((service) => (
+                  <li key={service}>{service}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        ) : null}
 
         <div className="space-y-1">
           <dt className={CASE_STUDY_META_LABEL}>Client</dt>

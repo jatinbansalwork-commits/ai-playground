@@ -1,4 +1,5 @@
-import { getExperimentCategories } from "@/lib/experiments-registry";
+import { ROUTES } from "@/lib/constants";
+import { getExperimentCategories, hasExperimentArticle } from "@/lib/experiments-registry";
 
 export const EXPERIMENTS_FILTERS = [
   { id: "all", label: "All" },
@@ -19,6 +20,13 @@ export function filterExperimentItems<T extends { slug: string }>(
   filter: ExperimentFilterId,
 ): T[] {
   if (filter === "all") return items;
+
+  if (filter === "article") {
+    return items.filter((item) => {
+      const categories = getExperimentCategories(item.slug);
+      return categories.includes("article") || hasExperimentArticle(item.slug);
+    });
+  }
 
   return items.filter((item) => {
     const categories = getExperimentCategories(item.slug);
@@ -318,5 +326,32 @@ export function getExperimentCtaLabel(
   if (category === "ai-experiment") return "Try Now";
 
   return null;
+}
+
+export const EXPERIMENTS_GALLERY_FILTER_PARAM = "filter";
+
+export function isExperimentFilterId(
+  value: string | null | undefined,
+): value is ExperimentFilterId {
+  return EXPERIMENTS_FILTERS.some((entry) => entry.id === value);
+}
+
+export function parseExperimentFilterId(
+  value: string | null | undefined,
+): ExperimentFilterId {
+  return isExperimentFilterId(value) ? value : "all";
+}
+
+export function getExperimentsGalleryHref(
+  filter: ExperimentFilterId = "all",
+): string {
+  if (filter === "all") return ROUTES.fun;
+  return `${ROUTES.fun}?${EXPERIMENTS_GALLERY_FILTER_PARAM}=${filter}`;
+}
+
+export function getExperimentsFilterLabel(filter: ExperimentFilterId): string {
+  return (
+    EXPERIMENTS_FILTERS.find((entry) => entry.id === filter)?.label ?? "All"
+  );
 }
 

@@ -32,15 +32,15 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "Cisco - Policy Copilot",
+    "⏳ Cisco - Policy Copilot",
     "2026",
-    "Cisco platform specific network security workflow design and overview details.",
+    "Designing an AI-powered security teammate that transforms business intent into deployable firewall policies.",
     {
-      services: ["Product Design", "UX Research", "Prototyping"],
+      services: [],
       client: "Cisco",
       location: "San Jose, CA",
       infoText:
-        "Reimagined how security policy telemetry is surfaced for network practitioners — translating rule diffs, validation errors, and deployment states into a single conversational audit surface.",
+        "Cisco is a global leader in networking and cybersecurity, building the infrastructure that connects organizations worldwide and secures their digital operations.",
     },
   ),
   "freshprints-design-system": entry(
@@ -172,7 +172,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "piggy-reduced-mutual-fund-support-tickets",
     "✅ Piggy - Reduced Mutual Fund Support Tickets",
     "2023",
-    "How we reduced mutual fund support tickets by 12% at Navi",
+    "How we reduced mutual fund support tickets by 12% at Piggy",
     {
       services: [
         "UX Research",

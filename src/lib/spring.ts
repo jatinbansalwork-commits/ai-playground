@@ -16,6 +16,12 @@ export const springScrollSnap = {
   damping: 80,
 };
 
+export const springScrollLine = {
+  type: "spring" as const,
+  stiffness: 650,
+  damping: 40,
+};
+
 export const springScale = {
   type: "spring" as const,
   stiffness: 500,

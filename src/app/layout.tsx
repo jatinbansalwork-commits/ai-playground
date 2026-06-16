@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import CacheManager from "@/components/CacheManager";
 import ScrollToTop from "@/components/ScrollToTop";
 import { SiteCursor } from "@/components/site-cursor-loader";
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ScrollToTop />
         <SiteCursor />
         {children}
+        <Analytics />
       </body>
     </html>
   );

@@ -1,7 +1,13 @@
 import { CRAFT_PREVIEW } from "@/lib/craft-colors";
 import { ROUTES, SITE_NAME } from "@/lib/constants";
 import type { CraftSection } from "@/lib/craft-content";
+import { getArticleExcerptText } from "@/lib/craft-content";
+import type { CraftArticleSection } from "@/lib/craft-content";
 import type { ExperimentCategory } from "@/lib/experiments-filters";
+import {
+  getExperimentsFilterLabel,
+  getExperimentsGalleryHref,
+} from "@/lib/experiments-filters";
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENT_CDN_MEDIA } from "@/lib/asset-cdn";
 
@@ -10,11 +16,7 @@ type ExperimentMediaInput =
   | (ExperimentMedia & { src: string })
   | Partial<Record<ExperimentCategory, string | ExperimentMedia>>;
 
-export interface ExperimentArticleSection {
-  id: string;
-  title: string;
-  paragraphs: string[];
-}
+export interface ExperimentArticleSection extends CraftArticleSection {}
 
 export interface ExperimentRegistryEntry {
   /** URL-safe id — also used for media filenames and article routes. */
@@ -225,6 +227,362 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
       type: "video",
     },
   },
+  {
+    slug: "design-review-checklist",
+    title: "Why We Introduced a Design Review Checklist",
+    categories: ["article"],
+    media: EXPERIMENT_CDN_MEDIA["design-review-checklist-cover"],
+    article: {
+      date: "May 2025",
+      sections: [
+        {
+          id: "reviews-without-structure",
+          title: "As Fresh Prints grew",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "As Fresh Prints continued to grow, so did the complexity of our product ecosystem. More designers were contributing across multiple teams, new features were being launched faster, and maintaining consistency became increasingly challenging.",
+            },
+            {
+              type: "paragraph",
+              text: "To support this growth, we introduced a Design System—a shared foundation of components, typography, colors, spacing standards, and interaction patterns. The goal was simple: create a common language that would help designers build consistent experiences more efficiently. The Design System gave teams a clear set of standards. But after several review cycles, I noticed an important gap.",
+            },
+            {
+              type: "image",
+              src: "/Review%20Checklist/cover.png",
+              alt: "Design system overview",
+              aspect: "natural",
+            },
+            {
+              type: "paragraph",
+              text: "Even though designers had access to the right components and guidelines, many reviews were still uncovering the same issues:",
+            },
+            {
+              type: "list",
+              variant: "chips",
+              items: [
+                "Inconsistent spacing and layouts",
+                "Missing empty and error states",
+                "Accessibility concerns",
+                "Incorrect component usage",
+                "Unclear content hierarchy",
+                "Design system standards being overlooked",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "The issue wasn't a lack of knowledge. The issue was that as products become more complex, it's unrealistic to expect designers to remember every design principle, accessibility requirement, and system guideline during every project.",
+            },
+            {
+              type: "paragraph",
+              text: "That's when I realized something important:",
+            },
+            {
+              type: "quote",
+              text: "A Design System tells teams what to use. A Review System helps teams use it consistently.",
+            },
+          ],
+        },
+        {
+          id: "what-the-checklist-covers",
+          title: "The Inspiration",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "While researching how mature design organizations maintain quality at scale, I noticed a common pattern. The best teams don't rely on memory. They rely on systems. Pilots use pre-flight checklists before takeoff. Surgeons use checklists before procedures. Engineers use deployment checklists before releasing software.",
+            },
+            {
+              type: "paragraph",
+              text: "Not because they lack expertise, but because consistency matters more than memory. That idea resonated deeply with me.",
+            },
+            {
+              type: "paragraph",
+              text: "Instead of treating design reviews as the place where quality issues were discovered, what if we could help designers identify those issues before the review even started?",
+            },
+            {
+              type: "paragraph",
+              text: "What if reviews could focus on product thinking rather than quality control?",
+            },
+          ],
+        },
+        {
+          id: "designing-the-checklist",
+          title: "Designing the Checklist",
+          blocks: [
+            {
+              type: "image",
+              src: "/Review%20Checklist/2.png",
+              alt: "Design review checklist",
+              aspect: "natural",
+            },
+            {
+              type: "paragraph",
+              text: "As we launched the Design System, I introduced a Design Review Checklist to act as a quality gate before any design entered formal review. The objective wasn't to add more process. The objective was to reduce review cycles, improve consistency, and create a shared definition of quality across the organization.",
+            },
+            {
+              type: "paragraph",
+              text: "The checklist focused on recurring themes that frequently surfaced during reviews:",
+            },
+            {
+              type: "checklist-table",
+              categories: [
+                {
+                  title: "Design System Adoption",
+                  questions: [
+                    "Are approved components being used correctly?",
+                    "Is spacing aligned with system standards?",
+                    "Are typography styles applied consistently?",
+                    "Are design tokens being used correctly?",
+                  ],
+                },
+                {
+                  title: "Accessibility",
+                  questions: [
+                    "Is information communicated through more than color alone?",
+                    "Does text meet contrast requirements?",
+                    "Are interactive elements clearly identifiable?",
+                  ],
+                },
+                {
+                  title: "Content Quality",
+                  questions: [
+                    "Are labels and messaging clear?",
+                    "Are empty states considered?",
+                    "Are error states included?",
+                  ],
+                },
+                {
+                  title: "Experience Quality",
+                  questions: [
+                    "Have edge cases been addressed?",
+                    "Is the user flow complete?",
+                    "Can users clearly understand the next step?",
+                  ],
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "Instead of relying on memory, designers now had a simple framework to self-review their work.",
+            },
+            {
+              type: "divider",
+            },
+            {
+              type: "heading",
+              text: "Building a Review Process Around the Checklist",
+            },
+            {
+              type: "paragraph",
+              text: "Creating the checklist was only the first step. For it to be successful, it needed to become part of the team's workflow. Rather than introducing another manual approval process, I designed a lightweight review system around it.",
+            },
+            {
+              type: "paragraph",
+              text: "Before requesting a design review, every designer would:",
+            },
+            {
+              type: "process-steps",
+              steps: [
+                {
+                  title: "Complete the Checklist",
+                  body: [
+                    {
+                      type: "paragraph",
+                      text: "Designers reviewed their work against the checklist and confirmed that each requirement had been addressed.",
+                    },
+                    {
+                      type: "paragraph",
+                      text: "This encouraged self-review and helped identify issues early in the process.",
+                    },
+                  ],
+                },
+                {
+                  title: "Submit Through a Review Form",
+                  body: [
+                    {
+                      type: "paragraph",
+                      text: "Once completed, designers submitted their work through a Google Form.",
+                    },
+                    {
+                      type: "paragraph",
+                      text: "The submission included:",
+                    },
+                    {
+                      type: "bullets",
+                      items: [
+                        "Designer Name",
+                        "Team Name",
+                        "Email Address",
+                        "Link to Figma File",
+                        "Brief Overview of the Feature or Flow",
+                        "Completed Checklist (Y/N)",
+                      ],
+                    },
+                    {
+                      type: "paragraph",
+                      text: "The overview section was particularly valuable because it provided reviewers with context before opening the design file.",
+                    },
+                    {
+                      type: "paragraph",
+                      text: "Instead of immediately jumping into screens, reviewers could understand:",
+                    },
+                    {
+                      type: "bullets",
+                      items: [
+                        "What problem was being solved",
+                        "Which users were impacted",
+                        "What changes were introduced",
+                        "Any important constraints or considerations",
+                      ],
+                    },
+                    {
+                      type: "image",
+                      src: "/Review%20Checklist/5.png",
+                      alt: "Google Form submission overview",
+                      aspect: "natural",
+                    },
+                  ],
+                },
+                {
+                  title: "Automated Submission Confirmation",
+                  body: [
+                    {
+                      type: "paragraph",
+                      text: "After submission, the designer received a confirmation email, ensuring there was clear visibility into the review process.",
+                    },
+                    {
+                      type: "paragraph",
+                      text: "This reduced uncertainty around review status and created a record of submissions.",
+                    },
+                  ],
+                },
+                {
+                  title: "Design System Team Review",
+                  body: [
+                    {
+                      type: "paragraph",
+                      text: "A member of the Design System team would then review the submission.",
+                    },
+                    {
+                      type: "paragraph",
+                      text: "Their review focused on:",
+                    },
+                    {
+                      type: "bullets",
+                      items: [
+                        "Design System compliance",
+                        "Accessibility requirements",
+                        "Consistency across patterns",
+                        "Overall experience quality",
+                      ],
+                    },
+                    {
+                      type: "paragraph",
+                      text: "Depending on the outcome, the submission would receive:",
+                    },
+                    {
+                      type: "chips",
+                      items: [
+                        "Feedback for improvements",
+                        "Requests for revisions",
+                        "Final approval",
+                      ],
+                    },
+                    {
+                      type: "paragraph",
+                      text: "This created a structured yet lightweight quality assurance process that scaled across teams without creating unnecessary bottlenecks.",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "review-workflow",
+          title: "The Review Workflow",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "The final workflow looked like this:",
+            },
+            {
+              type: "workflow-flow",
+              steps: [
+                "Design Exploration",
+                "Self Review Using Checklist",
+                "Google Form Submission",
+                "Design System Team Review",
+                "Feedback or Approval",
+                "Design Handoff & Implementation",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "By introducing this process, quality became part of the workflow instead of being dependent on individual reviewers.",
+            },
+          ],
+        },
+        {
+          id: "what-changed",
+          title: "What Changed",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "The impact became visible within a few review cycles. Design reviews became more focused and productive.",
+            },
+            {
+              type: "paragraph",
+              text: "Instead of spending time identifying basic issues such as spacing inconsistencies, accessibility gaps, or missing states, conversations shifted toward more strategic topics:",
+            },
+            {
+              type: "list",
+              variant: "chips",
+              items: [
+                "User behavior",
+                "Product decisions",
+                "Business goals",
+                "Trade-offs",
+                "Experiment opportunities",
+              ],
+            },
+            {
+              type: "paragraph",
+              text: "The checklist also created a shared understanding of what \"review ready\" meant. New designers onboarded faster because expectations were documented. Teams became more confident in their submissions. The Design System gained stronger adoption because designers were actively validating their work against it.",
+            },
+            {
+              type: "paragraph",
+              text: "Most importantly, quality became more consistent across teams. Not because reviewers worked harder. But because the process made quality easier to achieve.",
+            },
+            {
+              type: "image",
+              src: "/Review%20Checklist/Screenshot%202026-06-16%20at%2010.14.28%E2%80%AFAM.png",
+              alt: "Design review checklist impact",
+              aspect: "natural",
+            },
+          ],
+        },
+        {
+          id: "the-bigger-lesson",
+          title: "Lessons Learned",
+          blocks: [
+            {
+              type: "paragraph",
+              text: "One of the biggest lessons from this initiative was that Design Systems alone don't create consistency.",
+            },
+            {
+              type: "paragraph",
+              text: "People, processes, and habits create consistency. The Design System provided the building blocks. The Review Checklist provided accountability. The Review Workflow ensured adoption. Together, they formed a scalable quality framework that helped Fresh Prints maintain design excellence as the organization continued to grow.",
+            },
+            {
+              type: "paragraph",
+              text: "And while users never saw the checklist itself, they experienced its impact every time they interacted with a more consistent, accessible, and thoughtfully designed product. Sometimes the most valuable design work isn't designing another screen. It's designing the systems that help an entire team create better experiences.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 /** Slugs in gallery order — derived from registry. */
@@ -258,6 +616,16 @@ export function getExperimentArticleSlugs(): string[] {
   );
 }
 
+export function hasExperimentArticle(slug: string): boolean {
+  return Boolean(getExperimentRegistryEntry(slug)?.article);
+}
+
+export function getExperimentArticleExcerpt(slug: string, maxLength = 180): string {
+  const article = getExperimentArticle(slug);
+  if (!article) return "";
+  return getArticleExcerptText(article.sections, maxLength);
+}
+
 export function getExperimentArticle(slug: string) {
   const entry = getExperimentRegistryEntry(slug);
   if (!entry?.article) return undefined;
@@ -286,6 +654,8 @@ export function getExperimentsArticleSection(): CraftSection {
     id: "experiments",
     title: EXPERIMENTS_PAGE.title,
     href: EXPERIMENTS_PAGE.href,
+    backHref: getExperimentsGalleryHref("article"),
+    backLabel: getExperimentsFilterLabel("article"),
     description: EXPERIMENTS_PAGE.description,
     items: getExperimentGalleryItems().map((item) => ({
       ...item,

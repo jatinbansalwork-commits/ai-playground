@@ -11,7 +11,7 @@ import {
   CaseStudyQuote,
   CaseStudyTightStack,
   CaseStudyWide,
-  CaseStudyYear,
+  CaseStudyLabel,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -39,7 +39,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyLabel>PROJECT OVERVIEW</CaseStudyLabel>
         <CaseStudyH2>Why Saltbot?</CaseStudyH2>
         <CaseStudyTightStack>
           <CaseStudyParagraph tight>

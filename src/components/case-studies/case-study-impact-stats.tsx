@@ -5,6 +5,7 @@ interface ImpactStat {
 
 interface CaseStudyImpactStatsProps {
   items: ImpactStat[];
+  className?: string;
 }
 
 function TrendDownIcon() {
@@ -28,20 +29,25 @@ function TrendDownIcon() {
   );
 }
 
-export function CaseStudyImpactStats({ items }: CaseStudyImpactStatsProps) {
+export function CaseStudyImpactStats({
+  items,
+  className = "",
+}: CaseStudyImpactStatsProps) {
   return (
-    <dl className="grid grid-cols-1 gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-6 sm:grid-cols-2 sm:gap-8 sm:p-8">
+    <dl
+      className={`grid grid-cols-1 gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-6 sm:grid-cols-2 sm:gap-8 sm:p-8 ${className}`.trim()}
+    >
       {items.map((item) => (
-        <div key={item.label} className="space-y-2">
-          <dt className="sr-only">{item.label}</dt>
-          <dd className="flex items-center gap-2">
+        <div key={item.label} className="flex flex-col gap-2">
+          <dt className="order-2 text-sm leading-relaxed text-neutral-400 md:text-base">
+            {item.label}
+          </dt>
+          <dd className="order-1 m-0 flex items-center gap-2">
             <TrendDownIcon />
             <span className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
+              <span className="sr-only">Decrease: </span>
               {item.value}
             </span>
-          </dd>
-          <dd className="text-sm leading-relaxed text-neutral-400 md:text-base">
-            {item.label}
           </dd>
         </div>
       ))}

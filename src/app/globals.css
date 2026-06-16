@@ -98,17 +98,19 @@ html:has(main[data-sheet="recent-work"]) body {
 }
 
 .projects-row-spacer {
+  display: block;
   flex: 1 1 0%;
   min-width: 24px;
   height: 1px;
   margin-inline: 12px;
-  background: linear-gradient(
-    90deg,
-    hsla(0 0% 100% / 0.14),
-    hsla(0 0% 100% / 0.08) 50%,
-    hsla(0 0% 100% / 0.14)
-  );
-  opacity: 0.55;
+  align-self: center;
+  background-color: hsla(0 0% 100% / 0.28);
+  transition: background-color 150ms ease;
+}
+
+.projects-row:hover .projects-row-spacer,
+.projects-row:focus-visible .projects-row-spacer {
+  background-color: hsla(0 0% 100% / 0.42);
 }
 
 .projects-row-year {
@@ -507,6 +509,15 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* WCAG 2.4.11 — case study sticky chrome + back link clearance */
+.case-study-main {
+  scroll-padding-top: 8rem;
+}
+
+.case-study-main:focus {
+  outline: none;
 }
 
 /* WCAG 2.4.11 — keep focused main landmark clear of fixed chrome */

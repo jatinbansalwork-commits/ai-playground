@@ -82,11 +82,6 @@ export function ExperimentsBentoCard({
             <h2 className="truncate text-sm font-normal tracking-normal text-white">
               {item.title}
             </h2>
-            {item.date ? (
-              <p className="mt-0.5 truncate text-xs tracking-normal text-neutral-400">
-                {item.date}
-              </p>
-            ) : null}
           </div>
         ) : null}
       </div>

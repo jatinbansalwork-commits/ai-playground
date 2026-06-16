@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { ArticleBackLink } from "@/components/craft/article-back-link";
+import { ArticleSectionContent } from "@/components/craft/article-section-content";
 import type { CraftArticle, CraftSection } from "@/lib/craft-content";
-import { getAdjacentArticles } from "@/lib/craft-content";
-import { SectionChrome } from "@/components/navigation/section-chrome";
+import { getAdjacentArticles, getArticleSectionBlocks } from "@/lib/craft-content";
+import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
 
 interface ArticleLayoutProps {
   section: CraftSection;
@@ -18,45 +20,23 @@ export function ArticleLayout({
     ? resolveAdjacentArticles(article.slug)
     : getAdjacentArticles(section.id, article.slug);
 
+  const backHref = section.backHref ?? section.href;
+  const backLabel = section.backLabel ?? section.title;
+
   return (
     <main
       data-sheet="craft-article"
-      className="craft-page min-h-screen pb-24 text-white"
+      className="craft-page fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
-      <SectionChrome />
+      <ArticleBackLink
+        fallbackHref={backHref}
+        destination={backLabel}
+        className={NAV_BACK_LINK_CLASS}
+      />
 
-      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-12 px-6 pt-28 lg:grid-cols-[200px_1fr]">
-        <aside className="hidden lg:block">
-          <nav aria-label="Table of contents" className="sticky top-28">
-            <Link
-              href={section.href}
-              className="mb-6 block text-sm text-neutral-400 transition-colors hover:text-white"
-            >
-              ← {section.title}
-            </Link>
-            <ul className="space-y-2 text-sm text-neutral-500">
-              {article.sections.map((entry) => (
-                <li key={entry.id}>
-                  <a
-                    href={`#${entry.id}`}
-                    className="transition-colors hover:text-white"
-                  >
-                    {entry.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
-
+      <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-24">
         <article className="min-w-0">
           <header className="mb-12 border-b border-neutral-800 pb-8">
-            <Link
-              href={section.href}
-              className="mb-4 inline-block text-sm text-neutral-400 transition-colors hover:text-white lg:hidden"
-            >
-              ← {section.title}
-            </Link>
             <h1 className="text-4xl font-normal tracking-tight">{article.title}</h1>
             {article.date ? (
               <time className="mt-3 block text-sm text-neutral-500">
@@ -65,15 +45,22 @@ export function ArticleLayout({
             ) : null}
           </header>
 
-          <div className="space-y-12">
-            {article.sections.map((entry) => (
-              <section key={entry.id} id={entry.id} className="scroll-mt-28">
+          <div>
+            {article.sections.map((entry, index) => (
+              <section
+                key={entry.id}
+                id={entry.id}
+                className={[
+                  "scroll-mt-16",
+                  index > 0 ? "mt-12 border-t border-neutral-800 pt-12" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
                 <h2 className="mb-4 text-xl font-normal">{entry.title}</h2>
-                <div className="space-y-4 text-[15px] leading-relaxed text-neutral-300">
-                  {entry.paragraphs.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
+                <ArticleSectionContent
+                  blocks={getArticleSectionBlocks(entry)}
+                />
               </section>
             ))}
           </div>

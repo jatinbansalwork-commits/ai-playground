@@ -4,6 +4,7 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyDivider,
   CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -99,7 +100,7 @@ export default function PiggyMutualFundContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyDivider />
       </CaseStudyProse>
 
       <CaseStudyWide>

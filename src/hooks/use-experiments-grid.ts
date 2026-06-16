@@ -36,10 +36,9 @@ export function useExperimentsGrid<T extends { slug: string }>({
   const filteredCards = useMemo(() => {
     if (filter === "all") return allCardsCollection;
 
-    return allCardsCollection.filter(
-      (entry) => entry.displayCategory === filter,
-    );
-  }, [filter, allCardsCollection]);
+    const orderedItems = sortExperimentsBentoItems(items);
+    return getExperimentDisplayEntries(orderedItems, filter);
+  }, [filter, items, allCardsCollection]);
 
   const randomizedCards = useMemo(() => {
     if (shuffleSeed === 0) return filteredCards;

@@ -20,23 +20,25 @@ export function RecentWorkLayoutShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <main
-      ref={scrollRootRef}
-      id="main-content"
-      data-sheet="recent-work"
-      className="fixed inset-0 z-10 flex h-screen w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden bg-[#1a1a1a] px-8 pb-12 pt-24 text-white"
-    >
-      <ScrollResetLink
-        href={ROUTES.home}
-        scroll={true}
-        className={NAV_BACK_LINK_CLASS}
+    <>
+      <main
+        ref={scrollRootRef}
+        id="main-content"
+        data-sheet="recent-work"
+        className="fixed inset-0 z-10 flex h-screen w-full flex-col items-start justify-start overflow-y-auto overflow-x-hidden bg-[#1a1a1a] px-8 pb-12 pt-24 text-white"
       >
-        <NavBackLinkLabel destination="Home" />
-      </ScrollResetLink>
+        <ScrollResetLink
+          href={ROUTES.home}
+          scroll={true}
+          className={NAV_BACK_LINK_CLASS}
+        >
+          <NavBackLinkLabel destination="Home" />
+        </ScrollResetLink>
+
+        <div className="mx-auto w-full max-w-5xl">{children}</div>
+      </main>
 
       <ScrollMinimapRuler scrollRootRef={scrollRootRef} />
-
-      <div className="mx-auto w-full max-w-5xl">{children}</div>
-    </main>
+    </>
   );
 }

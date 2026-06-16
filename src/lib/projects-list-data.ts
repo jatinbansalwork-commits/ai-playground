@@ -21,11 +21,13 @@ export interface ProjectRowItem {
  *   cdnAsset("/thumbnails/cisco-hover.jpg");
  */
 export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
+  "cisco-policy-copilot": cdnAsset("/Hover/cisco"),
   "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
   "kalash-year-end-recap": cdnAsset("/Hover/k1"),
   "kalash-rewards": cdnAsset("/Hover/ticker"),
+  "piggy-reduced-mutual-fund-support-tickets": cdnAsset("/Hover/intro"),
 };
 
 /** Square 1:1 placeholder until real hover assets are uploaded. */
@@ -37,13 +39,20 @@ function hoverThumbnailForSlug(slug: string): string {
   return HOVER_THUMBNAIL_OVERRIDES[slug] ?? HOVER_THUMBNAIL_PLACEHOLDER;
 }
 
+/** Hidden from the projects index until the case study is ready. */
+const HIDDEN_PROJECT_SLUGS = new Set([
+  "freshprints-heal-tool",
+  "piggy-personalised-mutual-fund-recommendation",
+  "saltmine-sync",
+]);
+
 /** Canonical projects index dataset — titles/years sync from `project-content.ts`. */
-export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies().map(
-  (study, index) => ({
+export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
+  .filter((study) => !HIDDEN_PROJECT_SLUGS.has(study.slug))
+  .map((study, index) => ({
     id: String(index + 1),
     slug: study.slug,
     title: study.title,
     year: study.year,
     hoverThumbnail: hoverThumbnailForSlug(study.slug),
-  }),
-);
+  }));

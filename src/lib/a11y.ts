@@ -9,7 +9,7 @@
  * | 1.3.1 Info and Relationships | Semantic structure | `main`, `nav`, `h1`, `aria-label` on unlabeled controls |
  * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#1a1a1a` |
  * | 2.1.1 Keyboard | All functionality via keyboard | Slider Prev/Next, filter tabs, links, modals |
- * | 2.4.1 Bypass Blocks | Skip repetitive content | `SkipToContentLink` → `#main-content` in root layout |
+ * | 2.4.1 Bypass Blocks | Skip repetitive content | `SkipToContentLink` + `CaseStudySkipLink` → article body |
  * | 2.4.3 Focus Order | Logical tab sequence | DOM order matches visual order on each route |
  * | 2.4.7 Focus Visible | Visible focus indicator | `FOCUS_RING` on every custom interactive control |
  * | 2.4.11 Focus Not Obscured (Minimum) | Focus not fully hidden by sticky UI | `outline-offset-2`, `#main-content { scroll-margin-top }` |
@@ -77,6 +77,13 @@ export const SKIP_LINK_CLASS =
 export function externalLinkLabel(title: string): string {
   return `${title} (opens in new tab)`;
 }
+
+/** Case study in-page navigation — contrast + 44px target (2.5.8). */
+export const CASE_STUDY_IN_PAGE_LINK_CLASS =
+  `inline-flex min-h-11 items-center rounded-sm px-1 text-sm text-neutral-400 underline-offset-4 transition-colors hover:text-white focus-visible:text-white focus-visible:underline ${FOCUS_RING}`;
+
+/** Case study footer / utility controls. */
+export const CASE_STUDY_FOOTER_NAV_LABEL = "Case study page actions";
 
 /** Returns a descriptive back-navigation label for screen readers. */
 export function backNavigationLabel(destination: string): string {

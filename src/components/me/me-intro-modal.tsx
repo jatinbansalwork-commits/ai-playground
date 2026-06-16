@@ -35,8 +35,17 @@ export function MeIntroModal({ open, config, onClose }: MeIntroModalProps) {
   }, [open, onClose]);
 
   useEffect(() => {
-    if (!open || !videoRef.current) return;
-    void videoRef.current.play().catch(() => undefined);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!open) {
+      video.pause();
+      video.currentTime = 0;
+      return;
+    }
+
+    video.muted = false;
+    void video.play().catch(() => undefined);
   }, [open]);
 
   if (!mounted) return null;

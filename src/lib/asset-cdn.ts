@@ -56,7 +56,7 @@ export const EXPERIMENT_CDN_MEDIA = {
     "/AI%20experiment/Screenshot%202026-06-09%20at%204.08.20%E2%80%AFPM.png",
   ),
   "wireframe-mode": cdnAsset("/kddVPtRKUV1wGirlo4ho2RIypg.webp"),
-  "minimap-tracker": cdnAsset("/IMG_6656.mp4"),
+  "minimap-tracker": cdnAsset("/Hover/phone.mp4"),
   "clip-reveal": {
     "ai-experiment": {
       src: cdnAsset("/AI%20experiment/Froggy"),
@@ -79,13 +79,16 @@ export const EXPERIMENT_CDN_MEDIA = {
   "motion-graphic-2": cdnAsset("/JGAEwcjrlYlecJ5u9sucL6bfCXI.mp4"),
   "motion-graphic-3": cdnAsset("/UaoftDpqn187UvBDpp6GsCDVFyU.mp4"),
   "motion-graphic-4": cdnAsset("/UP3Nn2hAjJmYcjYDyozMbtBA8D4.mp4"),
-  "motion-graphic-5": cdnAsset("/IMG_6657.mp4"),
-  "motion-graphic-6": cdnAsset("/IMG_6658.mp4"),
+  "motion-graphic-5": cdnAsset("/Hover/cycle%201.mp4"),
+  "motion-graphic-6": cdnAsset("/Hover/cycle%202.mp4"),
   "motion-graphic-7": cdnAsset("/1425XAHPiav1RbL3397N87ens.mp4"),
   "motion-graphic-8": cdnAsset(
     "/Motion%20graphic/WRfEXvj0Fy7XlCGS1DPYVnLD6OM%20%281%29.mp4",
   ),
   "motion-graphic-9": cdnAsset("/video%20232321"),
+  "design-review-checklist-cover": cdnAsset(
+    "/Review%20Checklist/checklistCover.png",
+  ),
 } as const;
 
 /** Case study hero / showcase media — keyed by project slug. */
@@ -168,4 +171,23 @@ export const CASE_STUDY_CDN_MEDIA = {
   "kalash-rewards-k14": cdnAsset("/Kalash%20-%20gold/k14"),
   "kalash-rewards-k17": cdnAsset("/Kalash%20-%20gold/k17"),
   "piggy-support-tickets-breakdown": cdnAsset("/Piggy-tickets/1.png"),
+  "piggy-support-tickets-hero": cdnAsset("/Piggy-tickets/intro"),
+  "piggy-support-tickets-icon-1": cdnAsset("/Piggy-tickets/icon%201.png"),
+  "piggy-support-tickets-icon-2": cdnAsset("/Piggy-tickets/icon%202.png"),
+  "piggy-support-tickets-icon-3": cdnAsset("/Piggy-tickets/icon%203.png"),
+  "piggy-support-tickets-icon-4": cdnAsset("/Piggy-tickets/icon%204.png"),
+  "piggy-support-tickets-findings": cdnAsset("/Piggy-tickets/Finding.png"),
+  "piggy-support-tickets-current-flow": cdnAsset("/Piggy-tickets/Current%20Flow.png"),
+  "piggy-support-tickets-solution-1": cdnAsset("/Piggy-tickets/Current%20version.png"),
+  "piggy-support-tickets-solution-2": cdnAsset("/Piggy-tickets/New"),
+  "piggy-support-tickets-solution-3": cdnAsset("/Piggy-tickets/card"),
+  "piggy-support-tickets-solution-4": cdnAsset("/Piggy-tickets/happy%20hour"),
+  "piggy-support-tickets-post-purchase-1": cdnAsset(
+    "/Piggy-tickets/New%20Post%20Purchase.png",
+  ),
+  "piggy-support-tickets-post-purchase-2": cdnAsset(
+    "/Piggy-tickets/old%20Post%20Purchase.png",
+  ),
+  "cisco-policy-copilot-trust": cdnAsset("/Cisco/1.png"),
+  "cisco-policy-copilot-rating": cdnAsset("/Cisco/Rating.png"),
 } as const;

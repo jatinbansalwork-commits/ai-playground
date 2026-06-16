@@ -6,6 +6,7 @@ import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyH2,
   CaseStudyH3,
+  CaseStudyDivider,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -13,7 +14,7 @@ import {
   CaseStudySubheading,
   CaseStudyTightStack,
   CaseStudyWide,
-  CaseStudyYear,
+  CaseStudyLabel,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -41,7 +42,7 @@ export default function KalashRewardsContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyLabel>PROJECT OVERVIEW</CaseStudyLabel>
         <CaseStudyH2>Our Goal</CaseStudyH2>
         <CaseStudyParagraph>
           Drive better financial decisions through building trust, friendly
@@ -80,7 +81,7 @@ export default function KalashRewardsContent() {
           too complicated to understand.
         </CaseStudyParagraph>
 
-        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyDivider />
 
         <CaseStudyH2>One user during testing described it simply:</CaseStudyH2>
         <CaseStudyQuote>

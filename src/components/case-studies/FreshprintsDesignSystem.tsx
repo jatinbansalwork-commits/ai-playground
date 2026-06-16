@@ -5,13 +5,14 @@ import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyH2,
+  CaseStudyDivider,
   CaseStudyH3,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
   CaseStudyTightStack,
-  CaseStudyYear,
+  CaseStudyLabel,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
@@ -40,7 +41,7 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyLabel>PROJECT OVERVIEW</CaseStudyLabel>
         <CaseStudyH2>Principles Behind the Design System</CaseStudyH2>
         <CaseStudyParagraph>
           At FreshPrints, Systems Design supports a wide range of internal and external
@@ -165,20 +166,20 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyProse>
 
       <CaseStudyProse>
-        <CaseStudyYear>Goal 1</CaseStudyYear>
+        <CaseStudyLabel>Goal 1</CaseStudyLabel>
         <CaseStudyH3>Increase editing efficiency</CaseStudyH3>
         <CaseStudyParagraph>
           In order for the design system to adapt to the ever-changing needs of Fresh
           Prints Platforms, any documentation should be equally adaptive to reflect new
           updates.
         </CaseStudyParagraph>
-        <CaseStudyYear>Goal 2</CaseStudyYear>
+        <CaseStudyLabel>Goal 2</CaseStudyLabel>
         <CaseStudyH3>Understandable across teams</CaseStudyH3>
         <CaseStudyParagraph>
           Any team, such as product design or engineering should easily understand the
           documentation without adding any additional learning curve.
         </CaseStudyParagraph>
-        <CaseStudyYear>Goal 3</CaseStudyYear>
+        <CaseStudyLabel>Goal 3</CaseStudyLabel>
         <CaseStudyH3>Scalable across all products</CaseStudyH3>
         <CaseStudyParagraph>
           With many internal and consumer-based product FreshPrints, the documentation
@@ -218,7 +219,7 @@ export default function FreshprintsDesignSystemContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <div className="border-t border-neutral-800/40 pt-6" role="separator" />
+        <CaseStudyDivider />
         <CaseStudyH2>Conclusion &amp; Learnings</CaseStudyH2>
         <CaseStudyParagraph>
           This project is still a work in progress — we&apos;re about 30% through the

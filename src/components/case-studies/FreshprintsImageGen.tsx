@@ -9,7 +9,7 @@ import {
   CaseStudyQuote,
   CaseStudyTightStack,
   CaseStudyWide,
-  CaseStudyYear,
+  CaseStudyLabel,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -39,7 +39,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
-        <CaseStudyYear>PROJECT OVERVIEW</CaseStudyYear>
+        <CaseStudyLabel>PROJECT OVERVIEW</CaseStudyLabel>
         <CaseStudyH2>The Problem</CaseStudyH2>
         <CaseStudyParagraph dense>
           While auditing I started noticing something important in Mixpanel. Nothing
@@ -66,6 +66,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-01"]}
           alt="FreshPrints prompt composer interface"
         />
@@ -99,6 +100,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-02"]}
           alt="FreshPrints asset review"
         />
@@ -133,6 +135,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-04"]}
           alt="FreshPrints asset comparison"
         />
@@ -159,6 +162,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-05"]}
           alt="FreshPrints early concept mock"
         />
@@ -175,6 +179,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-06"]}
           alt="FreshPrints brand guardrails"
           label="Early concept mock in FreshPrints"
@@ -191,6 +196,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-08"]}
           alt="FreshPrints merchant dashboard"
         />
@@ -198,6 +204,7 @@ export default function FreshprintsImageGenContent() {
 
       <CaseStudyWide>
         <CaseStudyMedia
+          borderless
           src={M["freshprints-image-gen-09"]}
           alt="FreshPrints end-to-end flow"
         />

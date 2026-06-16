@@ -1,3 +1,5 @@
+import { cdnAsset } from "@/lib/asset-cdn";
+
 export interface MeIntroConfig {
   /** Silent ambient loop for the embedded card */
   previewSrc: string;
@@ -10,8 +12,8 @@ export interface MeIntroConfig {
 }
 
 export const ME_INTRO_CONFIG: MeIntroConfig = {
-  previewSrc: "/intro-preview.mp4",
-  fullSrc: "/intro-full.mp4",
+  previewSrc: cdnAsset("/Hover/video2985925070.mp4"),
+  fullSrc: cdnAsset("/Hover/video2985925070.mp4"),
   alt: "Introduction",
   hoverTooltip: "Click to listen",
 };

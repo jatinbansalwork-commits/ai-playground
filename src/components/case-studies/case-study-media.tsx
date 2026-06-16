@@ -151,7 +151,11 @@ export function CaseStudyMedia({
             decoding="async"
           />
         ) : (
-          <div className="absolute inset-0" aria-hidden />
+          <div
+            className="absolute inset-0"
+            role="img"
+            aria-label="Case study media placeholder"
+          />
         )}
       </div>
       {label ? (

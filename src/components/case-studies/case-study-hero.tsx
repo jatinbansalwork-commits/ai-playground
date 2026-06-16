@@ -6,6 +6,7 @@ import {
 } from "@/components/case-studies/case-study-editorial";
 import { ProjectMetaSpecs } from "@/components/case-studies/project-meta-specs";
 import { CaseStudyYear } from "@/components/case-studies/case-study-prose";
+import { CASE_STUDY_TITLE_ID } from "@/lib/case-study-a11y";
 import type { CaseStudyMetaSpecs } from "@/lib/project-content";
 
 interface CaseStudyHeroProps {
@@ -30,10 +31,13 @@ export function CaseStudyHero({
       <header className={`${CASE_STUDY_PAGE_GRID} ${className}`.trim()}>
         <div className={CASE_STUDY_HERO_COLUMN}>
           <CaseStudyYear>{year}</CaseStudyYear>
-          <h1 className="text-balance text-4xl font-semibold tracking-tight text-white md:text-5xl">
+          <h1
+            id={CASE_STUDY_TITLE_ID}
+            className="text-balance text-4xl font-semibold tracking-tight text-white md:text-5xl"
+          >
             {title}
           </h1>
-          <p className={`${CASE_STUDY_LEAD} md:whitespace-nowrap`}>{overview}</p>
+          <p className={`${CASE_STUDY_LEAD} max-w-3xl`}>{overview}</p>
         </div>
       </header>
 

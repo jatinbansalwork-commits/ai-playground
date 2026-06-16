@@ -1,9 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
-import type { ExperimentFilterId } from "@/lib/experiments-filters";
+import {
+  EXPERIMENTS_GALLERY_FILTER_PARAM,
+  parseExperimentFilterId,
+  type ExperimentFilterId,
+} from "@/lib/experiments-filters";
 import { ExperimentsBentoGrid } from "@/components/experiments/experiments-bento-grid";
+import { ExperimentsArticleGrid } from "@/components/experiments/experiments-article-grid";
 import { ExperimentsFilterBar } from "@/components/experiments/experiments-filter-bar";
 import { randomShuffleSeed } from "@/lib/shuffle-seed";
 
@@ -18,8 +24,33 @@ export function ExperimentsGalleryClient({
   sectionHref,
   articleSlugs,
 }: ExperimentsGalleryClientProps) {
-  const [filter, setFilter] = useState<ExperimentFilterId>("all");
+  return (
+    <Suspense fallback={null}>
+      <ExperimentsGalleryClientInner
+        items={items}
+        sectionHref={sectionHref}
+        articleSlugs={articleSlugs}
+      />
+    </Suspense>
+  );
+}
+
+function ExperimentsGalleryClientInner({
+  items,
+  sectionHref,
+  articleSlugs,
+}: ExperimentsGalleryClientProps) {
+  const searchParams = useSearchParams();
+  const [filter, setFilter] = useState<ExperimentFilterId>(() =>
+    parseExperimentFilterId(searchParams.get(EXPERIMENTS_GALLERY_FILTER_PARAM)),
+  );
   const [shuffleSeed, setShuffleSeed] = useState(0);
+
+  useEffect(() => {
+    setFilter(
+      parseExperimentFilterId(searchParams.get(EXPERIMENTS_GALLERY_FILTER_PARAM)),
+    );
+  }, [searchParams]);
 
   useEffect(() => {
     setShuffleSeed(randomShuffleSeed());
@@ -32,13 +63,17 @@ export function ExperimentsGalleryClient({
         <ExperimentsFilterBar value={filter} onChange={setFilter} />
       </div>
 
-      <ExperimentsBentoGrid
-        items={items}
-        sectionHref={sectionHref}
-        articleSlugs={articleSlugs}
-        filter={filter}
-        shuffleSeed={shuffleSeed}
-      />
+      {filter === "article" ? (
+        <ExperimentsArticleGrid items={items} sectionHref={sectionHref} />
+      ) : (
+        <ExperimentsBentoGrid
+          items={items}
+          sectionHref={sectionHref}
+          articleSlugs={articleSlugs}
+          filter={filter}
+          shuffleSeed={shuffleSeed}
+        />
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { CaseStudyH2, CaseStudyParagraph } from "@/components/case-studies/case-study-prose";
+import { resolveAssetUrl } from "@/lib/asset-cdn";
 
 export interface CaseStudyFeatureItem {
   icon: ReactNode;
@@ -35,7 +36,7 @@ export function CaseStudyFeatureGrid({
         <article key={item.title} className="flex items-start gap-4">
           {item.icon}
           <div className="min-w-0 space-y-2">
-            <CaseStudyH2>{item.title}</CaseStudyH2>
+            <CaseStudyH2 toc={false}>{item.title}</CaseStudyH2>
             <CaseStudyParagraph dense>{item.description}</CaseStudyParagraph>
           </div>
         </article>
@@ -56,6 +57,28 @@ export function TicketAnalysisIcon() {
         />
       </svg>
     </FeatureIconShell>
+  );
+}
+
+interface CaseStudyFeatureImageIconProps {
+  src: string;
+  alt?: string;
+}
+
+export function CaseStudyFeatureImageIcon({
+  src,
+  alt = "",
+}: CaseStudyFeatureImageIconProps) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={resolveAssetUrl(src)}
+      alt={alt}
+      className="h-11 w-11 shrink-0 rounded-lg object-cover"
+      loading="lazy"
+      decoding="async"
+      aria-hidden={alt === ""}
+    />
   );
 }
 
