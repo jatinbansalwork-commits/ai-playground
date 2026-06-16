@@ -430,20 +430,6 @@ export default function NewProjectContent() {
             was successful and no further action was required from them.
           </CaseStudyParagraph>
         </CaseStudySection>
-
-        <CaseStudyH2>Overall Impact</CaseStudyH2>
-        <CaseStudyImpactStats
-          items={[
-            {
-              value: "-19.2%",
-              label: "Reduction in Overall Support tickets",
-            },
-            {
-              value: "-23%",
-              label: "Decrease in unit allotment tickets",
-            },
-          ]}
-        />
       </CaseStudyProse>
     </div>
   );
