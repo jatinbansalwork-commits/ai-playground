@@ -21,7 +21,7 @@ export const FRAMES = [
     type: "section" as const,
     variant: "slide" as const,
     label: "Recent Work",
-    monogram: "Recent Work",
+    monogram: "Recent",
     monogramPan: true,
     monogramPanDuration: 14,
     badge: "v3.2",
