@@ -1,5 +1,5 @@
 /** Shared reveal window length — same for every user worldwide. */
-export const CASE_STUDY_REVEAL_DURATION_MS = 20 * 60 * 60 * 1000;
+export const CASE_STUDY_REVEAL_DURATION_MS = 30 * 60 * 60 * 1000;
 
 export interface CaseStudyRevealScheduleEntry {
   /** UTC ISO-8601 instant when the reveal window opens for everyone. */

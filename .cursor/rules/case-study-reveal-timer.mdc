@@ -15,9 +15,9 @@ Case studies with a pre-launch blur gate use a **worldwide UTC schedule**, not p
 | Field | Meaning |
 |-------|---------|
 | `startsAtUtc` | UTC ISO-8601 instant when the countdown starts (same for every visitor) |
-| `CASE_STUDY_REVEAL_DURATION_MS` | Unlock window length — **20 hours** |
+| `CASE_STUDY_REVEAL_DURATION_MS` | Unlock window length — **30 hours** |
 
-Unlock instant: `Date.parse(startsAtUtc) + 20 hours`
+Unlock instant: `Date.parse(startsAtUtc) + 30 hours`
 
 ## Resetting the timer
 
