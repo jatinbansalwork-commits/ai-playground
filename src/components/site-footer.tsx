@@ -14,7 +14,7 @@ export function SiteFooter({ pinned = false }: SiteFooterProps) {
     >
       <div className="mx-auto flex w-full max-w-5xl justify-center px-6">
         <p className="text-center font-mono text-[11px] leading-relaxed tracking-wider text-white uppercase">
-          © 2026 · Designed by JB. Amplified by AI.
+          2026 · Designed by JB · Amplified by AI.
         </p>
       </div>
     </footer>
