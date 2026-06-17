@@ -600,8 +600,16 @@ export function getExperimentCategories(slug: string): ExperimentCategory[] {
   return getExperimentRegistryEntry(slug)?.categories ?? ["ai-experiment"];
 }
 
+/** Article-only registry rows are served at `/craft/[slug]` but omitted from the gallery grid. */
+export function isArticleOnlyExperiment(slug: string): boolean {
+  const categories = getExperimentCategories(slug);
+  return categories.length > 0 && categories.every((category) => category === "article");
+}
+
 export function getExperimentGalleryItems(): ExperimentGalleryItem[] {
-  return EXPERIMENTS_REGISTRY.map((entry) => ({
+  return EXPERIMENTS_REGISTRY.filter(
+    (entry) => !isArticleOnlyExperiment(entry.slug),
+  ).map((entry) => ({
     slug: entry.slug,
     title: entry.title,
     date: entry.article?.date ?? "",

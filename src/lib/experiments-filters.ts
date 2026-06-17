@@ -63,6 +63,8 @@ export function getExperimentDisplayEntries<T extends { slug: string }>(
     const categories = getExperimentCategories(item.slug);
 
     for (const category of EXPERIMENT_CATEGORY_PRIORITY) {
+      if (category === "article") continue;
+
       if (categories.includes(category)) {
         entries.push({
           item,
