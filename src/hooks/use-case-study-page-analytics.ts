@@ -35,13 +35,16 @@ export function useCaseStudyPageAnalytics({
     if (!slug) return;
 
     const studySlug = slug;
-    const root = scrollRootRef.current;
-    if (!root) return;
+    const scrollRoot = scrollRootRef.current;
+    if (!scrollRoot) return;
 
     const firedDepths = firedDepthsRef.current;
 
     function updateScrollDepth(): void {
-      const scrollHeight = root.scrollHeight - root.clientHeight;
+      const node = scrollRootRef.current;
+      if (!node) return;
+
+      const scrollHeight = node.scrollHeight - node.clientHeight;
       if (scrollHeight <= 0) {
         if (!firedDepths.has(100)) {
           firedDepths.add(100);
@@ -50,7 +53,7 @@ export function useCaseStudyPageAnalytics({
         return;
       }
 
-      const progress = (root.scrollTop / scrollHeight) * 100;
+      const progress = (node.scrollTop / scrollHeight) * 100;
 
       for (const threshold of SCROLL_DEPTH_THRESHOLDS) {
         if (progress >= threshold && !firedDepths.has(threshold)) {
@@ -61,10 +64,10 @@ export function useCaseStudyPageAnalytics({
     }
 
     updateScrollDepth();
-    root.addEventListener("scroll", updateScrollDepth, { passive: true });
+    scrollRoot.addEventListener("scroll", updateScrollDepth, { passive: true });
 
     return () => {
-      root.removeEventListener("scroll", updateScrollDepth);
+      scrollRoot.removeEventListener("scroll", updateScrollDepth);
     };
   }, [scrollRootRef, slug]);
 }
