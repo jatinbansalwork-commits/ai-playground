@@ -8,8 +8,10 @@ import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-c
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import ScrollMinimapRuler from "@/components/ScrollMinimapRuler";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
+import { useCaseStudyPageAnalytics } from "@/hooks/use-case-study-page-analytics";
 import { useCaseStudyHashFocus } from "@/hooks/use-case-study-hash-focus";
 import { backNavigationLabel, NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import type { ProjectOpenSource } from "@/lib/analytics";
 import { CASE_STUDY_BODY_ID, CASE_STUDY_TITLE_ID } from "@/lib/case-study-a11y";
 
 interface CaseStudyPageShellProps {
@@ -19,6 +21,9 @@ interface CaseStudyPageShellProps {
   navBackHref?: string;
   navBackDestination?: string;
   dataSheet?: "case-study" | "recent-work";
+  /** Case study slug for analytics (`project_open`, scroll depth). */
+  analyticsSlug?: string;
+  analyticsSource?: ProjectOpenSource;
   children: ReactNode;
 }
 
@@ -28,10 +33,17 @@ export function CaseStudyPageShell({
   navBackHref = backHref,
   navBackDestination = backDestination,
   dataSheet = "case-study",
+  analyticsSlug,
+  analyticsSource,
   children,
 }: CaseStudyPageShellProps) {
   const scrollRootRef = useRef<HTMLElement>(null);
   useCaseStudyHashFocus();
+  useCaseStudyPageAnalytics({
+    slug: analyticsSlug,
+    source: analyticsSource,
+    scrollRootRef,
+  });
 
   return (
     <CaseStudyTocProvider>

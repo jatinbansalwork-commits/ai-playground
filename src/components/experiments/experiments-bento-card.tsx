@@ -15,6 +15,7 @@ import {
 } from "@/lib/experiments-filters";
 import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
+import { trackCraftItemClick, trackExternalDemoOpen } from "@/lib/analytics";
 import { ExperimentsPreviewMedia } from "@/components/experiments/experiments-preview-media";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
 
@@ -57,6 +58,19 @@ export function ExperimentsBentoCard({
       getExperimentCtaLabel(filter, item.slug, articleSlugs, displayCategory))
     : null;
   const cardId = getExperimentCardId(item.slug, resolvedCategory);
+
+  function handleCraftItemClick(): void {
+    if (item.external && item.href) {
+      trackExternalDemoOpen({ slug: item.slug, url: item.href });
+      return;
+    }
+
+    trackCraftItemClick({
+      slug: item.slug,
+      category: resolvedCategory,
+      external: false,
+    });
+  }
 
   const className = [
     `experiments-bento-cell group relative flex w-full shrink-0 flex-col overflow-hidden p-2 transition-colors ${FOCUS_RING}`,
@@ -124,6 +138,7 @@ export function ExperimentsBentoCard({
         rel="noopener noreferrer"
         className={className}
         aria-label={externalLinkLabel(item.title)}
+        onClick={handleCraftItemClick}
       >
         {inner}
       </a>
@@ -139,7 +154,13 @@ export function ExperimentsBentoCard({
   }
 
   return (
-    <Link id={cardId} href={href} className={className} aria-label={item.title}>
+    <Link
+      id={cardId}
+      href={href}
+      className={className}
+      aria-label={item.title}
+      onClick={handleCraftItemClick}
+    >
       {inner}
     </Link>
   );

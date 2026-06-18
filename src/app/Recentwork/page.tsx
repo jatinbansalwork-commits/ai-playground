@@ -11,6 +11,8 @@ export default function RecentWorkPage() {
       navBackHref={ROUTES.home}
       navBackDestination="Home"
       dataSheet="recent-work"
+      analyticsSlug="cisco-policy-copilot"
+      analyticsSource="recent-work"
     >
       <CiscoPolicyCopilotContent />
     </CaseStudyPageShell>

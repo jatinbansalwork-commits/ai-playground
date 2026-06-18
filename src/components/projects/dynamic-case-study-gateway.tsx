@@ -48,6 +48,8 @@ export default function DynamicCaseStudyGateway() {
     <CaseStudyPageShell
       backHref={ROUTES.projects}
       backDestination="Projects"
+      analyticsSlug={slug}
+      analyticsSource="projects"
     >
       <TargetCaseStudyLayout />
     </CaseStudyPageShell>

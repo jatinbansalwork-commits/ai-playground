@@ -2,6 +2,7 @@
 
 import { CONTACT_LINKS } from "@/lib/constants";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
+import { trackContactClick, trackResumeDownload } from "@/lib/analytics";
 import { INDEX_SLIDE_CONTACT, INDEX_SLIDE_CONTACT_SIZE_PX } from "@/lib/index-typography";
 import { ContactEmailButton } from "@/components/slider/contact-email-button";
 import { FrameShell } from "@/components/slider/frame-shell";
@@ -20,6 +21,22 @@ const POSITION_CLASSES = {
   "bottom-right": "bottom-[50px] right-[50px]",
 } as const;
 
+function trackContactLink(label: (typeof CONTACT_LINKS)[number]["label"]): void {
+  if (label === "Resume") {
+    trackResumeDownload();
+    return;
+  }
+
+  if (label === "LinkedIn") {
+    trackContactClick("linkedin");
+    return;
+  }
+
+  if (label === "JB Manual") {
+    trackContactClick("jb_manual");
+  }
+}
+
 export function ContactFramePanel({
   frame,
   index,
@@ -36,6 +53,7 @@ export function ContactFramePanel({
             rel="noopener noreferrer"
             aria-label={externalLinkLabel(link.label)}
             onMouseDown={onInteract}
+            onClick={() => trackContactLink(link.label)}
             className={`absolute rounded-xl ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
             style={{ fontSize: INDEX_SLIDE_CONTACT_SIZE_PX }}
           >

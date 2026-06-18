@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { CONTACT_EMAIL } from "@/lib/constants";
 import { FOCUS_RING } from "@/lib/a11y";
+import { trackContactClick } from "@/lib/analytics";
 import { INDEX_SLIDE_CONTACT, INDEX_SLIDE_CONTACT_SIZE_PX } from "@/lib/index-typography";
 import { springLabel } from "@/lib/spring";
 
@@ -20,6 +21,7 @@ export function ContactEmailButton({
 
   async function handleCopyEmail() {
     onInteract();
+    trackContactClick("email");
     try {
       await navigator.clipboard.writeText(CONTACT_EMAIL);
     } catch {

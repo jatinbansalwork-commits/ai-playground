@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useScrollSlider } from "@/hooks/use-scroll-slider";
 import { useIsMounted } from "@/hooks/use-is-mounted";
@@ -37,6 +37,10 @@ function IndexCanvas() {
     snapToIndex,
     frameCount,
   } = useScrollSlider();
+  const handleSlideNavSelect = useCallback(
+    (index: number) => snapToIndex(index, "nav"),
+    [snapToIndex],
+  );
   const { wireframe, toggleWireframe } = useWireframe();
   const reducedMotion = useReducedMotion();
   const [ghostSize, setGhostSize] = useState(getGhostSpacerSize);
@@ -142,7 +146,7 @@ function IndexCanvas() {
         <IndexSlideNav
           activeIndex={activeFrameIndex}
           frameCount={frameCount}
-          onSelect={snapToIndex}
+          onSelect={handleSlideNavSelect}
         />
 
         <SiteFooter pinned />
