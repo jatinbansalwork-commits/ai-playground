@@ -2,8 +2,6 @@ export const SITE_NAME = "JB Portfolio";
 
 export const ROUTES = {
   home: "/",
-  /** Track A — featured case study from the index "Recent Work" slide. */
-  recentWork: "/Recentwork",
   craft: "/craft",
   projects: "/projects",
   archive: "/archive",
@@ -17,25 +15,14 @@ export const FRAMES = [
     label: SITE_NAME,
   },
   {
-    id: "models",
+    id: "projects",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Recent Work",
-    monogram: "Recent",
+    label: "Projects",
+    monogram: "Projects",
     monogramPan: true,
     monogramPanDuration: 14,
-    badge: "v3.2",
-    href: ROUTES.recentWork,
-  },
-  {
-    id: "experiments",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "Craft",
-    monogram: "Craft",
-    monogramPan: true,
-    monogramPanDuration: 14,
-    href: ROUTES.craft,
+    href: ROUTES.projects,
   },
   {
     id: "design-review-checklist",
@@ -46,14 +33,14 @@ export const FRAMES = [
     href: `${ROUTES.craft}/design-review-checklist`,
   },
   {
-    id: "projects",
+    id: "experiments",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Projects",
-    monogram: "Projects",
+    label: "Craft",
+    monogram: "Craft",
     monogramPan: true,
     monogramPanDuration: 14,
-    href: ROUTES.projects,
+    href: ROUTES.craft,
   },
   {
     id: "archive",

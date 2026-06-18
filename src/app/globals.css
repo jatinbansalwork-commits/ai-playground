@@ -60,20 +60,9 @@ html:has(main[data-sheet="projects"]) body,
 html:has(main[data-sheet="experiments"]),
 html:has(main[data-sheet="experiments"]) body,
 html:has(main[data-sheet="case-study"]),
-html:has(main[data-sheet="case-study"]) body,
-html:has(main[data-sheet="recent-work"]),
-html:has(main[data-sheet="recent-work"]) body {
+html:has(main[data-sheet="case-study"]) body {
   overflow: hidden;
   height: 100%;
-}
-
-html:has(main[data-sheet="recent-work"]) {
-  color-scheme: dark;
-}
-
-html:has(main[data-sheet="recent-work"]) body {
-  background: #1a1a1a;
-  color: #ffffff;
 }
 
 .projects-page {
@@ -517,14 +506,12 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
 }
 
 /* Long-form sheets with ScrollMinimapRuler — native scrollbar is redundant */
-main[data-sheet="case-study"],
-main[data-sheet="recent-work"] {
+main[data-sheet="case-study"] {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-main[data-sheet="case-study"]::-webkit-scrollbar,
-main[data-sheet="recent-work"]::-webkit-scrollbar {
+main[data-sheet="case-study"]::-webkit-scrollbar {
   display: none;
 }
 

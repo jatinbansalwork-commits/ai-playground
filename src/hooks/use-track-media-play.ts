@@ -15,10 +15,6 @@ interface MediaPlayContext {
 }
 
 function resolveMediaPlayContext(pathname: string): MediaPlayContext | null {
-  if (pathname === ROUTES.recentWork) {
-    return { surface: "case-study", slug: "cisco-policy-copilot" };
-  }
-
   if (pathname.startsWith(`${ROUTES.projects}/`)) {
     const slug = pathname.slice(`${ROUTES.projects}/`.length).split("/")[0];
     return slug ? { surface: "case-study", slug } : null;

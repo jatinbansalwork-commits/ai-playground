@@ -12,7 +12,7 @@ export const PROJECTS_PAGE = {
   description: "Selected product and interface work.",
 } as const;
 
-/** Flagship case study surfaced on the index "Recent Work" slide (`/Recentwork`). */
+/** Flagship case study — available at `/projects/cisco-policy-copilot`. */
 export const FEATURED_CASE_STUDY_SLUG = "cisco-policy-copilot" as const;
 
 /** Kebab-case handles for `/projects/[slug]` case study routes. */

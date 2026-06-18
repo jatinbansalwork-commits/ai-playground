@@ -19,8 +19,13 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/recent-work",
-        destination: "/Recentwork",
-        permanent: true,
+        destination: "/projects",
+        permanent: false,
+      },
+      {
+        source: "/Recentwork",
+        destination: "/projects",
+        permanent: false,
       },
       {
         source: "/projects/piggy-mutual-fund",

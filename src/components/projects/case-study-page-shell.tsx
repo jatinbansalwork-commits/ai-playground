@@ -20,7 +20,7 @@ interface CaseStudyPageShellProps {
   /** Top-left back control — defaults to `backHref` / `backDestination`. */
   navBackHref?: string;
   navBackDestination?: string;
-  dataSheet?: "case-study" | "recent-work";
+  dataSheet?: "case-study";
   /** Case study slug for analytics (`project_open`, scroll depth). */
   analyticsSlug?: string;
   analyticsSource?: ProjectOpenSource;

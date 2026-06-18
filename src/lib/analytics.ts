@@ -1,6 +1,6 @@
 import { track } from "@vercel/analytics";
 
-export type ProjectOpenSource = "projects" | "recent-work";
+export type ProjectOpenSource = "projects";
 
 export type ContactMethod = "linkedin" | "email" | "jb_manual";
 
