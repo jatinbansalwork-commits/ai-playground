@@ -7,6 +7,7 @@ import {
 } from "@/components/case-studies/case-study-editorial";
 import { isRemoteCdnUrl, resolveAssetUrl } from "@/lib/asset-cdn";
 import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
+import { useTrackMediaPlay } from "@/hooks/use-track-media-play";
 
 interface CaseStudyMediaProps {
   label?: ReactNode;
@@ -63,6 +64,7 @@ export function CaseStudyMedia({
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const autoplay = useMediaAutoplay();
+  const trackPlay = useTrackMediaPlay();
   const resolvedSrc = src ? resolveAssetUrl(src) : undefined;
   const resolvedPoster = poster ? resolveAssetUrl(poster) : undefined;
   const isRemote = resolvedSrc ? isRemoteCdnUrl(resolvedSrc) : false;
@@ -128,6 +130,9 @@ export function CaseStudyMedia({
               playsInline
               preload="metadata"
               aria-label={effectiveAlt ?? "Case study media"}
+              onPlay={() => {
+                if (resolvedSrc) trackPlay(resolvedSrc);
+              }}
             />
           ) : resolvedPoster ? (
             // eslint-disable-next-line @next/next/no-img-element

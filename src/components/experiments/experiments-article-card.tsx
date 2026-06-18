@@ -34,7 +34,7 @@ export function ExperimentsArticleCard({
           className={`relative isolate w-full shrink-0 overflow-hidden md:w-[42%] ${EXPERIMENTS_CARD.preview} aspect-[3/2] md:aspect-auto md:min-h-[180px]`}
         >
           {media ? (
-            <ExperimentsPreviewMedia media={media} title={item.title} />
+            <ExperimentsPreviewMedia media={media} title={item.title} slug={item.slug} />
           ) : (
             <div className="h-full w-full bg-[#333333]" aria-hidden />
           )}

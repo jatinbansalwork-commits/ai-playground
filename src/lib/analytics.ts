@@ -75,3 +75,24 @@ export function trackCaseStudyRevealImpression(properties: {
 export function trackCaseStudyRevealed(slug: string): void {
   track("case_study_revealed", { slug });
 }
+
+export type MediaPlaySurface = "case-study" | "craft";
+
+export function mediaIdFromSrc(src: string): string {
+  const normalized = src.split("?")[0]?.split("#")[0] ?? src;
+  const segment = normalized.split("/").pop();
+  if (!segment) return src;
+  return segment.replace(/\.[^.]+$/, "");
+}
+
+export function trackMediaPlay(properties: {
+  surface: MediaPlaySurface;
+  media_id: string;
+  slug?: string;
+}): void {
+  track("media_play", {
+    surface: properties.surface,
+    media_id: properties.media_id,
+    ...(properties.slug ? { slug: properties.slug } : {}),
+  });
+}

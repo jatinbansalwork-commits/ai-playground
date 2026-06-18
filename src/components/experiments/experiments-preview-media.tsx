@@ -6,10 +6,12 @@ import type { ExperimentMedia } from "@/lib/experiment-media";
 import { isRemoteCdnUrl } from "@/lib/asset-cdn";
 import { ROUTES } from "@/lib/constants";
 import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
+import { useTrackMediaPlay } from "@/hooks/use-track-media-play";
 
 interface ExperimentsPreviewMediaProps {
   media: ExperimentMedia;
   title: string;
+  slug?: string;
 }
 
 const LAZY_ROOT_MARGIN = "240px";
@@ -19,6 +21,7 @@ const MOUSE_IDLE_MS = 2000;
 interface ExperimentsPreviewVideoProps {
   media: ExperimentMedia;
   title: string;
+  slug?: string;
   shouldLoad: boolean;
 }
 
@@ -29,11 +32,13 @@ interface ExperimentsPreviewVideoProps {
 function ExperimentsPreviewVideo({
   media,
   title,
+  slug,
   shouldLoad,
 }: ExperimentsPreviewVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
   const autoplay = useMediaAutoplay();
+  const trackPlay = useTrackMediaPlay(slug);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMouseActive, setIsMouseActive] = useState(false);
   const idleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -86,11 +91,13 @@ function ExperimentsPreviewVideo({
       isTargetPage && isIntersecting && isMouseActive && autoplay;
 
     if (shouldPlay) {
-      void video.play().catch(() => undefined);
+      void video.play().then(() => {
+        trackPlay(media.src);
+      }).catch(() => undefined);
     } else {
       video.pause();
     }
-  }, [pathname, isIntersecting, isMouseActive, autoplay]);
+  }, [pathname, isIntersecting, isMouseActive, autoplay, media.src, trackPlay]);
 
   useEffect(() => {
     const onVisibilityChange = () => {
@@ -140,6 +147,7 @@ function ExperimentsPreviewVideo({
 export function ExperimentsPreviewMedia({
   media,
   title,
+  slug,
 }: ExperimentsPreviewMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isRemote = isRemoteCdnUrl(media.src);
@@ -174,6 +182,7 @@ export function ExperimentsPreviewMedia({
         <ExperimentsPreviewVideo
           media={media}
           title={title}
+          slug={slug}
           shouldLoad={shouldLoad}
         />
       </div>

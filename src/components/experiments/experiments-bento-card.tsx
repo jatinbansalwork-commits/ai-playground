@@ -88,7 +88,7 @@ export function ExperimentsBentoCard({
         className={`relative isolate w-full shrink-0 overflow-hidden ${EXPERIMENTS_CARD.preview} ${aspectClass}`}
       >
         {media ? (
-          <ExperimentsPreviewMedia media={media} title={item.title} />
+          <ExperimentsPreviewMedia media={media} title={item.title} slug={item.slug} />
         ) : null}
 
         {isFunctionalBlock ? (
