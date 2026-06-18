@@ -93,7 +93,7 @@ function rememberInCache(query: string, gif: ChatGif): void {
     const oldest = gifCache.keys().next().value;
     if (oldest) gifCache.delete(oldest);
   }
-  gifCache.set(query, gif);
+  gifCache.set(`${query}:${gif.giphyId ?? gif.url}`, gif);
 }
 
 async function searchGiphyApi(
@@ -122,18 +122,20 @@ export async function fetchChatReactionGif(
   userMessage: string,
   intentId?: AiChatIntentId,
   usedGifIds: readonly string[] = [],
+  replyText?: string,
 ): Promise<ChatGif | null> {
   if (!isGiphyChatEnabled()) return null;
 
   const excludeIds = buildExcludeSet(usedGifIds);
-  const queries = resolveGifSearchQueries(userMessage, intentId);
+  const queries = resolveGifSearchQueries(userMessage, intentId, replyText);
   const apiKey = process.env.GIPHY_API_KEY;
 
   for (let attempt = 0; attempt < queries.length; attempt += 1) {
     const query = queries[attempt] ?? queries[0];
     if (!query) continue;
 
-    const cached = gifCache.get(query);
+    const cacheKey = `${query}:${[...excludeIds].sort().join(",")}`;
+    const cached = gifCache.get(cacheKey);
     if (
       cached &&
       (!cached.giphyId || !excludeIds.has(cached.giphyId))
@@ -145,7 +147,7 @@ export async function fetchChatReactionGif(
       if (apiKey) {
         const fromApi = await searchGiphyApi(query, apiKey, excludeIds);
         if (fromApi) {
-          rememberInCache(query, fromApi);
+          rememberInCache(cacheKey, fromApi);
           return fromApi;
         }
       }
@@ -160,6 +162,5 @@ export async function fetchChatReactionGif(
     intentId,
     excludeIds,
   );
-  rememberInCache(fallbackQuery, fallback);
   return fallback;
 }

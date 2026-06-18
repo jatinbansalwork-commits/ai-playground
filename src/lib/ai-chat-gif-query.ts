@@ -1,23 +1,32 @@
 import type { AiChatIntentId } from "@/lib/ai-chat-intents";
+import {
+  detectReplySentiment,
+  sentimentGifQueries,
+  type GifReplySentiment,
+} from "@/lib/ai-chat-gif-sentiment";
 
 const INTENT_GIF_QUERIES: Record<AiChatIntentId, readonly string[]> = {
   mentorship: [
-    "joey tribbiani how you doin",
     "chandler bing friends",
     "ross geller friends",
+    "joey tribbiani how you doin",
+    "sheldon cooper friends",
   ],
   hiring: [
-    "joey tribbiani yes",
     "chandler bing excited",
     "ross geller happy",
+    "sheldon cooper thumbs up",
+    "joey tribbiani yes",
   ],
   portfolio: [
+    "sheldon cooper big bang theory",
     "ross geller excited",
     "chandler bing mind blown",
-    "friends chandler sarcastic",
+    "big bang theory reaction",
   ],
   "case-study": [
     "ross geller thinking",
+    "sheldon cooper thinking",
     "chandler bing reading",
     "friends ross lecture",
   ],
@@ -26,57 +35,64 @@ const INTENT_GIF_QUERIES: Record<AiChatIntentId, readonly string[]> = {
 const KEYWORD_GIF_QUERIES: Array<{ terms: string[]; queries: string[] }> = [
   {
     terms: ["contact", "email", "linkedin", "reach", "message"],
-    queries: ["joey tribbiani thumbs up", "spongebob handshake"],
+    queries: ["chandler bing thumbs up", "sheldon cooper wave", "ross geller nod"],
   },
   {
     terms: ["mentor", "mentorship", "advice", "feedback"],
-    queries: ["joey tribbiani how you doin", "friends joey supportive"],
+    queries: ["ross geller advice", "chandler bing supportive", "sheldon cooper explain"],
   },
   {
     terms: ["hire", "hiring", "role", "job", "contract"],
-    queries: ["joey tribbiani excited", "spongebob ready for work"],
+    queries: ["chandler bing excited", "sheldon cooper handshake", "joey tribbiani yes"],
   },
   {
     terms: ["saltbot", "saltmine", "chatbot", "conversational"],
-    queries: ["spongebob robot", "joey tribbiani talking"],
+    queries: ["sheldon cooper robot", "chandler bing talking", "ross geller explain"],
   },
   {
     terms: ["piggy", "fintech", "support", "mutual fund"],
-    queries: ["spongebob money", "joey tribbiani wallet"],
+    queries: ["ross geller money", "chandler bing wallet", "sheldon cooper calculator"],
   },
   {
     terms: ["freshprints", "design system", "system"],
-    queries: ["spongebob organized", "joey tribbiani neat"],
+    queries: ["ross geller organized", "sheldon cooper organized", "chandler bing neat"],
   },
   {
     terms: ["kalash", "gold", "rewards"],
-    queries: ["spongebob gold", "joey tribbiani celebration"],
+    queries: ["joey tribbiani celebration", "ross geller excited", "sheldon cooper celebrate"],
   },
   {
     terms: ["portfolio", "built", "stack", "vercel", "next"],
-    queries: ["spongebob builder", "joey tribbiani proud"],
+    queries: ["sheldon cooper science", "ross geller proud", "chandler bing impressed"],
   },
   {
     terms: ["craft", "experiment", "prototype"],
-    queries: ["spongebob imagination", "joey tribbiani creative"],
+    queries: ["sheldon cooper experiment", "ross geller idea", "chandler bing creative"],
   },
   {
     terms: ["wrong", "error", "fail", "broken"],
-    queries: ["joey tribbiani confused", "spongebob panic"],
+    queries: ["chandler bing confused", "ross geller panic", "sheldon cooper bazinga"],
   },
   {
     terms: ["thanks", "thank you", "awesome", "great"],
-    queries: ["joey tribbiani clapping", "spongebob celebration dance"],
+    queries: ["chandler bing clapping", "ross geller happy", "sheldon cooper applause"],
+  },
+  {
+    terms: ["how you doin", "how you doing", "hey", "hello", "what's up"],
+    queries: ["joey tribbiani how you doin", "chandler bing hey", "sheldon cooper hello"],
   },
 ];
 
 const DEFAULT_GIF_QUERIES = [
-  "joey tribbiani friends",
   "chandler bing friends",
   "ross geller friends",
-  "friends chandler sarcastic",
-  "friends ross excited",
-  "joey tribbiani how you doin",
+  "sheldon cooper bazinga",
+  "sheldon cooper big bang theory",
+  "chandler bing sarcastic",
+  "ross geller pivot",
+  "joey tribbiani friends",
+  "big bang theory reaction",
+  "friends tv reaction",
 ] as const;
 
 function includesAny(text: string, terms: string[]): boolean {
@@ -91,41 +107,78 @@ function hashSeed(value: string): number {
   return hash;
 }
 
+function mergeQueries(
+  primary: readonly string[],
+  secondary: readonly string[],
+): readonly string[] {
+  const seen = new Set<string>();
+  const merged: string[] = [];
+
+  for (const query of [...primary, ...secondary]) {
+    const key = query.trim().toLowerCase();
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    merged.push(query);
+  }
+
+  return merged;
+}
+
 function queriesForMessage(
   userMessage: string,
   intentId?: AiChatIntentId,
+  replyText?: string,
 ): readonly string[] {
   const text = userMessage.trim().toLowerCase();
+  const sentiment = replyText ? detectReplySentiment(replyText) : "neutral";
+  const toneQueries = sentimentGifQueries(sentiment);
+
+  let topicQueries: readonly string[];
 
   if (intentId && INTENT_GIF_QUERIES[intentId]) {
-    return INTENT_GIF_QUERIES[intentId];
-  }
+    topicQueries = INTENT_GIF_QUERIES[intentId];
+  } else {
+    let matched = false;
+    topicQueries = DEFAULT_GIF_QUERIES;
 
-  for (const entry of KEYWORD_GIF_QUERIES) {
-    if (includesAny(text, entry.terms)) {
-      return entry.queries;
+    for (const entry of KEYWORD_GIF_QUERIES) {
+      if (includesAny(text, entry.terms)) {
+        topicQueries = entry.queries;
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
+      topicQueries = DEFAULT_GIF_QUERIES;
     }
   }
 
-  return DEFAULT_GIF_QUERIES;
+  if (toneQueries.length === 0) return topicQueries;
+  return mergeQueries(toneQueries, topicQueries);
 }
 
-/** Ordered GIPHY search queries for a message — try next query when results repeat. */
+/** Ordered GIPHY search queries — sentiment from reply, topic from user message. */
 export function resolveGifSearchQueries(
   userMessage: string,
   intentId?: AiChatIntentId,
+  replyText?: string,
 ): readonly string[] {
-  return queriesForMessage(userMessage, intentId);
+  return queriesForMessage(userMessage, intentId, replyText);
 }
 
-/** Maps the user's question to a GIPHY search tuned for Friends trio reactions. */
+export function resolveReplySentiment(replyText: string): GifReplySentiment {
+  return detectReplySentiment(replyText);
+}
+
 export function resolveGifSearchQuery(
   userMessage: string,
   intentId?: AiChatIntentId,
   attempt = 0,
+  replyText?: string,
 ): string {
   const seed = `${intentId ?? ""}:${userMessage.trim().toLowerCase()}`;
-  const queries = queriesForMessage(userMessage, intentId);
+  const queries = queriesForMessage(userMessage, intentId, replyText);
   const index = (hashSeed(seed) + attempt) % queries.length;
   return queries[index] ?? queries[0] ?? DEFAULT_GIF_QUERIES[0];
 }

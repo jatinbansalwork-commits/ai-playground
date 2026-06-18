@@ -11,25 +11,90 @@ const JOEY_GIFS: readonly ChatGif[] = [
     height: 400,
   },
   {
-    giphyId: "llToceLTKQj0R1Asid",
-    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhYzVsdWlqMW8zamVsOTY0N3FteXQ0eWozYnducTN6eWh1ZGtiN3R1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/llToceLTKQj0R1Asid/giphy.gif",
-    alt: "Joey — Friends",
-    width: 480,
-    height: 400,
-  },
-  {
     giphyId: "11ykUODgXjAXZu",
     url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhYzVsdWlqMW8zamVsOTY0N3FteXQ0eWozYnducTN6eWh1ZGtiN3R1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11ykUODgXjAXZu/giphy.gif",
     alt: "Joey Tribbiani — Friends",
     width: 400,
     height: 300,
   },
+];
+
+const CHANDLER_GIFS: readonly ChatGif[] = [
   {
-    giphyId: "jp9K9GWSV4BYHgOUY6",
-    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhYzVsdWlqMW8zamVsOTY0N3FteXQ0eWozYnducTN6eWh1ZGtiN3R1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jp9K9GWSV4BYHgOUY6/giphy.gif",
-    alt: "Joey — Friends",
+    giphyId: "amkS2AoPLAGg8",
+    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhendtaTN1czcyMXgzODcxc2Y3ajRrdXZwOWpkYWJyNHZ1eDNuZWw0biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/amkS2AoPLAGg8/giphy.gif",
+    alt: "Chandler Bing — Friends",
     width: 480,
-    height: 400,
+    height: 270,
+  },
+  {
+    giphyId: "10I5e2yNnaozOo",
+    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJheGk0MWV0YXJzMGl6NDJ2dzA3cm50MTc5bnE1N3Awbm16YWo3cXg4byZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10I5e2yNnaozOo/giphy.gif",
+    alt: "Chandler Bing — sarcastic",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "fA81FF4mdE6lgeoJwb",
+    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhendtaTN1czcyMXgzODcxc2Y3ajRrdXZwOWpkYWJyNHZ1eDNuZWw0biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/fA81FF4mdE6lgeoJwb/giphy.gif",
+    alt: "Chandler Bing — Friends",
+    width: 480,
+    height: 270,
+  },
+];
+
+const ROSS_GIFS: readonly ChatGif[] = [
+  {
+    giphyId: "JOe7JxOiMg61ogl6fH",
+    url: "https://media2.giphy.com/media/v1.Y2lkPThhMWY5NGJhZjFnNnRkNG42MHUzNDAwZ2JmY3JiZGpvYjhoeGdsbTRhODE4bWNlYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JOe7JxOiMg61ogl6fH/giphy.gif",
+    alt: "Ross Geller — Friends",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "2OP9jbHFlFPW",
+    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhbnBxcWY5dzR6ZzNjb241Z3hhbWY2M2ZrZm8wc3g4aTdzNnJzZ3VheiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/2OP9jbHFlFPW/giphy.gif",
+    alt: "Ross Geller — pivot",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "YhRzFyF3EzhXG",
+    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhZjFnNnRkNG42MHUzNDAwZ2JmY3JiZGpvYjhoeGdsbTRhODE4bWNlYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YhRzFyF3EzhXG/giphy.gif",
+    alt: "Ross Geller — Friends",
+    width: 480,
+    height: 270,
+  },
+];
+
+const SHELDON_GIFS: readonly ChatGif[] = [
+  {
+    giphyId: "JuqDes49CeCeQ",
+    url: "https://media1.giphy.com/media/v1.Y2lkPThhMWY5NGJhem8za21pcDB1NnBxOWZhbzRyNW9mYnl5aXphMml0bDBod281bXowYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JuqDes49CeCeQ/giphy.gif",
+    alt: "Sheldon Cooper — bazinga",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "i79na9XMwDues",
+    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhb2Z5aXJvd2dibHFpNjl0MDAwdnRoODQ0aHJhbDJ1am81dG1jOTRlYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/i79na9XMwDues/giphy.gif",
+    alt: "Sheldon Cooper — The Big Bang Theory",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "KSCYjxdjm0yA0",
+    url: "https://media1.giphy.com/media/v1.Y2lkPThhMWY5NGJhem8za21pcDB1NnBxOWZhbzRyNW9mYnl5aXphMml0bDBod281bXowYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KSCYjxdjm0yA0/giphy.gif",
+    alt: "Sheldon Cooper — bazinga",
+    width: 480,
+    height: 270,
+  },
+  {
+    giphyId: "1FMaabePDEfgk",
+    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhbW03YnBqeGJ3bWFuNTVvNjZzdmpsbWgwdjJsdXRhcnl0ZmxqaDhwOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1FMaabePDEfgk/giphy.gif",
+    alt: "The Big Bang Theory — reaction",
+    width: 480,
+    height: 270,
   },
 ];
 
@@ -48,30 +113,22 @@ const SPONGEBOB_GIFS: readonly ChatGif[] = [
     width: 500,
     height: 285,
   },
-  {
-    giphyId: "iUYOGrSiLpTvaWz1FE",
-    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhaHIxd2kzYjl1MTYzZWhqaTNsbnNtbXF5YWtsczZhZWY4M2p3NTl2ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/iUYOGrSiLpTvaWz1FE/giphy-downsized.gif",
-    alt: "SpongeBob celebrating",
-    width: 362,
-    height: 362,
-  },
-  {
-    giphyId: "nDSlfqf0gn5g4",
-    url: "https://media1.giphy.com/media/v1.Y2lkPThhMWY5NGJhNTd5bjV0NHVoODBhYWdxd2QxZzhlYXgzNmd6aGx2dHM1OXJyeTF1NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/nDSlfqf0gn5g4/giphy.gif",
-    alt: "SpongeBob happy",
-    width: 480,
-    height: 362,
-  },
+];
+
+const ALL_REACTION_GIFS: readonly ChatGif[] = [
+  ...JOEY_GIFS,
+  ...CHANDLER_GIFS,
+  ...ROSS_GIFS,
+  ...SHELDON_GIFS,
+  ...SPONGEBOB_GIFS,
 ];
 
 const INTENT_GIF_POOLS: Record<AiChatIntentId, readonly ChatGif[]> = {
-  mentorship: JOEY_GIFS,
-  hiring: [...JOEY_GIFS, ...SPONGEBOB_GIFS],
-  portfolio: SPONGEBOB_GIFS,
-  "case-study": SPONGEBOB_GIFS,
+  mentorship: [...JOEY_GIFS, ...CHANDLER_GIFS, ...ROSS_GIFS],
+  hiring: [...CHANDLER_GIFS, ...ROSS_GIFS, ...SHELDON_GIFS],
+  portfolio: [...ROSS_GIFS, ...SHELDON_GIFS, ...CHANDLER_GIFS],
+  "case-study": [...ROSS_GIFS, ...SHELDON_GIFS, ...CHANDLER_GIFS],
 };
-
-const ALL_CURATED_GIFS: readonly ChatGif[] = [...JOEY_GIFS, ...SPONGEBOB_GIFS];
 
 function hashSeed(value: string): number {
   let hash = 0;
@@ -97,11 +154,15 @@ function filterExcluded(
 
 function poolForQuery(query: string): readonly ChatGif[] {
   const lower = query.toLowerCase();
+  if (lower.includes("sheldon") || lower.includes("bazinga") || lower.includes("big bang")) {
+    return SHELDON_GIFS;
+  }
+  if (lower.includes("chandler")) return CHANDLER_GIFS;
+  if (lower.includes("ross")) return ROSS_GIFS;
+  if (lower.includes("joey")) return JOEY_GIFS;
   if (lower.includes("spongebob")) return SPONGEBOB_GIFS;
-  if (lower.includes("chandler")) return JOEY_GIFS;
-  if (lower.includes("ross")) return JOEY_GIFS;
-  if (lower.includes("joey") || lower.includes("friends")) return JOEY_GIFS;
-  return ALL_CURATED_GIFS;
+  if (lower.includes("friends")) return ALL_REACTION_GIFS;
+  return ALL_REACTION_GIFS;
 }
 
 /** Curated reaction GIF when GIPHY search returns nothing usable. */
@@ -117,8 +178,9 @@ export function resolveCuratedReactionGif(
       : poolForQuery(query);
 
   const available = filterExcluded(pool, excludeIds);
-  const pickPool = available.length > 0 ? available : [...pool];
-  return pickFromPool(seed, pickPool);
+  const pickPool = available.length > 0 ? available : ALL_REACTION_GIFS;
+  const finalPool = filterExcluded(pickPool, excludeIds);
+  return pickFromPool(seed, finalPool.length > 0 ? finalPool : ALL_REACTION_GIFS);
 }
 
 /** Next curated fallback when a CDN URL fails in the browser. */
@@ -132,10 +194,14 @@ export function resolveCuratedGifFallback(
   if (failedGif.giphyId) blocked.add(failedGif.giphyId);
 
   const alternatives = filterExcluded(pool, blocked);
-  if (alternatives.length === 0) return null;
+  if (alternatives.length === 0) {
+    const anyLeft = filterExcluded(ALL_REACTION_GIFS, blocked);
+    if (anyLeft.length === 0) return null;
+    return pickFromPool(`${querySeed}:fallback:${blocked.size}`, anyLeft);
+  }
   return pickFromPool(`${querySeed}:fallback:${blocked.size}`, alternatives);
 }
 
 export function listCuratedReactionGifs(): readonly ChatGif[] {
-  return ALL_CURATED_GIFS;
+  return ALL_REACTION_GIFS;
 }

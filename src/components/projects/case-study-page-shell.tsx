@@ -5,7 +5,6 @@ import { CaseStudyFooterActions } from "@/components/case-studies/case-study-foo
 import { CaseStudySkipLink } from "@/components/case-studies/case-study-skip-link";
 import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-context";
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
-import ScrollMinimapRuler from "@/components/ScrollMinimapRuler";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { useCaseStudyPageAnalytics } from "@/hooks/use-case-study-page-analytics";
 import { useCaseStudyHashFocus } from "@/hooks/use-case-study-hash-focus";
@@ -50,7 +49,7 @@ export function CaseStudyPageShell({
         ref={scrollRootRef}
         id="main-content"
         data-sheet={dataSheet}
-        className="case-study-main fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
+        className="case-study-main no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
         tabIndex={-1}
       >
         <CaseStudySkipLink />
@@ -73,8 +72,6 @@ export function CaseStudyPageShell({
           <CaseStudyFooterActions backHref={backHref} />
         </article>
       </main>
-
-      <ScrollMinimapRuler scrollRootRef={scrollRootRef} />
     </CaseStudyTocProvider>
   );
 }

@@ -127,6 +127,10 @@ export function trackAiChatClose(messageCount: number): void {
   track("ai_chat_close", { message_count: String(messageCount) });
 }
 
+export function trackAiChatWireframeToggle(enabled: boolean): void {
+  track("ai_chat_wireframe_toggle", { enabled: enabled ? "1" : "0" });
+}
+
 export function trackAiChatGif(giphyId?: string): void {
   track("ai_chat_gif", {
     ...(giphyId ? { giphy_id: giphyId } : {}),

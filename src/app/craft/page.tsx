@@ -14,7 +14,7 @@ export default function CraftPage() {
     <main
       id="main-content"
       data-sheet="experiments"
-      className="fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
+      className="no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
       <ScrollResetLink
         href={ROUTES.home}

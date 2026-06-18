@@ -494,6 +494,26 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   border: 0;
 }
 
+/* Hidden scrollbars on scroll surfaces — wheel / trackpad / touch still work */
+.no-scrollbar,
+.ai-chat-log,
+.projects-page,
+.craft-page,
+main[data-sheet="experiments"],
+main[data-sheet="projects"] {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.ai-chat-log::-webkit-scrollbar,
+.projects-page::-webkit-scrollbar,
+.craft-page::-webkit-scrollbar,
+main[data-sheet="experiments"]::-webkit-scrollbar,
+main[data-sheet="projects"]::-webkit-scrollbar {
+  display: none;
+}
+
 /* WCAG 2.4.11 — case study sticky chrome + back link clearance */
 .case-study-main {
   scroll-padding-top: 8rem;
@@ -505,7 +525,6 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   display: none;
 }
 
-/* Long-form sheets with ScrollMinimapRuler — native scrollbar is redundant */
 main[data-sheet="case-study"] {
   scrollbar-width: none;
   -ms-overflow-style: none;

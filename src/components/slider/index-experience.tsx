@@ -10,7 +10,7 @@ import {
   useIndexScrollReset,
 } from "@/hooks/use-index-scroll-reset";
 import { SliderProvider } from "@/context/slider-context";
-import { useWireframe, WireframeProvider } from "@/context/wireframe-context";
+import { useWireframe } from "@/context/wireframe-context";
 import {
   FRAME_HEIGHT,
   FRAME_WIDTH,
@@ -215,10 +215,8 @@ function CrossOverlay({
 
 export function IndexExperience() {
   return (
-    <WireframeProvider>
-      <SliderProvider>
-        <IndexCanvas />
-      </SliderProvider>
-    </WireframeProvider>
+    <SliderProvider>
+      <IndexCanvas />
+    </SliderProvider>
   );
 }

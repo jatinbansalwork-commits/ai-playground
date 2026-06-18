@@ -45,6 +45,9 @@ Pick a lane and I'll walk you through it:
 - [Projects](${ROUTES.projects}) for case studies
 - [Craft](${ROUTES.craft}) for experiments
 - Or ask me about hiring, mentorship, or how to reach JB.`;
+  } else if (includesAny(text, ["wireframe", "layout debug", "debug mode"])) {
+    body =
+      "Type **wireframe mode** in this chat to toggle layout debug on the index slider — or click the centre cross on the homepage. Could this *be* any more designer?";
   } else if (includesAny(text, ["contact", "email", "linkedin", "reach", "message"])) {
     body = `Look — best ways to reach JB (Ross made me organise this):
 - [LinkedIn](${LINKEDIN})

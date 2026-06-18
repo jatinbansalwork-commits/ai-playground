@@ -146,6 +146,7 @@ export async function POST(request: Request): Promise<Response> {
         lastUserMessage(messages),
         undefined,
         usedGifIds,
+        AI_CHAT_LIMIT_MESSAGE,
       );
       const result = await streamPreparedReply(emit, {
         reply: AI_CHAT_LIMIT_MESSAGE,
@@ -191,7 +192,12 @@ export async function POST(request: Request): Promise<Response> {
         });
         return attachReactionGif(
           result,
-          fetchChatReactionGif(userMessage, chipIntentId, usedGifIds),
+          fetchChatReactionGif(
+            userMessage,
+            chipIntentId,
+            usedGifIds,
+            staticReply,
+          ),
         );
       }
     }
@@ -200,8 +206,6 @@ export async function POST(request: Request): Promise<Response> {
       openAiBudget.canUseOpenAi &&
       isOpenAiChatEnabled() &&
       Boolean(process.env.OPENAI_API_KEY);
-
-    const gifPromise = fetchChatReactionGif(userMessage, intentId, usedGifIds);
 
     let reply = "";
     let source: ChatReplySource = "fallback";
@@ -253,7 +257,7 @@ export async function POST(request: Request): Promise<Response> {
         remainingPrompts,
         remainingOpenAi,
       },
-      gifPromise,
+      fetchChatReactionGif(userMessage, intentId, usedGifIds, reply),
     );
   });
 }

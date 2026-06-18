@@ -26,7 +26,7 @@ export function ArticleLayout({
   return (
     <main
       data-sheet="craft-article"
-      className="craft-page fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
+      className="craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
       <ArticleBackLink
         fallbackHref={backHref}

@@ -58,12 +58,19 @@ import {
   trackAiChatMessage,
   trackAiChatOpen,
   trackAiChatReplySource,
+  trackAiChatWireframeToggle,
 } from "@/lib/analytics";
 import {
   INDEX_FLOATING_BOTTOM,
 } from "@/lib/constants";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useAiChatSounds } from "@/hooks/use-ai-chat-sounds";
+import { useWireframe } from "@/context/wireframe-context";
+import {
+  buildWireframeModeReply,
+  isWireframeModeCommand,
+} from "@/lib/ai-chat-commands.client";
 import { springSnappy } from "@/lib/spring";
 
 type ChatView = "ball" | "chat";
@@ -103,6 +110,8 @@ export function AiChatBall() {
   const pathname = usePathname();
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
+  const { playOpenPop, playSendWhoosh } = useAiChatSounds();
+  const { wireframe, setWireframe } = useWireframe();
   const dialogId = useId();
   const titleId = useId();
   const descriptionId = useId();
@@ -127,6 +136,16 @@ export function AiChatBall() {
     setView("ball");
     window.requestAnimationFrame(() => triggerRef.current?.focus());
   }, [messages.length]);
+
+  const ensureChatOpen = useCallback(() => {
+    setView((current) => {
+      if (current === "ball") {
+        void playOpenPop();
+      }
+      return "chat";
+    });
+    window.requestAnimationFrame(() => inputRef.current?.focus());
+  }, [playOpenPop]);
 
   const refreshRemaining = useCallback(() => {
     setRemainingPrompts(getClientRemainingPrompts());
@@ -218,13 +237,34 @@ export function AiChatBall() {
       const content = rawMessage.trim();
       if (!content || isLoading || isStreaming) return;
 
+      if (isWireframeModeCommand(content)) {
+        const nextEnabled = !wireframe;
+        setWireframe(nextEnabled);
+        trackAiChatWireframeToggle(nextEnabled);
+
+        const reply = buildWireframeModeReply(
+          nextEnabled,
+          pathname === "/" || pathname === "",
+        );
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: reply },
+        ]);
+        return;
+      }
+
       const routedIntentId =
         intentId && shouldUseIntentRouting(messages, intentId)
           ? intentId
           : undefined;
 
       if (remainingPrompts <= 0) {
-        setView("chat");
+        ensureChatOpen();
         setFollowUps([]);
         setMessages((current) => {
           const last = current[current.length - 1];
@@ -239,10 +279,11 @@ export function AiChatBall() {
       const nextMessages: ChatMessage[] = [...messages, { role: "user", content }];
       const startedAt = Date.now();
 
+      void playSendWhoosh();
       setMessages(nextMessages);
       setDraft("");
       setFollowUps([]);
-      setView("chat");
+      ensureChatOpen();
       setIsLoading(true);
       setIsStreaming(false);
 
@@ -389,13 +430,17 @@ export function AiChatBall() {
       }
     },
     [
+      ensureChatOpen,
       isLoading,
       isStreaming,
       messages,
       pathname,
+      playSendWhoosh,
       reducedMotion,
       refreshRemaining,
       remainingPrompts,
+      setWireframe,
+      wireframe,
     ],
   );
 
@@ -409,13 +454,12 @@ export function AiChatBall() {
         return;
       }
 
-      setView("chat");
-      window.requestAnimationFrame(() => inputRef.current?.focus());
+      ensureChatOpen();
     };
 
     window.addEventListener(OPEN_AI_CHAT_EVENT, onOpen);
     return () => window.removeEventListener(OPEN_AI_CHAT_EVENT, onOpen);
-  }, [sendMessage]);
+  }, [ensureChatOpen, sendMessage]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -449,11 +493,14 @@ export function AiChatBall() {
     isLoading || isStreaming || remainingPrompts <= 0;
 
   const panelStyle =
-    isMobile && viewportHeight ? { height: `${viewportHeight}px` } : undefined;
+    isMobile && viewportHeight
+      ? ({
+          height: `${viewportHeight}px`,
+          transformOrigin: "bottom center",
+        } as React.CSSProperties)
+      : ({ transformOrigin: "bottom right" } as React.CSSProperties);
 
-  const panelTransition = reducedMotion
-    ? { duration: 0 }
-    : { duration: 0.24, ease: [0.22, 1, 0.36, 1] as const };
+  const panelTransition = reducedMotion ? { duration: 0 } : springSnappy;
 
   const messageMotion = reducedMotion
     ? { initial: false, animate: { opacity: 1, y: 0 }, transition: { duration: 0 } }
@@ -501,8 +548,8 @@ export function AiChatBall() {
               reducedMotion
                 ? false
                 : isMobile
-                  ? { opacity: 0, y: 28 }
-                  : { opacity: 0, y: 16, scale: 0.97 }
+                  ? { opacity: 0, y: 24, scale: 0.98 }
+                  : { opacity: 0, y: 14, scale: 0.94 }
             }
             animate={
               reducedMotion
@@ -515,8 +562,8 @@ export function AiChatBall() {
               reducedMotion
                 ? { opacity: 0 }
                 : isMobile
-                  ? { opacity: 0, y: 20 }
-                  : { opacity: 0, y: 16, scale: 0.97 }
+                  ? { opacity: 0, y: 18, scale: 0.98 }
+                  : { opacity: 0, y: 10, scale: 0.96 }
             }
             transition={panelTransition}
             style={panelStyle}
@@ -560,7 +607,7 @@ export function AiChatBall() {
               aria-relevant="additions"
               aria-busy={isLoading || isStreaming}
               aria-label="Chat messages"
-              className="flex-1 overflow-y-auto px-5 py-6"
+              className="ai-chat-log flex-1 overflow-y-auto px-5 py-6"
             >
               {messages.length === 0 ? (
                 <AiChatEmptyState
@@ -685,8 +732,7 @@ export function AiChatBall() {
           dialogId={dialogId}
           onOpen={() => {
             trackAiChatOpen("fab");
-            setView("chat");
-            window.requestAnimationFrame(() => inputRef.current?.focus());
+            ensureChatOpen();
           }}
         />
       ) : null}

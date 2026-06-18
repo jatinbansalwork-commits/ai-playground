@@ -11,6 +11,13 @@ export const AI_CHAT_HINT = "Ask JB";
 export const AI_CHAT_HOVER_MESSAGE =
   "Could this be any more helpful? Just ask!";
 
+/** Shown once on first site visit — proactive FAB bubble. */
+export const AI_CHAT_FIRST_VISIT_MESSAGE =
+  "How YOU doin'? I'm JBAI — ask me anything about JB's work.";
+
+/** How long the first-visit FAB bubble stays visible (ms). */
+export const AI_CHAT_FIRST_VISIT_BUBBLE_MS = 5000;
+
 export const AI_CHAT_INTRO =
   "Case studies, hiring, mentorship — Joey's got the vibe, Chandler's got the jokes, Ross has the details.";
 
@@ -54,6 +61,9 @@ export const AI_CHAT_OPENAI_LIMIT_MESSAGE =
   "Okay — the fancy AI replies are used up for this session. Could we *be* any more out of budget? No worries — I'll keep helping from curated site knowledge.";
 
 export const OPEN_AI_CHAT_EVENT = "open-ai-chat";
+
+/** Opt-in send whoosh — `localStorage.setItem("ai_chat_send_sound", "1")`. Off by default. */
+export const AI_CHAT_SEND_SOUND_STORAGE_KEY = "ai_chat_send_sound";
 
 export const AI_CHAT_AVATAR_SRC = "/assets/ai-chat/jb-avatar.png";
 

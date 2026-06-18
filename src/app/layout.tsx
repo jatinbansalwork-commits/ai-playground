@@ -6,6 +6,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { SiteCursor } from "@/components/site-cursor-loader";
 import { AiChatBall } from "@/components/ai-chat/ai-chat-ball";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
+import { WireframeProvider } from "@/context/wireframe-context";
 import { BLOB_CDN_ORIGIN } from "@/lib/asset-cdn";
 import { SITE_NAME } from "@/lib/constants";
 import "./globals.css";
@@ -38,8 +39,10 @@ export default function RootLayout({
         <CacheManager />
         <ScrollToTop />
         <SiteCursor />
-        {children}
-        <AiChatBall />
+        <WireframeProvider>
+          {children}
+          <AiChatBall />
+        </WireframeProvider>
         <Analytics />
       </body>
     </html>
