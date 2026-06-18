@@ -1,0 +1,40 @@
+import { getCaseStudyContent } from "@/lib/project-content";
+
+/** Injects page-aware hints into the JBAI system prompt. */
+export function buildPageContext(pagePath?: string): string {
+  if (!pagePath || pagePath === "/") {
+    return "The user is on the index slider — mention Projects, Craft, or Contact if relevant.";
+  }
+
+  if (pagePath.startsWith("/projects/")) {
+    const slug = pagePath.replace("/projects/", "").split("/")[0] ?? "";
+    const study = getCaseStudyContent(slug);
+
+    if (study) {
+      return `The user is viewing **${study.title}** (${study.year}) at ${pagePath}.
+Overview: ${study.overviewText}
+Prioritise this case study when answering unless they ask about something else.`;
+    }
+
+    return `The user is on a project page at ${pagePath}. Prioritise case study content from knowledge when relevant.`;
+  }
+
+  if (pagePath.startsWith("/craft/")) {
+    const slug = pagePath.replace("/craft/", "").split("/")[0] ?? "";
+    return `The user is reading a Craft essay at ${pagePath}${slug ? ` (${slug})` : ""}. Prioritise process, quality, and craft context when relevant.`;
+  }
+
+  if (pagePath === "/craft") {
+    return "The user is browsing the Craft gallery — mention experiments, motion studies, and the Design Review essay when relevant.";
+  }
+
+  if (pagePath === "/projects") {
+    return "The user is on the Projects index — help them pick a case study based on their interest.";
+  }
+
+  if (pagePath === "/archive") {
+    return "The user is on the Me / archive slide context — keep answers personal and portfolio-focused.";
+  }
+
+  return `The user is on ${pagePath}. Keep answers relevant to JB's portfolio and this section when possible.`;
+}

@@ -71,6 +71,50 @@ function resetScrollPosition() {
   document.body.scrollTop = 0;
 }
 
+function canElementConsumeWheel(
+  element: Element,
+  deltaX: number,
+  deltaY: number,
+): boolean {
+  const style = window.getComputedStyle(element);
+  const canScrollX =
+    (style.overflowX === "auto" || style.overflowX === "scroll") &&
+    element.scrollWidth > element.clientWidth + 1;
+  const canScrollY =
+    (style.overflowY === "auto" || style.overflowY === "scroll") &&
+    element.scrollHeight > element.clientHeight + 1;
+
+  if (Math.abs(deltaX) >= Math.abs(deltaY) && canScrollX) {
+    const maxLeft = element.scrollWidth - element.clientWidth;
+    if (deltaX > 0 && element.scrollLeft < maxLeft - 1) return true;
+    if (deltaX < 0 && element.scrollLeft > 0) return true;
+  }
+
+  if (Math.abs(deltaY) >= Math.abs(deltaX) && canScrollY) {
+    const maxTop = element.scrollHeight - element.clientHeight;
+    if (deltaY > 0 && element.scrollTop < maxTop - 1) return true;
+    if (deltaY < 0 && element.scrollTop > 0) return true;
+  }
+
+  return false;
+}
+
+function eventTargetHasScrollableAncestor(
+  target: EventTarget | null,
+  deltaX: number,
+  deltaY: number,
+): boolean {
+  if (!(target instanceof Element)) return false;
+
+  let node: Element | null = target;
+  while (node && node !== document.documentElement) {
+    if (canElementConsumeWheel(node, deltaX, deltaY)) return true;
+    node = node.parentElement;
+  }
+
+  return false;
+}
+
 export function useScrollSlider() {
   const { trackX, minimapX, scale } = useSliderContext();
   const frameCount = FRAMES.length;
@@ -329,6 +373,10 @@ export function useScrollSlider() {
     };
 
     const onWheel = (event: WheelEvent) => {
+      if (eventTargetHasScrollableAncestor(event.target, event.deltaX, event.deltaY)) {
+        return;
+      }
+
       const delta =
         Math.abs(event.deltaY) > Math.abs(event.deltaX)
           ? event.deltaY

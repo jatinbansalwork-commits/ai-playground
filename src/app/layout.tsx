@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import CacheManager from "@/components/CacheManager";
 import ScrollToTop from "@/components/ScrollToTop";
 import { SiteCursor } from "@/components/site-cursor-loader";
+import { AiChatBall } from "@/components/ai-chat/ai-chat-ball";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
 import { BLOB_CDN_ORIGIN } from "@/lib/asset-cdn";
 import { SITE_NAME } from "@/lib/constants";
@@ -38,6 +39,7 @@ export default function RootLayout({
         <ScrollToTop />
         <SiteCursor />
         {children}
+        <AiChatBall />
         <Analytics />
       </body>
     </html>

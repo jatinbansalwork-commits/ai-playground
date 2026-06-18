@@ -1,6 +1,4 @@
-"use client";
-
-import { FRAMES } from "@/lib/constants";
+import { FRAMES, INDEX_FLOATING_BOTTOM } from "@/lib/constants";
 import { FOCUS_RING, TARGET_HIT_AREA } from "@/lib/a11y";
 
 interface IndexSlideNavProps {
@@ -20,7 +18,7 @@ export function IndexSlideNav({
   return (
     <nav
       aria-label="Slide navigation"
-      className="pointer-events-auto fixed bottom-14 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white backdrop-blur-sm"
+      className={`pointer-events-auto fixed ${INDEX_FLOATING_BOTTOM} left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white backdrop-blur-sm`}
     >
       <button
         type="button"

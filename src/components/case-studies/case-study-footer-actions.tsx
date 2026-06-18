@@ -1,12 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { AskJbChatButton } from "@/components/ai-chat/ask-jb-chat-button";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import {
   CASE_STUDY_FOOTER_NAV_LABEL,
   FOCUS_RING,
   TARGET_HIT_AREA,
 } from "@/lib/a11y";
+import { buildCaseStudyChatPrompt } from "@/lib/ai-chat-open.client";
 import { ROUTES } from "@/lib/constants";
+import { getCaseStudyContent } from "@/lib/project-content";
 
 const CASE_STUDY_BUTTON_CLASS = [
   TARGET_HIT_AREA,
@@ -29,6 +33,13 @@ interface CaseStudyFooterActionsProps {
 }
 
 export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps) {
+  const pathname = usePathname();
+  const slug = pathname?.startsWith("/projects/")
+    ? pathname.replace("/projects/", "").split("/")[0]
+    : undefined;
+  const study = slug ? getCaseStudyContent(slug) : undefined;
+  const chatMessage = study ? buildCaseStudyChatPrompt(study.title) : undefined;
+
   return (
     <footer className="pt-12">
       <div className="flex min-h-11 items-center gap-4">
@@ -44,6 +55,15 @@ export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps
             Back to projects
           </ScrollResetLink>
 
+          {chatMessage ? (
+            <AskJbChatButton
+              variant="footer"
+              source="case-study-footer"
+              message={chatMessage}
+              label="Ask JB about this project"
+            />
+          ) : null}
+
           <ScrollResetLink
             href={ROUTES.home}
             scroll={true}
@@ -53,7 +73,6 @@ export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps
           </ScrollResetLink>
         </nav>
 
-        {/* Reserves space for the fixed scroll-up control. */}
         <div className="size-11 shrink-0" aria-hidden />
       </div>
     </footer>

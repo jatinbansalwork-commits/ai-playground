@@ -24,7 +24,7 @@ export default function CraftPage() {
         <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
-      <div className="flex w-full flex-col items-center px-4 pb-24 pt-24">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 px-4 pb-24 pt-24">
         <ExperimentsGalleryClient
           items={getExperimentGalleryItems()}
           sectionHref={EXPERIMENTS_PAGE.href}

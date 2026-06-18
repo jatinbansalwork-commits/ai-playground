@@ -85,6 +85,12 @@ export const MINIMAP_LINE_COUNT = 20;
 export const MINIMAP_TRACKER_WIDTH = 30;
 export const MINIMAP_RANGE = 160;
 
+/** Bottom offset for floating chrome above the pinned index footer (slide nav + chat). */
+export const INDEX_FLOATING_BOTTOM = "bottom-14";
+
+/** Chat ball diameter — keep in sync with `AiChatFab` trigger size. */
+export const AI_CHAT_BALL_SIZE_PX = 72;
+
 /** Canvas scale floor + viewport fit for the index slider. */
 export const SCALE_MIN = 0.6;
 export const SCALE_BASE_MIN = 0.2;

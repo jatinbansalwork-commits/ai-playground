@@ -78,6 +78,14 @@ export function trackCaseStudyRevealed(slug: string): void {
 
 export type MediaPlaySurface = "case-study" | "craft";
 
+export type AiChatOpenSource =
+  | "fab"
+  | "cta"
+  | "projects"
+  | "craft"
+  | "case-study-hero"
+  | "case-study-footer";
+
 export function mediaIdFromSrc(src: string): string {
   const normalized = src.split("?")[0]?.split("#")[0] ?? src;
   const segment = normalized.split("/").pop();
@@ -95,4 +103,36 @@ export function trackMediaPlay(properties: {
     media_id: properties.media_id,
     ...(properties.slug ? { slug: properties.slug } : {}),
   });
+}
+
+export function trackAiChatOpen(source: AiChatOpenSource = "fab"): void {
+  track("ai_chat_open", { source });
+}
+
+export function trackAiChatChipClick(intentId: string): void {
+  track("ai_chat_chip_click", { intent_id: intentId });
+}
+
+export function trackAiChatMessage(source: "chip" | "typed"): void {
+  track("ai_chat_message", { source });
+}
+
+export function trackAiChatReplySource(
+  source: "static" | "openai" | "fallback",
+): void {
+  track("ai_chat_reply", { source });
+}
+
+export function trackAiChatClose(messageCount: number): void {
+  track("ai_chat_close", { message_count: String(messageCount) });
+}
+
+export function trackAiChatGif(giphyId?: string): void {
+  track("ai_chat_gif", {
+    ...(giphyId ? { giphy_id: giphyId } : {}),
+  });
+}
+
+export function trackAiChatError(reason: "network" | "stream"): void {
+  track("ai_chat_error", { reason });
 }

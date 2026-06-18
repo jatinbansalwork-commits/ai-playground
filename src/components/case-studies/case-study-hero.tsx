@@ -7,6 +7,8 @@ import {
 } from "@/components/case-studies/case-study-editorial";
 import { ProjectMetaSpecs } from "@/components/case-studies/project-meta-specs";
 import { CaseStudyYear } from "@/components/case-studies/case-study-prose";
+import { AskJbChatButton } from "@/components/ai-chat/ask-jb-chat-button";
+import { buildCaseStudyChatPrompt } from "@/lib/ai-chat-open.client";
 import { CASE_STUDY_TITLE_ID } from "@/lib/case-study-a11y";
 import type { CaseStudyMetaSpecs } from "@/lib/project-content";
 
@@ -39,6 +41,12 @@ export function CaseStudyHero({
             {title}
           </h1>
           <p className={`${CASE_STUDY_LEAD} ${CASE_STUDY_TEXT_COLUMN}`}>{overview}</p>
+          <AskJbChatButton
+            variant="hero"
+            source="case-study-hero"
+            message={buildCaseStudyChatPrompt(title)}
+            label="Ask JB about this project"
+          />
         </div>
       </header>
 
