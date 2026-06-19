@@ -123,6 +123,34 @@ export function trackAiChatReplySource(
   track("ai_chat_reply", { source });
 }
 
+/** Detected visitor goal for the latest message — hiring, resume, Saltbot, etc. */
+export function trackAiChatIntent(properties: {
+  intent_id: string;
+  confidence: "high" | "low";
+  input?: "chip" | "typed";
+}): void {
+  track("ai_chat_intent", {
+    intent_id: properties.intent_id,
+    confidence: properties.confidence,
+    ...(properties.input ? { input: properties.input } : {}),
+  });
+}
+
+/** Fired when the chat closes — breakdown of the session transcript. */
+export function trackAiChatSessionMessages(properties: {
+  user_messages: number;
+  assistant_messages: number;
+  total_messages: number;
+  gifs_shown: number;
+}): void {
+  track("ai_chat_session_messages", {
+    user_messages: String(properties.user_messages),
+    assistant_messages: String(properties.assistant_messages),
+    total_messages: String(properties.total_messages),
+    gifs_shown: String(properties.gifs_shown),
+  });
+}
+
 export function trackAiChatClose(messageCount: number): void {
   track("ai_chat_close", { message_count: String(messageCount) });
 }

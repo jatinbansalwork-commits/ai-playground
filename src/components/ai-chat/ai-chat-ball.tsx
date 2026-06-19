@@ -55,9 +55,11 @@ import {
   trackAiChatClose,
   trackAiChatError,
   trackAiChatGif,
+  trackAiChatIntent,
   trackAiChatMessage,
   trackAiChatOpen,
   trackAiChatReplySource,
+  trackAiChatSessionMessages,
   trackAiChatWireframeToggle,
 } from "@/lib/analytics";
 import {
@@ -71,6 +73,7 @@ import {
   buildWireframeModeReply,
   isWireframeModeCommand,
 } from "@/lib/ai-chat-commands.client";
+import { detectQuestionIntent } from "@/lib/ai-chat-question-intent";
 import { springSnappy } from "@/lib/spring";
 
 type ChatView = "ball" | "chat";
@@ -132,10 +135,22 @@ export function AiChatBall() {
   const endRef = useRef<HTMLDivElement>(null);
 
   const closeChat = useCallback(() => {
+    const userMessages = messages.filter((message) => message.role === "user").length;
+    const assistantMessages = messages.filter(
+      (message) => message.role === "assistant",
+    ).length;
+    const gifsShown = messages.filter((message) => message.gif?.url).length;
+
+    trackAiChatSessionMessages({
+      user_messages: userMessages,
+      assistant_messages: assistantMessages,
+      total_messages: messages.length,
+      gifs_shown: gifsShown,
+    });
     trackAiChatClose(messages.length);
     setView("ball");
     window.requestAnimationFrame(() => triggerRef.current?.focus());
-  }, [messages.length]);
+  }, [messages]);
 
   const ensureChatOpen = useCallback(() => {
     setView((current) => {
@@ -241,6 +256,11 @@ export function AiChatBall() {
         const nextEnabled = !wireframe;
         setWireframe(nextEnabled);
         trackAiChatWireframeToggle(nextEnabled);
+        trackAiChatIntent({
+          intent_id: "wireframe",
+          confidence: "high",
+          input: "typed",
+        });
 
         const reply = buildWireframeModeReply(
           nextEnabled,
@@ -262,6 +282,13 @@ export function AiChatBall() {
         intentId && shouldUseIntentRouting(messages, intentId)
           ? intentId
           : undefined;
+
+      const visitorIntent = detectQuestionIntent(content, pathname);
+      trackAiChatIntent({
+        intent_id: visitorIntent.id,
+        confidence: visitorIntent.confidence,
+        input: routedIntentId ? "chip" : "typed",
+      });
 
       if (remainingPrompts <= 0) {
         ensureChatOpen();
