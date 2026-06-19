@@ -7,10 +7,10 @@ export interface OpenAiChatDetail {
   source?: AiChatOpenSource;
 }
 
-/** Strip leading status emoji / symbols from case study titles. */
+/** Opens chat from a case study — asks for a behind-the-scenes fact, not a page summary. */
 export function buildCaseStudyChatPrompt(title: string): string {
   const clean = title.replace(/^[^\p{L}\p{N}]+/u, "").trim();
-  return `What should I know about the ${clean} case study?`;
+  return `Share a fun fact about ${clean} that is not in the case study.`;
 }
 
 /** Opens JBAI from anywhere on the site — dispatches `open-ai-chat`. */

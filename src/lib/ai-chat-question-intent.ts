@@ -1,5 +1,9 @@
 import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 import { resolveCareerKnowledgeReply } from "@/lib/ai-chat-career-knowledge";
+import {
+  buildCaseStudyFunFactReply,
+  isCaseStudyFunFactRequest,
+} from "@/lib/ai-chat-case-study-fun-facts";
 
 const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
 const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
@@ -20,7 +24,7 @@ export type QuestionIntentId =
   | "portfolio_site"
   | "craft"
   | "case_study_pick"
-  | "page_context"
+  | "case_study_fun_fact"
   | "explore";
 
 export interface DetectedQuestionIntent {
@@ -165,6 +169,14 @@ const INTENT_RULES: readonly IntentRule[] = [
       (text.includes("craft") && !text.includes("case study")),
   },
   {
+    id: "case_study_fun_fact",
+    goal: "They are on a case study page and want something extra — a behind-the-scenes fact, not a summary of what they are already reading.",
+    curated: true,
+    matches: (text, pagePath) =>
+      Boolean(pagePath?.startsWith("/projects/")) &&
+      isCaseStudyFunFactRequest(text),
+  },
+  {
     id: "case_study_pick",
     goal: "They want help choosing work to read — route by interest with links.",
     curated: true,
@@ -177,12 +189,6 @@ const INTENT_RULES: readonly IntentRule[] = [
         "which project",
         "show me work",
       ]) || (includesAny(text, ["case study", "projects"]) && text.includes("which")),
-  },
-  {
-    id: "page_context",
-    goal: "They are on a case study page — acknowledge context and offer related links.",
-    curated: true,
-    matches: (_text, pagePath) => Boolean(pagePath?.startsWith("/projects/")),
   },
 ];
 
@@ -278,11 +284,9 @@ Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
 - Design systems → [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system)
 - Fintech → [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)`;
 
-    case "page_context": {
-      const slug = pagePath?.replace("/projects/", "").split("/")[0] ?? "";
-      return slug
-        ? `You're reading **${slug.replace(/-/g, " ")}** — the full story is here. Compare more on [Projects](${ROUTES.projects}).`
-        : `You're on a case study — browse here or see more on [Projects](${ROUTES.projects}).`;
+    case "case_study_fun_fact": {
+      if (!pagePath) return null;
+      return buildCaseStudyFunFactReply(pagePath);
     }
 
     case "explore":

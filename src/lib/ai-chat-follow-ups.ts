@@ -65,7 +65,11 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "Tell me about Piggy",
     "I'd love to hire JB",
   ],
-  page_context: [],
+  case_study_fun_fact: [
+    "Which case study should I start with?",
+    "I'd love to hire JB",
+    "How do I contact JB?",
+  ],
   explore: [...GENERIC_FOLLOW_UPS],
 };
 
@@ -164,15 +168,8 @@ export function buildFollowUpSuggestions(options: {
     return uniqueSuggestions([...fromQuestion, ...fromChip]);
   }
 
-  if (questionIntent.id !== "explore" && questionIntent.id !== "page_context") {
+  if (questionIntent.id !== "explore") {
     return uniqueSuggestions(fromQuestion);
-  }
-
-  if (questionIntent.id === "page_context") {
-    return uniqueSuggestions([
-      ...followUpsForPage(options.pagePath),
-      ...GENERIC_FOLLOW_UPS,
-    ]);
   }
 
   return uniqueSuggestions([

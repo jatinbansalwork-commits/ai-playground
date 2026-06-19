@@ -51,7 +51,7 @@ export function AskJbChatButton({
         <span className="min-w-0 flex-1">
           <span className="block text-sm font-medium text-white">{label}</span>
           <span className="mt-0.5 block text-xs leading-snug text-neutral-400">
-            Need the full picture on JB? Just ask.
+            Want a behind-the-scenes fun fact? Just ask.
           </span>
         </span>
         <span

@@ -11,9 +11,10 @@ export function buildPageContext(pagePath?: string): string {
     const study = getCaseStudyContent(slug);
 
     if (study) {
-      return `The user is viewing **${study.title}** (${study.year}) at ${pagePath}.
-Overview: ${study.overviewText}
-Prioritise this case study when answering unless they ask about something else.`;
+      return `The user is already reading **${study.title}** (${study.year}) at ${pagePath}.
+Do **not** tell them to open or read this case study — they are on it.
+If they ask from the Ask JB button, share a behind-the-scenes fun fact from knowledge, not the overview below.
+Overview (for other questions only): ${study.overviewText}`;
     }
 
     return `The user is on a project page at ${pagePath}. Prioritise case study content from knowledge when relevant.`;
