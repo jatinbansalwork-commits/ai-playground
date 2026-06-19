@@ -9,6 +9,7 @@ import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY } from "@/lib/experiments-regist
 import { PROJECTS_LIST } from "@/lib/projects-list-data";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
+import { buildCareerKnowledgeSection } from "@/lib/ai-chat-career-knowledge";
 
 interface CaseStudyChatMeta {
   bestFor: string;
@@ -160,9 +161,8 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 
 ## Hiring
 - Open to full-time and contract product design roles — especially cybersecurity, AI products, fintech, and design systems
-- Strongest proof: Saltbot AI (AI UX), FreshPrints Design System (systems), Piggy (fintech research + outcomes)
-- Share role context, team shape, and timeline when reaching out
-- Resume and LinkedIn links are in Contact below
+- **JBAI hiring replies:** share only JB's phone number **6362408280** — do not list case studies, resume, LinkedIn, or email unless the user asks for them
+- Case studies (Saltbot AI, FreshPrints Design System, Piggy, etc.) are for portfolio browsing, not the default hiring CTA
 
 ## JB Manual (summary)
 - Explains how JB works best, communication preferences, and collaboration style
@@ -172,6 +172,8 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 ## Contact & collaboration
 ${contactLines}
 
-For mentorship or hiring, prefer LinkedIn or email after reading the JB Manual.
+For mentorship, prefer LinkedIn or email after reading the JB Manual. For hiring, share phone **6362408280** only unless the user asks for more.
+
+${buildCareerKnowledgeSection()}
 `.trim();
 }

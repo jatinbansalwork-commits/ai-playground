@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, CONTACT_LINKS, ROUTES } from "@/lib/constants";
+import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 
 const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
 const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
@@ -35,14 +35,10 @@ When you're ready, message on [LinkedIn](${LINKEDIN}) with what you're working o
     id: "hiring",
     prompt: "I'd love to hire JB",
     instruction:
-      "If the user wants to hire JB: summarise fit (product design, cybersecurity by day, AI experiments by night, fintech + design systems + AI UX). Recommend exactly two case studies with brief reasons. Link resume, LinkedIn, and email. Friends trio — Ross for credentials, Joey for enthusiasm, Chandler quip optional. End with a clear next step.",
-    staticReply: `Okay, hear me out — JB's a Product Designer. Cybersecurity by day, AI experiments by night. Product design, design systems, fintech, AI UX. Could this *be* any more on-brand?
+      "If the user wants to hire JB: keep it short — Chandler quip optional, then share only JB's phone number for hiring enquiries. Do not list case studies, resume, LinkedIn, or email unless they ask. Phone: 6362408280.",
+    staticReply: `Hiring? Could this *be* any more straightforward?
 
-If you're hiring, start here:
-- **[Saltbot AI](/projects/saltbot-ai-saltmine)** — conversational analytics and AI guardrails
-- **[FreshPrints Design System](/projects/freshprints-design-system)** — scaling a design system from 0→1
-
-Then grab the [Resume](${RESUME}), say hi on [LinkedIn](${LINKEDIN}), or [email](mailto:${CONTACT_EMAIL}) with the role. All right?`,
+Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`,
   },
   {
     id: "portfolio",

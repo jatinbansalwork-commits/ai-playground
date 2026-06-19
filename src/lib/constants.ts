@@ -136,3 +136,7 @@ export const CONTACT_LINKS = [
 ] as const;
 
 export const CONTACT_EMAIL = "jatinbansal.work@gmail.com";
+
+/** Direct line for hiring enquiries in JBAI. */
+export const JB_CONTACT_PHONE = "6362408280";
+export const JB_CONTACT_PHONE_TEL = `tel:+91${JB_CONTACT_PHONE}`;

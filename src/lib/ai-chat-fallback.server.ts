@@ -1,5 +1,6 @@
-import { CONTACT_EMAIL, CONTACT_LINKS, ROUTES } from "@/lib/constants";
+import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 import { AI_CHAT_OPENAI_LIMIT_MESSAGE } from "@/lib/ai-chat-config";
+import { resolveCareerKnowledgeReply } from "@/lib/ai-chat-career-knowledge";
 
 const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
 const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
@@ -36,6 +37,7 @@ export function generateFallbackReply(
   showOpenAiNotice = false,
 ): FallbackReply {
   const text = userMessage.toLowerCase();
+  const careerReply = resolveCareerKnowledgeReply(userMessage);
   let body = "";
 
   if (isSocialGreeting(text)) {
@@ -48,6 +50,8 @@ Pick a lane and I'll walk you through it:
   } else if (includesAny(text, ["wireframe", "layout debug", "debug mode"])) {
     body =
       "Type **wireframe mode** in this chat to toggle layout debug on the index slider — or click the centre cross on the homepage. Could this *be* any more designer?";
+  } else if (careerReply) {
+    body = careerReply;
   } else if (includesAny(text, ["contact", "email", "linkedin", "reach", "message"])) {
     body = `Look — best ways to reach JB (Ross made me organise this):
 - [LinkedIn](${LINKEDIN})
@@ -57,7 +61,9 @@ Pick a lane and I'll walk you through it:
   } else if (includesAny(text, ["mentor", "mentorship", "advice", "feedback"])) {
     body = `How you doin'? JB's open to mentorship when it's a good fit. Start with the [JB Manual](${JB_MANUAL}), then hit him on [LinkedIn](${LINKEDIN}) with one focused question.`;
   } else if (includesAny(text, ["hire", "hiring", "role", "job", "contract"])) {
-    body = `Hiring? Could this *be* any more straightforward? Check [Saltbot AI](${ROUTES.projects}/saltbot-ai-saltmine) and [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system), then share the role on [LinkedIn](${LINKEDIN}) or [email](mailto:${CONTACT_EMAIL}).`;
+    body = `Hiring? Could this *be* any more straightforward?
+
+Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
   } else if (includesAny(text, ["saltbot", "saltmine", "conversational", "chatbot"])) {
     body = `**Saltbot AI** — JB's conversational analytics work for Saltmine. Reports in seconds, not hours in spreadsheets. [Read the case study](${ROUTES.projects}/saltbot-ai-saltmine).`;
   } else if (includesAny(text, ["piggy", "support", "mutual fund", "fintech"])) {

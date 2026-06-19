@@ -16,8 +16,8 @@ const FOLLOW_UPS_BY_INTENT: Record<AiChatIntentId, readonly string[]> = {
     "How do I contact JB?",
   ],
   hiring: [
-    "Tell me more about Saltbot AI",
-    "Where is JB's resume?",
+    "Which case study should I start with?",
+    "How did JB build this portfolio?",
   ],
   portfolio: [
     "What is on the Craft page?",
