@@ -1,41 +1,90 @@
-import { CONTACT_EMAIL, CONTACT_LINKS, ROUTES } from "@/lib/constants";
 import type { AiChatIntentId } from "@/lib/ai-chat-intents";
+import {
+  detectQuestionIntent,
+  type QuestionIntentId,
+} from "@/lib/ai-chat-question-intent";
 import type { ChatReplySource } from "@/lib/ai-chat-types";
-
-const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
-const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
 
 const GENERIC_FOLLOW_UPS = [
   "Which case study should I start with?",
   "How do I contact JB?",
 ] as const;
 
-const FOLLOW_UPS_BY_INTENT: Record<AiChatIntentId, readonly string[]> = {
-  mentorship: [
-    "What is in the JB Manual?",
+/** Follow-ups keyed to what the visitor just asked — not the first chip in the session. */
+const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
+  QuestionIntentId,
+  readonly string[]
+> = {
+  greeting: [
+    "I'd love to hire JB",
+    "Which case study should I start with?",
     "How do I contact JB?",
   ],
-  hiring: [
-    "Which case study should I start with?",
+  wireframe: [
     "How did JB build this portfolio?",
-  ],
-  portfolio: [
     "What is on the Craft page?",
+  ],
+  resume: ["I'd love to hire JB", "How do I contact JB?"],
+  hiring: ["Where is JB's resume?", "Tell me about Saltbot AI"],
+  contact: ["I'd love to hire JB", "I'm interested in mentorship"],
+  mentorship: ["What is in the JB Manual?", "How do I contact JB?"],
+  career_interview: [
+    "Tell me about a zero-to-one product you launched",
     "Which case study should I start with?",
   ],
-  "case-study": [
+  project_saltbot: [
+    "What problem did Saltbot solve?",
+    "Tell me more about Saltbot AI",
+    "How do I contact JB?",
+  ],
+  project_piggy: [
+    "How did Piggy reduce support tickets?",
     "Tell me about Piggy",
     "How do I contact JB?",
   ],
+  project_freshprints: [
+    "Tell me about the FreshPrints design system",
+    "What did the Image Gen AI tool do?",
+    "How do I contact JB?",
+  ],
+  project_kalash: [
+    "Tell me about Kalash",
+    "What is the Kalash year-end recap?",
+    "How do I contact JB?",
+  ],
+  portfolio_site: [
+    "What is on the Craft page?",
+    "Which case study should I start with?",
+  ],
+  craft: [
+    "How did JB build this portfolio?",
+    "Which case study should I start with?",
+  ],
+  case_study_pick: [
+    "Tell me about Saltbot AI",
+    "Tell me about Piggy",
+    "I'd love to hire JB",
+  ],
+  page_context: [],
+  explore: [...GENERIC_FOLLOW_UPS],
+};
+
+const FOLLOW_UPS_BY_CHIP_INTENT: Record<AiChatIntentId, readonly string[]> = {
+  mentorship: ["What is in the JB Manual?", "How do I contact JB?"],
+  hiring: ["Where is JB's resume?", "Tell me about Saltbot AI"],
+  portfolio: ["What is on the Craft page?", "Which case study should I start with?"],
+  "case-study": ["Tell me about Saltbot AI", "Tell me about Piggy"],
 };
 
 const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
   "/projects/saltbot-ai-saltmine": [
     "What problem did Saltbot solve?",
+    "Tell me more about Saltbot AI",
     "How do I contact JB?",
   ],
   "/projects/freshprints-design-system": [
     "What was the design system scope?",
+    "Tell me about the FreshPrints design system",
     "How do I contact JB?",
   ],
   "/projects/freshprints-image-gen-ai": [
@@ -44,10 +93,11 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
   ],
   "/projects/piggy-reduced-mutual-fund-support-tickets": [
     "How did Piggy reduce support tickets?",
+    "Tell me about Piggy",
     "How do I contact JB?",
   ],
   "/projects/kalash-rewards": [
-    "What is the Kalash rewards work about?",
+    "Tell me about Kalash",
     "How do I contact JB?",
   ],
   "/projects/kalash-year-end-recap": [
@@ -55,8 +105,8 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
     "How do I contact JB?",
   ],
   "/craft": [
-    "Which case study should I start with?",
     "How did JB build this portfolio?",
+    "Which case study should I start with?",
   ],
   "/projects": [
     "Which case study should I start with?",
@@ -79,34 +129,21 @@ function uniqueSuggestions(values: readonly string[], max = 3): string[] {
   return result;
 }
 
-function suggestionsFromMessage(message: string): string[] {
-  const text = message.toLowerCase();
+function followUpsForPage(pagePath?: string): readonly string[] {
+  if (!pagePath) return [];
 
-  if (/contact|email|linkedin|reach|hire|mentor/.test(text)) {
-    return ["How do I contact JB?", "Which case study should I start with?"];
+  if (FOLLOW_UPS_BY_PAGE[pagePath]) {
+    return FOLLOW_UPS_BY_PAGE[pagePath];
   }
 
-  if (/saltbot|ai|chatbot|conversational/.test(text)) {
-    return ["Tell me more about Saltbot AI", "How do I contact JB?"];
+  if (pagePath.startsWith("/projects/")) {
+    return [
+      "What is the outcome of this project?",
+      "How do I contact JB?",
+    ];
   }
 
-  if (/piggy|fintech|mutual|support/.test(text)) {
-    return ["Tell me about Piggy", "How do I contact JB?"];
-  }
-
-  if (/freshprints|design system|system/.test(text)) {
-    return ["Tell me about the FreshPrints design system", "How do I contact JB?"];
-  }
-
-  if (/kalash|gold|rewards/.test(text)) {
-    return ["Tell me about Kalash", "How do I contact JB?"];
-  }
-
-  if (/portfolio|built|stack|craft|next\.?js/.test(text)) {
-    return ["What is on the Craft page?", "Which case study should I start with?"];
-  }
-
-  return [...GENERIC_FOLLOW_UPS];
+  return [];
 }
 
 export function buildFollowUpSuggestions(options: {
@@ -115,31 +152,32 @@ export function buildFollowUpSuggestions(options: {
   intentId?: AiChatIntentId;
   source: ChatReplySource;
 }): string[] {
-  const fromPage =
-    options.pagePath && FOLLOW_UPS_BY_PAGE[options.pagePath]
-      ? FOLLOW_UPS_BY_PAGE[options.pagePath]
-      : options.pagePath?.startsWith("/projects/")
-        ? [
-            "What is the outcome of this project?",
-            "How do I contact JB?",
-          ]
-        : [];
-
-  const fromIntent = options.intentId
-    ? FOLLOW_UPS_BY_INTENT[options.intentId]
-    : [];
-
-  const fromMessage = suggestionsFromMessage(options.lastUserMessage);
+  const questionIntent = detectQuestionIntent(
+    options.lastUserMessage,
+    options.pagePath,
+  );
+  const fromQuestion =
+    FOLLOW_UPS_BY_QUESTION_INTENT[questionIntent.id] ?? GENERIC_FOLLOW_UPS;
 
   if (options.source === "static" && options.intentId) {
-    return uniqueSuggestions([...fromIntent, ...fromMessage]);
+    const fromChip = FOLLOW_UPS_BY_CHIP_INTENT[options.intentId] ?? [];
+    return uniqueSuggestions([...fromQuestion, ...fromChip]);
+  }
+
+  if (questionIntent.id !== "explore" && questionIntent.id !== "page_context") {
+    return uniqueSuggestions(fromQuestion);
+  }
+
+  if (questionIntent.id === "page_context") {
+    return uniqueSuggestions([
+      ...followUpsForPage(options.pagePath),
+      ...GENERIC_FOLLOW_UPS,
+    ]);
   }
 
   return uniqueSuggestions([
-    ...fromPage,
-    ...fromIntent,
-    ...fromMessage,
-    ...GENERIC_FOLLOW_UPS,
+    ...followUpsForPage(options.pagePath),
+    ...fromQuestion,
   ]);
 }
 
@@ -150,5 +188,22 @@ export function resolveFollowUpPrompt(label: string): string {
   if (label === "Tell me about the FreshPrints design system") {
     return "Tell me about the FreshPrints Design System case study";
   }
+  if (label === "Tell me about a zero-to-one product you launched") {
+    return "Tell me about a zero-to-one product you launched";
+  }
+  if (label === "What problem did Saltbot solve?") {
+    return "What problem did Saltbot solve?";
+  }
+  if (label === "Tell me more about Saltbot AI") {
+    return "Tell me more about Saltbot AI";
+  }
+  if (label === "What did the Image Gen AI tool do?") {
+    return `What did the FreshPrints Image Gen AI tool do?`;
+  }
   return label;
+}
+
+/** Exposed for tests — maps intent id to default follow-up labels. */
+export function followUpsForQuestionIntent(id: QuestionIntentId): readonly string[] {
+  return FOLLOW_UPS_BY_QUESTION_INTENT[id] ?? GENERIC_FOLLOW_UPS;
 }

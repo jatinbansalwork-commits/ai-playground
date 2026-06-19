@@ -3,17 +3,25 @@ import { buildAiChatKnowledge } from "@/lib/ai-chat-knowledge";
 import { buildPageContext } from "@/lib/ai-chat-page-context";
 import { AI_CHAT_NAME } from "@/lib/ai-chat-config";
 import { buildIntentPromptRules } from "@/lib/ai-chat-intents";
+import {
+  buildIntentPromptBlock,
+  type DetectedQuestionIntent,
+} from "@/lib/ai-chat-question-intent";
 import type { ChatMessage } from "@/lib/ai-chat-types";
 
 const OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions";
 const OPENAI_MODEL = "gpt-4o-mini";
 
-function buildSystemPrompt(pagePath?: string): string {
+function buildSystemPrompt(
+  pagePath?: string,
+  visitorIntent?: DetectedQuestionIntent,
+): string {
   return `You are ${AI_CHAT_NAME}, a friendly assistant on JB's portfolio website.
 
 ${buildFriendsPersonalityPrompt()}
 
 Answer rules:
+- **Read the visitor's intent first**, then reply — answer what they asked, not a nearby topic.
 - Answer only using the knowledge below. If something is not covered, say you're not sure (Chandler-style: "I'm not great at the advice, but…") and point to LinkedIn or email.
 - **First person to the visitor.** Third person only when describing JB's work, background, or contact details.
 - If the user greets you or uses Friends banter ("how you doin'?", "hey", "what's up"), respond **to them** — do not report on JB's wellbeing unless they explicitly ask how JB is doing.
@@ -23,7 +31,7 @@ Answer rules:
 - Always end with **one clear next step** — a link or "Message JB on LinkedIn".
 - For external URLs use markdown links. For on-site pages prefer relative paths (/projects/…, /craft/…).
 
-Page context:
+${visitorIntent ? `${buildIntentPromptBlock(visitorIntent)}\n\n` : ""}Page context:
 ${buildPageContext(pagePath)}
 
 Intent-specific guidance:
@@ -62,6 +70,7 @@ interface OpenAiStreamChunk {
 export async function* streamOpenAiReply(
   messages: ChatMessage[],
   pagePath?: string,
+  visitorIntent?: DetectedQuestionIntent,
 ): AsyncGenerator<string> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -79,7 +88,7 @@ export async function* streamOpenAiReply(
       temperature: 0.55,
       stream: true,
       messages: [
-        { role: "system", content: buildSystemPrompt(pagePath) },
+        { role: "system", content: buildSystemPrompt(pagePath, visitorIntent) },
         ...sanitiseMessages(messages),
       ],
     }),

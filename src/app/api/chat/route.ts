@@ -4,6 +4,11 @@ import {
   isOpenAiChatEnabled,
 } from "@/lib/ai-chat-config";
 import { generateFallbackReply } from "@/lib/ai-chat-fallback.server";
+import {
+  buildIntentReply,
+  detectQuestionIntent,
+  shouldUseCuratedReply,
+} from "@/lib/ai-chat-question-intent";
 import { buildFollowUpSuggestions } from "@/lib/ai-chat-follow-ups";
 import {
   getAiChatIntent,
@@ -77,6 +82,7 @@ async function streamOpenAiWithFallback(
   remainingPromptsBefore: number,
   remainingOpenAiBefore: number,
   showOpenAiNotice: boolean,
+  visitorIntent: ReturnType<typeof detectQuestionIntent>,
 ): Promise<{
   reply: string;
   source: ChatReplySource;
@@ -92,7 +98,7 @@ async function streamOpenAiWithFallback(
   try {
     let reply = "";
 
-    for await (const chunk of streamOpenAiReply(messages, pagePath)) {
+    for await (const chunk of streamOpenAiReply(messages, pagePath, visitorIntent)) {
       reply += chunk;
       emit({ type: "delta", content: chunk });
     }
@@ -202,6 +208,32 @@ export async function POST(request: Request): Promise<Response> {
       }
     }
 
+    const visitorIntent = detectQuestionIntent(userMessage, pagePath);
+    const curatedReply = buildIntentReply(visitorIntent, userMessage, pagePath);
+
+    if (curatedReply && shouldUseCuratedReply(visitorIntent)) {
+      const remainingPrompts = await incrementChatPromptCount();
+      const followUps = buildFollowUpSuggestions({
+        lastUserMessage: userMessage,
+        pagePath,
+        intentId,
+        source: "fallback",
+      });
+
+      const result = await streamPreparedReply(emit, {
+        reply: curatedReply,
+        followUps,
+        source: "fallback",
+        remainingPrompts,
+        remainingOpenAi: openAiBudget.remainingOpenAi,
+      });
+
+      return attachReactionGif(
+        result,
+        fetchChatReactionGif(userMessage, intentId, usedGifIds, curatedReply),
+      );
+    }
+
     const canUseOpenAi =
       openAiBudget.canUseOpenAi &&
       isOpenAiChatEnabled() &&
@@ -219,6 +251,7 @@ export async function POST(request: Request): Promise<Response> {
         remainingPromptsBefore,
         openAiBudget.remainingOpenAi,
         showOpenAiNotice,
+        visitorIntent,
       );
       reply = streamed.reply;
       source = streamed.source;

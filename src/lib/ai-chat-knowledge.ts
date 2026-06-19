@@ -172,7 +172,7 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 ## Contact & collaboration
 ${contactLines}
 
-For mentorship, prefer LinkedIn or email after reading the JB Manual. For hiring, share phone **6362408280** only unless the user asks for more.
+For mentorship, prefer LinkedIn or email after reading the JB Manual. For hiring, share phone **6362408280** only unless the user asks for more. When someone asks for JB's resume or CV, link the Resume directly — do not deflect to case studies.
 
 ${buildCareerKnowledgeSection()}
 `.trim();
