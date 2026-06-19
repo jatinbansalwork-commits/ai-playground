@@ -15,7 +15,11 @@ import {
 } from "@/lib/experiments-filters";
 import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
-import { trackCraftItemClick, trackExternalDemoOpen } from "@/lib/analytics";
+import {
+  trackCraftExperimentView,
+  trackCraftItemClick,
+  trackExternalDemoOpen,
+} from "@/lib/analytics";
 import { ExperimentsPreviewMedia } from "@/components/experiments/experiments-preview-media";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
 
@@ -62,6 +66,13 @@ export function ExperimentsBentoCard({
   function handleCraftItemClick(): void {
     if (item.external && item.href) {
       trackExternalDemoOpen({ slug: item.slug, url: item.href });
+      if (resolvedCategory === "ai-experiment") {
+        trackCraftExperimentView({
+          slug: item.slug,
+          source: "click",
+          external: true,
+        });
+      }
       return;
     }
 
@@ -70,6 +81,14 @@ export function ExperimentsBentoCard({
       category: resolvedCategory,
       external: false,
     });
+
+    if (resolvedCategory === "ai-experiment") {
+      trackCraftExperimentView({
+        slug: item.slug,
+        source: "click",
+        external: false,
+      });
+    }
   }
 
   const className = [

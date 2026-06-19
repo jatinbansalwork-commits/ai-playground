@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArticleBackLink } from "@/components/craft/article-back-link";
+import { CraftArticlePageAnalytics } from "@/components/craft/craft-article-page-analytics";
 import { ArticleSectionContent } from "@/components/craft/article-section-content";
 import type { CraftArticle, CraftSection } from "@/lib/craft-content";
 import { getAdjacentArticles, getArticleSectionBlocks } from "@/lib/craft-content";
@@ -28,6 +29,7 @@ export function ArticleLayout({
       data-sheet="craft-article"
       className="craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
     >
+      <CraftArticlePageAnalytics slug={article.slug} />
       <ArticleBackLink
         fallbackHref={backHref}
         destination={backLabel}
