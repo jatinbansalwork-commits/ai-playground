@@ -88,6 +88,9 @@ export const MINIMAP_RANGE = 160;
 /** Bottom offset for floating chrome above the pinned index footer (slide nav + chat). */
 export const INDEX_FLOATING_BOTTOM = "bottom-14";
 
+/** Mobile index chat FAB — above slide nav so Prev/Next stay tappable. */
+export const AI_CHAT_FAB_MOBILE_INDEX_BOTTOM = "bottom-28";
+
 /** Chat ball diameter — keep in sync with `AiChatFab` trigger size. */
 export const AI_CHAT_BALL_SIZE_PX = 72;
 

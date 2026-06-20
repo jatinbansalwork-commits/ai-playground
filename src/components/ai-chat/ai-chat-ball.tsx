@@ -63,7 +63,9 @@ import {
   trackAiChatWireframeToggle,
 } from "@/lib/analytics";
 import {
+  AI_CHAT_FAB_MOBILE_INDEX_BOTTOM,
   INDEX_FLOATING_BOTTOM,
+  ROUTES,
 } from "@/lib/constants";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -537,6 +539,11 @@ export function AiChatBall() {
         transition: springSnappy,
       };
 
+  const fabBottomClass =
+    isMobile && pathname === ROUTES.home
+      ? AI_CHAT_FAB_MOBILE_INDEX_BOTTOM
+      : INDEX_FLOATING_BOTTOM;
+
   return (
     <div
       className={[
@@ -544,7 +551,7 @@ export function AiChatBall() {
         isMobile
           ? view === "chat"
             ? "inset-0 items-stretch justify-end"
-            : `${INDEX_FLOATING_BOTTOM} right-4 items-end`
+            : `${fabBottomClass} right-4 items-end`
           : `${INDEX_FLOATING_BOTTOM} right-8 items-end`,
       ].join(" ")}
     >
