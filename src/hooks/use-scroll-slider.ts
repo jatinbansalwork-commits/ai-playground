@@ -115,6 +115,42 @@ function eventTargetHasScrollableAncestor(
   return false;
 }
 
+const SLIDER_POINTER_IGNORE_SELECTOR =
+  'button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
+
+const SLIDER_DRAG_AXIS_LOCK_PX = 8;
+
+function isInNestedScrollContainer(element: Element): boolean {
+  let node: Element | null = element;
+  while (node && node !== document.documentElement && node !== document.body) {
+    if (node.matches('main[data-sheet="index"]')) {
+      node = node.parentElement;
+      continue;
+    }
+
+    const style = window.getComputedStyle(node);
+    const scrollableY =
+      (style.overflowY === "auto" || style.overflowY === "scroll") &&
+      node.scrollHeight > node.clientHeight + 1;
+    const scrollableX =
+      (style.overflowX === "auto" || style.overflowX === "scroll") &&
+      node.scrollWidth > node.clientWidth + 1;
+
+    if (scrollableY || scrollableX) return true;
+    node = node.parentElement;
+  }
+
+  return false;
+}
+
+function shouldIgnoreSliderPointer(target: EventTarget | null): boolean {
+  if (!(target instanceof Element)) return true;
+  if (!target.closest('main[data-sheet="index"]')) return true;
+  if (target.closest(SLIDER_POINTER_IGNORE_SELECTOR)) return true;
+  if (isInNestedScrollContainer(target)) return true;
+  return false;
+}
+
 export function useScrollSlider() {
   const { trackX, minimapX, scale } = useSliderContext();
   const frameCount = FRAMES.length;
@@ -401,6 +437,113 @@ export function useScrollSlider() {
       if (snapTimer) clearTimeout(snapTimer);
     };
   }, [clampScrollOffset, frameCount, snapToIndex, syncScrollPosition, updateFromScroll]);
+
+  useEffect(() => {
+    let snapTimer: ReturnType<typeof setTimeout> | null = null;
+    let activePointerId: number | null = null;
+    let startX = 0;
+    let startY = 0;
+    let startScroll = 0;
+    let dragAxis: "x" | "y" | null = null;
+    let suppressClick = false;
+
+    const snapAfterIdle = () => {
+      if (snapTimer) clearTimeout(snapTimer);
+      snapTimer = setTimeout(() => {
+        if (isSnappingRef.current) return;
+        const index = clamp(
+          Math.round(clampScrollOffset(readScrollOffset()) / SCROLL_PER_FRAME),
+          0,
+          frameCount - 1,
+        );
+        snapToIndex(index);
+      }, 120);
+    };
+
+    const clearPointerDrag = () => {
+      activePointerId = null;
+      dragAxis = null;
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "mouse") return;
+      if (!isReadyRef.current) return;
+      if (shouldIgnoreSliderPointer(event.target)) return;
+      if (activePointerId !== null) return;
+
+      cancelSnapAnimation();
+      isSnappingRef.current = false;
+      activePointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      startScroll = readScrollOffset();
+      dragAxis = null;
+      suppressClick = false;
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (event.pointerId !== activePointerId) return;
+
+      const deltaX = startX - event.clientX;
+      const deltaY = startY - event.clientY;
+
+      if (!dragAxis) {
+        if (
+          Math.abs(deltaX) < SLIDER_DRAG_AXIS_LOCK_PX &&
+          Math.abs(deltaY) < SLIDER_DRAG_AXIS_LOCK_PX
+        ) {
+          return;
+        }
+
+        dragAxis = Math.abs(deltaX) >= Math.abs(deltaY) ? "x" : "y";
+        suppressClick = true;
+      }
+
+      const delta = dragAxis === "x" ? deltaX : deltaY;
+      const scrollRange = scrollRangeRef.current;
+      const next = clamp(startScroll + delta, 0, scrollRange);
+
+      event.preventDefault();
+      const synced = syncScrollPosition(next);
+      updateFromScroll(synced);
+    };
+
+    const onPointerEnd = (event: PointerEvent) => {
+      if (event.pointerId !== activePointerId) return;
+
+      clearPointerDrag();
+      snapAfterIdle();
+    };
+
+    const onClickCapture = (event: MouseEvent) => {
+      if (!suppressClick) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      suppressClick = false;
+    };
+
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("pointermove", onPointerMove, { passive: false });
+    window.addEventListener("pointerup", onPointerEnd, { passive: true });
+    window.addEventListener("pointercancel", onPointerEnd, { passive: true });
+    window.addEventListener("click", onClickCapture, true);
+
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerEnd);
+      window.removeEventListener("pointercancel", onPointerEnd);
+      window.removeEventListener("click", onClickCapture, true);
+      if (snapTimer) clearTimeout(snapTimer);
+    };
+  }, [
+    cancelSnapAnimation,
+    clampScrollOffset,
+    frameCount,
+    snapToIndex,
+    syncScrollPosition,
+    updateFromScroll,
+  ]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

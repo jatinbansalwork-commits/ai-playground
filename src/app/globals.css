@@ -401,6 +401,7 @@ body {
 
 .index-root {
   --background: #1e1e1e;
+  touch-action: none;
 }
 
 /* Single font stack for all index slider copy — never swap families in wireframe. */

@@ -152,7 +152,8 @@ function IndexCanvas() {
         <SiteFooter pinned />
 
         <p className="sr-only">
-          Use arrow keys, Page Up, Page Down, Home, or End to move between slides.
+          Use arrow keys, Page Up, Page Down, Home, or End to move between slides. On touch
+          devices, swipe horizontally or vertically on a slide to move between frames.
         </p>
       </main>
 
