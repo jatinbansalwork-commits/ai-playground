@@ -13,7 +13,7 @@ export function buildCaseStudyChatPrompt(title: string): string {
   return `Share a fun fact about ${clean} that is not in the case study.`;
 }
 
-/** Opens JBAI from anywhere on the site — dispatches `open-ai-chat`. */
+/** Opens JB_AI from anywhere on the site — dispatches `open-ai-chat`. */
 export function openAiChat(options: OpenAiChatDetail = {}): void {
   const message = options.message?.trim();
   const source = options.source ?? "cta";

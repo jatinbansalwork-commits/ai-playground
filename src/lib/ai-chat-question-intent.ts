@@ -228,7 +228,7 @@ export function buildIntentReply(
 ): string | null {
   switch (intent.id) {
     case "greeting":
-      return `How YOU doin'? I'm JBAI — JB's chat on this portfolio. Could this *be* any more fun?
+      return `How YOU doin'? I'm JB_AI — JB's chat on this portfolio. Could this *be* any more fun?
 
 Ask about hiring, a case study, or how to reach JB — I'll match the answer to what you actually need.`;
 

@@ -1,5 +1,5 @@
 /**
- * JB career & interview narratives — injected into JBAI knowledge only.
+ * JB career & interview narratives — injected into JB_AI knowledge only.
  * Not shown as starter chips; used when visitors ask similar questions.
  */
 

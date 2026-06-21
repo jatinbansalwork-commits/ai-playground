@@ -108,7 +108,7 @@ function buildCraftHighlights(): string {
     .join("\n");
 }
 
-/** Curated context injected into the JBAI system prompt — keep in sync with the live site. */
+/** Curated context injected into the JB_AI system prompt — keep in sync with the live site. */
 export function buildAiChatKnowledge(): string {
   const caseStudyLines = PROJECTS_LIST.map((project) =>
     formatCaseStudyLine(project.slug, project.title, project.year),
@@ -147,7 +147,7 @@ ${buildCraftHighlights()}
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
 - **Hosting / media:** Vercel, Vercel Blob CDN, Vercel Analytics with custom events
 - **Patterns:** Custom editorial case-study components, scroll-linked index slider, craft bento gallery, wireframe debug mode, no off-the-shelf UI kit
-- **JBAI:** This chat uses curated site knowledge plus OpenAI — not general web browsing
+- **JB_AI:** This chat uses curated site knowledge plus OpenAI — not general web browsing
 - **Footer:** "2026 · Designed by JB · Amplified by AI."
 
 ## Manifest (design principles)
@@ -161,7 +161,7 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 
 ## Hiring
 - Open to full-time and contract product design roles — especially cybersecurity, AI products, fintech, and design systems
-- **JBAI hiring replies:** share only JB's phone number **6362408280** — do not list case studies, resume, LinkedIn, or email unless the user asks for them
+- **JB_AI hiring replies:** share only JB's phone number **6362408280** — do not list case studies, resume, LinkedIn, or email unless the user asks for them
 - Case studies (Saltbot AI, FreshPrints Design System, Piggy, etc.) are for portfolio browsing, not the default hiring CTA
 
 ## JB Manual (summary)

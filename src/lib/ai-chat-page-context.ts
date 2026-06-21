@@ -1,6 +1,6 @@
 import { getCaseStudyContent } from "@/lib/project-content";
 
-/** Injects page-aware hints into the JBAI system prompt. */
+/** Injects page-aware hints into the JB_AI system prompt. */
 export function buildPageContext(pagePath?: string): string {
   if (!pagePath || pagePath === "/") {
     return "The user is on the index slider — mention Projects, Craft, or Contact if relevant.";

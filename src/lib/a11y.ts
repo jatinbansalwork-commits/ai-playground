@@ -16,7 +16,7 @@
  * | 2.5.7 Dragging Movements | No drag-only operation | Index slider: keyboard + `IndexSlideNav` buttons |
  * | 2.5.8 Target Size (Minimum) | 24×24 CSS px pointer target | `TARGET_HIT_AREA` (44×44 — exceeds minimum) |
  * | 2.3.3 Animation from Interactions | Respect reduced motion | `globals.css` + `useReducedMotion` hook |
- * | 3.2.6 Consistent Help | Help in consistent location | JBAI chat — fixed bottom-right on all routes |
+ * | 3.2.6 Consistent Help | Help in consistent location | JB_AI chat — fixed bottom-right on all routes |
  * | 3.3.7 Redundant Entry | Avoid re-entering known data | N/A — no multi-step forms |
  * | 3.3.8 Accessible Authentication (Minimum) | No cognitive-only auth | N/A — no authentication |
  * | 4.1.2 Name, Role, Value | Correct ARIA on components | `aria-pressed`, `aria-live`, `aria-modal`, labels |

@@ -2,7 +2,7 @@ import { CONTACT_EMAIL, CONTACT_LINKS } from "@/lib/constants";
 
 const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
 
-export const AI_CHAT_NAME = "JBAI";
+export const AI_CHAT_NAME = "JB_AI";
 
 export const AI_CHAT_TAGLINE = "Ask anything about JB";
 
@@ -13,7 +13,7 @@ export const AI_CHAT_HOVER_MESSAGE =
 
 /** Shown once on first site visit — proactive FAB bubble. */
 export const AI_CHAT_FIRST_VISIT_MESSAGE =
-  "How YOU doin'? I'm JBAI — ask me anything about JB's work.";
+  "How YOU doin'? I'm JB_AI — ask me anything about JB's work.";
 
 /** How long the first-visit FAB bubble stays visible (ms). */
 export const AI_CHAT_FIRST_VISIT_BUBBLE_MS = 5000;
