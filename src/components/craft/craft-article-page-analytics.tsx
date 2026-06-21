@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  trackCraftExperimentView,
-  trackDesignReviewView,
-} from "@/lib/analytics";
-import {
-  getExperimentCategories,
-  isArticleOnlyExperiment,
-} from "@/lib/experiments-registry";
+import { trackDesignReviewView } from "@/lib/analytics";
+import { isArticleOnlyExperiment } from "@/lib/experiments-registry";
 
 const DESIGN_REVIEW_SLUG = "design-review-checklist";
 
@@ -27,10 +21,6 @@ export function CraftArticlePageAnalytics({
 
     if (slug === DESIGN_REVIEW_SLUG || isArticleOnlyExperiment(slug)) {
       trackDesignReviewView(slug);
-    }
-
-    if (getExperimentCategories(slug).includes("ai-experiment")) {
-      trackCraftExperimentView({ slug, source: "page", external: false });
     }
   }, [slug]);
 

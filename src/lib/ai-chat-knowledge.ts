@@ -5,7 +5,7 @@ import {
   MANIFEST_LINES,
   ROUTES,
 } from "@/lib/constants";
-import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY } from "@/lib/experiments-registry";
+import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY, IDEAS_EXPERIMENT_SLUGS } from "@/lib/experiments-registry";
 import { PROJECTS_LIST } from "@/lib/projects-list-data";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -46,21 +46,23 @@ const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = {
 
 const CRAFT_HIGHLIGHT_SLUGS = [
   "design-review-checklist",
-  "scroll-slider",
-  "clip-reveal",
   "wireframe-mode",
   "minimap-tracker",
-  "spring-physics",
 ] as const;
+
+const IDEAS_HIGHLIGHT_BLURBS: Partial<Record<string, string>> = {
+  "scroll-slider": "FriendCaptcha — AI experiment (external demo).",
+  "clip-reveal": "Focus Mode — interaction prototype (external demo).",
+  "spring-physics": "Miner Gift — spring-physics AI experiment (external demo).",
+  "ghost-spacer": "Lock in Police — AI experiment (external demo).",
+  "click-sound": "DoodleLab — AI experiment (external demo).",
+};
 
 const CRAFT_HIGHLIGHT_BLURBS: Partial<Record<string, string>> = {
   "design-review-checklist":
     "Essay on introducing a design review checklist alongside a design system at FreshPrints.",
-  "scroll-slider": "FriendCaptcha — AI experiment (external demo).",
-  "clip-reveal": "Focus Mode — interaction prototype (external demo).",
   "wireframe-mode": "Wireframe Mode — toggle on the index slider for layout debug.",
   "minimap-tracker": "Minimap tracker motion study for the index slider.",
-  "spring-physics": "Miner Gift — spring-physics AI experiment (external demo).",
 };
 
 function formatCaseStudyLine(slug: string, title: string, year: string): string {
@@ -81,6 +83,24 @@ function formatCaseStudyLine(slug: string, title: string, year: string): string 
   ].filter(Boolean);
 
   return parts.join("\n");
+}
+
+function buildIdeasHighlights(): string {
+  return IDEAS_EXPERIMENT_SLUGS.map((slug) => {
+    const entry = EXPERIMENTS_REGISTRY.find((item) => item.slug === slug);
+    if (!entry) return "";
+
+    const blurb = IDEAS_HIGHLIGHT_BLURBS[slug] ?? entry.title;
+    const href = entry.external && entry.href ? entry.href : ROUTES.ideas;
+    const linkLabel =
+      entry.external && entry.href
+        ? `[Try demo](${entry.href})`
+        : `[Ideas gallery](${ROUTES.ideas})`;
+
+    return `- **${entry.title}** — ${blurb} ${linkLabel}`;
+  })
+    .filter(Boolean)
+    .join("\n");
 }
 
 function buildCraftHighlights(): string {
@@ -131,6 +151,7 @@ JB is a Product Designer working in cybersecurity by day and AI experiments by n
 - **Index** — scroll-driven slide experience at ${ROUTES.home}
 - **${PROJECTS_PAGE.title}** — ${PROJECTS_PAGE.description} (${ROUTES.projects})
 - **${EXPERIMENTS_PAGE.title}** — ${EXPERIMENTS_PAGE.description} (${ROUTES.craft})
+- **Ideas** — side projects and AI experiments (${ROUTES.ideas})
 - **Design Review essay** — process and quality framework at ${ROUTES.craft}/design-review-checklist
 - **Me** — intro / archive (${ROUTES.archive})
 - **Contact** — LinkedIn, email, resume, and JB Manual on the index Contact slide
@@ -140,6 +161,9 @@ ${caseStudyLines || "Case studies are being updated."}
 
 ## Craft highlights
 ${buildCraftHighlights()}
+
+## Ideas highlights
+${buildIdeasHighlights()}
 
 ## How this portfolio was built
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion

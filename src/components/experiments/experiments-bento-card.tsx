@@ -17,7 +17,6 @@ import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { ROUTES } from "@/lib/constants";
 import {
-  trackCraftExperimentView,
   trackCraftItemClick,
   trackExternalDemoOpen,
   trackIdeasExperimentView,
@@ -83,44 +82,30 @@ export function ExperimentsBentoCard({
           external: true,
         });
       }
-      if (resolvedCategory === "ai-experiment") {
-        if (isIdeasGallery) {
-          trackIdeasExperimentView({
-            slug: item.slug,
-            source: "click",
-            external: true,
-          });
-        } else {
-          trackCraftExperimentView({
-            slug: item.slug,
-            source: "click",
-            external: true,
-          });
-        }
+      if (resolvedCategory === "ai-experiment" && isIdeasGallery) {
+        trackIdeasExperimentView({
+          slug: item.slug,
+          source: "click",
+          external: true,
+        });
       }
       return;
     }
 
-    trackCraftItemClick({
-      slug: item.slug,
-      category: resolvedCategory,
-      external: false,
-    });
+    if (!isIdeasGallery) {
+      trackCraftItemClick({
+        slug: item.slug,
+        category: resolvedCategory,
+        external: false,
+      });
+    }
 
-    if (resolvedCategory === "ai-experiment") {
-      if (isIdeasGallery) {
-        trackIdeasExperimentView({
-          slug: item.slug,
-          source: "click",
-          external: false,
-        });
-      } else {
-        trackCraftExperimentView({
-          slug: item.slug,
-          source: "click",
-          external: false,
-        });
-      }
+    if (resolvedCategory === "ai-experiment" && isIdeasGallery) {
+      trackIdeasExperimentView({
+        slug: item.slug,
+        source: "click",
+        external: false,
+      });
     }
   }
 

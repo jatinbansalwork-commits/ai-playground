@@ -44,7 +44,7 @@ Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`,
     id: "portfolio",
     prompt: "How did JB build this portfolio?",
     instruction:
-      'If the user asks how the portfolio was built: answer in bullets — stack, motion/index slider, editorial case-study system, craft gallery, Vercel + Blob CDN, analytics, and JB_AI itself. Link /craft and /projects. Friends trio — Ross explains the stack, Chandler light aside optional. Builder-credible, not promotional.',
+      'If the user asks how the portfolio was built: answer in bullets — stack, motion/index slider, editorial case-study system, craft gallery, Ideas AI demos, Vercel + Blob CDN, analytics, and JB_AI itself. Link /craft, /ideas, and /projects. Friends trio — Ross explains the stack, Chandler light aside optional. Builder-credible, not promotional.',
     staticReply: `Fun fact: this portfolio is custom-built. No template. Ross would approve of the structure.
 
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
@@ -52,7 +52,7 @@ Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`,
 - **Infrastructure:** Vercel hosting, Blob CDN for media, custom analytics events
 - **This chat:** JB_AI — that's me — curated knowledge plus OpenAI
 
-Check out [Craft](${ROUTES.craft}) for interaction experiments, or [Projects](${ROUTES.projects}) for the case studies. Oh yeah — pretty cool.`,
+Check out [Craft](${ROUTES.craft}) for motion studies and illustrations, [Ideas](${ROUTES.ideas}) for AI demos, or [Projects](${ROUTES.projects}) for the case studies. Oh yeah — pretty cool.`,
   },
   {
     id: "case-study",

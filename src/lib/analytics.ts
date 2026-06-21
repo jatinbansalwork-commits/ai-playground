@@ -23,23 +23,6 @@ export function trackProjectOpen(
   track("project_open", { slug, source });
 }
 
-export type CraftExperimentViewSource = "page" | "click";
-
-/** AI experiment opened — external demo click or in-site craft page load. */
-export function trackCraftExperimentView(properties: {
-  slug: string;
-  source: CraftExperimentViewSource;
-  external?: boolean;
-}): void {
-  track("craft_experiment_view", {
-    slug: properties.slug,
-    source: properties.source,
-    ...(properties.external !== undefined
-      ? { external: properties.external ? "1" : "0" }
-      : {}),
-  });
-}
-
 /** Design review essay page load (`/craft/design-review-checklist`). */
 export function trackDesignReviewView(slug: string): void {
   track("design_review_view", { slug });

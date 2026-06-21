@@ -3,7 +3,7 @@ import { getCaseStudyContent } from "@/lib/project-content";
 /** Injects page-aware hints into the JB_AI system prompt. */
 export function buildPageContext(pagePath?: string): string {
   if (!pagePath || pagePath === "/") {
-    return "The user is on the index slider — mention Projects, Craft, or Contact if relevant.";
+    return "The user is on the index slider — mention Projects, Ideas, Craft, or Contact if relevant.";
   }
 
   if (pagePath.startsWith("/projects/")) {
@@ -22,11 +22,11 @@ Overview (for other questions only): ${study.overviewText}`;
 
   if (pagePath.startsWith("/craft/")) {
     const slug = pagePath.replace("/craft/", "").split("/")[0] ?? "";
-    return `The user is reading a Craft essay at ${pagePath}${slug ? ` (${slug})` : ""}. Prioritise process, quality, and craft context when relevant.`;
+    return `The user is reading the Design Review essay at ${pagePath}${slug ? ` (${slug})` : ""}. Prioritise process, quality, and craft context when relevant.`;
   }
 
   if (pagePath === "/craft") {
-    return "The user is browsing the Craft gallery — mention experiments, motion studies, and the Design Review essay when relevant.";
+    return "The user is browsing the Craft gallery — motion studies and illustrations only. The Design Review essay lives at /craft/design-review-checklist; AI demos are on /ideas.";
   }
 
   if (pagePath === "/projects") {
@@ -34,7 +34,7 @@ Overview (for other questions only): ${study.overviewText}`;
   }
 
   if (pagePath === "/ideas") {
-    return "The user is browsing Ideas — side projects and experiments. Slots are placeholders for now; keep answers light and portfolio-focused.";
+    return "The user is browsing Ideas — external AI demos and side experiments. Point them to Try Now links when relevant.";
   }
 
   if (pagePath === "/archive") {
