@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
+import { saveIndexActiveFrame } from "@/lib/index-frame-memory";
+import { trackIndexSlideClick } from "@/lib/analytics";
 import {
   FRAME_HEIGHT,
   FRAME_STRIDE,
@@ -26,6 +28,7 @@ function isExternalHref(href: string): boolean {
 function sectionLinkProps(
   frame: SectionFrame,
   href: string,
+  frameIndex: number,
   onInteract: () => void,
 ) {
   const openInNewTab = frame.openInNewTab || isExternalHref(href);
@@ -34,7 +37,17 @@ function sectionLinkProps(
     className: "absolute inset-0 z-10",
     "aria-label": frame.label,
     onMouseDown: onInteract,
-    onClick: openInNewTab ? undefined : () => resetDocumentScroll(),
+    onClick: openInNewTab
+      ? undefined
+      : () => {
+          saveIndexActiveFrame(frameIndex);
+          trackIndexSlideClick({
+            frame_id: frame.id,
+            frame_label: frame.label,
+            href,
+          });
+          resetDocumentScroll();
+        },
     ...(openInNewTab
       ? { target: "_blank" as const, rel: "noopener noreferrer" }
       : {}),
@@ -89,14 +102,14 @@ export function FrameShell({
         frame.href &&
         !frame.videoThumbnail &&
         (isExternalHref(frame.href) ? (
-          <a href={frame.href} {...sectionLinkProps(frame, frame.href, onInteract)}>
+          <a href={frame.href} {...sectionLinkProps(frame, frame.href, index, onInteract)}>
             <span className="sr-only">{frame.label}</span>
           </a>
         ) : (
           <ScrollResetLink
             href={frame.href}
             scroll={true}
-            {...sectionLinkProps(frame, frame.href, onInteract)}
+            {...sectionLinkProps(frame, frame.href, index, onInteract)}
           >
             <span className="sr-only">{frame.label}</span>
           </ScrollResetLink>

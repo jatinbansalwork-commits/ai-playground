@@ -10,6 +10,8 @@ import {
 } from "@/lib/experiments-filters";
 import { ExperimentsBentoGrid } from "@/components/experiments/experiments-bento-grid";
 import { ExperimentsFilterBar } from "@/components/experiments/experiments-filter-bar";
+import { useCraftPageAnalytics } from "@/hooks/use-craft-page-analytics";
+import { trackCraftFilter } from "@/lib/analytics";
 import { randomShuffleSeed } from "@/lib/shuffle-seed";
 
 interface ExperimentsGalleryClientProps {
@@ -39,11 +41,19 @@ function ExperimentsGalleryClientInner({
   sectionHref,
   articleSlugs,
 }: ExperimentsGalleryClientProps) {
+  useCraftPageAnalytics();
   const searchParams = useSearchParams();
   const [filter, setFilter] = useState<ExperimentFilterId>(() =>
     parseExperimentFilterId(searchParams.get(EXPERIMENTS_GALLERY_FILTER_PARAM)),
   );
   const [shuffleSeed, setShuffleSeed] = useState(0);
+
+  function handleFilterChange(nextFilter: ExperimentFilterId): void {
+    if (nextFilter !== filter) {
+      trackCraftFilter(nextFilter);
+    }
+    setFilter(nextFilter);
+  }
 
   useEffect(() => {
     setFilter(
@@ -59,7 +69,7 @@ function ExperimentsGalleryClientInner({
     <div className="mx-auto w-full max-w-6xl px-8">
       <h1 className="sr-only">Craft</h1>
       <div className="mb-6 flex justify-center">
-        <ExperimentsFilterBar value={filter} onChange={setFilter} />
+        <ExperimentsFilterBar value={filter} onChange={handleFilterChange} />
       </div>
 
       <ExperimentsBentoGrid

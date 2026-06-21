@@ -19,12 +19,12 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/recent-work",
-        destination: "/projects",
+        destination: "/projects/cisco-policy-copilot",
         permanent: false,
       },
       {
         source: "/Recentwork",
-        destination: "/projects",
+        destination: "/projects/cisco-policy-copilot",
         permanent: false,
       },
       {

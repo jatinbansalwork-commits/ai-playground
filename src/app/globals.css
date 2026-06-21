@@ -54,11 +54,13 @@ html:has(main[data-sheet="ideas"]) body {
   color: #ffffff;
 }
 
-html:has(main[data-sheet="projects"]) {
+html:has(main[data-sheet="projects"]),
+html:has(main[data-sheet="recent"]) {
   color-scheme: dark;
 }
 
-html:has(main[data-sheet="projects"]) body {
+html:has(main[data-sheet="projects"]) body,
+html:has(main[data-sheet="recent"]) body {
   background: #161616;
   color: #ededed;
 }
@@ -66,6 +68,8 @@ html:has(main[data-sheet="projects"]) body {
 /* Isolate subpage scroll inside viewport-locked shells — never inherit index ghost scroll. */
 html:has(main[data-sheet="projects"]),
 html:has(main[data-sheet="projects"]) body,
+html:has(main[data-sheet="recent"]),
+html:has(main[data-sheet="recent"]) body,
 html:has(main[data-sheet="experiments"]),
 html:has(main[data-sheet="experiments"]) body,
 html:has(main[data-sheet="ideas"]),
@@ -525,7 +529,8 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
 .craft-page,
 main[data-sheet="experiments"],
 main[data-sheet="ideas"],
-main[data-sheet="projects"] {
+main[data-sheet="projects"],
+main[data-sheet="recent"] {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -536,7 +541,8 @@ main[data-sheet="projects"] {
 .craft-page::-webkit-scrollbar,
 main[data-sheet="experiments"]::-webkit-scrollbar,
 main[data-sheet="ideas"]::-webkit-scrollbar,
-main[data-sheet="projects"]::-webkit-scrollbar {
+main[data-sheet="projects"]::-webkit-scrollbar,
+main[data-sheet="recent"]::-webkit-scrollbar {
   display: none;
 }
 

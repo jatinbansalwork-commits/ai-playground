@@ -76,6 +76,12 @@ export function ExperimentsBentoCard({
           cta: resolvedCtaLabel ?? "Try Now",
           url: item.href,
         });
+      } else {
+        trackCraftItemClick({
+          slug: item.slug,
+          category: resolvedCategory,
+          external: true,
+        });
       }
       if (resolvedCategory === "ai-experiment") {
         if (isIdeasGallery) {

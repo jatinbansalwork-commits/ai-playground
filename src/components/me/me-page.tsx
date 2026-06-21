@@ -2,10 +2,13 @@
 
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
+import { useArchivePageAnalytics } from "@/hooks/use-archive-page-analytics";
 import { BACK_LINK_CLASS } from "@/lib/a11y";
 import { SITE_NAME } from "@/lib/constants";
 
 export function MePage() {
+  useArchivePageAnalytics();
+
   return (
     <main
       id="main-content"

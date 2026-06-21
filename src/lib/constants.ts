@@ -30,9 +30,7 @@ export const FRAMES = [
     type: "section" as const,
     variant: "slide" as const,
     label: "Ideas",
-    monogram: "Ideas",
-    monogramPan: true,
-    monogramPanDuration: 14,
+    monogramImage: "/assets/index/ideas-monogram.png",
     href: ROUTES.ideas,
   },
   {
@@ -48,9 +46,7 @@ export const FRAMES = [
     type: "section" as const,
     variant: "slide" as const,
     label: "Craft",
-    monogram: "Craft",
-    monogramPan: true,
-    monogramPanDuration: 14,
+    monogramImage: "/assets/index/craft-monogram.png",
     href: ROUTES.craft,
   },
   {

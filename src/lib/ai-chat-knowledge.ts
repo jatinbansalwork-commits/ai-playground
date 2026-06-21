@@ -138,8 +138,6 @@ JB is a Product Designer working in cybersecurity by day and AI experiments by n
 ## Case studies (public on Projects)
 ${caseStudyLines || "Case studies are being updated."}
 
-Note: Some work (including Cisco Policy Copilot) is intentionally hidden from the public projects list while it is being prepared. Do not link to hidden projects.
-
 ## Craft highlights
 ${buildCraftHighlights()}
 

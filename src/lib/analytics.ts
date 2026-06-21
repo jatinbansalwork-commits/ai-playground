@@ -50,6 +50,21 @@ export function trackIdeasView(): void {
   track("ideas_view");
 }
 
+/** Craft gallery page load (`/craft`). */
+export function trackCraftView(): void {
+  track("craft_view");
+}
+
+/** Projects index page load (`/projects`). */
+export function trackProjectsView(): void {
+  track("projects_view");
+}
+
+/** Me / archive page load (`/archive`). */
+export function trackArchiveView(): void {
+  track("archive_view");
+}
+
 export type IdeasExperimentViewSource = "click";
 
 /** AI experiment opened from the Ideas gallery — external demo click. */
@@ -82,6 +97,25 @@ export function trackCraftItemClick(properties: {
   external: boolean;
 }): void {
   track("craft_item_click", properties);
+}
+
+/** Craft gallery filter tab change. */
+export function trackCraftFilter(filter: string): void {
+  track("craft_filter", { filter });
+}
+
+/** Index slide link click — visitor leaves the slider for a section. */
+export function trackIndexSlideClick(properties: {
+  frame_id: string;
+  frame_label: string;
+  href: string;
+}): void {
+  track("index_slide_click", properties);
+}
+
+/** Projects index row click — before case study navigation. */
+export function trackProjectListClick(slug: string): void {
+  track("project_list_click", { slug });
 }
 
 export function trackCaseStudyScrollDepth(

@@ -30,6 +30,19 @@ function entry(
  * Page layouts and body copy live in `src/components/case-studies/*`.
  */
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
+  "cisco-policy-copilot": entry(
+    "cisco-policy-copilot",
+    "⏳ Cisco - AgentiOps Firewall Copilot",
+    "2026",
+    "Designing an AI-powered security teammate that transforms business intent into deployable firewall policies.",
+    {
+      services: [],
+      client: "Cisco",
+      location: "San Jose, CA",
+      infoText:
+        "Cisco is a global leader in networking and cybersecurity, building the infrastructure that connects organisations worldwide and secures their digital operations.",
+    },
+  ),
   "freshprints-design-system": entry(
     "freshprints-design-system",
     "✅ FreshPrints - Design System",

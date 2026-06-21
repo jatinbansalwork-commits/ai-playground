@@ -1,14 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { usePageViewOnce } from "@/hooks/use-page-view-analytics";
 import { trackIdeasView } from "@/lib/analytics";
 
 export function useIdeasPageAnalytics(): void {
-  const firedRef = useRef(false);
-
-  useEffect(() => {
-    if (firedRef.current) return;
-    firedRef.current = true;
-    trackIdeasView();
-  }, []);
+  usePageViewOnce(trackIdeasView);
 }

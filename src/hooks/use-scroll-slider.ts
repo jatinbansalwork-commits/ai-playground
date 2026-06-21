@@ -28,6 +28,7 @@ const SNAP_DURATION_MS = 720;
 import { useClickSound } from "@/hooks/use-click-sound";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
+import { saveIndexActiveFrame, readIndexActiveFrame } from "@/lib/index-frame-memory";
 import { useSliderContext } from "@/context/slider-context";
 
 function clamp(value: number, min: number, max: number) {
@@ -151,6 +152,12 @@ function shouldIgnoreSliderPointer(target: EventTarget | null): boolean {
   return false;
 }
 
+function getRestoredFrameIndex(frameCount: number): number {
+  const saved = readIndexActiveFrame();
+  if (saved === null) return 0;
+  return clamp(saved, 0, frameCount - 1);
+}
+
 export function useScrollSlider() {
   const { trackX, minimapX, scale } = useSliderContext();
   const frameCount = FRAMES.length;
@@ -219,6 +226,7 @@ export function useScrollSlider() {
         navigateMethodRef.current = "scroll";
         frameIndexRef.current = frameIndex;
         setActiveFrameIndex(frameIndex);
+        saveIndexActiveFrame(frameIndex);
       }
     },
     [frameCount, maxOffset, minimapX, playClick, reducedMotion, scale, trackX],
@@ -306,15 +314,29 @@ export function useScrollSlider() {
       history.scrollRestoration = "manual";
     }
 
-    resetScrollPosition();
+    const initialIndex = getRestoredFrameIndex(frameCount);
+    const initialScroll = initialIndex * SCROLL_PER_FRAME;
+    const initialProgress =
+      scrollRange > 0 ? initialScroll / scrollRange : 0;
+    const initialOffset = initialProgress * maxOffset;
+
+    window.scrollTo(0, initialScroll);
+    document.documentElement.scrollLeft = initialScroll;
+    document.documentElement.scrollTop = initialScroll;
+    document.body.scrollLeft = initialScroll;
+    document.body.scrollTop = initialScroll;
+
     baseScaleRef.current = computeBaseScale();
-    trackX.jump(0);
-    springTrackX.jump(0);
-    minimapX.jump(0);
-    scale.jump(baseScaleRef.current);
-    springScaleValue.jump(baseScaleRef.current);
-    frameIndexRef.current = -1;
-  }, [frameCount, minimapX, scale, springScaleValue, springTrackX, trackX]);
+    trackX.jump(-initialOffset);
+    springTrackX.jump(-initialOffset);
+    minimapX.jump(initialProgress * MINIMAP_RANGE);
+    scale.jump(computeScaleFromScroll(initialScroll, baseScaleRef.current));
+    springScaleValue.jump(
+      computeScaleFromScroll(initialScroll, baseScaleRef.current),
+    );
+    frameIndexRef.current = initialIndex;
+    setActiveFrameIndex(initialIndex);
+  }, [frameCount, maxOffset, minimapX, scale, springScaleValue, springTrackX, trackX]);
 
   useEffect(() => {
     const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
@@ -330,9 +352,12 @@ export function useScrollSlider() {
       );
     };
 
-    syncScrollPosition(0);
+    const initialIndex = getRestoredFrameIndex(frameCount);
+    const initialScroll = initialIndex * SCROLL_PER_FRAME;
+
+    syncScrollPosition(initialScroll);
     syncBaseScale();
-    updateFromScroll(0);
+    updateFromScroll(initialScroll);
 
     const readyTimer = window.setTimeout(() => {
       isReadyRef.current = true;

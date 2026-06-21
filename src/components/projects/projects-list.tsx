@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ProjectsHoverPreview } from "@/components/projects/projects-hover-preview";
+import { useProjectsPageAnalytics } from "@/hooks/use-projects-page-analytics";
 import type { ProjectRowItem } from "@/lib/projects-list-data";
 import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
+import { trackProjectListClick } from "@/lib/analytics";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
 
@@ -19,6 +21,7 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
     <Link
       href={getProjectCaseStudyHref(project.slug)}
       className={PROJECTS_ROW_LINK_CLASS}
+      onClick={() => trackProjectListClick(project.slug)}
       onMouseEnter={() => onHoverStart(project)}
       onMouseLeave={onHoverEnd}
       onFocus={() => onHoverStart(project)}
@@ -39,6 +42,7 @@ interface ProjectsListProps {
 
 export function ProjectsList({ projects }: ProjectsListProps) {
   useSubpageScrollReset();
+  useProjectsPageAnalytics();
   const [hoveredProject, setHoveredProject] = useState<ProjectRowItem | null>(
     null,
   );

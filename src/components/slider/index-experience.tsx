@@ -7,7 +7,6 @@ import { useIsMounted } from "@/hooks/use-is-mounted";
 import {
   getGhostSpacerSize,
   resetDocumentScroll,
-  useIndexScrollReset,
 } from "@/hooks/use-index-scroll-reset";
 import { SliderProvider } from "@/context/slider-context";
 import { useWireframe } from "@/context/wireframe-context";
@@ -28,7 +27,6 @@ import { ManifestFramePanel } from "@/components/slider/manifest-frame";
 import { SiteFooter } from "@/components/site-footer";
 
 function IndexCanvas() {
-  useIndexScrollReset();
   const {
     springTrackX,
     springScaleValue,
