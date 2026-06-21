@@ -1,6 +1,12 @@
+import { ROUTES } from "@/lib/constants";
 import type { ExperimentFilterId } from "@/lib/experiments-filters";
 import { getExperimentGridSpan } from "@/lib/experiments-filters";
 import { EXPERIMENT_SLUG_ORDER } from "@/lib/experiments-registry";
+
+/** Routes where bento preview videos may autoplay on hover (Craft + Ideas galleries). */
+export function isExperimentsBentoPreviewRoute(pathname: string): boolean {
+  return pathname === ROUTES.craft || pathname === ROUTES.ideas;
+}
 
 export interface ExperimentsBentoConfig {
   span: string;

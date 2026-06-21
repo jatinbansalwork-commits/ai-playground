@@ -11,11 +11,7 @@ export interface CaseStudyRevealScheduleEntry {
  * Update `startsAtUtc` to reset the worldwide countdown (do not use localStorage).
  */
 export const CASE_STUDY_REVEAL_SCHEDULE: Record<string, CaseStudyRevealScheduleEntry> =
-  {
-    "cisco-policy-copilot": {
-      startsAtUtc: "2026-06-16T22:00:00.000Z",
-    },
-  };
+  {};
 
 export function getCaseStudyRevealUnlockAtMs(slug: string): number | null {
   const entry = CASE_STUDY_REVEAL_SCHEDULE[slug];

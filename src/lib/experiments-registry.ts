@@ -600,6 +600,36 @@ export function getExperimentCategories(slug: string): ExperimentCategory[] {
   return getExperimentRegistryEntry(slug)?.categories ?? ["ai-experiment"];
 }
 
+/** External AI demos on `/ideas` — omitted from the Craft gallery. */
+export const IDEAS_EXPERIMENT_SLUGS = [
+  "ghost-spacer",
+  "spring-physics",
+  "click-sound",
+  "scroll-slider",
+  "clip-reveal",
+] as const;
+
+export function isIdeasGalleryExperiment(slug: string): boolean {
+  return (IDEAS_EXPERIMENT_SLUGS as readonly string[]).includes(slug);
+}
+
+export function getIdeasGalleryItems(): ExperimentGalleryItem[] {
+  return IDEAS_EXPERIMENT_SLUGS.flatMap((slug) => {
+    const entry = getExperimentRegistryEntry(slug);
+    if (!entry) return [];
+
+    return [
+      {
+        slug: entry.slug,
+        title: entry.title,
+        date: entry.article?.date ?? "",
+        external: entry.external,
+        href: entry.href,
+      },
+    ];
+  });
+}
+
 /** Article-only registry rows are served at `/craft/[slug]` but omitted from the gallery grid. */
 export function isArticleOnlyExperiment(slug: string): boolean {
   const categories = getExperimentCategories(slug);
@@ -608,7 +638,8 @@ export function isArticleOnlyExperiment(slug: string): boolean {
 
 export function getExperimentGalleryItems(): ExperimentGalleryItem[] {
   return EXPERIMENTS_REGISTRY.filter(
-    (entry) => !isArticleOnlyExperiment(entry.slug),
+    (entry) =>
+      !isArticleOnlyExperiment(entry.slug) && !isIdeasGalleryExperiment(entry.slug),
   ).map((entry) => ({
     slug: entry.slug,
     title: entry.title,

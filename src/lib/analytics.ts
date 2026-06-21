@@ -45,6 +45,37 @@ export function trackDesignReviewView(slug: string): void {
   track("design_review_view", { slug });
 }
 
+/** Ideas gallery page load (`/ideas`). */
+export function trackIdeasView(): void {
+  track("ideas_view");
+}
+
+export type IdeasExperimentViewSource = "click";
+
+/** AI experiment opened from the Ideas gallery — external demo click. */
+export function trackIdeasExperimentView(properties: {
+  slug: string;
+  source: IdeasExperimentViewSource;
+  external?: boolean;
+}): void {
+  track("ideas_experiment_view", {
+    slug: properties.slug,
+    source: properties.source,
+    ...(properties.external !== undefined
+      ? { external: properties.external ? "1" : "0" }
+      : {}),
+  });
+}
+
+/** Ideas gallery card CTA click — Try Now on `/ideas`. */
+export function trackIdeasItemClick(properties: {
+  slug: string;
+  cta: string;
+  url: string;
+}): void {
+  track("ideas_item_click", properties);
+}
+
 export function trackCraftItemClick(properties: {
   slug: string;
   category: string;
@@ -98,7 +129,7 @@ export function trackCaseStudyRevealed(slug: string): void {
   track("case_study_revealed", { slug });
 }
 
-export type MediaPlaySurface = "case-study" | "craft";
+export type MediaPlaySurface = "case-study" | "craft" | "ideas";
 
 export type AiChatOpenSource =
   | "fab"

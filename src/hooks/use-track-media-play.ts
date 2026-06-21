@@ -20,6 +20,10 @@ function resolveMediaPlayContext(pathname: string): MediaPlayContext | null {
     return slug ? { surface: "case-study", slug } : null;
   }
 
+  if (pathname === ROUTES.ideas) {
+    return { surface: "ideas" };
+  }
+
   if (pathname === ROUTES.craft || pathname.startsWith(`${ROUTES.craft}/`)) {
     return { surface: "craft" };
   }

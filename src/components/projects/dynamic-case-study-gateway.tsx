@@ -7,9 +7,6 @@ import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell"
 import { ROUTES } from "@/lib/constants";
 
 const caseStudyComponents: Record<string, ComponentType> = {
-  "cisco-policy-copilot": dynamic(
-    () => import("@/components/case-studies/CiscoPolicyCopilot"),
-  ),
   "freshprints-design-system": dynamic(
     () => import("@/components/case-studies/FreshprintsDesignSystem"),
   ),

@@ -40,7 +40,16 @@ html:has(main[data-sheet="experiments"]) {
   color-scheme: dark;
 }
 
+html:has(main[data-sheet="ideas"]) {
+  color-scheme: dark;
+}
+
 html:has(main[data-sheet="experiments"]) body {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+html:has(main[data-sheet="ideas"]) body {
   background: #1a1a1a;
   color: #ffffff;
 }
@@ -59,6 +68,8 @@ html:has(main[data-sheet="projects"]),
 html:has(main[data-sheet="projects"]) body,
 html:has(main[data-sheet="experiments"]),
 html:has(main[data-sheet="experiments"]) body,
+html:has(main[data-sheet="ideas"]),
+html:has(main[data-sheet="ideas"]) body,
 html:has(main[data-sheet="case-study"]),
 html:has(main[data-sheet="case-study"]) body {
   overflow: hidden;
@@ -69,6 +80,18 @@ html:has(main[data-sheet="case-study"]) body {
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.ideas-page {
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: 5rem;
+  scroll-padding-bottom: 8rem;
+}
+
+.ideas-page:focus {
+  outline: none;
 }
 
 .projects-row {
@@ -501,6 +524,7 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
 .projects-page,
 .craft-page,
 main[data-sheet="experiments"],
+main[data-sheet="ideas"],
 main[data-sheet="projects"] {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -511,6 +535,7 @@ main[data-sheet="projects"] {
 .projects-page::-webkit-scrollbar,
 .craft-page::-webkit-scrollbar,
 main[data-sheet="experiments"]::-webkit-scrollbar,
+main[data-sheet="ideas"]::-webkit-scrollbar,
 main[data-sheet="projects"]::-webkit-scrollbar {
   display: none;
 }

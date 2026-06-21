@@ -23,8 +23,12 @@ function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
-function sectionLinkProps(frame: SectionFrame, onInteract: () => void) {
-  const openInNewTab = frame.openInNewTab || isExternalHref(frame.href);
+function sectionLinkProps(
+  frame: SectionFrame,
+  href: string,
+  onInteract: () => void,
+) {
+  const openInNewTab = frame.openInNewTab || isExternalHref(href);
 
   return {
     className: "absolute inset-0 z-10",
@@ -85,14 +89,14 @@ export function FrameShell({
         frame.href &&
         !frame.videoThumbnail &&
         (isExternalHref(frame.href) ? (
-          <a href={frame.href} {...sectionLinkProps(frame, onInteract)}>
+          <a href={frame.href} {...sectionLinkProps(frame, frame.href, onInteract)}>
             <span className="sr-only">{frame.label}</span>
           </a>
         ) : (
           <ScrollResetLink
             href={frame.href}
             scroll={true}
-            {...sectionLinkProps(frame, onInteract)}
+            {...sectionLinkProps(frame, frame.href, onInteract)}
           >
             <span className="sr-only">{frame.label}</span>
           </ScrollResetLink>

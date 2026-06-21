@@ -32,7 +32,8 @@ export interface SectionFrame {
   lottieFillAccent?: string;
   /** Bento 3:4 video thumbnail instead of monogram text. */
   videoThumbnail?: boolean;
-  href: string;
+  /** When omitted, the slide is display-only (no navigation overlay). */
+  href?: string;
   /** Open section link in a new browser tab. */
   openInNewTab?: boolean;
   badge?: string;

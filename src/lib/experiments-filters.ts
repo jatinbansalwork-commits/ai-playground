@@ -1,14 +1,17 @@
 import { ROUTES } from "@/lib/constants";
 import { getExperimentCategories } from "@/lib/experiments-registry";
 
+/** Filter tabs on the Craft gallery — AI experiments live on `/ideas`. */
 export const EXPERIMENTS_FILTERS = [
   { id: "all", label: "All" },
   { id: "motion-graphic", label: "Motion Graphic" },
-  { id: "ai-experiment", label: "AI Experiment" },
   { id: "illustration", label: "Illustration" },
 ] as const;
 
-export type ExperimentFilterId = (typeof EXPERIMENTS_FILTERS)[number]["id"];
+export type ExperimentGalleryFilterId =
+  (typeof EXPERIMENTS_FILTERS)[number]["id"];
+
+export type ExperimentFilterId = ExperimentGalleryFilterId | "ai-experiment";
 
 export type ExperimentCategory =
   | Exclude<ExperimentFilterId, "all">
@@ -326,13 +329,16 @@ export const EXPERIMENTS_GALLERY_FILTER_PARAM = "filter";
 export function isExperimentFilterId(
   value: string | null | undefined,
 ): value is ExperimentFilterId {
-  return EXPERIMENTS_FILTERS.some((entry) => entry.id === value);
+  return (
+    value === "ai-experiment" ||
+    EXPERIMENTS_FILTERS.some((entry) => entry.id === value)
+  );
 }
 
 export function parseExperimentFilterId(
   value: string | null | undefined,
 ): ExperimentFilterId {
-  if (value === "article") return "all";
+  if (value === "article" || value === "ai-experiment") return "all";
   return isExperimentFilterId(value) ? value : "all";
 }
 
@@ -344,6 +350,7 @@ export function getExperimentsGalleryHref(
 }
 
 export function getExperimentsFilterLabel(filter: ExperimentFilterId): string {
+  if (filter === "ai-experiment") return "AI Experiment";
   return (
     EXPERIMENTS_FILTERS.find((entry) => entry.id === filter)?.label ?? "All"
   );

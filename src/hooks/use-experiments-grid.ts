@@ -15,6 +15,8 @@ interface UseExperimentsGridOptions<T extends { slug: string }> {
   articleSlugs?: string[];
   /** Changes re-order cards via seeded Fisher–Yates shuffle. `0` keeps registry order. */
   shuffleSeed?: number;
+  /** Keep `items` order instead of sorting by registry rank. */
+  preserveItemOrder?: boolean;
 }
 
 interface UseExperimentsGridResult<T extends { slug: string }> {
@@ -27,18 +29,23 @@ export function useExperimentsGrid<T extends { slug: string }>({
   filter,
   articleSlugs = [],
   shuffleSeed = 0,
+  preserveItemOrder = false,
 }: UseExperimentsGridOptions<T>): UseExperimentsGridResult<T> {
   const allCardsCollection = useMemo(() => {
-    const orderedItems = sortExperimentsBentoItems(items);
+    const orderedItems = preserveItemOrder
+      ? items
+      : sortExperimentsBentoItems(items);
     return getExperimentDisplayEntries(orderedItems, "all");
-  }, [items]);
+  }, [items, preserveItemOrder]);
 
   const filteredCards = useMemo(() => {
     if (filter === "all") return allCardsCollection;
 
-    const orderedItems = sortExperimentsBentoItems(items);
+    const orderedItems = preserveItemOrder
+      ? items
+      : sortExperimentsBentoItems(items);
     return getExperimentDisplayEntries(orderedItems, filter);
-  }, [filter, items, allCardsCollection]);
+  }, [filter, items, allCardsCollection, preserveItemOrder]);
 
   const randomizedCards = useMemo(() => {
     if (shuffleSeed === 0) return filteredCards;

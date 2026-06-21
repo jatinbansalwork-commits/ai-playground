@@ -7,7 +7,7 @@
  * |-----------|-------------|----------------|
  * | 1.1.1 Non-text Content | Alt text for meaningful images/media | `experiment-media` alt, `aria-hidden` on decorative previews |
  * | 1.3.1 Info and Relationships | Semantic structure | `main`, `nav`, `h1`, `aria-label` on unlabelled controls |
- * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#1a1a1a` |
+ * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#1a1a1a`; intro `#d4d4d4` on `#262626` |
  * | 2.1.1 Keyboard | All functionality via keyboard | Slider Prev/Next, filter tabs, links, modals |
  * | 2.4.1 Bypass Blocks | Skip repetitive content | `SkipToContentLink` + `CaseStudySkipLink` → article body |
  * | 2.4.3 Focus Order | Logical tab sequence | DOM order matches visual order on each route |
@@ -76,6 +76,14 @@ export const SKIP_LINK_CLASS =
 /** Announces external navigation in link accessible names (4.1.2). */
 export function externalLinkLabel(title: string): string {
   return `${title} (opens in new tab)`;
+}
+
+/** External demo card — includes CTA in the accessible name (4.1.2). */
+export function externalDemoLinkLabel(
+  title: string,
+  action = "Try Now",
+): string {
+  return `${title} — ${action} (opens in new tab)`;
 }
 
 /** Case study in-page navigation — contrast + 44px target (2.5.8). */

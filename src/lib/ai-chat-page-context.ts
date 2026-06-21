@@ -33,6 +33,10 @@ Overview (for other questions only): ${study.overviewText}`;
     return "The user is on the Projects index — help them pick a case study based on their interest.";
   }
 
+  if (pagePath === "/ideas") {
+    return "The user is browsing Ideas — side projects and experiments. Slots are placeholders for now; keep answers light and portfolio-focused.";
+  }
+
   if (pagePath === "/archive") {
     return "The user is on the Me / archive slide context — keep answers personal and portfolio-focused.";
   }

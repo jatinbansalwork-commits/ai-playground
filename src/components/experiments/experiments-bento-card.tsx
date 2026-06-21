@@ -15,13 +15,16 @@ import {
 } from "@/lib/experiments-filters";
 import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
+import { ROUTES } from "@/lib/constants";
 import {
   trackCraftExperimentView,
   trackCraftItemClick,
   trackExternalDemoOpen,
+  trackIdeasExperimentView,
+  trackIdeasItemClick,
 } from "@/lib/analytics";
 import { ExperimentsPreviewMedia } from "@/components/experiments/experiments-preview-media";
-import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
+import { FOCUS_RING, externalDemoLinkLabel, externalLinkLabel } from "@/lib/a11y";
 
 interface ExperimentsBentoCardProps {
   item: ExperimentGalleryItem;
@@ -62,16 +65,32 @@ export function ExperimentsBentoCard({
       getExperimentCtaLabel(filter, item.slug, articleSlugs, displayCategory))
     : null;
   const cardId = getExperimentCardId(item.slug, resolvedCategory);
+  const isIdeasGallery = sectionHref === ROUTES.ideas;
 
   function handleCraftItemClick(): void {
     if (item.external && item.href) {
       trackExternalDemoOpen({ slug: item.slug, url: item.href });
-      if (resolvedCategory === "ai-experiment") {
-        trackCraftExperimentView({
+      if (isIdeasGallery) {
+        trackIdeasItemClick({
           slug: item.slug,
-          source: "click",
-          external: true,
+          cta: resolvedCtaLabel ?? "Try Now",
+          url: item.href,
         });
+      }
+      if (resolvedCategory === "ai-experiment") {
+        if (isIdeasGallery) {
+          trackIdeasExperimentView({
+            slug: item.slug,
+            source: "click",
+            external: true,
+          });
+        } else {
+          trackCraftExperimentView({
+            slug: item.slug,
+            source: "click",
+            external: true,
+          });
+        }
       }
       return;
     }
@@ -83,11 +102,19 @@ export function ExperimentsBentoCard({
     });
 
     if (resolvedCategory === "ai-experiment") {
-      trackCraftExperimentView({
-        slug: item.slug,
-        source: "click",
-        external: false,
-      });
+      if (isIdeasGallery) {
+        trackIdeasExperimentView({
+          slug: item.slug,
+          source: "click",
+          external: false,
+        });
+      } else {
+        trackCraftExperimentView({
+          slug: item.slug,
+          source: "click",
+          external: false,
+        });
+      }
     }
   }
 
@@ -107,7 +134,12 @@ export function ExperimentsBentoCard({
         className={`relative isolate w-full shrink-0 overflow-hidden ${EXPERIMENTS_CARD.preview} ${aspectClass}`}
       >
         {media ? (
-          <ExperimentsPreviewMedia media={media} title={item.title} slug={item.slug} />
+          <ExperimentsPreviewMedia
+            media={media}
+            title={item.title}
+            slug={item.slug}
+            decorative={interactive}
+          />
         ) : null}
 
         {isFunctionalBlock ? (
@@ -156,7 +188,11 @@ export function ExperimentsBentoCard({
         target="_blank"
         rel="noopener noreferrer"
         className={className}
-        aria-label={externalLinkLabel(item.title)}
+        aria-label={
+          resolvedCtaLabel
+            ? externalDemoLinkLabel(item.title, resolvedCtaLabel)
+            : externalLinkLabel(item.title)
+        }
         onClick={handleCraftItemClick}
       >
         {inner}

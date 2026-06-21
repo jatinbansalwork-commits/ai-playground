@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { isRemoteCdnUrl } from "@/lib/asset-cdn";
-import { ROUTES } from "@/lib/constants";
+import { isExperimentsBentoPreviewRoute } from "@/lib/experiments-bento";
 import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
 import { useTrackMediaPlay } from "@/hooks/use-track-media-play";
 
@@ -12,6 +12,8 @@ interface ExperimentsPreviewMediaProps {
   media: ExperimentMedia;
   title: string;
   slug?: string;
+  /** When true, media is decorative — parent link supplies the accessible name (1.1.1). */
+  decorative?: boolean;
 }
 
 const LAZY_ROOT_MARGIN = "240px";
@@ -26,7 +28,7 @@ interface ExperimentsPreviewVideoProps {
 }
 
 /**
- * /craft bento previews — play only when on-route, in view, and mouse is active.
+ * Craft / Ideas bento previews — play only when on-route, in view, and mouse is active.
  * Pauses after 2s of pointer idle or when the card leaves the viewport.
  */
 function ExperimentsPreviewVideo({
@@ -34,7 +36,8 @@ function ExperimentsPreviewVideo({
   title,
   slug,
   shouldLoad,
-}: ExperimentsPreviewVideoProps) {
+  decorative = false,
+}: ExperimentsPreviewVideoProps & { decorative?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const pathname = usePathname();
   const autoplay = useMediaAutoplay();
@@ -59,7 +62,7 @@ function ExperimentsPreviewVideo({
   }, [shouldLoad, media.src]);
 
   useEffect(() => {
-    if (!isIntersecting || pathname !== ROUTES.craft) {
+    if (!isIntersecting || !isExperimentsBentoPreviewRoute(pathname)) {
       setIsMouseActive(false);
       return;
     }
@@ -86,9 +89,11 @@ function ExperimentsPreviewVideo({
     const video = videoRef.current;
     if (!video) return;
 
-    const isTargetPage = pathname === ROUTES.craft;
     const shouldPlay =
-      isTargetPage && isIntersecting && isMouseActive && autoplay;
+      isExperimentsBentoPreviewRoute(pathname) &&
+      isIntersecting &&
+      isMouseActive &&
+      autoplay;
 
     if (shouldPlay) {
       void video.play().then(() => {
@@ -135,7 +140,8 @@ function ExperimentsPreviewVideo({
       loop={autoplay}
       playsInline
       preload="metadata"
-      aria-label={media.alt ?? title}
+      aria-hidden={decorative || undefined}
+      aria-label={decorative ? undefined : (media.alt ?? title)}
     />
   );
 }
@@ -148,6 +154,7 @@ export function ExperimentsPreviewMedia({
   media,
   title,
   slug,
+  decorative = false,
 }: ExperimentsPreviewMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isRemote = isRemoteCdnUrl(media.src);
@@ -184,6 +191,7 @@ export function ExperimentsPreviewMedia({
           title={title}
           slug={slug}
           shouldLoad={shouldLoad}
+          decorative={decorative}
         />
       </div>
     );
@@ -199,7 +207,8 @@ export function ExperimentsPreviewMedia({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={media.src}
-          alt={media.alt ?? title}
+          alt={decorative ? "" : (media.alt ?? title)}
+          aria-hidden={decorative || undefined}
           className="absolute inset-0 h-full w-full object-cover"
           loading="lazy"
           decoding="async"

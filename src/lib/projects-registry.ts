@@ -12,8 +12,8 @@ export const PROJECTS_PAGE = {
   description: "Selected product and interface work.",
 } as const;
 
-/** Flagship case study — available at `/projects/cisco-policy-copilot`. */
-export const FEATURED_CASE_STUDY_SLUG = "cisco-policy-copilot" as const;
+/** Placeholder index for side projects — live at `/ideas`. */
+export const FEATURED_IDEAS_SLUG = "ideas" as const;
 
 /** Kebab-case handles for `/projects/[slug]` case study routes. */
 export const PROJECT_CASE_STUDY_SLUGS = getCaseStudySlugs() as ProjectContentSlug[];
