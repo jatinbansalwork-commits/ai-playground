@@ -505,6 +505,31 @@ main.index-root[data-debug="true"] [data-index] [aria-label="Scroll position"] {
   background-color: transparent !important;
 }
 
+/* Index slide pixel monograms — transparent asset, white strokes in wireframe. */
+.wireframe-mode .index-slide-monogram,
+main.index-root[data-debug="true"] .index-slide-monogram {
+  filter: url(#wireframe-monogram);
+}
+
+.wireframe-mode .ideas-robot__image--wireframe,
+main.index-root[data-debug="true"] .ideas-robot__image--wireframe,
+.wireframe-mode .index-slide-monogram--native-wireframe,
+main.index-root[data-debug="true"] .index-slide-monogram--native-wireframe {
+  filter: none;
+}
+
+.wireframe-mode .ideas-robot__float,
+main.index-root[data-debug="true"] .ideas-robot__float,
+.wireframe-mode .ideas-robot__eyelid,
+main.index-root[data-debug="true"] .ideas-robot__eyelid {
+  animation: none !important;
+}
+
+.wireframe-mode .ideas-robot__eyelid,
+main.index-root[data-debug="true"] .ideas-robot__eyelid {
+  display: none;
+}
+
 .ghost-spacer {
   pointer-events: none;
   user-select: none;
@@ -639,5 +664,66 @@ html.site-custom-cursor [contenteditable="true"] {
 @media (prefers-reduced-motion: reduce) {
   .site-cursor {
     transition: none;
+  }
+}
+
+/* Ideas index slide — robot monogram (CSS keyframes; FM keyframes stall with initial={false}). */
+@keyframes ideas-robot-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes ideas-robot-blink {
+  0%,
+  26%,
+  30%,
+  56%,
+  60%,
+  100% {
+    transform: scaleY(0);
+  }
+
+  28%,
+  58% {
+    transform: scaleY(1);
+  }
+}
+
+.ideas-robot__float {
+  animation: ideas-robot-float 2.8s ease-in-out infinite;
+}
+
+.ideas-robot__eyelid {
+  pointer-events: none;
+  position: absolute;
+  transform-origin: top;
+  background-color: #1e1e1e;
+  animation: ideas-robot-blink 4.8s linear infinite;
+}
+
+.ideas-robot__eyelid--left {
+  left: 26.7%;
+  top: 52.1%;
+  width: 16.9%;
+  height: 8.5%;
+}
+
+.ideas-robot__eyelid--right {
+  left: 56.4%;
+  top: 52.1%;
+  width: 17.1%;
+  height: 8.5%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ideas-robot__float,
+  .ideas-robot__eyelid {
+    animation: none !important;
   }
 }

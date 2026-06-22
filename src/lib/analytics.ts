@@ -12,6 +12,16 @@ export function trackContactClick(method: ContactMethod): void {
   track("contact_click", { method });
 }
 
+/** Once per session — landing context; pair with Countries filter in Vercel Analytics. */
+export function trackSiteEntry(properties: {
+  landing_path: string;
+  referrer_host: string;
+  timezone: string;
+  locale: string;
+}): void {
+  track("site_entry", properties);
+}
+
 export function trackResumeDownload(): void {
   track("resume_download");
 }

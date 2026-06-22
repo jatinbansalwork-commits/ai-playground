@@ -23,6 +23,8 @@ export interface SectionFrame {
   monogramTyping?: boolean;
   /** Centered image instead of monogram text. */
   monogramImage?: string;
+  /** Wireframe-mode variant — used instead of `monogramImage` when layout debug is on. */
+  monogramWireframeImage?: string;
   /** Hide the small label above the slide panel. */
   hideSlideLabel?: boolean;
   /** Mask pan loop duration in seconds. */

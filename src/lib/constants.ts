@@ -39,6 +39,7 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Design Review",
     monogramImage: "/assets/index/article-cursor-hand.png",
+    monogramWireframeImage: "/assets/index/article-cursor-hand-wireframe.png",
     href: `${ROUTES.craft}/design-review-checklist`,
   },
   {
@@ -47,6 +48,7 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Craft",
     monogramImage: "/assets/index/craft-monogram.png",
+    monogramWireframeImage: "/assets/index/craft-monogram-wireframe.png",
     href: ROUTES.craft,
   },
   {

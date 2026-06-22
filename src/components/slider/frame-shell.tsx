@@ -66,7 +66,7 @@ export function FrameShell({
     <motion.article
       tabIndex={0}
       data-variant={frame.variant}
-      className="frame-panel outline-none select-none"
+      className={`frame-panel outline-none select-none${isSlide ? " group" : ""}`}
       style={{
         width: FRAME_WIDTH,
         height: FRAME_HEIGHT,

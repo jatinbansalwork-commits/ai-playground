@@ -5,6 +5,7 @@ import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { springSlider } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { SectionFrameLottie } from "@/components/slider/section-frame-lottie";
+import { SectionFrameIdeasMonogram } from "@/components/slider/section-frame-ideas-monogram";
 import { SectionFrameImage } from "@/components/slider/section-frame-image";
 import { SectionFrameMonogram } from "@/components/slider/section-frame-monogram";
 import { SectionFrameTypingMonogram } from "@/components/slider/section-frame-typing-monogram";
@@ -45,7 +46,14 @@ export function SectionFramePanel({
           className="pointer-events-none h-[min(480px,70vh)] w-[min(480px,70vh)]"
         />
       ) : frame.monogramImage ? (
-        <SectionFrameImage src={frame.monogramImage} />
+        frame.id === "ideas" ? (
+          <SectionFrameIdeasMonogram src={frame.monogramImage} />
+        ) : (
+          <SectionFrameImage
+            src={frame.monogramImage}
+            wireframeSrc={frame.monogramWireframeImage}
+          />
+        )
       ) : frame.monogramTyping ? (
         <SectionFrameTypingMonogram text={monogram} fontSize={fontSize} />
       ) : frame.monogramPan ? (
