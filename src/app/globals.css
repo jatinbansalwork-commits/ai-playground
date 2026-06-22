@@ -93,6 +93,40 @@ html:has(main[data-sheet="case-study"]) body {
   top: max(2rem, env(safe-area-inset-top));
   left: max(1.25rem, env(safe-area-inset-left));
   -webkit-tap-highlight-color: transparent;
+  isolation: isolate;
+}
+
+.nav-back-link::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * max(2rem, env(safe-area-inset-top)));
+  left: calc(-1 * max(1.25rem, env(safe-area-inset-left)));
+  right: -7rem;
+  bottom: -2rem;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    155deg,
+    var(--background) 0%,
+    var(--background) 34%,
+    rgb(9 9 11 / 0.88) 52%,
+    rgb(9 9 11 / 0.45) 70%,
+    transparent 88%
+  );
+}
+
+@media (min-width: 768px) {
+  .nav-back-link::before {
+    right: -5rem;
+    bottom: -1.5rem;
+    background: linear-gradient(
+      155deg,
+      var(--background) 0%,
+      var(--background) 30%,
+      rgb(9 9 11 / 0.72) 50%,
+      transparent 82%
+    );
+  }
 }
 
 .case-study-footer {
