@@ -76,28 +76,6 @@ export function MeIntroPreview({
           aria-hidden
         />
 
-        <motion.div
-          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/35"
-          initial={false}
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={springBentoHover}
-        >
-          <span className="flex size-14 items-center justify-center rounded-full border border-white/20 bg-black/40 backdrop-blur-sm">
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="ml-0.5 text-white"
-              aria-hidden
-            >
-              <path d="M8 5.14v14.72a1 1 0 0 0 1.5.86l11.5-7.36a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z" />
-            </svg>
-          </span>
-          <span className="text-xs font-medium tracking-normal text-white/90">
-            {config.hoverTooltip}
-          </span>
-        </motion.div>
       </div>
   );
 
