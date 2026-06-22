@@ -1,9 +1,15 @@
 import { ROUTES } from "@/lib/constants";
 import { getExperimentCategories } from "@/lib/experiments-registry";
 
-/** Filter tabs on the Craft gallery — AI experiments live on `/ideas`. */
+/** Filter chips on the Craft gallery — AI experiments live on `/ideas`. */
 export const EXPERIMENTS_FILTERS = [
   { id: "all", label: "All" },
+  { id: "motion-graphic", label: "Motion Graphic" },
+  { id: "illustration", label: "Illustration" },
+] as const;
+
+/** Visible Craft filter chips (no "All" — deselect returns to all). */
+export const CRAFT_GALLERY_FILTERS = [
   { id: "motion-graphic", label: "Motion Graphic" },
   { id: "illustration", label: "Illustration" },
 ] as const;
@@ -340,6 +346,21 @@ export function parseExperimentFilterId(
 ): ExperimentFilterId {
   if (value === "article" || value === "ai-experiment") return "all";
   return isExperimentFilterId(value) ? value : "all";
+}
+
+/** Default Craft gallery filter when no query param is present. */
+export const DEFAULT_CRAFT_GALLERY_FILTER = "motion-graphic" as const;
+
+export function parseCraftGalleryFilterId(
+  value: string | null | undefined,
+): ExperimentFilterId {
+  if (value === "article" || value === "ai-experiment") {
+    return DEFAULT_CRAFT_GALLERY_FILTER;
+  }
+  if (isExperimentFilterId(value)) {
+    return value === "all" ? DEFAULT_CRAFT_GALLERY_FILTER : value;
+  }
+  return DEFAULT_CRAFT_GALLERY_FILTER;
 }
 
 export function getExperimentsGalleryHref(

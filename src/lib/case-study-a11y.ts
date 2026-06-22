@@ -3,6 +3,12 @@
 export const CASE_STUDY_TITLE_ID = "case-study-title";
 export const CASE_STUDY_BODY_ID = "case-study-body";
 
+/** Top padding on case study body — keeps hero clear of the back control. */
+export const CASE_STUDY_CONTENT_TOP_PADDING_PX = 200;
+
+/** Bottom padding below case study footer actions. */
+export const CASE_STUDY_FOOTER_BOTTOM_PADDING_PX = 200;
+
 /** Clears sticky chrome when scrolling to in-page targets (2.4.11). */
 export const CASE_STUDY_HEADING_SCROLL_MARGIN = "scroll-mt-32 scroll-pt-32";
 

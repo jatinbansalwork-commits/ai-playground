@@ -27,8 +27,11 @@ import {
 const SNAP_DURATION_MS = 720;
 import { useClickSound } from "@/hooks/use-click-sound";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
-import { saveIndexActiveFrame, readIndexActiveFrame } from "@/lib/index-frame-memory";
+import {
+  saveIndexActiveFrame,
+  readIndexActiveFrame,
+  resumeIndexActiveFramePersistence,
+} from "@/lib/index-frame-memory";
 import { useSliderContext } from "@/context/slider-context";
 
 function clamp(value: number, min: number, max: number) {
@@ -117,9 +120,17 @@ function eventTargetHasScrollableAncestor(
 }
 
 const SLIDER_POINTER_IGNORE_SELECTOR =
-  'button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
+  'a[href], button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
 
 const SLIDER_DRAG_AXIS_LOCK_PX = 8;
+const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 18;
+
+function getSliderDragAxisLockPx(): number {
+  if (typeof window === "undefined") return SLIDER_DRAG_AXIS_LOCK_PX;
+  return window.matchMedia("(pointer: coarse)").matches
+    ? SLIDER_DRAG_AXIS_LOCK_COARSE_PX
+    : SLIDER_DRAG_AXIS_LOCK_PX;
+}
 
 function isInNestedScrollContainer(element: Element): boolean {
   let node: Element | null = element;
@@ -336,6 +347,7 @@ export function useScrollSlider() {
     );
     frameIndexRef.current = initialIndex;
     setActiveFrameIndex(initialIndex);
+    resumeIndexActiveFramePersistence();
   }, [frameCount, maxOffset, minimapX, scale, springScaleValue, springTrackX, trackX]);
 
   useEffect(() => {
@@ -409,13 +421,6 @@ export function useScrollSlider() {
     syncScrollPosition,
     updateFromScroll,
   ]);
-
-  useEffect(() => {
-    return () => {
-      cancelSnapAnimation();
-      resetDocumentScroll();
-    };
-  }, [cancelSnapAnimation]);
 
   useEffect(() => {
     let snapTimer: ReturnType<typeof setTimeout> | null = null;
@@ -509,13 +514,14 @@ export function useScrollSlider() {
     const onPointerMove = (event: PointerEvent) => {
       if (event.pointerId !== activePointerId) return;
 
+      const axisLockPx = getSliderDragAxisLockPx();
       const deltaX = startX - event.clientX;
       const deltaY = startY - event.clientY;
 
       if (!dragAxis) {
         if (
-          Math.abs(deltaX) < SLIDER_DRAG_AXIS_LOCK_PX &&
-          Math.abs(deltaY) < SLIDER_DRAG_AXIS_LOCK_PX
+          Math.abs(deltaX) < axisLockPx &&
+          Math.abs(deltaY) < axisLockPx
         ) {
           return;
         }
@@ -535,6 +541,15 @@ export function useScrollSlider() {
 
     const onPointerEnd = (event: PointerEvent) => {
       if (event.pointerId !== activePointerId) return;
+
+      const axisLockPx = getSliderDragAxisLockPx();
+      const totalDelta = Math.max(
+        Math.abs(startX - event.clientX),
+        Math.abs(startY - event.clientY),
+      );
+      if (totalDelta < axisLockPx) {
+        suppressClick = false;
+      }
 
       clearPointerDrag();
       snapAfterIdle();

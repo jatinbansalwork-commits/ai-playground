@@ -1,5 +1,8 @@
 export const SITE_NAME = "JB Portfolio";
 
+/** Platform page canvas — matches detail.design `--surface`. */
+export const SITE_CANVAS = "#09090b";
+
 export const ROUTES = {
   home: "/",
   craft: "/craft",

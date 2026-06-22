@@ -17,7 +17,7 @@ export function SectionFrameIdeasMonogram({ src }: SectionFrameIdeasMonogramProp
 
   return (
     <div className="ideas-robot flex h-full w-full items-center justify-center overflow-hidden">
-      <div className="ideas-robot__float relative transition-transform duration-200 group-hover:-translate-y-2 group-hover:scale-[1.08]">
+      <div className="ideas-robot__float relative">
         <div className="ideas-robot__body relative inline-block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -31,12 +31,8 @@ export function SectionFrameIdeasMonogram({ src }: SectionFrameIdeasMonogramProp
             ].join(" ")}
           />
 
-          {!wireframe ? (
-            <>
-              <span aria-hidden className="ideas-robot__eyelid ideas-robot__eyelid--left" />
-              <span aria-hidden className="ideas-robot__eyelid ideas-robot__eyelid--right" />
-            </>
-          ) : null}
+          <span aria-hidden className="ideas-robot__eyelid ideas-robot__eyelid--left" />
+          <span aria-hidden className="ideas-robot__eyelid ideas-robot__eyelid--right" />
         </div>
       </div>
     </div>

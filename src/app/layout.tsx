@@ -32,11 +32,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} bg-[#1a1a1a]`}>
+    <html lang="en" className={`${geistSans.variable} bg-background`}>
       <head>
         <link rel="preconnect" href={BLOB_CDN_ORIGIN} crossOrigin="anonymous" />
       </head>
-      <body className="relative min-h-screen bg-[#1a1a1a] text-white antialiased">
+      <body className="relative min-h-screen bg-background text-white antialiased">
         <WireframeFilters />
         <SkipToContentLink />
         <CacheManager />

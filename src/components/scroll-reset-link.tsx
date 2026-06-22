@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ComponentProps } from "react";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
 import { ROUTES } from "@/lib/constants";
@@ -12,17 +13,23 @@ export function ScrollResetLink({
   onClick,
   scroll = true,
   className = "",
+  href,
   ...props
 }: ScrollResetLinkProps) {
+  const pathname = usePathname();
+  const hrefStr = typeof href === "string" ? href : "";
+  const returnsToIndex = hrefStr === ROUTES.home || hrefStr === "/";
+  const leavesIndex = pathname === ROUTES.home && !returnsToIndex;
+  const preserveIndexScroll = returnsToIndex || leavesIndex;
+
   return (
     <Link
       {...props}
-      scroll={scroll}
+      href={href}
+      scroll={preserveIndexScroll ? false : scroll}
       className={[className, FOCUS_RING].filter(Boolean).join(" ")}
       onClick={(event) => {
-        const href = typeof props.href === "string" ? props.href : "";
-        const returnsToIndex = href === ROUTES.home || href === "/";
-        if (!returnsToIndex) {
+        if (!returnsToIndex && !leavesIndex) {
           resetDocumentScroll();
         }
         onClick?.(event);

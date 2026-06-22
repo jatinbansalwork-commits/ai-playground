@@ -13,7 +13,7 @@ export function MePage() {
     <main
       id="main-content"
       data-sheet="me"
-      className="relative flex min-h-screen items-center justify-start bg-[#1a1a1a] px-8 pt-24 pb-16 text-white"
+      className="relative flex min-h-screen items-center justify-start bg-background px-8 pt-24 pb-16 text-white"
     >
       <h1 className="sr-only">Me</h1>
 

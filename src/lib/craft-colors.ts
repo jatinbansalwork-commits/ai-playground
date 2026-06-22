@@ -10,7 +10,7 @@ export const CRAFT_PREVIEW = {
   graySoft: "craft-preview-graySoft bg-neutral-100",
   white: "craft-preview-white bg-[#FAFAFA]",
   dark: "craft-preview-dark bg-[#2a2a2a]",
-  canvas: "craft-preview-canvas bg-[#1E1E1E]",
+  canvas: "craft-preview-canvas bg-[#09090b]",
 } as const;
 
 /** Dark-theme neutral gray scale. */

@@ -1,11 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import type { ExperimentFilterId } from "@/lib/experiments-filters";
-import { EXPERIMENTS_FILTERS } from "@/lib/experiments-filters";
-import { EXPERIMENTS_TOGGLE } from "@/lib/experiments-bento";
+import { CRAFT_GALLERY_FILTERS } from "@/lib/experiments-filters";
 import { FOCUS_RING } from "@/lib/a11y";
-import { springSnappy } from "@/lib/spring";
 
 interface ExperimentsFilterBarProps {
   value: ExperimentFilterId;
@@ -18,11 +15,11 @@ export function ExperimentsFilterBar({
 }: ExperimentsFilterBarProps) {
   return (
     <div
-      className={EXPERIMENTS_TOGGLE.track}
+      className="experiments-filter-bar flex max-w-full flex-wrap items-center justify-center gap-2"
       role="group"
-      aria-label="Filter experiments"
+      aria-label="Filter craft gallery"
     >
-      {EXPERIMENTS_FILTERS.map((option) => {
+      {CRAFT_GALLERY_FILTERS.map((option) => {
         const active = value === option.id;
 
         return (
@@ -30,26 +27,16 @@ export function ExperimentsFilterBar({
             key={option.id}
             type="button"
             aria-pressed={active}
-            onClick={() => onChange(option.id)}
-            className={`${EXPERIMENTS_TOGGLE.button} ${FOCUS_RING}`}
+            onClick={() => onChange(active ? "all" : option.id)}
+            className={[
+              "rounded-full border px-4 py-2 text-xs font-medium tracking-normal whitespace-nowrap transition-colors",
+              FOCUS_RING,
+              active
+                ? "border-white/[0.12] bg-[#333333] text-neutral-100"
+                : "border-white/[0.08] bg-transparent text-neutral-400 hover:border-white/[0.12] hover:text-neutral-100",
+            ].join(" ")}
           >
-            {active ? (
-              <motion.span
-                layoutId="experiments-filter-active-pill"
-                className={EXPERIMENTS_TOGGLE.pill}
-                transition={springSnappy}
-                aria-hidden
-              />
-            ) : null}
-            <span
-              className={
-                active
-                  ? EXPERIMENTS_TOGGLE.labelActive
-                  : EXPERIMENTS_TOGGLE.labelInactive
-              }
-            >
-              {option.label}
-            </span>
+            {option.label}
           </button>
         );
       })}

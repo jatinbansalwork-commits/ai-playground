@@ -16,9 +16,13 @@ export function SectionGallery({ section }: SectionGalleryProps) {
 
       <div className="craft-page-content">
         <CraftGrid
-          items={section.items}
-          sectionHref={section.href}
-          articleSlugs={Object.keys(section.articles)}
+          items={section.items.map((item) => ({
+            slug: item.slug,
+            title: item.title,
+            date: item.date ?? "",
+            external: item.external,
+            href: item.href,
+          }))}
         />
       </div>
     </main>

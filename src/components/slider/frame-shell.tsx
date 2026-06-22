@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
-import { saveIndexActiveFrame } from "@/lib/index-frame-memory";
+import { saveIndexActiveFrameForNavigation } from "@/lib/index-frame-memory";
 import { trackIndexSlideClick } from "@/lib/analytics";
 import {
   FRAME_HEIGHT,
@@ -34,19 +33,18 @@ function sectionLinkProps(
   const openInNewTab = frame.openInNewTab || isExternalHref(href);
 
   return {
-    className: "absolute inset-0 z-10",
+    className: "absolute inset-0 z-10 touch-manipulation",
     "aria-label": frame.label,
     onMouseDown: onInteract,
     onClick: openInNewTab
       ? undefined
       : () => {
-          saveIndexActiveFrame(frameIndex);
+          saveIndexActiveFrameForNavigation(frameIndex);
           trackIndexSlideClick({
             frame_id: frame.id,
             frame_label: frame.label,
             href,
           });
-          resetDocumentScroll();
         },
     ...(openInNewTab
       ? { target: "_blank" as const, rel: "noopener noreferrer" }

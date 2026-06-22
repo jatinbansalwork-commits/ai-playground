@@ -563,7 +563,7 @@ export function AiChatBall() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={panelTransition}
-            className="absolute inset-0 bg-[#1a1a1a]/96 backdrop-blur-md"
+            className="absolute inset-0 bg-background/96 backdrop-blur-md"
             aria-hidden
           />
         ) : null}

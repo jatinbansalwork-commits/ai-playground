@@ -10,7 +10,7 @@ export default function ProjectsIndexPage() {
     <main
       id="main-content"
       data-sheet="projects"
-      className="projects-page no-scrollbar fixed inset-0 z-10 flex h-screen w-full flex-col overflow-y-auto overflow-x-hidden bg-[#1a1a1a] px-4 py-24 text-white"
+      className="projects-page no-scrollbar fixed inset-0 z-10 flex h-screen w-full flex-col overflow-y-auto overflow-x-hidden bg-background px-4 py-24 text-white"
     >
       <ScrollResetLink
         href={ROUTES.home}

@@ -7,7 +7,7 @@
  * |-----------|-------------|----------------|
  * | 1.1.1 Non-text Content | Alt text for meaningful images/media | `experiment-media` alt, `aria-hidden` on decorative previews |
  * | 1.3.1 Info and Relationships | Semantic structure | `main`, `nav`, `h1`, `aria-label` on unlabelled controls |
- * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#1a1a1a`; intro `#d4d4d4` on `#262626` |
+ * | 1.4.3 Contrast (Minimum) | 4.5:1 body text; 3:1 large text/UI | Dark sheets: `#ededed` / `#ffffff` on `#09090b`; intro `#d4d4d4` on `#262626` |
  * | 2.1.1 Keyboard | All functionality via keyboard | Slider Prev/Next, filter tabs, links, modals |
  * | 2.4.1 Bypass Blocks | Skip repetitive content | `SkipToContentLink` + `CaseStudySkipLink` → article body |
  * | 2.4.3 Focus Order | Logical tab sequence | DOM order matches visual order on each route |
@@ -24,7 +24,7 @@
  * @see https://www.w3.org/TR/WCAG22/
  */
 
-/** Focus indicator colour — 3:1+ against `#1a1a1a` (satisfies 2.4.7 / 2.4.11). */
+/** Focus indicator colour — 3:1+ against `#09090b` (satisfies 2.4.7 / 2.4.11). */
 export const FOCUS_RING_COLOR = "#3291ff";
 
 /**
@@ -56,7 +56,7 @@ export const BACK_LINK_CLASS =
  * Hit area padded to 44×44 while label remains text-sized (2.5.8).
  */
 export const NAV_BACK_LINK_CLASS =
-  `absolute top-8 left-8 z-50 ${TARGET_HIT_AREA} px-3 text-sm text-neutral-400 transition-colors hover:text-white ${FOCUS_RING}`;
+  `nav-back-link fixed top-8 left-8 z-50 ${TARGET_HIT_AREA} pr-3 text-sm text-neutral-400 transition-colors hover:text-white touch-manipulation ${FOCUS_RING}`;
 
 /** Full-width list row — 44px min height for pointer targets (2.5.8). */
 export const PROJECTS_ROW_LINK_CLASS =

@@ -1,82 +1,50 @@
-import Link from "next/link";
-import type { CraftItem } from "@/lib/craft-content";
-import { externalLinkLabel } from "@/lib/a11y";
-import { getCraftMetaPosition, getCraftTheme } from "@/lib/craft-theme";
+"use client";
+
+import { useState } from "react";
+import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
+import { getExperimentMedia } from "@/lib/experiment-media";
+import { getExperimentPreviewAspectRatio } from "@/lib/experiments-filters";
+import { getCraftCardMeta } from "@/lib/craft-page-data";
+import { CraftCardPreview } from "@/components/craft/craft-card-preview";
+import { shouldUpdateCraftAspect } from "@/lib/craft-gallery-aspects";
+import { parseCssAspectRatio } from "@/lib/craft-card-sizes";
 
 interface CraftCardProps {
-  item: CraftItem;
-  sectionHref: string;
-  hasArticle?: boolean;
+  item: ExperimentGalleryItem;
+  priority?: boolean;
+  onMediaMeasure?: (slug: string, width: number, height: number) => void;
 }
 
-export function CraftCard({
-  item,
-  sectionHref,
-  hasArticle = true,
-}: CraftCardProps) {
-  const href = item.external ? item.href ?? "#" : `${sectionHref}/${item.slug}`;
-  const theme = getCraftTheme(item);
-  const metaPosition = getCraftMetaPosition(item);
-  const interactive = Boolean(item.cta);
-  const className = interactive
-    ? `craft-card craft-card-interactive${hasArticle || item.external ? "" : " cursor-default"}`
-    : "craft-card";
-
-  const content = (
-    <>
-      <div
-        className="craft-card-preview"
-        data-theme={theme}
-        data-position={metaPosition}
-      >
-        <div
-          className="craft-card-media"
-          style={{ aspectRatio: item.aspectRatio ?? "16 / 10" }}
-        >
-          <div className={`craft-card-fill ${item.previewClass}`} aria-hidden />
-        </div>
-
-        <div className="craft-card-meta">
-          <h2 className="craft-card-title">{item.title}</h2>
-          <time className="craft-card-date" dateTime={item.date}>
-            {item.date}
-          </time>
-        </div>
-      </div>
-
-      {item.cta ? (
-        <div className="craft-card-cta" data-fake-button>
-          {item.cta}
-        </div>
-      ) : null}
-    </>
+export function CraftCard({ item, priority = false, onMediaMeasure }: CraftCardProps) {
+  const { category } = getCraftCardMeta(item.slug);
+  const media = getExperimentMedia(item.slug, category);
+  const [aspectRatio, setAspectRatio] = useState(() =>
+    getExperimentPreviewAspectRatio("all", item.slug, category),
   );
 
-  if (item.external) {
-    return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-        aria-label={externalLinkLabel(item.title)}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  if (!hasArticle) {
-    return (
-      <div className={className} aria-label={item.title}>
-        {content}
-      </div>
-    );
-  }
-
   return (
-    <Link href={href} className={className} aria-label={item.title}>
-      {content}
-    </Link>
+    <article className="ideas-card w-full">
+      <h2 className="sr-only">{item.title}</h2>
+      <div
+        className="ideas-card__preview craft-card__preview"
+        style={{ aspectRatio }}
+      >
+        {media ? (
+          <CraftCardPreview
+            media={media}
+            title={item.title}
+            priority={priority}
+            onMeasure={(width, height) => {
+              const widthOverHeight = width / height;
+              const current = parseCssAspectRatio(aspectRatio);
+              if (shouldUpdateCraftAspect(current, widthOverHeight)) {
+                setAspectRatio(`${width} / ${height}`);
+              }
+              onMediaMeasure?.(item.slug, width, height);
+            }}
+          />
+        ) : null}
+      </div>
+    </article>
   );
 }

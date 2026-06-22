@@ -1,4 +1,4 @@
-import { ROUTES } from "@/lib/constants";
+import { ROUTES, SITE_CANVAS } from "@/lib/constants";
 import type { ExperimentFilterId } from "@/lib/experiments-filters";
 import { getExperimentGridSpan } from "@/lib/experiments-filters";
 import { EXPERIMENT_SLUG_ORDER } from "@/lib/experiments-registry";
@@ -13,7 +13,7 @@ export interface ExperimentsBentoConfig {
 }
 
 /** Page canvas — deep black wrapper behind the grid. */
-export const EXPERIMENTS_CANVAS = "#1a1a1a";
+export const EXPERIMENTS_CANVAS = SITE_CANVAS;
 
 /** Unified card tokens — identical on every tile. */
 export const EXPERIMENTS_CARD = {

@@ -27,7 +27,7 @@ export function ArticleLayout({
   return (
     <main
       data-sheet="craft-article"
-      className="craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-[#1a1a1a] text-white"
+      className="craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
     >
       <CraftArticlePageAnalytics slug={article.slug} />
       <ArticleBackLink
@@ -39,7 +39,7 @@ export function ArticleLayout({
       <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-24">
         <article className="min-w-0">
           <header className="mb-12 border-b border-neutral-800 pb-8">
-            <h1 className="text-4xl font-normal tracking-tight">{article.title}</h1>
+            <h1 className="pt-[200px] text-4xl font-normal tracking-tight">{article.title}</h1>
             {article.date ? (
               <time className="mt-3 block text-sm text-neutral-500">
                 {article.date}

@@ -6,7 +6,6 @@ import { useScrollSlider } from "@/hooks/use-scroll-slider";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import {
   getGhostSpacerSize,
-  resetDocumentScroll,
 } from "@/hooks/use-index-scroll-reset";
 import { SliderProvider } from "@/context/slider-context";
 import { useWireframe } from "@/context/wireframe-context";
@@ -54,7 +53,6 @@ function IndexCanvas() {
     return () => {
       cancelAnimationFrame(settleFrame);
       window.removeEventListener("resize", updateGhostSize);
-      resetDocumentScroll();
     };
   }, []);
 
@@ -65,7 +63,7 @@ function IndexCanvas() {
         data-sheet="index"
         data-debug={wireframe ? "true" : undefined}
         data-cancel-animation={wireframe ? "true" : undefined}
-        className={`index-root fixed inset-0 z-10 overflow-hidden bg-[#1E1E1E]${wireframe ? " wireframe-mode" : ""}`}
+        className={`index-root fixed inset-0 z-10 overflow-hidden bg-background${wireframe ? " wireframe-mode" : ""}`}
         style={
           {
             "--frame-width": `${FRAME_WIDTH}px`,

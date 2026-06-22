@@ -91,7 +91,7 @@ export function AskJbChatButton({
       <button
         type="button"
         onClick={handleClick}
-        className={`${TARGET_HIT_AREA} h-11 rounded-lg border border-[#6B36FF]/40 bg-[#6B36FF]/15 px-6 font-sans text-sm font-medium text-[#D4BBFF] transition-colors hover:border-[#6B36FF]/60 hover:bg-[#6B36FF]/25 hover:text-white ${FOCUS_RING} ${className}`.trim()}
+        className={`${TARGET_HIT_AREA} h-11 w-full rounded-lg border border-[#6B36FF]/40 bg-[#6B36FF]/15 px-6 font-sans text-sm font-medium text-[#D4BBFF] transition-colors hover:border-[#6B36FF]/60 hover:bg-[#6B36FF]/25 hover:text-white touch-manipulation sm:w-auto ${FOCUS_RING} ${className}`.trim()}
       >
         {label}
       </button>

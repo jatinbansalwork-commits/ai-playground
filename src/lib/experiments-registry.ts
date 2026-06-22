@@ -52,7 +52,8 @@ export interface ExperimentGalleryItem {
 
 export const EXPERIMENTS_PAGE = {
   title: "Craft",
-  description: "Interaction prototypes and interface studies.",
+  description:
+    "When inspiration strikes or I want to challenge myself, I design purely for fun—whether it's slide decks, illustrations, icons, or interfaces. I love learning and continually refining my craft!",
   href: ROUTES.craft,
 } as const;
 
