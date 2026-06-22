@@ -21,7 +21,7 @@ function resolveMediaPlayContext(pathname: string): MediaPlayContext | null {
   }
 
   if (pathname === ROUTES.ideas) {
-    return { surface: "ideas" };
+    return { surface: "ai-experiment" };
   }
 
   if (pathname === ROUTES.craft || pathname.startsWith(`${ROUTES.craft}/`)) {

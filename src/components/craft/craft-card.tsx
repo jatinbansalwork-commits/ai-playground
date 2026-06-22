@@ -33,6 +33,7 @@ export function CraftCard({ item, priority = false, onMediaMeasure }: CraftCardP
           <CraftCardPreview
             media={media}
             title={item.title}
+            slug={item.slug}
             priority={priority}
             onMeasure={(width, height) => {
               const widthOverHeight = width / height;

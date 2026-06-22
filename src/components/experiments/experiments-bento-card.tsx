@@ -17,10 +17,10 @@ import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { ROUTES } from "@/lib/constants";
 import {
+  trackAiExperimentDetailView,
+  trackAiExperimentItemClick,
   trackCraftItemClick,
   trackExternalDemoOpen,
-  trackIdeasExperimentView,
-  trackIdeasItemClick,
 } from "@/lib/analytics";
 import { ExperimentsPreviewMedia } from "@/components/experiments/experiments-preview-media";
 import { FOCUS_RING, externalDemoLinkLabel, externalLinkLabel } from "@/lib/a11y";
@@ -68,24 +68,21 @@ export function ExperimentsBentoCard({
 
   function handleCraftItemClick(): void {
     if (item.external && item.href) {
-      trackExternalDemoOpen({ slug: item.slug, url: item.href });
+      trackExternalDemoOpen({
+        slug: item.slug,
+        url: item.href,
+        surface: "ai-experiment",
+      });
       if (isIdeasGallery) {
-        trackIdeasItemClick({
+        trackAiExperimentItemClick({
           slug: item.slug,
-          cta: resolvedCtaLabel ?? "Try Now",
+          cta: resolvedCtaLabel ?? "live-demo",
           url: item.href,
         });
       } else {
         trackCraftItemClick({
           slug: item.slug,
           category: resolvedCategory,
-          external: true,
-        });
-      }
-      if (resolvedCategory === "ai-experiment" && isIdeasGallery) {
-        trackIdeasExperimentView({
-          slug: item.slug,
-          source: "click",
           external: true,
         });
       }
@@ -101,11 +98,7 @@ export function ExperimentsBentoCard({
     }
 
     if (resolvedCategory === "ai-experiment" && isIdeasGallery) {
-      trackIdeasExperimentView({
-        slug: item.slug,
-        source: "click",
-        external: false,
-      });
+      trackAiExperimentDetailView(item.slug);
     }
   }
 

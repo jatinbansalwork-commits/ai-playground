@@ -10,9 +10,9 @@ import {
   IDEAS_DETAIL_AUTHOR,
 } from "@/lib/ideas-page-data";
 import {
+  trackAiExperimentDetailView,
+  trackAiExperimentItemClick,
   trackExternalDemoOpen,
-  trackIdeasExperimentView,
-  trackIdeasItemClick,
 } from "@/lib/analytics";
 import { IdeasDetailMedia } from "@/components/ideas/ideas-detail-media";
 import { AiChatAvatar } from "@/components/ai-chat/ai-chat-avatar";
@@ -54,16 +54,7 @@ export function IdeasDetailModal({ item, onClose }: IdeasDetailModalProps) {
   useEffect(() => {
     if (!open || !item) return;
 
-    trackIdeasItemClick({
-      slug: item.slug,
-      cta: "card",
-      url: item.href ?? `/ideas#${item.slug}`,
-    });
-    trackIdeasExperimentView({
-      slug: item.slug,
-      source: "click",
-      external: false,
-    });
+    trackAiExperimentDetailView(item.slug);
   }, [open, item]);
 
   if (!mounted) return null;
@@ -144,8 +135,12 @@ export function IdeasDetailModal({ item, onClose }: IdeasDetailModalProps) {
                       className={`ideas-detail__chip ideas-detail__chip--link ${FOCUS_RING}`}
                       aria-label={externalLinkLabel(item.title)}
                       onClick={() => {
-                        trackExternalDemoOpen({ slug: item.slug, url: href });
-                        trackIdeasItemClick({
+                        trackExternalDemoOpen({
+                          slug: item.slug,
+                          url: href,
+                          surface: "ai-experiment",
+                        });
+                        trackAiExperimentItemClick({
                           slug: item.slug,
                           cta: "live-demo",
                           url: href,

@@ -30,7 +30,7 @@ export function IdeasCard({ item, onSelect }: IdeasCardProps) {
         style={previewHeightStyle}
       >
         {media ? (
-          <IdeasCardPreview media={media} title={item.title} />
+          <IdeasCardPreview media={media} title={item.title} slug={item.slug} />
         ) : null}
       </div>
 

@@ -32,7 +32,7 @@ export const FRAMES = [
     id: "ideas",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Ideas",
+    label: "AI Experiment",
     monogramImage: "/assets/index/ideas-monogram.png",
     href: ROUTES.ideas,
   },

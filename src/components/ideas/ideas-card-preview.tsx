@@ -4,12 +4,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { isRemoteCdnUrl } from "@/lib/asset-cdn";
 import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
+import { useTrackMediaPlay } from "@/hooks/use-track-media-play";
 
 const PLAYBACK_ROOT_MARGIN = "50px";
 
 interface IdeasCardPreviewProps {
   media: ExperimentMedia;
   title: string;
+  slug: string;
 }
 
 function markImageReady(image: HTMLImageElement, onReady: () => void) {
@@ -25,7 +27,7 @@ function markVideoReady(video: HTMLVideoElement, onReady: () => void) {
 }
 
 /** Media fills a fixed preview frame (object-fit: cover). */
-export function IdeasCardPreview({ media, title }: IdeasCardPreviewProps) {
+export function IdeasCardPreview({ media, title, slug }: IdeasCardPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,6 +35,7 @@ export function IdeasCardPreview({ media, title }: IdeasCardPreviewProps) {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isMediaReady, setIsMediaReady] = useState(false);
   const autoplay = useMediaAutoplay();
+  const trackPlay = useTrackMediaPlay(slug);
 
   const markReady = useCallback(() => {
     setIsMediaReady(true);
@@ -71,11 +74,13 @@ export function IdeasCardPreview({ media, title }: IdeasCardPreviewProps) {
     if (!video || media.type !== "video") return;
 
     if (isIntersecting && autoplay) {
-      void video.play().catch(() => undefined);
+      void video.play().then(() => {
+        trackPlay(media.src);
+      }).catch(() => undefined);
     } else {
       video.pause();
     }
-  }, [isIntersecting, autoplay, media.type]);
+  }, [isIntersecting, autoplay, media.type, media.src, trackPlay]);
 
   useEffect(() => {
     const onVisibilityChange = () => {

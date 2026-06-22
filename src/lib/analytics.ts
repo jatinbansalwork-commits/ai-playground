@@ -38,9 +38,9 @@ export function trackDesignReviewView(slug: string): void {
   track("design_review_view", { slug });
 }
 
-/** Ideas gallery page load (`/ideas`). */
-export function trackIdeasView(): void {
-  track("ideas_view");
+/** AI Experiment gallery page load (`/ideas`). */
+export function trackAiExperimentView(): void {
+  track("ai_experiment_view");
 }
 
 /** Craft gallery page load (`/craft`). */
@@ -58,30 +58,18 @@ export function trackArchiveView(): void {
   track("archive_view");
 }
 
-export type IdeasExperimentViewSource = "click";
-
-/** AI experiment opened from the Ideas gallery — external demo click. */
-export function trackIdeasExperimentView(properties: {
-  slug: string;
-  source: IdeasExperimentViewSource;
-  external?: boolean;
-}): void {
-  track("ideas_experiment_view", {
-    slug: properties.slug,
-    source: properties.source,
-    ...(properties.external !== undefined
-      ? { external: properties.external ? "1" : "0" }
-      : {}),
-  });
+/** AI Experiment detail modal opened from the gallery grid. */
+export function trackAiExperimentDetailView(slug: string): void {
+  track("ai_experiment_detail_view", { slug });
 }
 
-/** Ideas gallery card CTA click — Try Now on `/ideas`. */
-export function trackIdeasItemClick(properties: {
+/** AI Experiment gallery interaction — detail modal or live demo CTA. */
+export function trackAiExperimentItemClick(properties: {
   slug: string;
-  cta: string;
+  cta: "card" | "live-demo" | string;
   url: string;
 }): void {
-  track("ideas_item_click", properties);
+  track("ai_experiment_item_click", properties);
 }
 
 export function trackCraftItemClick(properties: {
@@ -92,7 +80,7 @@ export function trackCraftItemClick(properties: {
   track("craft_item_click", properties);
 }
 
-/** Craft gallery filter tab change. */
+/** Craft gallery filter tab change — legacy bento gallery only. */
 export function trackCraftFilter(filter: string): void {
   track("craft_filter", { filter });
 }
@@ -141,8 +129,13 @@ export function trackIndexFrameNavigate(properties: {
 export function trackExternalDemoOpen(properties: {
   slug: string;
   url: string;
+  surface?: "ai-experiment" | "craft";
 }): void {
-  track("external_demo_open", properties);
+  track("external_demo_open", {
+    slug: properties.slug,
+    url: properties.url,
+    ...(properties.surface ? { surface: properties.surface } : {}),
+  });
 }
 
 export function trackCaseStudyRevealImpression(properties: {
@@ -156,7 +149,7 @@ export function trackCaseStudyRevealed(slug: string): void {
   track("case_study_revealed", { slug });
 }
 
-export type MediaPlaySurface = "case-study" | "craft" | "ideas";
+export type MediaPlaySurface = "case-study" | "craft" | "ai-experiment";
 
 export type AiChatOpenSource =
   | "fab"

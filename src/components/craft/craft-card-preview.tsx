@@ -2,6 +2,7 @@
 
 import type { ExperimentMedia } from "@/lib/experiment-media";
 import { useMediaAutoplay } from "@/hooks/use-media-autoplay";
+import { useTrackMediaPlay } from "@/hooks/use-track-media-play";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,6 +13,7 @@ const CRAFT_IMAGE_SIZES = "(min-width: 640px) 50vw, 100vw";
 interface CraftCardPreviewProps {
   media: ExperimentMedia;
   title: string;
+  slug: string;
   priority?: boolean;
   onMeasure?: (width: number, height: number) => void;
 }
@@ -30,6 +32,7 @@ function reportMeasure(
 export function CraftCardPreview({
   media,
   title,
+  slug,
   priority = false,
   onMeasure,
 }: CraftCardPreviewProps) {
@@ -38,6 +41,7 @@ export function CraftCardPreview({
   const [shouldLoad, setShouldLoad] = useState(priority);
   const [isIntersecting, setIsIntersecting] = useState(priority);
   const autoplay = useMediaAutoplay();
+  const trackPlay = useTrackMediaPlay(slug);
 
   useEffect(() => {
     if (priority) return;
@@ -81,11 +85,13 @@ export function CraftCardPreview({
     if (!video || media.type !== "video" || !shouldLoad) return;
 
     if (isIntersecting && autoplay) {
-      void video.play().catch(() => undefined);
+      void video.play().then(() => {
+        trackPlay(media.src);
+      }).catch(() => undefined);
     } else {
       video.pause();
     }
-  }, [isIntersecting, autoplay, media.type, shouldLoad]);
+  }, [isIntersecting, autoplay, media.type, media.src, shouldLoad, trackPlay]);
 
   useEffect(() => {
     const onVisibilityChange = () => {
