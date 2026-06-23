@@ -43,7 +43,7 @@ export function useAiVoiceRecording(active: boolean) {
   const contextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const animationRef = useRef<number>(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<number | null>(null);
   const recordingStartedAtRef = useRef(0);
   const idlePhaseRef = useRef(0);
 
