@@ -292,10 +292,74 @@ export function CaseStudyList({ items, className = "" }: CaseStudyListProps) {
   );
 }
 
-export function CaseStudyDivider() {
+interface CaseStudyChipsProps {
+  items: string[];
+  className?: string;
+  /** Accessible name when chips replace a labelled list. */
+  ariaLabel?: string;
+}
+
+export function CaseStudyChips({
+  items,
+  className = "",
+  ariaLabel = "Items",
+}: CaseStudyChipsProps) {
+  return (
+    <ul
+      className={`${CASE_STUDY_TEXT_COLUMN} flex flex-wrap gap-3 ${className}`.trim()}
+      aria-label={ariaLabel}
+    >
+      {items.map((item) => (
+        <li
+          key={item}
+          className="rounded-full border border-[#6B36FF]/50 bg-[#6B36FF]/10 px-4 py-2 text-sm leading-snug text-[#B794FF] md:text-base"
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+interface CaseStudyQuestionStackProps {
+  items: string[];
+  className?: string;
+  ariaLabel?: string;
+}
+
+/** Stacked question rows — clearer than bullets for decision checklists. */
+export function CaseStudyQuestionStack({
+  items,
+  className = "",
+  ariaLabel = "Questions",
+}: CaseStudyQuestionStackProps) {
+  return (
+    <ul
+      className={`${CASE_STUDY_TEXT_COLUMN} space-y-2 ${className}`.trim()}
+      aria-label={ariaLabel}
+    >
+      {items.map((item, index) => (
+        <li
+          key={item}
+          className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-base leading-relaxed text-neutral-200"
+        >
+          <span
+            className="shrink-0 font-mono text-xs font-medium tabular-nums text-[#B794FF]"
+            aria-hidden
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function CaseStudyDivider({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_DIVIDER}`}
+      className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_DIVIDER} ${className}`.trim()}
       role="separator"
       aria-orientation="horizontal"
     />

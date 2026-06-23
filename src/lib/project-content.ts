@@ -34,7 +34,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "cisco-policy-copilot",
     "⏳ Cisco - AgentiOps Firewall Copilot",
     "2026",
-    "Designing an AI-powered security teammate that transforms business intent into deployable firewall policies.",
+    "Designing an AI-powered security teammate that turns business intent into reviewable, deployable firewall policies.",
     {
       services: [],
       client: "Cisco",

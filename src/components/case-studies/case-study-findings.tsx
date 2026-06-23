@@ -8,12 +8,17 @@ import {
 interface CaseStudyTagsProps {
   tags: string[];
   label?: string;
+  labelClassName?: string;
 }
 
-export function CaseStudyTags({ tags, label = "Key themes" }: CaseStudyTagsProps) {
+export function CaseStudyTags({
+  tags,
+  label = "Key themes",
+  labelClassName,
+}: CaseStudyTagsProps) {
   return (
     <div className={CASE_STUDY_TEXT_COLUMN}>
-      <p className={CASE_STUDY_LABEL}>{label}</p>
+      <p className={labelClassName ?? CASE_STUDY_LABEL}>{label}</p>
       <ul className="mt-3 flex flex-wrap gap-3">
         {tags.map((tag) => (
           <li
