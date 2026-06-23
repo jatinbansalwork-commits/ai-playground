@@ -8,6 +8,18 @@ export const IDEAS_PAGE_INTRO = {
   answer: "My answer is: I have no idea.",
 } as const;
 
+/** Empty masonry slots reserved for upcoming AI experiments. */
+export const IDEAS_GRID_PLACEHOLDER_COUNT = 0;
+
+export const IDEAS_PLACEHOLDER_CARD = {
+  previewSize: "compact" as const,
+  title: "AI Voice Input",
+  subtext: "Voice mode.",
+  chips: ["Component"] as const,
+  editorNote:
+    "Side project underway — designed in Figma Make, built in Cursor. Check back soon.",
+};
+
 export interface IdeasCardMeta {
   subtext: string;
   chips: readonly string[];

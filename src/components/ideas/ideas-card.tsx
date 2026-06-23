@@ -42,7 +42,7 @@ export function IdeasCard({ item, onSelect }: IdeasCardProps) {
             <li key={chip}>
               <span className="ideas-card__chip">
                 <span className="ideas-card__chip-icon" aria-hidden>
-                  +
+                  #
                 </span>
                 {chip}
               </span>
