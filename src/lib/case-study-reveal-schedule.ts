@@ -14,7 +14,7 @@ export const CASE_STUDY_REVEAL_SCHEDULE: Record<string, CaseStudyRevealScheduleE
   {
     "cisco-policy-copilot": {
       /** Reset this UTC instant to restart the worldwide 24-hour countdown. */
-      startsAtUtc: "2026-06-23T17:53:45.000Z",
+      startsAtUtc: "2026-06-24T14:23:00.000Z",
     },
   };
 
