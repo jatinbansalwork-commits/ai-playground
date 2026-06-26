@@ -21,8 +21,8 @@ Unlock instant: `Date.parse(startsAtUtc) + 24 hours`
 
 ## Resetting the timer
 
-1. Set `startsAtUtc` to the new UTC start (e.g. `2026-06-16T22:00:00.000Z`).
-2. Do **not** bump storage keys or use `localStorage` for deadlines.
+1. Set `startsAtUtc` to the new UTC start (e.g. `2026-06-26T07:09:08.000Z`).
+2. Update the schedule table in `design.md` with the new start and unlock instants.
 3. All users worldwide see the same remaining time.
 
 ## Wiring
