@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ai-playground
 
-## Getting Started
+Portfolio site for case studies, Craft gallery (motion + illustration), and Ideas (AI experiments). Built with Next.js 16, React 19, Tailwind CSS v4, and Framer Motion.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `OPENAI_API_KEY` | For live JBAI replies | OpenAI chat completions (`gpt-4o-mini`) |
+| `GIPHY_API_KEY` | Optional | Reaction GIFs on assistant replies |
+| `AI_CHAT_OPENAI_ENABLED` | Optional | Set to `false` to disable OpenAI (static/fallback only) |
+| `AI_CHAT_OPENAI_MAX_PER_USER` | Optional | OpenAI replies per browser session (default in code) |
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command | Purpose |
+|---------|---------|
+| `npm run dev` | Local development server |
+| `npm run build` | Production build |
+| `npm run start` | Run production build |
+| `npm run lint` | ESLint |
+| `npm run spellcheck` | cspell over `src/**/*.{ts,tsx,md}` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Site map
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Route | Content |
+|-------|---------|
+| `/` | Index — horizontal scroll slider (hero → projects → ideas → design review → craft → archive → contact → manifest) |
+| `/projects` | Case study list with hover thumbnails |
+| `/projects/[slug]` | Long-form case study pages |
+| `/craft` | Motion graphics and illustration gallery (bento grid + filter chips) |
+| `/craft/[slug]` | Craft essays (e.g. design review checklist) |
+| `/ideas` | AI experiment demos — external side projects with detail modals |
+| `/archive` | About / “Me” slide destination |
 
-## Deploy on Vercel
+Legacy `/fun` URLs redirect to `/craft` (`next.config.ts`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Case studies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Metadata** (title, year, client, overview): `src/lib/project-content.ts`
+- **Page layouts and body copy**: `src/components/case-studies/*`
+- **Projects index** (hover thumbnails, hidden slugs): `src/lib/projects-list-data.ts`
+- **CDN media keys**: `src/lib/asset-cdn.ts` → `CASE_STUDY_CDN_MEDIA`
+
+Editorial components (`CaseStudyH2`, `CaseStudyProse`, `CaseStudyTable`, etc.) live in `src/components/case-studies/case-study-prose.tsx`. Heading and caption casing rules are in `.cursor/rules/case-study-headings.mdc`.
+
+## Craft gallery
+
+- **Registry** (titles, categories, media, essays): `src/lib/experiments-registry.ts`
+- **Filter chips & bento layout**: `src/lib/experiments-filters.ts`
+- **Page shell**: `src/app/craft/` + `src/components/experiments/*`
+
+Default filter is **Motion Graphic**. Categories on Craft: `motion-graphic`, `illustration`. Article-only and AI experiment entries are excluded from the Craft grid — see [`design.md`](./design.md).
+
+## Ideas
+
+- **Gallery slugs**: `IDEAS_EXPERIMENT_SLUGS` in `experiments-registry.ts`
+- **Card copy & preview sizes**: `src/lib/ideas-page-data.ts`
+- **UI**: `src/components/ideas/*`, route `src/app/ideas/page.tsx`
+
+Five external demos: Lock in Police, Miner Gift, DoodleLab, FriendCaptcha, Focus Mode.
+
+## JBAI (site chat)
+
+Floating assistant on every page — `src/components/ai-chat/*`, API at `src/app/api/chat/route.ts`.
+
+Curated knowledge, intent chips, OpenAI streaming, GIPHY reactions, and session limits.
+
+## Design notes
+
+See [`design.md`](./design.md) for index slider wiring, Craft/Ideas gallery rules, and shared case study UI patterns.
+
+## Deploy
+
+Deploy on [Vercel](https://vercel.com). Media is served from Vercel Blob CDN — see `src/lib/asset-cdn.ts`.
