@@ -8,9 +8,10 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { SiteCursor } from "@/components/site-cursor-loader";
 import { AiChatBall } from "@/components/ai-chat/ai-chat-ball";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
+import { JsonLd } from "@/components/seo/json-ld";
 import { WireframeProvider } from "@/context/wireframe-context";
 import { BLOB_CDN_ORIGIN } from "@/lib/asset-cdn";
-import { SITE_NAME } from "@/lib/constants";
+import { personJsonLd, ROOT_METADATA, webSiteJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,11 +21,7 @@ const geistSans = Geist({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: SITE_NAME,
-  description:
-    "An experimental interface exploring latency and intelligence.",
-};
+export const metadata: Metadata = ROOT_METADATA;
 
 export default function RootLayout({
   children,
@@ -35,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} bg-background`}>
       <head>
         <link rel="preconnect" href={BLOB_CDN_ORIGIN} crossOrigin="anonymous" />
+        <JsonLd data={[personJsonLd(), webSiteJsonLd()]} />
       </head>
       <body className="relative min-h-screen bg-background text-white antialiased">
         <WireframeFilters />

@@ -1,12 +1,14 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleLayout } from "@/components/craft/article-layout";
 import { getCraftSection } from "@/lib/craft-content";
 import {
   getAdjacentExperimentArticles,
   getExperimentArticle,
+  getExperimentArticleExcerpt,
   getExperimentsArticleSection,
 } from "@/lib/experiments-registry";
-import { SITE_NAME } from "@/lib/constants";
+import { buildPageMetadata } from "@/lib/seo";
 
 interface ArticlePageProps {
   sectionId: string;
@@ -36,21 +38,41 @@ export function renderArticlePage({ sectionId, slug }: ArticlePageProps) {
   return <ArticleLayout section={section} article={article} />;
 }
 
-export function articleMetadata(sectionId: string, slug: string) {
+export function articleMetadata(sectionId: string, slug: string): Metadata {
   if (sectionId === "experiments") {
     const article = getExperimentArticle(slug);
-    if (!article) return { title: "Not Found" };
-    return {
-      title: `${article.title} · Craft · ${SITE_NAME}`,
-    };
+    if (!article) {
+      return buildPageMetadata({
+        title: "Not Found",
+        description: "This essay could not be found.",
+        path: `/craft/${slug}`,
+        noIndex: true,
+      });
+    }
+
+    return buildPageMetadata({
+      title: `${article.title} · Craft`,
+      description: getExperimentArticleExcerpt(slug),
+      path: `/craft/${slug}`,
+      openGraphType: "article",
+    });
   }
 
   const section = getCraftSection(sectionId);
   const article = section?.articles[slug];
-  if (!article) return { title: "Not Found" };
-  return {
-    title: `${article.title} · ${section.title} · ${SITE_NAME}`,
-  };
+  if (!article) {
+    return buildPageMetadata({
+      title: "Not Found",
+      description: "This essay could not be found.",
+      noIndex: true,
+    });
+  }
+
+  return buildPageMetadata({
+    title: `${article.title} · ${section.title}`,
+    description: article.sections[0]?.paragraphs?.[0] ?? "",
+    path: `/craft/${slug}`,
+  });
 }
 
 export function articleStaticParams(sectionId: string) {

@@ -1,19 +1,27 @@
 "use client";
 
-import { CaseStudyActivationModels, ActivationModelQuote } from "@/components/case-studies/case-study-activation-models";
+import {
+  CaseStudyActivationModels,
+  ActivationModelQuote,
+  type ActivationModel,
+} from "@/components/case-studies/case-study-activation-models";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
-import { CaseStudyRevealCountdown } from "@/components/case-studies/case-study-reveal-countdown";
+import {
+  CaseStudyImpactCards,
+} from "@/components/case-studies/case-study-impact-cards";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyChips,
   CaseStudyDivider,
   CaseStudyH1,
   CaseStudyH2,
-  CaseStudyH3,
+  CaseStudyLabel,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuestionStack,
   CaseStudyQuote,
+  CaseStudyTable,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
@@ -21,6 +29,69 @@ import { getCaseStudyContent } from "@/lib/project-content";
 import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
 const SLUG = "cisco-policy-copilot";
+
+const CORE_RESPONSIBILITY_MODELS: ActivationModel[] = [
+  {
+    number: 1,
+    name: "Understand and Clarify",
+    subtitle: "",
+    description:
+      "Before generating a policy, the Copilot reflects its interpretation back to the administrator.",
+    example: (
+      <>
+        <ActivationModelQuote>
+          &ldquo;Allow contractors to access development servers during working hours.&rdquo;
+        </ActivationModelQuote>
+        <p>The Copilot may ask:</p>
+        <ul className="list-disc space-y-1 pl-5">
+          <li>Which contractor group?</li>
+          <li>Which development environment?</li>
+          <li>Which time zone defines working hours?</li>
+          <li>Should access be HTTPS-only?</li>
+          <li>Is logging required?</li>
+        </ul>
+      </>
+    ),
+    takeaway: "This prevents the system from making hidden assumptions.",
+    imageAlt: "Cisco Policy Copilot — understand and clarify",
+  },
+  {
+    number: 2,
+    name: "Recommend and Explain",
+    subtitle: "",
+    description: "Once the intent is clear, the Copilot proposes next steps.",
+    example: (
+      <ul className="list-disc space-y-1 pl-5">
+        <li>Enable audit logging</li>
+        <li>Restrict access to working hours</li>
+        <li>Run compliance checks</li>
+        <li>Review conflicting rules</li>
+        <li>Perform impact analysis</li>
+      </ul>
+    ),
+    takeaway: "Each recommendation includes context and evidence, not just an instruction.",
+    imageAlt: "Cisco Policy Copilot — recommend and explain",
+  },
+];
+
+const VALIDATE_FOR_APPROVAL_MODEL: ActivationModel = {
+  number: 3,
+  name: "Validate and Prepare for Approval",
+  subtitle: "",
+  description: "Before deployment, the Copilot evaluates the policy against:",
+  example: (
+    <ul className="list-disc space-y-1 pl-5">
+      <li>Existing firewall rules</li>
+      <li>Compliance requirements</li>
+      <li>Security standards</li>
+      <li>Risk conditions</li>
+      <li>Potential blast radius</li>
+    </ul>
+  ),
+  takeaway: "It prepares the decision, but does not deploy automatically.",
+  imageAlt: "Cisco Policy Copilot — validate and prepare for approval",
+  showExampleLabel: false,
+};
 
 export default function CiscoPolicyCopilotContent() {
   const content = getCaseStudyContent(SLUG)!;
@@ -33,7 +104,6 @@ export default function CiscoPolicyCopilotContent() {
         year={content.year}
         overview={content.overviewText}
         meta={content.meta}
-        metaBottom={<CaseStudyRevealCountdown slug={SLUG} />}
       />
 
       <div
@@ -55,19 +125,22 @@ export default function CiscoPolicyCopilotContent() {
           allowed, whether logging is required, how long access should last, whether the rule
           conflicts with existing policies, and whether it meets compliance requirements.
         </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Policy Copilot helps administrators move from plain-language intent to an editable
+          policy draft—while making assumptions, risks, and recommended next steps visible before
+          deployment.
+        </CaseStudyParagraph>
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-workflow-transformation"]}
-            alt="Cisco Policy Copilot — workflow transformation"
-            label="Policy Copilot turns a plain-language request into an editable policy draft, while making assumptions, risks, and recommended checks visible before deployment."
+            alt="Cisco Policy Copilot — fragmented policy workflow"
           />
         </CaseStudyWide>
         <CaseStudyDivider />
       </CaseStudyProse>
 
       <CaseStudyProse>
-        <CaseStudyH2>The Challenge</CaseStudyH2>
+        <CaseStudyH2 className="!pt-8">The Challenge</CaseStudyH2>
         <CaseStudyParagraph>
           Policy creation was not difficult because administrators could not fill in fields. It
           was difficult because every request required high-stakes decisions across multiple
@@ -81,8 +154,7 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyParagraph>
           Before creating the rule, an administrator still needs to determine:
         </CaseStudyParagraph>
-        <CaseStudyQuestionStack
-          ariaLabel="Policy determination questions"
+        <CaseStudyList
           items={[
             "Which contractor group needs access?",
             "Production or staging environment?",
@@ -99,7 +171,14 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — fragmented policy workflow"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-why-matters"]}
+            alt="Cisco Policy Copilot — policy decision complexity"
+          />
+        </CaseStudyWide>
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — understanding policy creation"
           />
         </CaseStudyWide>
         <CaseStudyDivider />
@@ -151,7 +230,6 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             alt="Cisco Policy Copilot — clarity, confidence, and control"
-            label="The goal was not full automation. It was to reduce configuration effort while increasing clarity, confidence, and control."
           />
         </CaseStudyWide>
         <CaseStudyDivider />
@@ -175,7 +253,7 @@ export default function CiscoPolicyCopilotContent() {
           decisions feel automated or opaque.
         </CaseStudyParagraph>
         <CaseStudyDivider className="!mt-8" />
-        <CaseStudyH2 className="!mt-8">The Vision</CaseStudyH2>
+        <CaseStudyH2 className="!mt-8">From Copilot to Agent</CaseStudyH2>
         <CaseStudyParagraph>
           Early in discovery, we realised policy creation was only one part of the problem.
           Administrators were not struggling only with configuration screens. They were
@@ -209,43 +287,23 @@ export default function CiscoPolicyCopilotContent() {
 
         <CaseStudyH2 className="!mt-16">Designing the Agent Framework</CaseStudyH2>
         <CaseStudyParagraph>
-          During discovery, we realised policy creation was only one part of a much larger
-          problem. Administrators were not primarily struggling with configuration screens.
+          We defined Policy Copilot as a security teammate that could support the full policy
+          lifecycle—not just generate a draft.
         </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          They were struggling with decision-making. Every policy change required answering
-          critical questions:
-        </CaseStudyParagraph>
-        <CaseStudyQuestionStack
-          ariaLabel="Critical policy questions"
+        <CaseStudyParagraph>The agent could help teams:</CaseStudyParagraph>
+        <CaseStudyList
           items={[
-            "Is this policy secure?",
-            "Does it violate compliance requirements?",
-            "Will it conflict with existing rules?",
-            "Is the access scope broader than intended?",
-            "What systems or users will this impact?",
-            "What evidence supports this recommendation?",
-            "What risks remain after deployment?",
+            "Understand business intent",
+            "Gather policy and identity context",
+            "Propose changes",
+            "Validate risk",
+            "Prepare evidence for approval",
+            "Support deployment",
+            "Monitor outcomes over time",
           ]}
         />
         <CaseStudyParagraph>
-          For example, an administrator may create a rule allowing Engineering access to
-          GitHub. The rule itself is simple. But the real questions are:
-        </CaseStudyParagraph>
-        <CaseStudyQuestionStack
-          ariaLabel="GitHub access policy questions"
-          items={[
-            "Should access be limited to company-managed devices?",
-            "Is GitHub access already covered by another rule?",
-            "Should access be restricted to working hours?",
-            "Does the organisation require logging for external SaaS access?",
-            "Will this rule affect all engineers or only a specific project team?",
-            "What happens if the GitHub IP range changes?",
-          ]}
-        />
-        <CaseStudyParagraph>
-          The real opportunity was not generating policies. It was helping administrators
-          reason about policy decisions.
+          Administrators remained responsible for final approval.
         </CaseStudyParagraph>
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
@@ -255,111 +313,216 @@ export default function CiscoPolicyCopilotContent() {
         </CaseStudyWide>
         <CaseStudyDivider className="!mt-8" />
 
-        <CaseStudyH2>Designing the Agent Framework</CaseStudyH2>
+        <CaseStudyH2>Designing the Core Experience</CaseStudyH2>
         <CaseStudyParagraph>
-          As the vision evolved, Policy Copilot became part of a broader agent framework. We
-          defined a model where the system could assist throughout the full policy lifecycle,
-          while ensuring administrators remained responsible for final approval.
+          Instead of designing six separate AI features, I grouped the experience into three
+          core responsibilities.
         </CaseStudyParagraph>
-        <CaseStudyH3>What is it helping with?</CaseStudyH3>
-        <CaseStudyQuote>
-          Helping teams safely reason about, validate, deploy, and manage policy decisions
-          across the policy lifecycle.
-        </CaseStudyQuote>
-        <CaseStudyH3>Why should it do this work?</CaseStudyH3>
-        <CaseStudyParagraph>
-          Policy changes are high-risk and fragmented across systems. Administrators should not
-          need to manually assemble rules, context, risk signals, and compliance evidence before
-          making every decision.
-        </CaseStudyParagraph>
+
+        <CaseStudyActivationModels className="!pb-6" items={CORE_RESPONSIBILITY_MODELS} />
+
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — agent framework"
+            alt="Cisco Policy Copilot — core experience responsibilities"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyActivationModels
+          className="!pb-6"
+          columns={1}
+          items={[VALIDATE_FOR_APPROVAL_MODEL]}
+        />
+
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — validate and prepare for approval"
           />
         </CaseStudyWide>
 
         <CaseStudyDivider className="!mt-8" />
 
-        <CaseStudyH2>Triggering the Copilot</CaseStudyH2>
+        <CaseStudyH2 className="!mt-8">Triggering the Copilot</CaseStudyH2>
         <CaseStudyParagraph>
-          One of the most important design decisions was determining when AI should appear. If
-          Policy Copilot appeared too often, it could interrupt expert administrators. If it
-          appeared too late, it could miss important risk or compliance issues.
+          A key design question was: when should AI appear?
         </CaseStudyParagraph>
         <CaseStudyParagraph>We explored three activation models.</CaseStudyParagraph>
+        <CaseStudyParagraph>
+          If it appeared too often, it could interrupt experienced administrators. If it
+          appeared too late, it could miss important risk or compliance issues.
+        </CaseStudyParagraph>
+        <CaseStudyTable
+          caption="Copilot activation models"
+          headers={["Model", "When It Appears", "Example"]}
+          rows={[
+            [
+              "Explicit",
+              "Administrator asks for help",
+              "“Create a policy allowing Engineering access to GitHub.”",
+            ],
+            [
+              "Ambient",
+              "Copilot quietly notices a missing requirement",
+              "“This external access rule may require audit logging.”",
+            ],
+            [
+              "Proactive",
+              "Copilot detects meaningful risk or conflict",
+              "“This rule may conflict with HR access-control policy.”",
+            ],
+          ]}
+        />
 
-        <CaseStudyActivationModels
-          className="!pb-6"
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — triggering the Copilot"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyDivider className="!mt-8" />
+
+        <CaseStudyH2>Designing for Trust</CaseStudyH2>
+        <CaseStudyParagraph>
+          In cybersecurity, speed alone is not valuable.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>Administrators need to understand:</CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="What administrators need to understand"
+          items={[
+            "What the AI knows",
+            "What it recommends",
+            "Why it recommends it",
+            "What evidence supports it",
+            "What risks remain",
+            "What will happen if they approve it",
+          ]}
+        />
+        <CaseStudyParagraph>One principle shaped the experience:</CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;Don&rsquo;t just tell me it&rsquo;s safe. Show me why.&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph>
+          Every recommendation was designed to include evidence, context, and a clear next action.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>For example:</CaseStudyParagraph>
+        <div className="w-full max-w-5xl space-y-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:space-y-6 md:p-6">
+          <div className="space-y-2">
+            <CaseStudyLabel>Recommendation</CaseStudyLabel>
+            <p className="text-base leading-relaxed text-neutral-200 md:text-lg">
+              Enable audit logging
+            </p>
+          </div>
+          <div className="space-y-2">
+            <CaseStudyLabel>Why</CaseStudyLabel>
+            <p className="text-base leading-relaxed text-neutral-300 md:text-lg">
+              This policy grants access to an external SaaS application.
+            </p>
+          </div>
+          <div className="space-y-2">
+            <CaseStudyLabel>Evidence</CaseStudyLabel>
+            <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-neutral-300 md:text-lg">
+              <li>SEC-014 security standard</li>
+              <li>Existing policy comparison</li>
+              <li>Audit requirement for external access</li>
+            </ul>
+          </div>
+          <div className="space-y-2">
+            <CaseStudyLabel>Remaining risk</CaseStudyLabel>
+            <p className="text-base leading-relaxed text-neutral-300 md:text-lg">
+              Time range is not yet defined.
+            </p>
+          </div>
+        </div>
+
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — designing for trust"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyDivider className="!mt-8" />
+
+        <CaseStudyH2>Learning Loop</CaseStudyH2>
+        <CaseStudyParagraph>
+          To improve recommendations over time, I designed a lightweight feedback pattern.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>After a recommendation, the Copilot could ask:</CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;How accurate were the AI Suggestions?&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph>
+          Administrators could provide a quick 1–5 rating without leaving their workflow.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          This created a low-friction learning loop while respecting the speed of security
+          operations.
+        </CaseStudyParagraph>
+
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — learning loop"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyDivider className="!mt-8" />
+
+        <CaseStudyH2 className="!mt-8">Designed for Measurable Impact</CaseStudyH2>
+        <CaseStudyParagraph>
+          Policy Copilot was designed to improve both execution speed and decision confidence.
+        </CaseStudyParagraph>
+
+        <CaseStudyImpactCards
           items={[
             {
-              number: 1,
-              name: "Explicit",
-              subtitle: "The administrator asks for help",
+              title: "Reduced Configuration Effort",
               description:
-                "The administrator intentionally requests assistance.",
-              example: (
-                <ActivationModelQuote>
-                  &ldquo;Create a policy allowing Engineering access to GitHub over
-                  HTTPS.&rdquo;
-                </ActivationModelQuote>
-              ),
-              takeaway: "This provides maximum control and predictability.",
-              imageAlt: "Cisco Policy Copilot — explicit activation model",
+                "Administrators can begin with natural language instead of manually configuring every policy attribute.",
             },
             {
-              number: 2,
-              name: "Ambient",
-              subtitle: "The Copilot is available when needed",
+              title: "Faster Policy Decisions",
               description:
-                "The assistant quietly observes progress and becomes available without interrupting the workflow.",
-              example: (
-                <>
-                  <p>
-                    While configuring a rule manually, the Copilot notices that logging is
-                    disabled for an external access rule. It surfaces a small, non-blocking
-                    suggestion:
-                  </p>
-                  <ActivationModelQuote>
-                    &ldquo;This external access rule may require audit logging. Review
-                    recommendation.&rdquo;
-                  </ActivationModelQuote>
-                </>
-              ),
-              takeaway:
-                "This reduces friction without forcing the administrator into a chat workflow.",
-              imageAlt: "Cisco Policy Copilot — ambient activation model",
+                "The system helps move from a business request to a reviewable draft without navigating disconnected workflows.",
             },
             {
-              number: 3,
-              name: "Proactive",
-              subtitle: "The Copilot intervenes when risk is detected",
+              title: "Improved Decision Confidence",
               description:
-                "The Copilot surfaces itself when there is meaningful uncertainty, risk, or opportunity.",
-              example: (
-                <>
-                  <p>
-                    A newly created rule conflicts with an existing compliance requirement.
-                    The Copilot recommends validation before deployment.
-                  </p>
-                  <ActivationModelQuote>
-                    &ldquo;This rule may conflict with HR access-control policy. Run validation
-                    before deployment.&rdquo;
-                  </ActivationModelQuote>
-                </>
-              ),
-              takeaway:
-                "This transforms the assistant from a passive tool into an active teammate.",
-              imageAlt: "Cisco Policy Copilot — proactive activation model",
+                "Recommendations include evidence, compliance checks, risk analysis, and clear next actions.",
+            },
+            {
+              title: "Lower Cognitive Load",
+              description:
+                "Administrators receive contextual guidance instead of remembering rules, dependencies, and security requirements across systems.",
             },
           ]}
         />
 
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — measurable impact"
+          />
+        </CaseStudyWide>
+
         <CaseStudyDivider className="!mt-8" />
 
-        <CaseStudyH2 className="!mt-8">The Core Experience</CaseStudyH2>
+        <CaseStudyH2 className="!mt-8">Reflection</CaseStudyH2>
         <CaseStudyParagraph>
-          The experience was designed around six fundamental capabilities.
+          Designing Policy Copilot reinforced an important belief about AI products:
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Designing for AI is not just about connecting APIs. It is about trust, context,
+          and control.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          In high-stakes security workflows, AI earns adoption by making its reasoning visible
+          and keeping humans responsible for the final decision.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-8">
+          The role of design is to make that relationship clear.
         </CaseStudyParagraph>
       </CaseStudyProse>
       </div>

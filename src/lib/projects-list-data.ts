@@ -39,13 +39,35 @@ function hoverThumbnailForSlug(slug: string): string {
   return HOVER_THUMBNAIL_OVERRIDES[slug] ?? HOVER_THUMBNAIL_PLACEHOLDER;
 }
 
-/** Hidden from the projects index until the case study is ready. */
+/** Hidden from the projects index until the case study is ready to promote. */
 const HIDDEN_PROJECT_SLUGS = new Set([
   "cisco-policy-copilot",
   "freshprints-heal-tool",
   "piggy-personalised-mutual-fund-recommendation",
   "saltmine-sync",
 ]);
+
+/** Draft case studies — excluded from sitemap and marked noindex. */
+const NOINDEX_PROJECT_SLUGS = new Set([
+  "freshprints-heal-tool",
+  "piggy-personalised-mutual-fund-recommendation",
+  "saltmine-sync",
+]);
+
+export function isHiddenProjectSlug(slug: string): boolean {
+  return HIDDEN_PROJECT_SLUGS.has(slug);
+}
+
+export function isNoIndexProjectSlug(slug: string): boolean {
+  return NOINDEX_PROJECT_SLUGS.has(slug);
+}
+
+/** Case studies that should be discoverable in search, including off-index launches. */
+export function getIndexableCaseStudySlugs(): string[] {
+  return getAllCaseStudies()
+    .filter((study) => !NOINDEX_PROJECT_SLUGS.has(study.slug))
+    .map((study) => study.slug);
+}
 
 /** Canonical projects index dataset — titles/years sync from `project-content.ts`. */
 export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()

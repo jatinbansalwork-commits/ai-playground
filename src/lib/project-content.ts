@@ -34,7 +34,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "cisco-policy-copilot",
     "⏳ Cisco - AgentiOps Firewall Copilot",
     "2026",
-    "Designing an AI-powered security teammate that turns business intent into reviewable, deployable firewall policies.",
+    "Designing an AI-powered Cisco security teammate that turns business intent into reviewable, deployable firewall policies for enterprise administrators.",
     {
       services: [],
       client: "Cisco",
@@ -47,7 +47,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "freshprints-design-system",
     "✅ FreshPrints - Design System",
     "2025",
-    "Built a scalable design system from 0 to 1",
+    "Built a scalable design system from 0 to 1 for FreshPrints — tokens, components, documentation, and UI architecture to support global e-commerce growth.",
     {
       services: ["Design Systems", "UI Architecture", "Documentation"],
       client: "FreshPrints",
@@ -73,7 +73,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "freshprints-image-gen-ai",
     "✅ FreshPrints - Image Gen AI",
     "2025",
-    "Generative image tooling, prompt flows, and asset review interfaces.",
+    "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
     {
       services: [
         "UX / UI for desktop + mobile",
@@ -95,7 +95,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     "saltbot-ai-saltmine",
     "✅ Saltbot AI (Saltmine)",
     "2024",
-    "Saltbot conversational assistant flows and automation guardrails.",
+    "Saltbot AI conversational assistant for Saltmine — report analytics, automation guardrails, and desktop + mobile UX for workplace insights.",
     {
       services: [
         "Micro-interactions",

@@ -11,11 +11,17 @@ export interface ActivationModel {
   takeaway: string;
   imageAlt: string;
   imageSrc?: string;
+  /** Render a media placeholder when `imageSrc` is not set yet. */
+  showImageSlot?: boolean;
+  /** Set to false to hide the “Example” label above `example`. */
+  showExampleLabel?: boolean;
 }
 
 interface CaseStudyActivationModelsProps {
   items: ActivationModel[];
   className?: string;
+  /** Large-screen column count — defaults to 2. */
+  columns?: 1 | 2;
 }
 
 function ActivationModelQuote({ children }: { children: ReactNode }) {
@@ -29,10 +35,13 @@ function ActivationModelQuote({ children }: { children: ReactNode }) {
 export function CaseStudyActivationModels({
   items,
   className = "",
+  columns = 2,
 }: CaseStudyActivationModelsProps) {
+  const columnClass = columns === 1 ? "lg:grid-cols-1" : "lg:grid-cols-2";
+
   return (
     <div
-      className={`mx-auto grid w-full max-w-5xl grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-5 ${className}`.trim()}
+      className={`mx-auto grid w-full max-w-5xl grid-cols-1 gap-6 ${columnClass} lg:gap-5 ${className}`.trim()}
       aria-label="Copilot activation models"
     >
       {items.map((item) => (
@@ -50,7 +59,9 @@ export function CaseStudyActivationModels({
               </span>
               <h3 className="text-lg font-semibold leading-snug tracking-tight text-white">
                 {item.name}
-                <span className="font-normal text-neutral-400"> — {item.subtitle}</span>
+                {item.subtitle ? (
+                  <span className="font-normal text-neutral-400"> — {item.subtitle}</span>
+                ) : null}
               </h3>
             </div>
 
@@ -59,7 +70,9 @@ export function CaseStudyActivationModels({
             </p>
 
             <div className="space-y-3">
-              <p className={CASE_STUDY_LABEL}>Example</p>
+              {item.showExampleLabel !== false ? (
+                <p className={CASE_STUDY_LABEL}>Example</p>
+              ) : null}
               <div className="space-y-3 text-sm leading-relaxed text-neutral-300 md:text-base">
                 {item.example}
               </div>
@@ -70,14 +83,16 @@ export function CaseStudyActivationModels({
             </p>
           </div>
 
-          <div className="border-t border-white/10">
-            <CaseStudyMedia
-              aspect="video"
-              borderless
-              src={item.imageSrc}
-              alt={item.imageAlt}
-            />
-          </div>
+          {item.imageSrc || item.showImageSlot ? (
+            <div className="border-t border-white/10">
+              <CaseStudyMedia
+                aspect="video"
+                borderless
+                src={item.imageSrc}
+                alt={item.imageAlt}
+              />
+            </div>
+          ) : null}
         </article>
       ))}
     </div>

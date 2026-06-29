@@ -4,6 +4,9 @@ import {
   articleStaticParams,
   renderArticlePage,
 } from "@/lib/article-pages";
+import { JsonLd } from "@/components/seo/json-ld";
+import { getExperimentArticle, getExperimentArticleExcerpt } from "@/lib/experiments-registry";
+import { craftArticleJsonLd } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -20,5 +23,20 @@ export function generateStaticParams() {
 
 export default async function ExperimentArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  return renderArticlePage({ sectionId: "experiments", slug });
+  const article = getExperimentArticle(slug);
+
+  return (
+    <>
+      {article ? (
+        <JsonLd
+          data={craftArticleJsonLd({
+            slug,
+            title: article.title,
+            description: getExperimentArticleExcerpt(slug),
+          })}
+        />
+      ) : null}
+      {renderArticlePage({ sectionId: "experiments", slug })}
+    </>
+  );
 }

@@ -366,6 +366,75 @@ export function CaseStudyDivider({ className = "" }: { className?: string }) {
   );
 }
 
+interface CaseStudyTableProps {
+  /** Accessible name — rendered as sr-only caption. */
+  caption: string;
+  headers: readonly string[];
+  rows: readonly (readonly string[])[];
+  className?: string;
+}
+
+export function CaseStudyTable({
+  caption,
+  headers,
+  rows,
+  className = "",
+}: CaseStudyTableProps) {
+  return (
+    <div
+      className={`w-full max-w-5xl overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] ${className}`.trim()}
+    >
+      <table className="w-full min-w-[640px] border-collapse text-left text-sm leading-relaxed md:text-base">
+        <caption className="sr-only">{caption}</caption>
+        <thead>
+          <tr className="border-b border-white/10">
+            {headers.map((header) => (
+              <th
+                key={header}
+                scope="col"
+                className="px-5 py-4 font-semibold tracking-tight text-white md:px-6"
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr
+              key={row.join("-")}
+              className="border-b border-white/10 last:border-b-0"
+            >
+              {row.map((cell, cellIndex) => {
+                if (cellIndex === 0) {
+                  return (
+                    <th
+                      key={`${rowIndex}-${cellIndex}`}
+                      scope="row"
+                      className="px-5 py-4 font-medium text-white md:px-6"
+                    >
+                      {cell}
+                    </th>
+                  );
+                }
+
+                return (
+                  <td
+                    key={`${rowIndex}-${cellIndex}`}
+                    className="px-5 py-4 text-neutral-300 md:px-6"
+                  >
+                    {cell}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 interface CaseStudyDisplayLineProps {
   children: ReactNode;
   className?: string;

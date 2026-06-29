@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
-import { SITE_NAME } from "@/lib/constants";
+import { JsonLd } from "@/components/seo/json-ld";
+import { isNoIndexProjectSlug } from "@/lib/projects-list-data";
 import { getCaseStudyContent } from "@/lib/project-content";
+import {
+  buildCaseStudyMetaDescription,
+  buildPageMetadata,
+  caseStudyArticleJsonLd,
+  caseStudyOgImage,
+  stripCaseStudyStatusPrefix,
+} from "@/lib/seo";
 
 interface CaseStudyLayoutProps {
   children: React.ReactNode;
@@ -16,15 +24,55 @@ export async function generateMetadata({
   const content = getCaseStudyContent(slug);
 
   if (!content) {
-    return { title: `Not Found · ${SITE_NAME}` };
+    return buildPageMetadata({
+      title: "Not Found",
+      description: "This case study could not be found.",
+      path: `/projects/${slug}`,
+      noIndex: true,
+    });
   }
 
-  return {
-    title: `${content.title} · Projects · ${SITE_NAME}`,
-    description: content.overviewText,
-  };
+  const displayTitle = stripCaseStudyStatusPrefix(content.title);
+  const description = buildCaseStudyMetaDescription(content);
+
+  return buildPageMetadata({
+    title: `${displayTitle} · Projects`,
+    description,
+    path: `/projects/${slug}`,
+    image: caseStudyOgImage(slug),
+    noIndex: isNoIndexProjectSlug(slug),
+    openGraphType: "article",
+  });
 }
 
-export default function CaseStudyLayout({ children }: CaseStudyLayoutProps) {
-  return children;
+export default async function CaseStudyLayout({
+  children,
+  params,
+}: CaseStudyLayoutProps) {
+  const { slug } = await params;
+  const content = getCaseStudyContent(slug);
+
+  if (!content) {
+    return children;
+  }
+
+  const displayTitle = stripCaseStudyStatusPrefix(content.title);
+  const description = buildCaseStudyMetaDescription(content);
+
+  return (
+    <>
+      <JsonLd
+        data={caseStudyArticleJsonLd({
+          slug,
+          name: displayTitle,
+          description,
+          year: content.year,
+          client: content.meta.client,
+          services: content.meta.services,
+          image: caseStudyOgImage(slug),
+        })}
+      />
+      {children}
+    </>
+  );
 }

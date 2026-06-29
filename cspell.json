@@ -55,6 +55,7 @@
     "geist",
     "handoff",
     "handoffs",
+    "helloianneo",
     "Hotjar",
     "Hunor",
     "Kalash",
@@ -111,7 +112,9 @@
     "Vogulkin",
     "WCAG",
     "Whimsical",
-    "wireframe"
+    "wireframe",
+    "Xiaohei",
+    "XIAOHEI"
   ],
   "ignorePaths": [
     "node_modules/**",
