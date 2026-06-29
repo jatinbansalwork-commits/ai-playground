@@ -40,7 +40,7 @@ export const FRAMES = [
     id: "design-review-checklist",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Design Review",
+    label: "My favorite",
     monogramImage: "/assets/index/article-cursor-hand.png",
     monogramWireframeImage: "/assets/index/article-cursor-hand-wireframe.png",
     href: `${ROUTES.craft}/design-review-checklist`,
