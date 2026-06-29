@@ -11,8 +11,14 @@ export const IAN_XIAOHEI_ILLUSTRATIONS = {
     "/assets/illustrations/ian-xiaohei/policy-copilot-before-en.png",
   "policy-copilot-after":
     "/assets/illustrations/ian-xiaohei/policy-copilot-after-en.png",
-  "policy-copilot-decision-intelligence":
-    "/assets/illustrations/ian-xiaohei/policy-copilot-decision-intelligence-en.png",
+  "policy-copilot-opportunity":
+    "/assets/illustrations/ian-xiaohei/policy-copilot-opportunity-en.png",
+  "policy-copilot-google-maps-inspiration":
+    "/assets/illustrations/ian-xiaohei/policy-copilot-google-maps-inspiration-en.png",
+  "policy-copilot-decision-triptych":
+    "/assets/illustrations/ian-xiaohei/policy-copilot-decision-triptych-en.png",
+  "policy-copilot-lifecycle-triptych":
+    "/assets/illustrations/ian-xiaohei/policy-copilot-lifecycle-triptych-en.png",
 } as const;
 
 export type IanXiaoheiIllustrationId = keyof typeof IAN_XIAOHEI_ILLUSTRATIONS;

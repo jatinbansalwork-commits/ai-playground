@@ -13,6 +13,8 @@ export interface ActivationModel {
   imageSrc?: string;
   /** Render a media placeholder when `imageSrc` is not set yet. */
   showImageSlot?: boolean;
+  /** Place the image above or below the card copy — defaults to bottom. */
+  imagePosition?: "top" | "bottom";
   /** Set to false to hide the “Example” label above `example`. */
   showExampleLabel?: boolean;
 }
@@ -44,11 +46,32 @@ export function CaseStudyActivationModels({
       className={`mx-auto grid w-full max-w-5xl grid-cols-1 gap-6 ${columnClass} lg:gap-5 ${className}`.trim()}
       aria-label="Copilot activation models"
     >
-      {items.map((item) => (
+      {items.map((item) => {
+        const imagePosition = item.imagePosition ?? "bottom";
+        const imageBlock =
+          item.imageSrc || item.showImageSlot ? (
+            <div
+              className={
+                imagePosition === "top"
+                  ? "border-b border-white/10"
+                  : "border-t border-white/10"
+              }
+            >
+              <CaseStudyMedia
+                aspect="video"
+                borderless
+                src={item.imageSrc}
+                alt={item.imageAlt}
+              />
+            </div>
+          ) : null;
+
+        return (
         <article
           key={item.name}
           className="flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]"
         >
+          {imagePosition === "top" ? imageBlock : null}
           <div className="flex flex-1 flex-col space-y-4 p-5 md:p-6">
             <div className="space-y-2">
               <span
@@ -83,18 +106,10 @@ export function CaseStudyActivationModels({
             </p>
           </div>
 
-          {item.imageSrc || item.showImageSlot ? (
-            <div className="border-t border-white/10">
-              <CaseStudyMedia
-                aspect="video"
-                borderless
-                src={item.imageSrc}
-                alt={item.imageAlt}
-              />
-            </div>
-          ) : null}
+          {imagePosition === "bottom" ? imageBlock : null}
         </article>
-      ))}
+        );
+      })}
     </div>
   );
 }

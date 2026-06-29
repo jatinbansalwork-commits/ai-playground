@@ -156,11 +156,12 @@ export function CaseStudyTightStack({ children }: CaseStudyTightStackProps) {
 
 interface CaseStudyQuoteProps {
   children: ReactNode;
+  className?: string;
 }
 
-export function CaseStudyQuote({ children }: CaseStudyQuoteProps) {
+export function CaseStudyQuote({ children, className = "" }: CaseStudyQuoteProps) {
   return (
-    <blockquote className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_QUOTE}`}>
+    <blockquote className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_QUOTE} ${className}`.trim()}>
       {children}
     </blockquote>
   );

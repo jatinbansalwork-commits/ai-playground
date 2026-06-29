@@ -25,6 +25,8 @@ interface CaseStudyMediaProps {
   intrinsicAspect?: number;
   /** Omit the default frame border (and background shell). */
   borderless?: boolean;
+  /** Override the default shell background (`#1a1a1a`). */
+  shellBackground?: string;
   /** Optional body copy rendered below the caption. */
   paragraph?: ReactNode;
 }
@@ -60,6 +62,7 @@ export function CaseStudyMedia({
   trimTop,
   intrinsicAspect,
   borderless = false,
+  shellBackground,
   paragraph,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -91,7 +94,10 @@ export function CaseStudyMedia({
 
   const shellBase = borderless
     ? "relative w-full overflow-hidden rounded-lg"
-    : "relative w-full overflow-hidden rounded-lg border border-white/10 bg-[#1a1a1a]";
+    : "relative w-full overflow-hidden rounded-lg border border-white/10";
+  const shellBackgroundColor = borderless
+    ? undefined
+    : (shellBackground ?? "#1a1a1a");
   const isVideo = Boolean(resolvedSrc && isVideoSrc(resolvedSrc, aspect));
   const hasTrimConfig =
     Boolean(trimTop && intrinsicAspect) &&
@@ -112,12 +118,16 @@ export function CaseStudyMedia({
   const trimShellStyle = hasTrimConfig
     ? { aspectRatio: intrinsicAspect! / (1 - trimTop!) }
     : undefined;
+  const shellStyle = {
+    ...trimShellStyle,
+    ...(shellBackgroundColor ? { backgroundColor: shellBackgroundColor } : {}),
+  };
   const trimMediaStyle = usesTrim ? { top: trimTopOffset } : undefined;
   const effectiveAlt = alt ?? labelToAlt(label);
 
   return (
     <figure className={`space-y-3 ${className}`}>
-      <div ref={containerRef} className={shellClass} style={trimShellStyle}>
+      <div ref={containerRef} className={shellClass} style={shellStyle}>
         {isVideo ? (
           shouldLoad ? (
             <video

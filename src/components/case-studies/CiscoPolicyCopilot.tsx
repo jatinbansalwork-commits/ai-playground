@@ -6,6 +6,7 @@ import {
   type ActivationModel,
 } from "@/components/case-studies/case-study-activation-models";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import { CaseStudyRevealCountdown } from "@/components/case-studies/case-study-reveal-countdown";
 import {
   CaseStudyImpactCards,
 } from "@/components/case-studies/case-study-impact-cards";
@@ -15,6 +16,7 @@ import {
   CaseStudyDivider,
   CaseStudyH1,
   CaseStudyH2,
+  CaseStudyH3,
   CaseStudyLabel,
   CaseStudyList,
   CaseStudyParagraph,
@@ -91,6 +93,8 @@ const VALIDATE_FOR_APPROVAL_MODEL: ActivationModel = {
   ),
   takeaway: "It prepares the decision, but does not deploy automatically.",
   imageAlt: "Cisco Policy Copilot — validate and prepare for approval",
+  showImageSlot: true,
+  imagePosition: "top",
   showExampleLabel: false,
 };
 
@@ -105,6 +109,8 @@ export default function CiscoPolicyCopilotContent() {
         year={content.year}
         overview={content.overviewText}
         meta={content.meta}
+        notice="All work for Cisco is under NDA. The visuals have been altered to follow its conditions."
+        metaBottom={<CaseStudyRevealCountdown slug={SLUG} />}
       />
 
       <div
@@ -210,6 +216,67 @@ export default function CiscoPolicyCopilotContent() {
           The business request is simple. The policy decision is complex.
         </CaseStudyParagraph>
 
+        <CaseStudyDivider className="!my-8 md:!my-10" />
+
+        <CaseStudyH2>Inspiration</CaseStudyH2>
+        <CaseStudyParagraph>
+          To better understand this problem, I looked beyond enterprise software. One product
+          stood out immediately.
+        </CaseStudyParagraph>
+
+        <CaseStudyWide className="!mt-2 pb-2">
+          <CaseStudyMedia
+            aspect="natural"
+            shellBackground="#0D1114"
+            src={getIanXiaoheiIllustration("policy-copilot-google-maps-inspiration")}
+            alt="Users choose the destination — what the system figures out stays hidden beneath a simple arrival time"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyH3>Google Maps</CaseStudyH3>
+
+        <CaseStudyWide>
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-white/10">
+              <div className="space-y-4 p-6 md:p-8">
+                <CaseStudyLabel>Turn-by-turn</CaseStudyLabel>
+                <p className="text-sm leading-relaxed text-neutral-400">
+                  Nobody tells Google Maps&hellip;
+                </p>
+                <ul className="space-y-2.5 text-base leading-relaxed text-neutral-300">
+                  <li>Turn left here</li>
+                  <li>Take Highway 101</li>
+                  <li>Exit after 2.3 km</li>
+                </ul>
+              </div>
+              <div className="space-y-4 border-t border-white/10 bg-[#6B36FF]/[0.04] p-6 md:border-t-0 md:p-8">
+                <CaseStudyLabel>Intent-based</CaseStudyLabel>
+                <p className="text-xl font-medium leading-snug tracking-tight text-white md:text-2xl">
+                  &ldquo;Take me to the airport.&rdquo;
+                </p>
+                <p className="text-sm leading-relaxed text-neutral-400">
+                  Users describe the destination. The system plans the route.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-3 border-t border-white/10 px-6 py-4 text-sm leading-relaxed text-neutral-300 md:grid-cols-2 md:gap-6 md:px-8 md:py-5">
+              <p>
+                <span className="text-neutral-500">What changes — </span>
+                The system handles the complexity.
+              </p>
+              <p>
+                <span className="text-neutral-500">What matters — </span>
+                The destination matters more than the route.
+              </p>
+            </div>
+          </div>
+        </CaseStudyWide>
+
+        <CaseStudyQuote className="!mb-6 md:!mb-8">
+          This became a powerful analogy for policy creation. What if administrators could
+          describe the outcome they wanted and let the system handle the translation?
+        </CaseStudyQuote>
+
         <CaseStudyDivider />
 
         <CaseStudyH2 className="!mt-8">The Opportunity</CaseStudyH2>
@@ -231,15 +298,9 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            src={getIanXiaoheiIllustration("policy-copilot-before")}
-            alt="One business request tangled in manual policy configuration"
-          />
-        </CaseStudyWide>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            src={getIanXiaoheiIllustration("policy-copilot-after")}
-            alt="Policy Copilot — intent to draft to human approval to deploy"
+            shellBackground="#0D1114"
+            src={getIanXiaoheiIllustration("policy-copilot-opportunity")}
+            alt="Before — manual policy tangle; after — intent to draft to human approval to deploy"
           />
         </CaseStudyWide>
         <CaseStudyDivider />
@@ -289,8 +350,9 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            src={getIanXiaoheiIllustration("policy-copilot-decision-intelligence")}
-            alt="From configuration to decision intelligence — Policy Copilot reduces uncertainty while keeping administrators in control"
+            shellBackground="#0D1114"
+            src={getIanXiaoheiIllustration("policy-copilot-decision-triptych")}
+            alt="From decision overload to Copilot reasoning to human approval — questions, context and evidence, then deploy"
           />
         </CaseStudyWide>
 
@@ -319,7 +381,9 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — from configuration to defensible decisions"
+            shellBackground="#0D1114"
+            src={getIanXiaoheiIllustration("policy-copilot-lifecycle-triptych")}
+            alt="How Policy Copilot participates — request to context, AI-assisted recommend and validate, human approval to deploy and monitor"
           />
         </CaseStudyWide>
         <CaseStudyDivider className="!mt-8" />
@@ -335,7 +399,16 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — core experience responsibilities"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-trust-ui"]}
+            alt="Cisco Policy Copilot — understand and clarify before you generate"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-propose-recommend-ui"]}
+            alt="Cisco Policy Copilot — propose and recommend"
           />
         </CaseStudyWide>
 
@@ -344,13 +417,6 @@ export default function CiscoPolicyCopilotContent() {
           columns={1}
           items={[VALIDATE_FOR_APPROVAL_MODEL]}
         />
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — validate and prepare for approval"
-          />
-        </CaseStudyWide>
 
         <CaseStudyDivider className="!mt-8" />
 
@@ -451,6 +517,13 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             alt="Cisco Policy Copilot — designing for trust"
+          />
+        </CaseStudyWide>
+
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            alt="Cisco Policy Copilot — evidence and recommendation patterns"
           />
         </CaseStudyWide>
 

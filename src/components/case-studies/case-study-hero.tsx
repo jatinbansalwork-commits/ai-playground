@@ -14,6 +14,8 @@ interface CaseStudyHeroProps {
   title: string;
   year: string;
   overview: string;
+  /** Optional disclaimer or notice chip below the overview. */
+  notice?: string;
   meta?: CaseStudyMetaSpecs;
   metaBottom?: ReactNode;
   className?: string;
@@ -23,6 +25,7 @@ export function CaseStudyHero({
   title,
   year,
   overview,
+  notice,
   meta,
   metaBottom,
   className = "",
@@ -39,6 +42,16 @@ export function CaseStudyHero({
             {title}
           </h1>
           <p className={`${CASE_STUDY_LEAD} ${CASE_STUDY_TEXT_COLUMN}`}>{overview}</p>
+          {notice ? (
+            <p className={CASE_STUDY_TEXT_COLUMN}>
+              <span
+                className="inline-block max-w-4xl rounded-full border border-sky-400/35 bg-sky-500/10 px-4 py-2 text-sm leading-snug text-sky-200/95"
+                role="note"
+              >
+                {notice}
+              </span>
+            </p>
+          ) : null}
         </div>
       </header>
 
