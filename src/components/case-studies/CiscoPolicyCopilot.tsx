@@ -25,6 +25,7 @@ import {
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
+import { getIanXiaoheiIllustration } from "@/lib/ian-xiaohei-illustration-library";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
@@ -178,6 +179,7 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
+            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-workflow-transformation"]}
             alt="Cisco Policy Copilot — understanding policy creation"
           />
         </CaseStudyWide>
@@ -229,7 +231,15 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — clarity, confidence, and control"
+            src={getIanXiaoheiIllustration("policy-copilot-before")}
+            alt="One business request tangled in manual policy configuration"
+          />
+        </CaseStudyWide>
+        <CaseStudyWide className="!mt-4 pb-6">
+          <CaseStudyMedia
+            aspect="natural"
+            src={getIanXiaoheiIllustration("policy-copilot-after")}
+            alt="Policy Copilot — intent to draft to human approval to deploy"
           />
         </CaseStudyWide>
         <CaseStudyDivider />
@@ -279,7 +289,8 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — policy lifecycle participation"
+            src={getIanXiaoheiIllustration("policy-copilot-decision-intelligence")}
+            alt="From configuration to decision intelligence — Policy Copilot reduces uncertainty while keeping administrators in control"
           />
         </CaseStudyWide>
 

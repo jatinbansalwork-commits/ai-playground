@@ -5,6 +5,17 @@ const CDN_BASE =
 const ABSOLUTE_URL = /^https?:\/\//i;
 const BLOB_HOST = /\.blob\.vercel-storage\.com/i;
 
+/** Served from `public/` on deploy — do not prefix with Blob CDN. */
+const LOCAL_PUBLIC_ASSET_PREFIXES = [
+  "/assets/illustrations/ian-xiaohei/",
+  "/assets/index/",
+  "/assets/ai-chat/",
+] as const;
+
+function isLocalPublicAsset(path: string): boolean {
+  return LOCAL_PUBLIC_ASSET_PREFIXES.some((prefix) => path.startsWith(prefix));
+}
+
 /** Canonical Vercel Blob public origin for this project. */
 export const BLOB_CDN_ORIGIN = CDN_BASE;
 
@@ -37,7 +48,7 @@ export function resolveAssetUrl(src: string): string {
   if (isAbsoluteAssetUrl(src)) return src;
 
   const normalizedPath = src.startsWith("/") ? src : `/${src}`;
-  if (!CDN_BASE) return normalizedPath;
+  if (!CDN_BASE || isLocalPublicAsset(normalizedPath)) return normalizedPath;
 
   return `${CDN_BASE}${normalizedPath}`;
 }
