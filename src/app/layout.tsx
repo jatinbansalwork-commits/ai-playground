@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import CacheManager from "@/components/CacheManager";
 import { WireframeFilters } from "@/components/wireframe-filters";
 import { SiteEntryAnalytics } from "@/components/site-entry-analytics";
@@ -45,6 +46,7 @@ export default function RootLayout({
           <AiChatBall />
         </WireframeProvider>
         <Analytics />
+        <SpeedInsights />
         <SiteEntryAnalytics />
       </body>
     </html>

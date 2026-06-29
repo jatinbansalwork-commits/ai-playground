@@ -19,6 +19,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `GIPHY_API_KEY` | Optional | Reaction GIFs on assistant replies |
 | `AI_CHAT_OPENAI_ENABLED` | Optional | Set to `false` to disable OpenAI (static/fallback only) |
 | `AI_CHAT_OPENAI_MAX_PER_USER` | Optional | OpenAI replies per browser session (default in code) |
+| `NEXT_PUBLIC_SITE_URL` | Production | Canonical URL for SEO metadata and sitemap (e.g. `https://jatinbansal.vercel.app`) |
 
 ## Scripts
 
@@ -34,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Route | Content |
 |-------|---------|
-| `/` | Index — horizontal scroll slider (hero → projects → ideas → design review → craft → archive → contact → manifest) |
+| `/` | Index — horizontal scroll slider (hero → projects → ideas → My favorite → craft → archive → contact → manifest) |
 | `/projects` | Case study list with hover thumbnails |
 | `/projects/[slug]` | Long-form case study pages |
 | `/craft` | Motion graphics and illustration gallery (bento grid + filter chips) |
@@ -82,3 +83,50 @@ See [`design.md`](./design.md) for index slider wiring, Craft/Ideas gallery rule
 ## Deploy
 
 Deploy on [Vercel](https://vercel.com). Media is served from Vercel Blob CDN — see `src/lib/asset-cdn.ts`.
+
+## SEO and monitoring
+
+SEO metadata, sitemap, and structured data live in `src/lib/seo.ts`. After deploy, verify:
+
+- `https://<your-domain>/robots.txt`
+- `https://<your-domain>/sitemap.xml`
+
+### Google Search Console (search rankings)
+
+Vercel Analytics does **not** show keyword rank or Google impressions. Use [Google Search Console](https://search.google.com/search-console) instead:
+
+1. Add your production domain as a property.
+2. Verify ownership (DNS or HTML tag).
+3. Submit the sitemap: `https://<your-domain>/sitemap.xml`
+4. Check **Performance** for queries, clicks, impressions, and average position.
+5. Check **Pages** / **Indexing** to confirm case studies (e.g. `/projects/cisco-policy-copilot`) are crawled.
+
+Allow a few days after first deploy for data to appear.
+
+### Vercel Web Analytics (traffic and behaviour)
+
+Enabled via `@vercel/analytics` in `src/app/layout.tsx`. Custom events are defined in `src/lib/analytics.ts`.
+
+In the Vercel dashboard: **Project → Analytics → Production**
+
+| What to check | Where |
+|---------------|--------|
+| Page views per route | Pages / Routes |
+| Traffic from Google | Referrers → `google.com` |
+| Case study opens | Events → `project_open` (filter `slug`) |
+| Projects list clicks | Events → `project_list_click` |
+
+### Vercel Speed Insights (Core Web Vitals)
+
+Enabled via `@vercel/speed-insights` in `src/app/layout.tsx`.
+
+In the Vercel dashboard: **Project → Speed Insights**
+
+Tracks real-user **LCP**, **INP**, and **CLS** per route. Google uses similar field data for page experience — but rankings and queries still come from Search Console, not Speed Insights.
+
+Use [PageSpeed Insights](https://pagespeed.web.dev/) to see what Google’s CrUX report shows for a specific URL.
+
+### Rich results check
+
+Validate JSON-LD after deploy: [Google Rich Results Test](https://search.google.com/test/rich-results)
+
