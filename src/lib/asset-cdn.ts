@@ -7,7 +7,7 @@ const BLOB_HOST = /\.blob\.vercel-storage\.com/i;
 
 /** Served from `public/` on deploy — do not prefix with Blob CDN. */
 const LOCAL_PUBLIC_ASSET_PREFIXES = [
-  "/assets/illustrations/ian-xiaohei/",
+  "/assets/illustrations/jb_illustrations/",
   "/assets/illustrations/cisco/",
   "/assets/index/",
   "/assets/ai-chat/",
@@ -206,6 +206,7 @@ export const CASE_STUDY_CDN_MEDIA = {
   "cisco-policy-copilot-trust": cdnAsset("/Cisco/1.png"),
   "cisco-policy-copilot-trust-ui": cdnAsset("/Cisco/1_3.svg"),
   "cisco-policy-copilot-propose-recommend-ui": cdnAsset("/Cisco/1_4.svg"),
+  "cisco-policy-copilot-validate-ui": cdnAsset("/Cisco/1_6.svg"),
   "cisco-policy-copilot-rating": cdnAsset("/Cisco/Rating.png"),
   "cisco-policy-copilot-agent-framework":
     "/assets/illustrations/cisco/policy-lifecycle-agent-framework-en.png",

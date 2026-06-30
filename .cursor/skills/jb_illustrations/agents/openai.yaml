@@ -1,0 +1,6 @@
+interface:
+  display_name: "Xiaohei Editorial Illustrations"
+  short_description: "English hand-drawn editorial illustrations with the Xiaohei character for case studies and portfolio content"
+  default_prompt: "Use $jb_illustrations to plan and generate English editorial illustrations for this case study section."
+policy:
+  allow_implicit_invocation: true

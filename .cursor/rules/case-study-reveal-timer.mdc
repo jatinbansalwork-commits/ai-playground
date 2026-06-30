@@ -22,14 +22,16 @@ Unlock instant: `Date.parse(startsAtUtc) + 24 hours`
 ## Resetting the timer
 
 1. Set `startsAtUtc` to the new UTC start (e.g. `2026-06-26T07:09:08.000Z`).
-2. Update the schedule table in `design.md` with the new start and unlock instants.
+2. Update the schedule table in `design.md` (§ Pre-launch reveal gate) with the new start and unlock instants.
 3. All users worldwide see the same remaining time.
 
 ## Wiring
 
 - Hook: `useCaseStudyRevealCountdownForSlug(slug)` or `useCaseStudyRevealCountdown(unlockAtMs)`
-- UI: `<CaseStudyRevealCountdown slug="cisco-policy-copilot" />`
+- UI: `<CaseStudyRevealCountdown slug="your-slug" />` in hero `metaBottom`
 - Blur gate: `isRevealed` from the same hook / slug schedule
+
+**No other slugs are scheduled.** Add an entry to `CASE_STUDY_REVEAL_SCHEDULE` and wire the countdown + blur wrapper in the case study component to enable elsewhere.
 
 ## Do not
 

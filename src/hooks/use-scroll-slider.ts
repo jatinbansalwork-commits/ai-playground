@@ -38,13 +38,34 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-function readScrollOffset() {
+function readDocumentScrollOffset() {
   return Math.max(
     document.documentElement.scrollLeft,
     document.body.scrollLeft,
     document.documentElement.scrollTop,
     document.body.scrollTop,
   );
+}
+
+function isCoarsePointerDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
+function syncDocumentScrollOffset(value: number) {
+  if (isCoarsePointerDevice()) return;
+
+  if (
+    document.documentElement.scrollLeft !== value ||
+    document.documentElement.scrollTop !== value ||
+    document.body.scrollLeft !== value ||
+    document.body.scrollTop !== value
+  ) {
+    document.documentElement.scrollLeft = value;
+    document.documentElement.scrollTop = value;
+    document.body.scrollLeft = value;
+    document.body.scrollTop = value;
+  }
 }
 
 function computeBaseScale() {
@@ -123,7 +144,7 @@ const SLIDER_POINTER_IGNORE_SELECTOR =
   'a[href], button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
 
 const SLIDER_DRAG_AXIS_LOCK_PX = 8;
-const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 18;
+const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 10;
 
 function getSliderDragAxisLockPx(): number {
   if (typeof window === "undefined") return SLIDER_DRAG_AXIS_LOCK_PX;
@@ -185,6 +206,11 @@ export function useScrollSlider() {
   const scrollRangeRef = useRef(0);
   const baseScaleRef = useRef(1);
   const snapFrameRef = useRef<number | null>(null);
+  /** Authoritative slider offset — iOS Safari does not reliably persist document scroll. */
+  const sliderScrollOffsetRef = useRef(0);
+  const coarsePointerRef = useRef(false);
+
+  const getScrollOffset = useCallback(() => sliderScrollOffsetRef.current, []);
 
   const springScaleValue = useSpring(scale, springScale);
   const springTrackX = useSpring(trackX, springScrollSnap);
@@ -245,19 +271,8 @@ export function useScrollSlider() {
 
   const syncScrollPosition = useCallback((value: number) => {
     const clamped = clampScrollOffset(value);
-
-    if (
-      document.documentElement.scrollLeft !== clamped ||
-      document.documentElement.scrollTop !== clamped ||
-      document.body.scrollLeft !== clamped ||
-      document.body.scrollTop !== clamped
-    ) {
-      document.documentElement.scrollLeft = clamped;
-      document.documentElement.scrollTop = clamped;
-      document.body.scrollLeft = clamped;
-      document.body.scrollTop = clamped;
-    }
-
+    sliderScrollOffsetRef.current = clamped;
+    syncDocumentScrollOffset(clamped);
     return clamped;
   }, [clampScrollOffset]);
 
@@ -273,7 +288,7 @@ export function useScrollSlider() {
       navigateMethodRef.current = method;
       const clampedIndex = clamp(index, 0, frameCount - 1);
       const targetScroll = clampedIndex * SCROLL_PER_FRAME;
-      const start = readScrollOffset();
+      const start = getScrollOffset();
 
       cancelSnapAnimation();
       isSnappingRef.current = true;
@@ -314,10 +329,12 @@ export function useScrollSlider() {
       reducedMotion,
       syncScrollPosition,
       updateFromScroll,
+      getScrollOffset,
     ],
   );
 
   useLayoutEffect(() => {
+    coarsePointerRef.current = isCoarsePointerDevice();
     const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
     scrollRangeRef.current = scrollRange;
 
@@ -332,10 +349,8 @@ export function useScrollSlider() {
     const initialOffset = initialProgress * maxOffset;
 
     window.scrollTo(0, initialScroll);
-    document.documentElement.scrollLeft = initialScroll;
-    document.documentElement.scrollTop = initialScroll;
-    document.body.scrollLeft = initialScroll;
-    document.body.scrollTop = initialScroll;
+    sliderScrollOffsetRef.current = initialScroll;
+    syncDocumentScrollOffset(initialScroll);
 
     baseScaleRef.current = computeBaseScale();
     trackX.jump(-initialOffset);
@@ -354,11 +369,15 @@ export function useScrollSlider() {
     const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
     scrollRangeRef.current = scrollRange;
 
+    const syncCoarsePointer = () => {
+      coarsePointerRef.current = isCoarsePointerDevice();
+    };
+
     const syncBaseScale = () => {
       baseScaleRef.current = computeBaseScale();
       scale.jump(
         computeScaleFromScroll(
-          clampScrollOffset(readScrollOffset()),
+          clampScrollOffset(getScrollOffset()),
           baseScaleRef.current,
         ),
       );
@@ -367,9 +386,13 @@ export function useScrollSlider() {
     const initialIndex = getRestoredFrameIndex(frameCount);
     const initialScroll = initialIndex * SCROLL_PER_FRAME;
 
+    syncCoarsePointer();
     syncScrollPosition(initialScroll);
     syncBaseScale();
     updateFromScroll(initialScroll);
+
+    const coarseMedia = window.matchMedia("(pointer: coarse)");
+    coarseMedia.addEventListener("change", syncCoarsePointer);
 
     const readyTimer = window.setTimeout(() => {
       isReadyRef.current = true;
@@ -379,8 +402,9 @@ export function useScrollSlider() {
 
     const onScroll = () => {
       if (!isReadyRef.current) return;
+      if (coarsePointerRef.current) return;
 
-      const raw = readScrollOffset();
+      const raw = readDocumentScrollOffset();
       const synced = syncScrollPosition(raw);
 
       if (isSnappingRef.current) return;
@@ -390,10 +414,12 @@ export function useScrollSlider() {
     const onScrollWithSnap = () => {
       onScroll();
 
+      if (coarsePointerRef.current) return;
+
       if (snapTimer) clearTimeout(snapTimer);
       snapTimer = setTimeout(() => {
         const index = clamp(
-          Math.round(clampScrollOffset(readScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
           0,
           frameCount - 1,
         );
@@ -407,6 +433,7 @@ export function useScrollSlider() {
     return () => {
       isReadyRef.current = false;
       cancelSnapAnimation();
+      coarseMedia.removeEventListener("change", syncCoarsePointer);
       window.clearTimeout(readyTimer);
       window.removeEventListener("scroll", onScrollWithSnap);
       window.removeEventListener("resize", syncBaseScale);
@@ -416,6 +443,7 @@ export function useScrollSlider() {
     cancelSnapAnimation,
     clampScrollOffset,
     frameCount,
+    getScrollOffset,
     scale,
     snapToIndex,
     syncScrollPosition,
@@ -430,7 +458,7 @@ export function useScrollSlider() {
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
         const index = clamp(
-          Math.round(clampScrollOffset(readScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
           0,
           frameCount - 1,
         );
@@ -451,7 +479,7 @@ export function useScrollSlider() {
       if (delta === 0) return;
 
       const scrollRange = scrollRangeRef.current;
-      const current = clampScrollOffset(readScrollOffset());
+      const current = clampScrollOffset(getScrollOffset());
       const next = clamp(current + delta, 0, scrollRange);
 
       event.preventDefault();
@@ -466,7 +494,7 @@ export function useScrollSlider() {
       window.removeEventListener("wheel", onWheel);
       if (snapTimer) clearTimeout(snapTimer);
     };
-  }, [clampScrollOffset, frameCount, snapToIndex, syncScrollPosition, updateFromScroll]);
+  }, [clampScrollOffset, frameCount, getScrollOffset, snapToIndex, syncScrollPosition, updateFromScroll]);
 
   useEffect(() => {
     let snapTimer: ReturnType<typeof setTimeout> | null = null;
@@ -482,7 +510,7 @@ export function useScrollSlider() {
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
         const index = clamp(
-          Math.round(clampScrollOffset(readScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
           0,
           frameCount - 1,
         );
@@ -506,7 +534,7 @@ export function useScrollSlider() {
       activePointerId = event.pointerId;
       startX = event.clientX;
       startY = event.clientY;
-      startScroll = readScrollOffset();
+      startScroll = getScrollOffset();
       dragAxis = null;
       suppressClick = false;
     };
@@ -580,6 +608,7 @@ export function useScrollSlider() {
     cancelSnapAnimation,
     clampScrollOffset,
     frameCount,
+    getScrollOffset,
     snapToIndex,
     syncScrollPosition,
     updateFromScroll,

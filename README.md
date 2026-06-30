@@ -2,6 +2,41 @@
 
 Portfolio site for case studies, Craft gallery (motion + illustration), and Ideas (AI experiments). Built with Next.js 16, React 19, Tailwind CSS v4, and Framer Motion.
 
+## Preview
+
+Index slide monograms (Craft + Ideas):
+
+<p align="center">
+  <img src="./public/assets/index/craft-monogram.png" alt="Craft gallery monogram — motion and illustration" width="280" />
+  &nbsp;&nbsp;
+  <img src="./public/assets/index/ideas-monogram.png" alt="Ideas gallery monogram — AI experiments" width="280" />
+</p>
+
+Case study editorial art ([Cisco Policy Copilot](https://jatinbansal.vercel.app/projects/cisco-policy-copilot) — JB illustration library):
+
+<p align="center">
+  <img src="./public/assets/illustrations/jb_illustrations/policy-copilot-opportunity-en.png" alt="Before and after — manual policy tangle vs intent to draft to human approval" width="900" />
+</p>
+
+<p align="center">
+  <img src="./public/assets/illustrations/jb_illustrations/policy-copilot-decision-triptych-en.png" alt="Decision overload, Copilot reasoning, and human approval" width="900" />
+</p>
+
+Impact-card illustration (light mode):
+
+<p align="center">
+  <img src="./public/assets/illustrations/jb_illustrations/11-idea-press-en.png" alt="Idea press — hand-drawn editorial illustration for impact cards" width="480" />
+</p>
+
+## Documentation
+
+| Doc | Contents |
+|-----|----------|
+| [`IA.md`](./IA.md) | Site tree, index frames, case study visibility, media sources |
+| [`design.md`](./design.md) | Slider, Craft/Ideas rules, case study components, JB illustrations |
+| `.cursor/skills/jb_illustrations/` | Cursor skill for generating editorial art |
+| `.cursor/rules/case-study-headings.mdc` | Title case for headings & captions |
+
 ## Getting started
 
 ```bash
@@ -31,11 +66,13 @@ Open [http://localhost:3000](http://localhost:3000).
 | `npm run lint` | ESLint |
 | `npm run spellcheck` | cspell over `src/**/*.{ts,tsx,md}` |
 
-## Site map
+## Information architecture
+
+Full route map, index slider frames, and visibility rules: **[`IA.md`](./IA.md)**.
 
 | Route | Content |
 |-------|---------|
-| `/` | Index — horizontal scroll slider (hero → projects → ideas → My favorite → craft → archive → contact → manifest) |
+| `/` | Index — horizontal scroll slider (hero → projects → ideas → My favorite → craft → me → contact → manifest) |
 | `/projects` | Case study list with hover thumbnails |
 | `/projects/[slug]` | Long-form case study pages |
 | `/craft` | Motion graphics and illustration gallery (bento grid + filter chips) |
@@ -43,16 +80,36 @@ Open [http://localhost:3000](http://localhost:3000).
 | `/ideas` | AI experiment demos — external side projects with detail modals |
 | `/archive` | About / “Me” slide destination |
 
-Legacy `/fun` URLs redirect to `/craft` (`next.config.ts`).
+Legacy `/fun/*` redirects to `/craft`; `/recent` aliases the Cisco case study (`next.config.ts`, `src/app/recent/page.tsx`).
 
 ## Case studies
 
-- **Metadata** (title, year, client, overview): `src/lib/project-content.ts`
-- **Page layouts and body copy**: `src/components/case-studies/*`
-- **Projects index** (hover thumbnails, hidden slugs): `src/lib/projects-list-data.ts`
-- **CDN media keys**: `src/lib/asset-cdn.ts` → `CASE_STUDY_CDN_MEDIA`
+| Concern | Location |
+|---------|----------|
+| Metadata (title, year, client, overview) | `src/lib/project-content.ts` |
+| Page layouts and body copy | `src/components/case-studies/*` |
+| Route gateway | `src/components/projects/dynamic-case-study-gateway.tsx` |
+| Projects index (hover thumbnails, hidden slugs) | `src/lib/projects-list-data.ts` |
+| CDN media keys | `src/lib/asset-cdn.ts` → `CASE_STUDY_CDN_MEDIA` |
+| Editorial components | `src/components/case-studies/case-study-prose.tsx` |
 
-Editorial components (`CaseStudyH2`, `CaseStudyProse`, `CaseStudyTable`, etc.) live in `src/components/case-studies/case-study-prose.tsx`. Heading and caption casing rules are in `.cursor/rules/case-study-headings.mdc`.
+Heading and caption rules: `.cursor/rules/case-study-headings.mdc`. Implementation detail: [`design.md` § Case studies](./design.md#case-studies).
+
+### JB illustrations
+
+Hand-drawn editorial art for impact cards and full-width media bands (English labels, light + dark variants).
+
+| Piece | Location |
+|-------|----------|
+| Cursor skill | `.cursor/skills/jb_illustrations/` |
+| Published PNGs | `public/assets/illustrations/jb_illustrations/*-en.png` |
+| ID → path map | `src/lib/jb-illustration-library.ts` → `getJbIllustration()` |
+
+Register new assets in `JB_ILLUSTRATIONS`, then reference them from case study components. Skill workflow and background modes: [`design.md` § JB illustration library](./design.md#jb-illustration-library).
+
+<p align="center">
+  <img src="./public/assets/illustrations/jb_illustrations/policy-copilot-google-maps-inspiration-en.png" alt="Google Maps inspiration — simple destination on top, hidden routing complexity below" width="520" />
+</p>
 
 ## Craft gallery
 
@@ -78,7 +135,8 @@ Curated knowledge, intent chips, OpenAI streaming, GIPHY reactions, and session 
 
 ## Design notes
 
-See [`design.md`](./design.md) for index slider wiring, Craft/Ideas gallery rules, and shared case study UI patterns.
+- **[`IA.md`](./IA.md)** — routes, index frames, visibility
+- **[`design.md`](./design.md)** — slider wiring, Craft/Ideas gallery rules, case study UI, JB illustrations
 
 ## Deploy
 
@@ -113,8 +171,21 @@ In the Vercel dashboard: **Project → Analytics → Production**
 |---------------|--------|
 | Page views per route | Pages / Routes |
 | Traffic from Google | Referrers → `google.com` |
-| Case study opens | Events → `project_open` (filter `slug`) |
-| Projects list clicks | Events → `project_list_click` |
+| Landing context (once per session) | Events → `site_entry` |
+| Index slide clicks | Events → `index_slide_click` (filter `frame_id`, `frame_label`) |
+| Index frame views | Events → `index_frame_view` |
+| Index frame navigation | Events → `index_frame_navigate` |
+| Projects list clicks | Events → `project_list_click` (filter `slug`) |
+| Case study opens | Events → `project_open` (filter `slug`, `source`) |
+| Case study scroll depth | Events → `case_study_scroll_depth` (filter `slug`, `depth`) |
+| Craft / Ideas gallery views | Events → `craft_view`, `ai_experiment_view` |
+| Craft / Ideas item clicks | Events → `craft_item_click`, `ai_experiment_item_click` |
+| External demo opens | Events → `external_demo_open` |
+| JBAI chat funnel | Events → `ai_chat_open`, `ai_chat_message`, `ai_chat_intent`, `ai_chat_close` |
+| Contact / resume | Events → `contact_click`, `resume_download` |
+| Video / motion plays | Events → `media_play` (filter `surface`, `slug`) |
+
+Full event catalogue: [`design.md` § Analytics](./design.md#analytics).
 
 ### Vercel Speed Insights (Core Web Vitals)
 

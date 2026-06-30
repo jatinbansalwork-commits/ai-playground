@@ -5,6 +5,7 @@ import {
   ActivationModelQuote,
   type ActivationModel,
 } from "@/components/case-studies/case-study-activation-models";
+import { CopilotActivationInfographic } from "@/components/case-studies/copilot-activation-infographic";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyRevealCountdown } from "@/components/case-studies/case-study-reveal-countdown";
 import {
@@ -21,13 +22,11 @@ import {
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
-  CaseStudyQuestionStack,
   CaseStudyQuote,
-  CaseStudyTable,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
-import { getIanXiaoheiIllustration } from "@/lib/ian-xiaohei-illustration-library";
+import { getJbIllustration } from "@/lib/jb-illustration-library";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
@@ -43,15 +42,16 @@ const CORE_RESPONSIBILITY_MODELS: ActivationModel[] = [
     example: (
       <>
         <ActivationModelQuote>
-          &ldquo;Allow contractors to access development servers during working hours.&rdquo;
+          &ldquo;Allow members of the Engineering team to access GitHub Enterprise securely
+          via HTTPS.&rdquo;
         </ActivationModelQuote>
         <p>The Copilot may ask:</p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Which contractor group?</li>
-          <li>Which development environment?</li>
-          <li>Which time zone defines working hours?</li>
-          <li>Should access be HTTPS-only?</li>
-          <li>Is logging required?</li>
+          <li>Which Engineering team or identity group?</li>
+          <li>Which GitHub Enterprise organisation or repositories?</li>
+          <li>VPN-only access, or any corporate network?</li>
+          <li>Allow GitHub HTTPS passthrough or require TLS inspection?</li>
+          <li>Is audit logging required?</li>
         </ul>
       </>
     ),
@@ -93,7 +93,7 @@ const VALIDATE_FOR_APPROVAL_MODEL: ActivationModel = {
   ),
   takeaway: "It prepares the decision, but does not deploy automatically.",
   imageAlt: "Cisco Policy Copilot — validate and prepare for approval",
-  showImageSlot: true,
+  imageSrc: CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-validate-ui"],
   imagePosition: "top",
   showExampleLabel: false,
 };
@@ -151,9 +151,8 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyParagraph>
           Policy creation was not difficult because administrators could not fill in fields. It
           was difficult because every request required high-stakes decisions across multiple
-          systems.
+          systems. For example:
         </CaseStudyParagraph>
-        <CaseStudyParagraph>For example:</CaseStudyParagraph>
         <CaseStudyQuote>
           &ldquo;Give contractors access to the internal hiring dashboard for the next two
           weeks.&rdquo;
@@ -191,33 +190,6 @@ export default function CiscoPolicyCopilotContent() {
         </CaseStudyWide>
         <CaseStudyDivider />
 
-        <CaseStudyH2>A simple real-world example</CaseStudyH2>
-        <CaseStudyParagraph>Imagine an HR team requests:</CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Give contractors access to the internal hiring dashboard for the next two
-          weeks.&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          That sounds straightforward. But before creating the rule, a security administrator
-          still needs to answer:
-        </CaseStudyParagraph>
-        <CaseStudyQuestionStack
-          ariaLabel="Security policy questions"
-          items={[
-            "Which contractor group should receive access?",
-            "Is access needed for the production hiring dashboard or the staging environment?",
-            "Can contractors access it from any network, or only through VPN?",
-            "Should access automatically expire after two weeks?",
-            "Should activity be logged for audit?",
-            "Does the request require approval from HR security owners?",
-          ]}
-        />
-        <CaseStudyParagraph>
-          The business request is simple. The policy decision is complex.
-        </CaseStudyParagraph>
-
-        <CaseStudyDivider className="!my-8 md:!my-10" />
-
         <CaseStudyH2>Inspiration</CaseStudyH2>
         <CaseStudyParagraph>
           To better understand this problem, I looked beyond enterprise software. One product
@@ -228,7 +200,7 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             shellBackground="#0D1114"
-            src={getIanXiaoheiIllustration("policy-copilot-google-maps-inspiration")}
+            src={getJbIllustration("policy-copilot-google-maps-inspiration")}
             alt="Users choose the destination — what the system figures out stays hidden beneath a simple arrival time"
           />
         </CaseStudyWide>
@@ -299,7 +271,7 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             shellBackground="#0D1114"
-            src={getIanXiaoheiIllustration("policy-copilot-opportunity")}
+            src={getJbIllustration("policy-copilot-opportunity")}
             alt="Before — manual policy tangle; after — intent to draft to human approval to deploy"
           />
         </CaseStudyWide>
@@ -351,7 +323,7 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             shellBackground="#0D1114"
-            src={getIanXiaoheiIllustration("policy-copilot-decision-triptych")}
+            src={getJbIllustration("policy-copilot-decision-triptych")}
             alt="From decision overload to Copilot reasoning to human approval — questions, context and evidence, then deploy"
           />
         </CaseStudyWide>
@@ -382,7 +354,7 @@ export default function CiscoPolicyCopilotContent() {
           <CaseStudyMedia
             aspect="natural"
             shellBackground="#0D1114"
-            src={getIanXiaoheiIllustration("policy-copilot-lifecycle-triptych")}
+            src={getJbIllustration("policy-copilot-lifecycle-triptych")}
             alt="How Policy Copilot participates — request to context, AI-assisted recommend and validate, human approval to deploy and monitor"
           />
         </CaseStudyWide>
@@ -422,49 +394,24 @@ export default function CiscoPolicyCopilotContent() {
 
         <CaseStudyH2 className="!mt-8">Triggering the Copilot</CaseStudyH2>
         <CaseStudyParagraph>
-          A key design question was: when should AI appear?
+          A key design question was: when should AI appear? We explored three activation
+          models.
         </CaseStudyParagraph>
-        <CaseStudyParagraph>We explored three activation models.</CaseStudyParagraph>
         <CaseStudyParagraph>
           If it appeared too often, it could interrupt experienced administrators. If it
           appeared too late, it could miss important risk or compliance issues.
         </CaseStudyParagraph>
-        <CaseStudyTable
-          caption="Copilot activation models"
-          headers={["Model", "When It Appears", "Example"]}
-          rows={[
-            [
-              "Explicit",
-              "Administrator asks for help",
-              "“Create a policy allowing Engineering access to GitHub.”",
-            ],
-            [
-              "Ambient",
-              "Copilot quietly notices a missing requirement",
-              "“This external access rule may require audit logging.”",
-            ],
-            [
-              "Proactive",
-              "Copilot detects meaningful risk or conflict",
-              "“This rule may conflict with HR access-control policy.”",
-            ],
-          ]}
-        />
 
         <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — triggering the Copilot"
-          />
+          <CopilotActivationInfographic />
         </CaseStudyWide>
 
         <CaseStudyDivider className="!mt-8" />
 
         <CaseStudyH2>Designing for Trust</CaseStudyH2>
         <CaseStudyParagraph>
-          In cybersecurity, speed alone is not valuable.
+          In cybersecurity, speed alone is not valuable. Administrators need to understand:
         </CaseStudyParagraph>
-        <CaseStudyParagraph>Administrators need to understand:</CaseStudyParagraph>
         <CaseStudyChips
           ariaLabel="What administrators need to understand"
           items={[
@@ -481,9 +428,9 @@ export default function CiscoPolicyCopilotContent() {
           &ldquo;Don&rsquo;t just tell me it&rsquo;s safe. Show me why.&rdquo;
         </CaseStudyQuote>
         <CaseStudyParagraph>
-          Every recommendation was designed to include evidence, context, and a clear next action.
+          Every recommendation was designed to include evidence, context, and a clear next
+          action. For example:
         </CaseStudyParagraph>
-        <CaseStudyParagraph>For example:</CaseStudyParagraph>
         <div className="w-full max-w-5xl space-y-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:space-y-6 md:p-6">
           <div className="space-y-2">
             <CaseStudyLabel>Recommendation</CaseStudyLabel>
@@ -516,13 +463,6 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyWide className="!mt-4 pb-6">
           <CaseStudyMedia
             aspect="natural"
-            alt="Cisco Policy Copilot — designing for trust"
-          />
-        </CaseStudyWide>
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
             alt="Cisco Policy Copilot — evidence and recommendation patterns"
           />
         </CaseStudyWide>
@@ -532,15 +472,13 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyH2>Learning Loop</CaseStudyH2>
         <CaseStudyParagraph>
           To improve recommendations over time, I designed a lightweight feedback pattern.
+          After a recommendation, the Copilot could ask:
         </CaseStudyParagraph>
-        <CaseStudyParagraph>After a recommendation, the Copilot could ask:</CaseStudyParagraph>
         <CaseStudyQuote>
           &ldquo;How accurate were the AI Suggestions?&rdquo;
         </CaseStudyQuote>
         <CaseStudyParagraph>
           Administrators could provide a quick 1–5 rating without leaving their workflow.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
           This created a low-friction learning loop while respecting the speed of security
           operations.
         </CaseStudyParagraph>

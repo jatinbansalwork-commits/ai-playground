@@ -3,7 +3,6 @@
 import {
   CASE_STUDY_META_LABEL,
 } from "@/components/case-studies/case-study-editorial";
-import { useCaseStudyRevealAnalytics } from "@/hooks/use-case-study-reveal-analytics";
 import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
 interface CaseStudyRevealCountdownProps {
@@ -28,15 +27,8 @@ export function CaseStudyRevealCountdown({
   slug,
   label = "Full case study unlocks in",
 }: CaseStudyRevealCountdownProps) {
-  const { ready, isRevealed, countdown, remainingMs } =
+  const { ready, isRevealed, countdown } =
     useCaseStudyRevealCountdownForSlug(slug);
-
-  useCaseStudyRevealAnalytics({
-    slug,
-    ready,
-    isRevealed,
-    remainingMs,
-  });
 
   if (!ready) {
     return (

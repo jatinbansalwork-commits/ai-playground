@@ -138,17 +138,6 @@ export function trackExternalDemoOpen(properties: {
   });
 }
 
-export function trackCaseStudyRevealImpression(properties: {
-  slug: string;
-  remaining_hours: string;
-}): void {
-  track("case_study_reveal_impression", properties);
-}
-
-export function trackCaseStudyRevealed(slug: string): void {
-  track("case_study_revealed", { slug });
-}
-
 export type MediaPlaySurface = "case-study" | "craft" | "ai-experiment";
 
 export type AiChatOpenSource =
