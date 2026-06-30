@@ -47,13 +47,24 @@ function readDocumentScrollOffset() {
   );
 }
 
-function isCoarsePointerDevice(): boolean {
+/** Ghost-spacer document scroll is unreliable on touch and WebKit — mirror only on desktop hover. */
+function shouldMirrorDocumentScroll(): boolean {
   if (typeof window === "undefined") return false;
-  return window.matchMedia("(pointer: coarse)").matches;
+  if (window.matchMedia("(hover: none)").matches) return false;
+  if (window.matchMedia("(pointer: coarse)").matches) return false;
+  return true;
 }
 
 function syncDocumentScrollOffset(value: number) {
-  if (isCoarsePointerDevice()) return;
+  if (!shouldMirrorDocumentScroll()) return;
+
+  const scrollingElement = document.scrollingElement;
+  if (scrollingElement) {
+    if (scrollingElement.scrollLeft !== value || scrollingElement.scrollTop !== value) {
+      scrollingElement.scrollLeft = value;
+      scrollingElement.scrollTop = value;
+    }
+  }
 
   if (
     document.documentElement.scrollLeft !== value ||
@@ -143,8 +154,8 @@ function eventTargetHasScrollableAncestor(
 const SLIDER_POINTER_IGNORE_SELECTOR =
   'a[href], button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
 
-const SLIDER_DRAG_AXIS_LOCK_PX = 8;
-const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 10;
+const SLIDER_DRAG_AXIS_LOCK_PX = 6;
+const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 6;
 
 function getSliderDragAxisLockPx(): number {
   if (typeof window === "undefined") return SLIDER_DRAG_AXIS_LOCK_PX;
@@ -206,9 +217,9 @@ export function useScrollSlider() {
   const scrollRangeRef = useRef(0);
   const baseScaleRef = useRef(1);
   const snapFrameRef = useRef<number | null>(null);
-  /** Authoritative slider offset — iOS Safari does not reliably persist document scroll. */
+  /** Authoritative slider offset — never read ghost-spacer scroll as source of truth. */
   const sliderScrollOffsetRef = useRef(0);
-  const coarsePointerRef = useRef(false);
+  const isPointerDraggingRef = useRef(false);
 
   const getScrollOffset = useCallback(() => sliderScrollOffsetRef.current, []);
 
@@ -334,7 +345,6 @@ export function useScrollSlider() {
   );
 
   useLayoutEffect(() => {
-    coarsePointerRef.current = isCoarsePointerDevice();
     const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
     scrollRangeRef.current = scrollRange;
 
@@ -369,10 +379,6 @@ export function useScrollSlider() {
     const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
     scrollRangeRef.current = scrollRange;
 
-    const syncCoarsePointer = () => {
-      coarsePointerRef.current = isCoarsePointerDevice();
-    };
-
     const syncBaseScale = () => {
       baseScaleRef.current = computeBaseScale();
       scale.jump(
@@ -386,58 +392,37 @@ export function useScrollSlider() {
     const initialIndex = getRestoredFrameIndex(frameCount);
     const initialScroll = initialIndex * SCROLL_PER_FRAME;
 
-    syncCoarsePointer();
     syncScrollPosition(initialScroll);
     syncBaseScale();
     updateFromScroll(initialScroll);
-
-    const coarseMedia = window.matchMedia("(pointer: coarse)");
-    coarseMedia.addEventListener("change", syncCoarsePointer);
 
     const readyTimer = window.setTimeout(() => {
       isReadyRef.current = true;
     }, 50);
 
-    let snapTimer: ReturnType<typeof setTimeout> | null = null;
-
+    /** Realign document scroll to our offset — never adopt ghost-spacer drift (iOS, Android, WebKit). */
     const onScroll = () => {
-      if (!isReadyRef.current) return;
-      if (coarsePointerRef.current) return;
+      if (!isReadyRef.current || isSnappingRef.current || isPointerDraggingRef.current) {
+        return;
+      }
 
-      const raw = readDocumentScrollOffset();
-      const synced = syncScrollPosition(raw);
+      const authoritative = getScrollOffset();
+      const documentOffset = readDocumentScrollOffset();
 
-      if (isSnappingRef.current) return;
-      updateFromScroll(synced);
+      if (Math.abs(documentOffset - authoritative) > 2) {
+        syncDocumentScrollOffset(authoritative);
+      }
     };
 
-    const onScrollWithSnap = () => {
-      onScroll();
-
-      if (coarsePointerRef.current) return;
-
-      if (snapTimer) clearTimeout(snapTimer);
-      snapTimer = setTimeout(() => {
-        const index = clamp(
-          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
-          0,
-          frameCount - 1,
-        );
-        snapToIndex(index);
-      }, 120);
-    };
-
-    window.addEventListener("scroll", onScrollWithSnap, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", syncBaseScale);
 
     return () => {
       isReadyRef.current = false;
       cancelSnapAnimation();
-      coarseMedia.removeEventListener("change", syncCoarsePointer);
       window.clearTimeout(readyTimer);
-      window.removeEventListener("scroll", onScrollWithSnap);
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", syncBaseScale);
-      if (snapTimer) clearTimeout(snapTimer);
     };
   }, [
     cancelSnapAnimation,
@@ -445,7 +430,6 @@ export function useScrollSlider() {
     frameCount,
     getScrollOffset,
     scale,
-    snapToIndex,
     syncScrollPosition,
     updateFromScroll,
   ]);
@@ -521,6 +505,7 @@ export function useScrollSlider() {
     const clearPointerDrag = () => {
       activePointerId = null;
       dragAxis = null;
+      isPointerDraggingRef.current = false;
     };
 
     const onPointerDown = (event: PointerEvent) => {
@@ -556,6 +541,7 @@ export function useScrollSlider() {
 
         dragAxis = Math.abs(deltaX) >= Math.abs(deltaY) ? "x" : "y";
         suppressClick = true;
+        isPointerDraggingRef.current = true;
       }
 
       const delta = dragAxis === "x" ? deltaX : deltaY;
@@ -585,6 +571,12 @@ export function useScrollSlider() {
 
     const onClickCapture = (event: MouseEvent) => {
       if (!suppressClick) return;
+      if (
+        event.target instanceof Element &&
+        event.target.closest(SLIDER_POINTER_IGNORE_SELECTOR)
+      ) {
+        return;
+      }
       event.preventDefault();
       event.stopImmediatePropagation();
       suppressClick = false;
