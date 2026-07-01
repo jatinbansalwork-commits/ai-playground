@@ -1,4 +1,5 @@
 import { cdnAsset } from "@/lib/asset-cdn";
+import { JB_ILLUSTRATIONS } from "@/lib/jb-illustration-library";
 import { getAllCaseStudies } from "@/lib/project-content";
 
 /**
@@ -21,7 +22,7 @@ export interface ProjectRowItem {
  *   cdnAsset("/thumbnails/cisco-hover.jpg");
  */
 export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
-  "cisco-policy-copilot": cdnAsset("/Cisco/Ciscp.png"),
+  "cisco-policy-copilot": JB_ILLUSTRATIONS["policy-copilot-projects-hover"],
   "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),

@@ -157,7 +157,7 @@ Add a case study: entry in `project-content.ts`, new `src/components/case-studie
 
 ### Pre-launch reveal gate (optional)
 
-Infrastructure for blurring case study body copy until a **worldwide UTC** countdown finishes. **Cisco Policy Copilot** is currently scheduled.
+Infrastructure for blurring case study body copy until a case study is **published**. Scheduled slugs use a **daily IST reset** — the countdown rolls over at midnight Asia/Kolkata but content stays blurred until the slug is removed from the schedule.
 
 | Piece | Location |
 |-------|----------|
@@ -166,11 +166,11 @@ Infrastructure for blurring case study body copy until a **worldwide UTC** count
 | Countdown UI | `CaseStudyRevealCountdown` in hero `metaBottom` |
 | Blur wrapper | `blur-xl` + `pointer-events-none` until `isRevealed` |
 
-Unlock instant = `startsAtUtc + CASE_STUDY_REVEAL_DURATION_MS` (24 hours).
+`daily-reset` mode: remaining time = until next **IST midnight (00:00 Asia/Kolkata)**; resets every day; `isRevealed` stays `false` until publish. To publish: remove the slug from `CASE_STUDY_REVEAL_SCHEDULE` and follow `.cursor/rules/case-study-reveal-timer.mdc`.
 
-| Slug | `startsAtUtc` (reset here) | Unlock (UTC) |
-|------|---------------------------|--------------|
-| `cisco-policy-copilot` | `2026-07-01T05:50:43.000Z` | `2026-07-02T05:50:43.000Z` |
+| Slug | Mode | Status |
+|------|------|--------|
+| `cisco-policy-copilot` | `daily-reset` | Pre-launch — blurred body, countdown in hero |
 
 Rules: `.cursor/rules/case-study-reveal-timer.mdc`
 
@@ -204,7 +204,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `ai_chat_chip_click` | `intent_id` | Suggested prompt chip |
 | `ai_chat_message` | `source` | User message sent (`chip` or `typed`) |
 | `ai_chat_reply` | `source` | Assistant reply source (`static`, `openai`, `fallback`) |
-| `ai_chat_intent` | `intent_id`, `confidence`, `input?` | Detected visitor goal |
+| `ai_chat_intent` | `intent_id`, `confidence`, `input?`, `goal?` | Detected visitor goal |
 | `ai_chat_session_messages` | counts | Chat close — transcript breakdown |
 | `ai_chat_close` | `message_count` | Chat panel closed |
 | `ai_chat_wireframe_toggle` | `enabled` | Wireframe mode toggle |

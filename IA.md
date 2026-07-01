@@ -60,7 +60,7 @@ Monogram assets: `public/assets/index/` (`craft-monogram.png`, `ideas-monogram.p
 | On `/projects` index | All case studies except `HIDDEN_PROJECT_SLUGS` |
 | Hidden from index | `freshprints-heal-tool`, `piggy-personalised-mutual-fund-recommendation`, `saltmine-sync` |
 | `noindex` (sitemap) | Same three drafts — see `getIndexableCaseStudySlugs()` |
-| Pre-launch blur gate | Slugs in `CASE_STUDY_REVEAL_SCHEDULE` (currently `cisco-policy-copilot`) |
+| Pre-launch blur gate | `cisco-policy-copilot` — daily IST reset (`CASE_STUDY_REVEAL_SCHEDULE`) |
 
 Direct URLs work for hidden and gated case studies; gating only affects blur + countdown UX.
 
@@ -99,5 +99,5 @@ Local prefixes are allowlisted in `LOCAL_PUBLIC_ASSET_PREFIXES` — not rewritte
 | [`IA.md`](./IA.md) | This file — routes and content ownership |
 | [`design.md`](./design.md) | Component wiring, gallery rules, editorial patterns |
 | `.cursor/rules/case-study-headings.mdc` | Heading & caption casing |
-| `.cursor/rules/case-study-reveal-timer.mdc` | UTC reveal countdown rules |
+| `.cursor/rules/case-study-reveal-timer.mdc` | IST reveal countdown rules |
 | `.cursor/skills/jb_illustrations/` | Illustration generation skill |

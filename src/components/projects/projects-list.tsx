@@ -21,7 +21,13 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
     <Link
       href={getProjectCaseStudyHref(project.slug)}
       className={PROJECTS_ROW_LINK_CLASS}
-      onClick={() => trackProjectListClick(project.slug)}
+      onClick={() =>
+        trackProjectListClick({
+          slug: project.slug,
+          title: project.title,
+          year: project.year,
+        })
+      }
       onMouseEnter={() => onHoverStart(project)}
       onMouseLeave={onHoverEnd}
       onFocus={() => onHoverStart(project)}

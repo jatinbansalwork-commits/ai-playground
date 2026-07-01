@@ -5,6 +5,7 @@ import type { ComponentType } from "react";
 import { notFound, useParams } from "next/navigation";
 import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell";
 import { ROUTES } from "@/lib/constants";
+import { getCaseStudyContent } from "@/lib/project-content";
 
 const caseStudyComponents: Record<string, ComponentType> = {
   "cisco-policy-copilot": dynamic(
@@ -44,11 +45,14 @@ export default function DynamicCaseStudyGateway() {
     notFound();
   }
 
+  const content = getCaseStudyContent(slug);
+
   return (
     <CaseStudyPageShell
       backHref={ROUTES.projects}
       backDestination="Projects"
       analyticsSlug={slug}
+      analyticsTitle={content?.title}
       analyticsSource="projects"
     >
       <TargetCaseStudyLayout />

@@ -1,12 +1,12 @@
 ---
-description: Global UTC case study reveal countdown — same unlock time for all users
-globs: src/lib/case-study-reveal-schedule.ts,src/hooks/use-case-study-reveal-countdown.ts,src/components/case-studies/case-study-reveal-countdown.tsx,src/components/case-studies/CiscoPolicyCopilot.tsx
+description: Case study reveal timer — daily IST reset until explicit publish
+globs: src/lib/case-study-reveal-schedule.ts,src/hooks/use-case-study-reveal-countdown.ts,src/components/case-studies/case-study-reveal-countdown.tsx,src/components/case-studies/CiscoPolicyCopilot.tsx,src/lib/project-content.ts
 alwaysApply: false
 ---
 
 # Case study reveal timer
 
-Case studies with a pre-launch blur gate use a **worldwide UTC schedule**, not per-user `localStorage`.
+Pre-launch case studies use a **worldwide countdown** (anchored to **IST / Asia/Kolkata**) and blur gate — not per-user `localStorage`.
 
 ## Source of truth
 
@@ -14,26 +14,40 @@ Case studies with a pre-launch blur gate use a **worldwide UTC schedule**, not p
 
 | Field | Meaning |
 |-------|---------|
-| `startsAtUtc` | UTC ISO-8601 instant when the countdown starts (same for every visitor) |
-| `CASE_STUDY_REVEAL_DURATION_MS` | Unlock window length — **24 hours** |
+| `mode: "daily-reset"` | Countdown runs until **IST midnight (00:00 Asia/Kolkata)**, then resets. Body **stays blurred** — the timer never unlocks content on its own. |
+| `mode: "fixed"` | Legacy one-shot window from `startsAtUtc` + 24 hours. |
+| Slug absent from schedule | Case study is **published** — no blur, no countdown. |
 
-Unlock instant: `Date.parse(startsAtUtc) + 24 hours`
+## Daily reset (default for drafts)
 
-## Resetting the timer
+`cisco-policy-copilot` uses `daily-reset`. Do **not** bump `startsAtUtc` manually — the countdown resets automatically every IST day.
 
-1. Set `startsAtUtc` to the new UTC start (e.g. `2026-06-26T07:09:08.000Z`).
-2. Update the schedule table in `design.md` (§ Pre-launch reveal gate) with the new start and unlock instants.
-3. All users worldwide see the same remaining time.
+## Publish only when the user says so
+
+Remove the gate **only** when the user explicitly says the case study is ready to publish, e.g.:
+
+- “this case study is ready”
+- “let’s publish this”
+- “publish the case study”
+
+Until then, keep `daily-reset` active.
+
+### Publish checklist
+
+1. Remove the slug from `CASE_STUDY_REVEAL_SCHEDULE`.
+2. Remove `<CaseStudyRevealCountdown />` from the case study hero `metaBottom`.
+3. Remove the `blur-xl` wrapper and `useCaseStudyRevealCountdownForSlug` gate in the case study component.
+4. Remove the `⏳` prefix from the title in `src/lib/project-content.ts`.
+5. Update the schedule table in `design.md` (§ Pre-launch reveal gate).
 
 ## Wiring
 
-- Hook: `useCaseStudyRevealCountdownForSlug(slug)` or `useCaseStudyRevealCountdown(unlockAtMs)`
+- Hook: `useCaseStudyRevealCountdownForSlug(slug)`
 - UI: `<CaseStudyRevealCountdown slug="your-slug" />` in hero `metaBottom`
-- Blur gate: `isRevealed` from the same hook / slug schedule
-
-**No other slugs are scheduled.** Add an entry to `CASE_STUDY_REVEAL_SCHEDULE` and wire the countdown + blur wrapper in the case study component to enable elsewhere.
+- Blur gate: `isRevealed` from the same hook — always `false` while `daily-reset` is active
 
 ## Do not
 
-- Per-browser countdown (`Date.now() + duration` in `localStorage`)
-- Different unlock times per user or timezone offset hacks — always UTC
+- Manually reset `startsAtUtc` for `daily-reset` slugs
+- Per-browser countdown (`localStorage`)
+- Remove the blur gate without an explicit publish request from the user

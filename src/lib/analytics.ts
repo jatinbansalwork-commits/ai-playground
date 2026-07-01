@@ -26,11 +26,25 @@ export function trackResumeDownload(): void {
   track("resume_download");
 }
 
+/** Projects index row click — before case study navigation. */
+export function trackProjectListClick(properties: {
+  slug: string;
+  title: string;
+  year: string;
+}): void {
+  track("project_list_click", properties);
+}
+
 export function trackProjectOpen(
   slug: string,
   source: ProjectOpenSource,
+  title?: string,
 ): void {
-  track("project_open", { slug, source });
+  track("project_open", {
+    slug,
+    source,
+    ...(title ? { title } : {}),
+  });
 }
 
 /** Design review essay page load (`/craft/design-review-checklist`). */
@@ -92,11 +106,6 @@ export function trackIndexSlideClick(properties: {
   href: string;
 }): void {
   track("index_slide_click", properties);
-}
-
-/** Projects index row click — before case study navigation. */
-export function trackProjectListClick(slug: string): void {
-  track("project_list_click", { slug });
 }
 
 export function trackCaseStudyScrollDepth(
@@ -190,11 +199,13 @@ export function trackAiChatIntent(properties: {
   intent_id: string;
   confidence: "high" | "low";
   input?: "chip" | "typed";
+  goal?: string;
 }): void {
   track("ai_chat_intent", {
     intent_id: properties.intent_id,
     confidence: properties.confidence,
     ...(properties.input ? { input: properties.input } : {}),
+    ...(properties.goal ? { goal: properties.goal.slice(0, 120) } : {}),
   });
 }
 

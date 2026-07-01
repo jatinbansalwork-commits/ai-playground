@@ -31,6 +31,10 @@ import {
   streamPreparedReply,
   streamTextChunks,
 } from "@/lib/ai-chat-stream.server";
+import {
+  inferChatInputType,
+  queueChatQuestionLog,
+} from "@/lib/ai-chat-log.server";
 import type {
   ChatApiRequest,
   ChatGif,
@@ -38,6 +42,7 @@ import type {
   ChatReplySource,
   ChatStreamEvent,
 } from "@/lib/ai-chat-types";
+import type { DetectedQuestionIntent } from "@/lib/ai-chat-question-intent";
 
 function isChipFirstTurn(messages: ChatMessage[]): boolean {
   if (messages.length !== 1 || messages[0]?.role !== "user") return false;
@@ -65,6 +70,31 @@ function lastUserMessage(messages: ChatMessage[]): string {
     }
   }
   return "";
+}
+
+function logChatQuestionTurn(
+  request: Request,
+  messages: ChatMessage[],
+  options: {
+    question: string;
+    reply: string;
+    pagePath?: string;
+    chipIntentId?: AiChatIntentId;
+    visitorIntent: DetectedQuestionIntent;
+    replySource: ChatReplySource;
+  },
+): void {
+  queueChatQuestionLog(request, messages, {
+    question: options.question,
+    reply: options.reply,
+    pagePath: options.pagePath,
+    intentId: options.chipIntentId,
+    questionIntentId: options.visitorIntent.id,
+    goal: options.visitorIntent.goal,
+    inputType: inferChatInputType(options.chipIntentId),
+    replySource: options.replySource,
+    turn: 0,
+  });
 }
 
 async function attachReactionGif<T extends Record<string, unknown>>(
@@ -145,6 +175,12 @@ export async function POST(request: Request): Promise<Response> {
 
   const usedGifIds = sanitiseUsedGifIds(body.usedGifIds);
   const promptCount = await getChatPromptCount();
+  const pagePath = body.pagePath?.trim() || undefined;
+  const intentId = resolveChipIntentId(messages, body.intentId);
+  const userMessage = lastUserMessage(messages);
+  const visitorIntent = detectQuestionIntent(userMessage, pagePath);
+  const remainingPromptsBefore = getRemainingChatPrompts(promptCount);
+
   if (promptCount >= AI_CHAT_PROMPT_LIMIT) {
     return createChatStreamResponse(async (emit) => {
       const openAiBudget = await getOpenAiBudgetState();
@@ -161,14 +197,17 @@ export async function POST(request: Request): Promise<Response> {
         remainingPrompts: 0,
         remainingOpenAi: openAiBudget.remainingOpenAi,
       });
+      logChatQuestionTurn(request, messages, {
+        question: userMessage,
+        reply: AI_CHAT_LIMIT_MESSAGE,
+        pagePath,
+        chipIntentId: intentId,
+        visitorIntent,
+        replySource: "fallback",
+      });
       return attachReactionGif(result, gifPromise);
     });
   }
-
-  const pagePath = body.pagePath?.trim() || undefined;
-  const intentId = resolveChipIntentId(messages, body.intentId);
-  const userMessage = lastUserMessage(messages);
-  const remainingPromptsBefore = getRemainingChatPrompts(promptCount);
 
   return createChatStreamResponse(async (emit) => {
     const openAiBudget = await getOpenAiBudgetState();
@@ -196,6 +235,14 @@ export async function POST(request: Request): Promise<Response> {
           remainingPrompts,
           remainingOpenAi: openAiBudget.remainingOpenAi,
         });
+        logChatQuestionTurn(request, messages, {
+          question: userMessage,
+          reply: staticReply,
+          pagePath,
+          chipIntentId,
+          visitorIntent,
+          replySource: "static",
+        });
         return attachReactionGif(
           result,
           fetchChatReactionGif(
@@ -208,7 +255,6 @@ export async function POST(request: Request): Promise<Response> {
       }
     }
 
-    const visitorIntent = detectQuestionIntent(userMessage, pagePath);
     const curatedReply = buildIntentReply(visitorIntent, userMessage, pagePath);
 
     if (curatedReply && shouldUseCuratedReply(visitorIntent)) {
@@ -226,6 +272,15 @@ export async function POST(request: Request): Promise<Response> {
         source: "fallback",
         remainingPrompts,
         remainingOpenAi: openAiBudget.remainingOpenAi,
+      });
+
+      logChatQuestionTurn(request, messages, {
+        question: userMessage,
+        reply: curatedReply,
+        pagePath,
+        chipIntentId: intentId,
+        visitorIntent,
+        replySource: "fallback",
       });
 
       return attachReactionGif(
@@ -280,6 +335,15 @@ export async function POST(request: Request): Promise<Response> {
       pagePath,
       intentId,
       source,
+    });
+
+    logChatQuestionTurn(request, messages, {
+      question: userMessage,
+      reply,
+      pagePath,
+      chipIntentId: intentId,
+      visitorIntent,
+      replySource: source,
     });
 
     return attachReactionGif(

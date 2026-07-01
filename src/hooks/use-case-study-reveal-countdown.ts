@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
+  getCaseStudyRevealState,
   getCaseStudyRevealRemainingMs,
-  getCaseStudyRevealUnlockAtMs,
 } from "@/lib/case-study-reveal-schedule";
 
 export function formatRevealCountdown(remainingMs: number) {
@@ -20,7 +20,45 @@ export function formatRevealCountdown(remainingMs: number) {
   };
 }
 
-/** Worldwide countdown to a fixed UTC unlock instant — not per-browser storage. */
+/** Worldwide countdown — not per-browser storage. */
+export function useCaseStudyRevealCountdownForSlug(slug: string) {
+  const [revealState, setRevealState] = useState(() => getCaseStudyRevealState(slug));
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    function tick() {
+      setRevealState(getCaseStudyRevealState(slug));
+    }
+
+    tick();
+    setReady(true);
+
+    const intervalId = window.setInterval(tick, 1000);
+    return () => window.clearInterval(intervalId);
+  }, [slug]);
+
+  if (!revealState) {
+    return {
+      ready: true,
+      remainingMs: 0,
+      isRevealed: true,
+      countdown: formatRevealCountdown(0),
+      isScheduled: false,
+    };
+  }
+
+  const countdown = formatRevealCountdown(revealState.remainingMs);
+
+  return {
+    ready,
+    remainingMs: revealState.remainingMs,
+    isRevealed: revealState.isRevealed,
+    countdown,
+    isScheduled: true,
+  };
+}
+
+/** @deprecated Prefer `useCaseStudyRevealCountdownForSlug` for slug-based schedules. */
 export function useCaseStudyRevealCountdown(unlockAtMs: number) {
   const [remainingMs, setRemainingMs] = useState(() =>
     getCaseStudyRevealRemainingMs(unlockAtMs),
@@ -47,22 +85,4 @@ export function useCaseStudyRevealCountdown(unlockAtMs: number) {
     isRevealed: countdown.isComplete,
     countdown,
   };
-}
-
-export function useCaseStudyRevealCountdownForSlug(slug: string) {
-  const unlockAtMs = getCaseStudyRevealUnlockAtMs(slug);
-  const effectiveUnlockAtMs = unlockAtMs ?? Date.now();
-  const state = useCaseStudyRevealCountdown(effectiveUnlockAtMs);
-
-  if (unlockAtMs === null) {
-    return {
-      ready: true,
-      remainingMs: 0,
-      isRevealed: true,
-      countdown: formatRevealCountdown(0),
-      unlockAtMs: null,
-    };
-  }
-
-  return { ...state, unlockAtMs };
 }

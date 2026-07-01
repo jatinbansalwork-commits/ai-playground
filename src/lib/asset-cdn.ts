@@ -203,6 +203,12 @@ export const CASE_STUDY_CDN_MEDIA = {
   "cisco-policy-copilot-overview": cdnAsset("/Cisco/Main%20Comp.mp4"),
   "cisco-policy-copilot-why-matters": cdnAsset("/Cisco/image%202.png"),
   "cisco-policy-copilot-workflow-transformation": cdnAsset("/Cisco/image%203.png"),
+  "cisco-policy-copilot-understand-first":
+    cdnAsset("/Cisco/Screenshot%202026-07-01%20at%203.36.20%E2%80%AFPM.png"),
+  "cisco-policy-copilot-design-sprint":
+    cdnAsset(
+      "/Cisco/036c39f5fe6bd4a4cea368970d1b3b401f9ce9032587af43ef2a95e211527ece.png%20copy.png",
+    ),
   "cisco-policy-copilot-trust": cdnAsset("/Cisco/1.png"),
   "cisco-policy-copilot-trust-ui": cdnAsset("/Cisco/1_3.svg"),
   "cisco-policy-copilot-propose-recommend-ui": cdnAsset("/Cisco/1_4.svg"),

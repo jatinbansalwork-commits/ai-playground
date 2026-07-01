@@ -25,6 +25,7 @@ interface CaseStudyPageShellProps {
   dataSheet?: "case-study";
   /** Case study slug for analytics (`project_open`, scroll depth). */
   analyticsSlug?: string;
+  analyticsTitle?: string;
   analyticsSource?: ProjectOpenSource;
   children: ReactNode;
 }
@@ -36,6 +37,7 @@ export function CaseStudyPageShell({
   navBackDestination = backDestination,
   dataSheet = "case-study",
   analyticsSlug,
+  analyticsTitle,
   analyticsSource,
   children,
 }: CaseStudyPageShellProps) {
@@ -43,6 +45,7 @@ export function CaseStudyPageShell({
   useCaseStudyHashFocus();
   useCaseStudyPageAnalytics({
     slug: analyticsSlug,
+    title: analyticsTitle,
     source: analyticsSource,
     scrollRootRef,
   });

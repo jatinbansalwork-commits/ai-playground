@@ -133,6 +133,17 @@ Floating assistant on every page — `src/components/ai-chat/*`, API at `src/app
 
 Curated knowledge, intent chips, OpenAI streaming, GIPHY reactions, and session limits.
 
+### Question logging
+
+Every message is classified into a **question intent** (`hiring`, `resume`, `project_saltbot`, `explore`, etc.) in `src/lib/ai-chat-question-intent.ts`. The full catalogue is exported as `QUESTION_INTENT_CATALOG`.
+
+| Destination | What is recorded | Setup |
+|-------------|------------------|-------|
+| **Vercel Analytics** | `ai_chat_intent` — `intent_id`, `confidence`, `goal`, chip vs typed | Enabled in production |
+| **Google Sheet** | Question, **answer**, page, intents, reply source | Set `AI_CHAT_LOG_WEBHOOK_URL` in Vercel env — see `scripts/jbai-chat-log-apps-script.js` |
+
+Set `AI_CHAT_LOG_ENABLED=false` to disable the sheet webhook without removing the URL.
+
 ## Design notes
 
 - **[`IA.md`](./IA.md)** — routes, index frames, visibility

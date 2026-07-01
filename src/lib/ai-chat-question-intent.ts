@@ -300,3 +300,15 @@ export function buildIntentPromptBlock(intent: DetectedQuestionIntent): string {
 Reply goal: ${intent.goal}
 Fulfill that intent first — do not answer a different question than the one they asked.`;
 }
+
+/** Reference list for analytics dashboards and chat question logs. */
+export const QUESTION_INTENT_CATALOG: readonly {
+  id: QuestionIntentId;
+  goal: string;
+}[] = [
+  ...INTENT_RULES.map((rule) => ({ id: rule.id, goal: rule.goal })),
+  {
+    id: "explore",
+    goal: "General portfolio browse — suggest relevant case studies or ask a clarifying question.",
+  },
+];

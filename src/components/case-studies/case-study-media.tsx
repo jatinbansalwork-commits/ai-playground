@@ -29,6 +29,8 @@ interface CaseStudyMediaProps {
   shellBackground?: string;
   /** Optional body copy rendered below the caption. */
   paragraph?: ReactNode;
+  /** Extra classes for the figcaption when `label` is set. */
+  captionClassName?: string;
 }
 
 const ASPECT_CLASS = {
@@ -64,6 +66,7 @@ export function CaseStudyMedia({
   borderless = false,
   shellBackground,
   paragraph,
+  captionClassName,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const autoplay = useMediaAutoplay();
@@ -174,7 +177,9 @@ export function CaseStudyMedia({
         )}
       </div>
       {label ? (
-        <figcaption className={CASE_STUDY_CAPTION}>{label}</figcaption>
+        <figcaption className={`${CASE_STUDY_CAPTION} ${captionClassName ?? ""}`.trim()}>
+          {label}
+        </figcaption>
       ) : null}
       {paragraph ? (
         <p className={`${CASE_STUDY_PARAGRAPH_DENSE} mt-2`}>{paragraph}</p>

@@ -76,6 +76,7 @@ import {
   isWireframeModeCommand,
 } from "@/lib/ai-chat-commands.client";
 import { detectQuestionIntent } from "@/lib/ai-chat-question-intent";
+import { queueClientChatLog } from "@/lib/ai-chat-log.client";
 import { springSnappy } from "@/lib/spring";
 
 type ChatView = "ball" | "chat";
@@ -262,12 +263,22 @@ export function AiChatBall() {
           intent_id: "wireframe",
           confidence: "high",
           input: "typed",
+          goal: "Explain the wireframe easter egg — toggle via chat command or index cross.",
         });
 
         const reply = buildWireframeModeReply(
           nextEnabled,
           pathname === "/" || pathname === "",
         );
+
+        queueClientChatLog({
+          question: content,
+          reply,
+          pagePath: pathname,
+          questionIntentId: "wireframe",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
 
         ensureChatOpen();
         setFollowUps([]);
@@ -290,18 +301,32 @@ export function AiChatBall() {
         intent_id: visitorIntent.id,
         confidence: visitorIntent.confidence,
         input: routedIntentId ? "chip" : "typed",
+        goal: visitorIntent.goal,
       });
 
       if (remainingPrompts <= 0) {
         ensureChatOpen();
         setFollowUps([]);
-        setMessages((current) => {
-          const last = current[current.length - 1];
-          if (last?.role === "assistant" && last.content === AI_CHAT_LIMIT_MESSAGE) {
-            return current;
-          }
-          return [...current, { role: "assistant", content: AI_CHAT_LIMIT_MESSAGE }];
-        });
+        const last = messages[messages.length - 1];
+        const alreadyShowingLimit =
+          last?.role === "assistant" && last.content === AI_CHAT_LIMIT_MESSAGE;
+
+        if (!alreadyShowingLimit) {
+          queueClientChatLog({
+            question: content,
+            reply: AI_CHAT_LIMIT_MESSAGE,
+            pagePath: pathname,
+            intentId: routedIntentId,
+            questionIntentId: visitorIntent.id,
+            replySource: "fallback",
+            turn: messages.filter((message) => message.role === "user").length + 1,
+          });
+
+          setMessages((current) => [
+            ...current,
+            { role: "assistant", content: AI_CHAT_LIMIT_MESSAGE },
+          ]);
+        }
         return;
       }
 

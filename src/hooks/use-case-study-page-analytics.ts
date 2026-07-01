@@ -12,12 +12,14 @@ const SCROLL_DEPTH_THRESHOLDS: CaseStudyScrollDepth[] = [25, 50, 75, 100];
 
 interface UseCaseStudyPageAnalyticsOptions {
   slug?: string;
+  title?: string;
   source?: ProjectOpenSource;
   scrollRootRef: RefObject<HTMLElement | null>;
 }
 
 export function useCaseStudyPageAnalytics({
   slug,
+  title,
   source,
   scrollRootRef,
 }: UseCaseStudyPageAnalyticsOptions): void {
@@ -28,8 +30,8 @@ export function useCaseStudyPageAnalytics({
     if (!slug || !source || openedRef.current) return;
 
     openedRef.current = true;
-    trackProjectOpen(slug, source);
-  }, [slug, source]);
+    trackProjectOpen(slug, source, title);
+  }, [slug, source, title]);
 
   useEffect(() => {
     if (!slug) return;

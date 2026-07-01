@@ -40,7 +40,29 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       client: "Cisco",
       location: "San Jose, CA",
       infoText:
-        "Cisco is a global leader in networking and cybersecurity, building the infrastructure that connects organisations worldwide and secures their digital operations.",
+        "Policy Copilot, an AI-assisted experience embedded directly into the policy creation workflow. Instead of asking administrators to manually assemble firewall rules, the product helps them describe what they want in natural language, generates a draft policy, validates it against organisational constraints, and keeps the administrator in control until deployment.",
+    },
+  ),
+  "freshprints-image-gen-ai": entry(
+    "freshprints-image-gen-ai",
+    "✅ FreshPrints - Image Gen AI",
+    "2025",
+    "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
+    {
+      services: [
+        "UX / UI for desktop + mobile",
+        "Shipped MVP",
+        "Design",
+        "Conceptualization",
+        "Dev handoff",
+        "Discovery",
+        "Audit",
+        "Motion Graphics",
+      ],
+      client: "FreshPrints",
+      location: "New York, NY",
+      infoText:
+        "FreshPrints' e-commerce platform has been a favourite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "freshprints-design-system": entry(
@@ -67,28 +89,6 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       location: "New York, NY",
       infoText:
         "Designed canvas editor workflows that balance structure and spontaneity — enabling parallel attention across layers, assets, and live collaboration without overwhelming the editing surface.",
-    },
-  ),
-  "freshprints-image-gen-ai": entry(
-    "freshprints-image-gen-ai",
-    "✅ FreshPrints - Image Gen AI",
-    "2025",
-    "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
-    {
-      services: [
-        "UX / UI for desktop + mobile",
-        "Shipped MVP",
-        "Design",
-        "Conceptualization",
-        "Dev handoff",
-        "Discovery",
-        "Audit",
-        "Motion Graphics",
-      ],
-      client: "FreshPrints",
-      location: "New York, NY",
-      infoText:
-        "FreshPrints' e-commerce platform has been a favourite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
     },
   ),
   "saltbot-ai-saltmine": entry(
