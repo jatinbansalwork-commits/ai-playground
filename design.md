@@ -170,7 +170,7 @@ Unlock instant = `startsAtUtc + CASE_STUDY_REVEAL_DURATION_MS` (24 hours).
 
 | Slug | `startsAtUtc` (reset here) | Unlock (UTC) |
 |------|---------------------------|--------------|
-| `cisco-policy-copilot` | `2026-06-30T06:51:05.000Z` | `2026-07-01T06:51:05.000Z` |
+| `cisco-policy-copilot` | `2026-07-01T05:50:43.000Z` | `2026-07-02T05:50:43.000Z` |
 
 Rules: `.cursor/rules/case-study-reveal-timer.mdc`
 
