@@ -1,10 +1,11 @@
 "use client";
 
+import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { useArchivePageAnalytics } from "@/hooks/use-archive-page-analytics";
-import { BACK_LINK_CLASS } from "@/lib/a11y";
-import { SITE_NAME } from "@/lib/constants";
+import { backNavigationLabel, NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import { ROUTES } from "@/lib/constants";
 
 export function MePage() {
   useArchivePageAnalytics();
@@ -18,12 +19,12 @@ export function MePage() {
       <h1 className="sr-only">Me</h1>
 
       <ScrollResetLink
-        href="/"
+        href={ROUTES.home}
         scroll={true}
-        aria-label={`Back to ${SITE_NAME}`}
-        className={`absolute top-8 left-8 z-20 md:left-12 ${BACK_LINK_CLASS}`}
+        className={NAV_BACK_LINK_CLASS}
+        aria-label={backNavigationLabel("Home")}
       >
-        ←
+        <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>
 
       <MeIntroVideo variant="page" />

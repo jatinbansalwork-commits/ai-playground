@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { isLongReadPathname } from "@/lib/long-read-routes";
 
 const INTERACTIVE_SELECTOR =
   'a, button, [role="button"], input, textarea, select, label, summary, [tabindex]:not([tabindex="-1"]), .cursor-pointer';
@@ -11,6 +13,7 @@ function isCoarsePointer(): boolean {
 }
 
 export function SiteCursor() {
+  const pathname = usePathname();
   const reducedMotion = useReducedMotion();
   const cursorRef = useRef<HTMLDivElement>(null);
   const visibleRef = useRef(false);
@@ -18,9 +21,11 @@ export function SiteCursor() {
   const [enabled, setEnabled] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const disableCustomCursor = isLongReadPathname(pathname);
 
   useEffect(() => {
-    if (reducedMotion || isCoarsePointer()) {
+    if (reducedMotion || isCoarsePointer() || disableCustomCursor) {
+      document.documentElement.classList.remove("site-custom-cursor");
       setEnabled(false);
       return;
     }
@@ -69,7 +74,7 @@ export function SiteCursor() {
       window.removeEventListener("mouseover", onMouseOver);
       document.documentElement.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, disableCustomCursor]);
 
   if (!enabled) return null;
 

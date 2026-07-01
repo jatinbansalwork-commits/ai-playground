@@ -23,6 +23,7 @@ import { HeroFramePanel } from "@/components/slider/hero-frame";
 import { SectionFramePanel } from "@/components/slider/section-frame";
 import { ContactFramePanel } from "@/components/slider/contact-frame";
 import { ManifestFramePanel } from "@/components/slider/manifest-frame";
+import { IndexScrollHint } from "@/components/slider/index-scroll-hint";
 import { SiteFooter } from "@/components/site-footer";
 
 function IndexCanvas() {
@@ -71,7 +72,13 @@ function IndexCanvas() {
           } as React.CSSProperties
         }
       >
-        <Minimap />
+        <Minimap
+          frameCount={frameCount}
+          onSelectFrame={(index) => {
+            playClick();
+            snapToIndex(index, "minimap");
+          }}
+        />
 
         <div className="scrollable-content pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible">
           <motion.div
@@ -144,6 +151,8 @@ function IndexCanvas() {
           frameCount={frameCount}
           onSelect={handleSlideNavSelect}
         />
+
+        <IndexScrollHint activeFrameIndex={activeFrameIndex} />
 
         <SiteFooter pinned />
 

@@ -56,7 +56,7 @@ export function CaseStudyPageShell({
         ref={scrollRootRef}
         id="main-content"
         data-sheet={dataSheet}
-        className="case-study-main no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
+        className="case-study-main fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
         tabIndex={-1}
       >
         <CaseStudySkipLink />

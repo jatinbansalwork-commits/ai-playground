@@ -9,7 +9,7 @@ import { FOCUS_RING } from "@/lib/a11y";
 
 interface IdeasCardProps {
   item: ExperimentGalleryItem;
-  onSelect: (item: ExperimentGalleryItem) => void;
+  onSelect: (item: ExperimentGalleryItem, trigger: HTMLElement) => void;
 }
 
 export function IdeasCard({ item, onSelect }: IdeasCardProps) {
@@ -20,7 +20,7 @@ export function IdeasCard({ item, onSelect }: IdeasCardProps) {
   return (
     <button
       type="button"
-      onClick={() => onSelect(item)}
+      onClick={(event) => onSelect(item, event.currentTarget)}
       aria-label={`View ${item.title}`}
       className={`ideas-card group w-full text-left ${FOCUS_RING}`}
     >

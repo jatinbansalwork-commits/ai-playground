@@ -9,6 +9,7 @@ import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
 import { trackProjectListClick } from "@/lib/analytics";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
+import { getCaseStudyContent } from "@/lib/project-content";
 
 interface ProjectRowProps {
   project: ProjectRowItem;
@@ -17,10 +18,13 @@ interface ProjectRowProps {
 }
 
 function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
+  const overview = getCaseStudyContent(project.slug)?.overviewText;
+
   return (
     <Link
       href={getProjectCaseStudyHref(project.slug)}
       className={PROJECTS_ROW_LINK_CLASS}
+      title={overview}
       onClick={() =>
         trackProjectListClick({
           slug: project.slug,
@@ -33,7 +37,17 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
       onFocus={() => onHoverStart(project)}
       onBlur={onHoverEnd}
     >
-      <span className="projects-row-title">{project.title}</span>
+      <span className="projects-row-leading">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.hoverThumbnail}
+          alt=""
+          className="projects-row-thumb"
+          loading="lazy"
+          decoding="async"
+        />
+        <span className="projects-row-title">{project.title}</span>
+      </span>
       <span className="projects-row-spacer" aria-hidden />
       <time className="projects-row-year" dateTime={project.year}>
         {project.year}

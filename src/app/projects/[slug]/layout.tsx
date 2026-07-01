@@ -58,9 +58,13 @@ export default async function CaseStudyLayout({
 
   const displayTitle = stripCaseStudyStatusPrefix(content.title);
   const description = buildCaseStudyMetaDescription(content);
+  const preloadImage = caseStudyOgImage(slug);
 
   return (
     <>
+      {preloadImage ? (
+        <link rel="preload" href={preloadImage} as="image" fetchPriority="high" />
+      ) : null}
       <JsonLd
         data={caseStudyArticleJsonLd({
           slug,

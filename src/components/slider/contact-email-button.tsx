@@ -24,11 +24,11 @@ export function ContactEmailButton({
     trackContactClick("email");
     try {
       await navigator.clipboard.writeText(CONTACT_EMAIL);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
     } catch {
-      // Clipboard may be unavailable.
+      window.location.href = `mailto:${CONTACT_EMAIL}`;
     }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2200);
   }
 
   return (

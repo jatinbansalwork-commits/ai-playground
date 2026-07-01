@@ -5,7 +5,7 @@ import { IDEAS_PLACEHOLDER_CARD } from "@/lib/ideas-page-data";
 import { FOCUS_RING } from "@/lib/a11y";
 
 interface IdeasPlaceholderCardProps {
-  onSelect: () => void;
+  onSelect: (trigger: HTMLElement) => void;
 }
 
 export function IdeasPlaceholderCard({ onSelect }: IdeasPlaceholderCardProps) {
@@ -16,7 +16,7 @@ export function IdeasPlaceholderCard({ onSelect }: IdeasPlaceholderCardProps) {
   return (
     <button
       type="button"
-      onClick={onSelect}
+      onClick={(event) => onSelect(event.currentTarget)}
       aria-label={`View ${IDEAS_PLACEHOLDER_CARD.title}`}
       className={`ideas-card ideas-card--placeholder group w-full text-left ${FOCUS_RING}`}
     >

@@ -243,9 +243,18 @@ export function useScrollSlider() {
       const offset = clamp(progress * maxOffset, 0, maxOffset);
       const frameIndex = Math.round(progress * (frameCount - 1));
 
-      trackX.set(-offset);
-      minimapX.set(progress * MINIMAP_RANGE);
-      scale.set(computeScaleFromScroll(clamped, baseScaleRef.current));
+      if (reducedMotion) {
+        trackX.jump(-offset);
+        springTrackX.jump(-offset);
+        minimapX.jump(progress * MINIMAP_RANGE);
+        const nextScale = computeScaleFromScroll(clamped, baseScaleRef.current);
+        scale.jump(nextScale);
+        springScaleValue.jump(nextScale);
+      } else {
+        trackX.set(-offset);
+        minimapX.set(progress * MINIMAP_RANGE);
+        scale.set(computeScaleFromScroll(clamped, baseScaleRef.current));
+      }
 
       if (frameIndex !== frameIndexRef.current) {
         if (!reducedMotion) playClick();
@@ -277,7 +286,7 @@ export function useScrollSlider() {
         saveIndexActiveFrame(frameIndex);
       }
     },
-    [frameCount, maxOffset, minimapX, playClick, reducedMotion, scale, trackX],
+    [frameCount, maxOffset, minimapX, playClick, reducedMotion, scale, springScaleValue, springTrackX, trackX],
   );
 
   const syncScrollPosition = useCallback((value: number) => {
@@ -436,8 +445,20 @@ export function useScrollSlider() {
 
   useEffect(() => {
     let snapTimer: ReturnType<typeof setTimeout> | null = null;
+    let wheelFrameLock = false;
 
     const snapAfterIdle = () => {
+      if (reducedMotion) {
+        if (snapTimer) clearTimeout(snapTimer);
+        const index = clamp(
+          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          0,
+          frameCount - 1,
+        );
+        snapToIndex(index);
+        return;
+      }
+
       if (snapTimer) clearTimeout(snapTimer);
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
@@ -462,11 +483,24 @@ export function useScrollSlider() {
 
       if (delta === 0) return;
 
+      event.preventDefault();
+
+      if (reducedMotion) {
+        if (wheelFrameLock) return;
+        wheelFrameLock = true;
+        window.setTimeout(() => {
+          wheelFrameLock = false;
+        }, 280);
+
+        const direction = delta > 0 ? 1 : -1;
+        snapToIndex(frameIndexRef.current + direction, "scroll");
+        return;
+      }
+
       const scrollRange = scrollRangeRef.current;
       const current = clampScrollOffset(getScrollOffset());
       const next = clamp(current + delta, 0, scrollRange);
 
-      event.preventDefault();
       const synced = syncScrollPosition(next);
       updateFromScroll(synced);
       snapAfterIdle();
@@ -478,7 +512,15 @@ export function useScrollSlider() {
       window.removeEventListener("wheel", onWheel);
       if (snapTimer) clearTimeout(snapTimer);
     };
-  }, [clampScrollOffset, frameCount, getScrollOffset, snapToIndex, syncScrollPosition, updateFromScroll]);
+  }, [
+    clampScrollOffset,
+    frameCount,
+    getScrollOffset,
+    reducedMotion,
+    snapToIndex,
+    syncScrollPosition,
+    updateFromScroll,
+  ]);
 
   useEffect(() => {
     let snapTimer: ReturnType<typeof setTimeout> | null = null;
@@ -490,6 +532,17 @@ export function useScrollSlider() {
     let suppressClick = false;
 
     const snapAfterIdle = () => {
+      if (reducedMotion) {
+        if (snapTimer) clearTimeout(snapTimer);
+        const index = clamp(
+          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          0,
+          frameCount - 1,
+        );
+        snapToIndex(index);
+        return;
+      }
+
       if (snapTimer) clearTimeout(snapTimer);
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
@@ -601,6 +654,7 @@ export function useScrollSlider() {
     clampScrollOffset,
     frameCount,
     getScrollOffset,
+    reducedMotion,
     snapToIndex,
     syncScrollPosition,
     updateFromScroll,

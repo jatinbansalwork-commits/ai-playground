@@ -27,7 +27,7 @@ export function ArticleLayout({
   return (
     <main
       data-sheet="craft-article"
-      className="craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
+      className="craft-page fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
     >
       <CraftArticlePageAnalytics slug={article.slug} />
       <ArticleBackLink

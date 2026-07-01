@@ -140,9 +140,11 @@ Every message is classified into a **question intent** (`hiring`, `resume`, `pro
 | Destination | What is recorded | Setup |
 |-------------|------------------|-------|
 | **Vercel Analytics** | `ai_chat_intent` — `intent_id`, `confidence`, `goal`, chip vs typed | Enabled in production |
-| **Google Sheet** | Question, **answer**, page, intents, reply source | Set `AI_CHAT_LOG_WEBHOOK_URL` in Vercel env — see `scripts/jbai-chat-log-apps-script.js` |
+| **Google Sheet** | Question, **answer**, page, intents, reply source | Set `AI_CHAT_LOG_WEBHOOK_URL` in Vercel env — see `scripts/jbai-chat-log-apps-script.js` and `.env.example` |
 
 Set `AI_CHAT_LOG_ENABLED=false` to disable the sheet webhook without removing the URL.
+
+**Production:** `AI_CHAT_LOG_WEBHOOK_URL` is configured on Vercel (Preview + Production). After deploy, send a test message via JBAI and confirm a new row appears in the sheet.
 
 ## Design notes
 
@@ -207,6 +209,19 @@ In the Vercel dashboard: **Project → Speed Insights**
 Tracks real-user **LCP**, **INP**, and **CLS** per route. Google uses similar field data for page experience — but rankings and queries still come from Search Console, not Speed Insights.
 
 Use [PageSpeed Insights](https://pagespeed.web.dev/) to see what Google’s CrUX report shows for a specific URL.
+
+### Monthly analytics review
+
+Once a month, open **Vercel → Project → Analytics → Production** and work through this checklist:
+
+1. **Case studies opened but not read** — filter `project_open` by `slug`, then compare with `case_study_scroll_depth` for the same slug. Slugs with opens but no 50%+ depth need a stronger hook or faster LCP.
+2. **Repeated chat intents** — filter `ai_chat_intent` by `intent_id`. Intents with high volume but low confidence suggest missing copy or nav.
+3. **Gallery drop-off** — compare `craft_view` / `ai_experiment_view` with `craft_item_click` / `ai_experiment_item_click`. Low click-through means card previews or hints need work.
+4. **Index discovery** — check `index_frame_view` for frame 1 vs later frames. If most sessions never leave slide 1, revisit index hints or JB_AI “Show me around”.
+5. **JBAI Q&A sheet** — scan the Google Sheet for unanswered patterns, typos in questions, and pages where visitors get stuck (`Page` column).
+6. **Speed Insights** — note routes with poor LCP; case study hero preloads and below-fold lazy media live in `src/app/projects/[slug]/layout.tsx` and `CaseStudyMedia`.
+
+Export or screenshot top findings so copy and nav tweaks stay intentional rather than reactive.
 
 ### Rich results check
 

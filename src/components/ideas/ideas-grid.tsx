@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
 import { IdeasCard } from "@/components/ideas/ideas-card";
 import { IdeasDetailModal } from "@/components/ideas/ideas-detail-modal";
@@ -32,6 +32,8 @@ export function IdeasGrid({ items }: IdeasGridProps) {
   const [selectedItem, setSelectedItem] =
     useState<ExperimentGalleryItem | null>(null);
   const [placeholderOpen, setPlaceholderOpen] = useState(false);
+  const detailTriggerRef = useRef<HTMLElement | null>(null);
+  const placeholderTriggerRef = useRef<HTMLElement | null>(null);
   const columnCount = useIdeasMasonryColumnCount();
   const masonryColumns = useIdeasMasonryLayout(items, columnCount);
 
@@ -50,15 +52,20 @@ export function IdeasGrid({ items }: IdeasGridProps) {
     return shortestColumn;
   }, [columnCount, masonryColumns]);
 
-  const handleSelect = useCallback((item: ExperimentGalleryItem) => {
-    setSelectedItem(item);
-  }, []);
+  const handleSelect = useCallback(
+    (item: ExperimentGalleryItem, trigger: HTMLElement) => {
+      detailTriggerRef.current = trigger;
+      setSelectedItem(item);
+    },
+    [],
+  );
 
   const handleClose = useCallback(() => {
     setSelectedItem(null);
   }, []);
 
-  const handlePlaceholderSelect = useCallback(() => {
+  const handlePlaceholderSelect = useCallback((trigger: HTMLElement) => {
+    placeholderTriggerRef.current = trigger;
     setPlaceholderOpen(true);
   }, []);
 
@@ -88,8 +95,16 @@ export function IdeasGrid({ items }: IdeasGridProps) {
         ))}
       </div>
 
-      <IdeasDetailModal item={selectedItem} onClose={handleClose} />
-      <IdeasPlaceholderModal open={placeholderOpen} onClose={handlePlaceholderClose} />
+      <IdeasDetailModal
+        item={selectedItem}
+        onClose={handleClose}
+        returnFocusRef={detailTriggerRef}
+      />
+      <IdeasPlaceholderModal
+        open={placeholderOpen}
+        onClose={handlePlaceholderClose}
+        returnFocusRef={placeholderTriggerRef}
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useId } from "react";
+import { useCallback, useEffect, useId, useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
 import { getExperimentMedia } from "@/lib/experiment-media";
@@ -18,17 +18,22 @@ import { IdeasDetailMedia } from "@/components/ideas/ideas-detail-media";
 import { AiChatAvatar } from "@/components/ai-chat/ai-chat-avatar";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
 import { springSnappy } from "@/lib/spring";
+import { useFocusTrap } from "@/hooks/use-focus-trap";
 
 interface IdeasDetailModalProps {
   item: ExperimentGalleryItem | null;
   onClose: () => void;
+  returnFocusRef?: RefObject<HTMLElement | null>;
 }
 
-export function IdeasDetailModal({ item, onClose }: IdeasDetailModalProps) {
+export function IdeasDetailModal({ item, onClose, returnFocusRef }: IdeasDetailModalProps) {
   const open = item !== null;
   const titleId = useId();
   const descId = useId();
+  const panelRef = useRef<HTMLElement>(null);
   const mounted = typeof document !== "undefined";
+
+  useFocusTrap(panelRef, open, { returnFocusRef });
 
   const handleClose = useCallback(() => {
     onClose();
@@ -82,6 +87,7 @@ export function IdeasDetailModal({ item, onClose }: IdeasDetailModalProps) {
           />
 
           <motion.article
+            ref={panelRef}
             className="ideas-detail__panel"
             role="dialog"
             aria-modal="true"

@@ -2,6 +2,7 @@
 
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { motion, useTransform } from "framer-motion";
+import { FOCUS_RING } from "@/lib/a11y";
 import {
   MINIMAP_LINE_COUNT,
   MINIMAP_LINE_GAP,
@@ -10,6 +11,7 @@ import {
   MINIMAP_TRACKER_WIDTH,
   SITE_NAME,
 } from "@/lib/constants";
+import { minimapLineToFrameIndex } from "@/lib/minimap-frame-index";
 import { springScrollSnap } from "@/lib/spring";
 import { useSliderContext } from "@/context/slider-context";
 
@@ -26,6 +28,8 @@ interface MinimapProps {
   className?: string;
   linkClassName?: string;
   variant?: "index" | "craft";
+  frameCount?: number;
+  onSelectFrame?: (frameIndex: number) => void;
 }
 
 export function Minimap({
@@ -33,10 +37,16 @@ export function Minimap({
   className = "pointer-events-none fixed top-16 left-1/2 z-30 -translate-x-1/2",
   linkClassName,
   variant = "index",
+  frameCount,
+  onSelectFrame,
 }: MinimapProps) {
+  const isInteractive = Boolean(frameCount && frameCount > 0 && onSelectFrame);
+
   const track = (
     <MinimapTrack
       variant={variant}
+      frameCount={frameCount}
+      onSelectFrame={onSelectFrame}
       style={
         {
           "--line-width": `${MINIMAP_LINE_WIDTH}px`,
@@ -65,18 +75,26 @@ export function Minimap({
   }
 
   return (
-    <div aria-hidden data-index className={className}>
+    <nav
+      aria-label="Index slides"
+      data-index
+      className={isInteractive ? className.replace("pointer-events-none", "pointer-events-auto") : className}
+    >
       {track}
-    </div>
+    </nav>
   );
 }
 
 function MinimapTrack({
   style,
   variant,
+  frameCount,
+  onSelectFrame,
 }: {
   style?: React.CSSProperties;
   variant: "index" | "craft";
+  frameCount?: number;
+  onSelectFrame?: (frameIndex: number) => void;
 }) {
   const { minimapX } = useSliderContext();
   const lineClass =
@@ -93,7 +111,13 @@ function MinimapTrack({
         style={{ gap: MINIMAP_LINE_GAP }}
       >
         {Array.from({ length: MINIMAP_LINE_COUNT }).map((_, index) => (
-          <MinimapLine key={index} index={index} lineClass={lineClass} />
+          <MinimapLine
+            key={index}
+            index={index}
+            lineClass={lineClass}
+            frameCount={frameCount}
+            onSelectFrame={onSelectFrame}
+          />
         ))}
 
         <motion.div
@@ -110,13 +134,37 @@ function MinimapTrack({
 function MinimapLine({
   index,
   lineClass,
+  frameCount,
+  onSelectFrame,
 }: {
   index: number;
   lineClass: string;
+  frameCount?: number;
+  onSelectFrame?: (frameIndex: number) => void;
 }) {
   const { minimapX } = useSliderContext();
 
   const opacity = useTransform(minimapX, (value) => lineOpacity(value, index));
+  const isInteractive = Boolean(frameCount && frameCount > 0 && onSelectFrame);
+
+  if (isInteractive && onSelectFrame && frameCount) {
+    const frameIndex = minimapLineToFrameIndex(index, frameCount);
+
+    return (
+      <motion.button
+        type="button"
+        aria-label={`Go to slide ${frameIndex + 1}`}
+        className={`minimap-line w-[var(--line-width)] border-0 p-0 ${lineClass} ${FOCUS_RING}`}
+        style={{
+          height: MINIMAP_LINE_HEIGHT,
+          opacity,
+          cursor: "pointer",
+        }}
+        data-index={index}
+        onClick={() => onSelectFrame(frameIndex)}
+      />
+    );
+  }
 
   return (
     <motion.div

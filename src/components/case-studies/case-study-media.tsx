@@ -17,6 +17,8 @@ interface CaseStudyMediaProps {
   src?: string;
   poster?: string;
   alt?: string;
+  /** Load immediately — use for above-the-fold hero illustrations. */
+  priority?: boolean;
   /**
    * Clip empty pixels from the top of a loaded image (fraction of intrinsic height, 0–1).
    * Pair with `intrinsicAspect` (width ÷ height) so the frame keeps the cropped proportions.
@@ -67,6 +69,7 @@ export function CaseStudyMedia({
   shellBackground,
   paragraph,
   captionClassName,
+  priority = false,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const autoplay = useMediaAutoplay();
@@ -74,10 +77,10 @@ export function CaseStudyMedia({
   const resolvedSrc = src ? resolveAssetUrl(src) : undefined;
   const resolvedPoster = poster ? resolveAssetUrl(poster) : undefined;
   const isRemote = resolvedSrc ? isRemoteCdnUrl(resolvedSrc) : false;
-  const [shouldLoad, setShouldLoad] = useState(!isRemote);
+  const [shouldLoad, setShouldLoad] = useState(priority || !isRemote);
 
   useEffect(() => {
-    if (!isRemote || !resolvedSrc) return;
+    if (priority || !isRemote || !resolvedSrc) return;
 
     const node = containerRef.current;
     if (!node) return;
@@ -93,7 +96,7 @@ export function CaseStudyMedia({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [isRemote, resolvedSrc]);
+  }, [isRemote, priority, resolvedSrc]);
 
   const shellBase = borderless
     ? "relative w-full overflow-hidden rounded-lg"
@@ -165,7 +168,8 @@ export function CaseStudyMedia({
             alt={effectiveAlt ?? ""}
             className={mediaClass}
             style={trimMediaStyle}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
             decoding="async"
           />
         ) : (

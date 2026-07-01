@@ -1,7 +1,7 @@
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
 import { ProjectsList } from "@/components/projects/projects-list";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import { NAV_BACK_LINK_CLASS, backNavigationLabel } from "@/lib/a11y";
 import { ROUTES } from "@/lib/constants";
 import { PROJECTS_LIST } from "@/lib/projects-list-data";
 
@@ -16,6 +16,7 @@ export default function ProjectsIndexPage() {
         href={ROUTES.home}
         scroll={true}
         className={NAV_BACK_LINK_CLASS}
+        aria-label={backNavigationLabel("Home")}
       >
         <NavBackLinkLabel destination="Home" />
       </ScrollResetLink>

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useEffect, useId } from "react";
+import { useCallback, useEffect, useId, useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { AiVoiceInput } from "@/components/ideas/ai-voice-input";
 import { AiChatAvatar } from "@/components/ai-chat/ai-chat-avatar";
@@ -11,16 +11,25 @@ import {
 } from "@/lib/ideas-page-data";
 import { FOCUS_RING } from "@/lib/a11y";
 import { springSnappy } from "@/lib/spring";
+import { useFocusTrap } from "@/hooks/use-focus-trap";
 
 interface IdeasPlaceholderModalProps {
   open: boolean;
   onClose: () => void;
+  returnFocusRef?: RefObject<HTMLElement | null>;
 }
 
-export function IdeasPlaceholderModal({ open, onClose }: IdeasPlaceholderModalProps) {
+export function IdeasPlaceholderModal({
+  open,
+  onClose,
+  returnFocusRef,
+}: IdeasPlaceholderModalProps) {
   const titleId = useId();
   const descId = useId();
+  const panelRef = useRef<HTMLElement>(null);
   const mounted = typeof document !== "undefined";
+
+  useFocusTrap(panelRef, open, { returnFocusRef });
 
   const handleClose = useCallback(() => {
     onClose();
@@ -64,6 +73,7 @@ export function IdeasPlaceholderModal({ open, onClose }: IdeasPlaceholderModalPr
           />
 
           <motion.article
+            ref={panelRef}
             className="ideas-detail__panel"
             role="dialog"
             aria-modal="true"
