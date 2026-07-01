@@ -109,7 +109,7 @@ export default function CiscoPolicyCopilotContent() {
         year={content.year}
         overview={content.overviewText}
         meta={content.meta}
-        notice="All work for Cisco is under NDA. The visuals have been altered to follow its conditions."
+        notice="Designs are recreated from memory; original files are under Cisco IP."
         metaBottom={<CaseStudyRevealCountdown slug={SLUG} />}
       />
 
