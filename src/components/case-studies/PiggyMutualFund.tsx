@@ -21,7 +21,7 @@ export default function PiggyMutualFundContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -160,6 +160,6 @@ export default function PiggyMutualFundContent() {
           progress.
         </CaseStudyParagraph>
       </CaseStudyProse>
-    </div>
+    </>
   );
 }

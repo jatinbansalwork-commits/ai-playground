@@ -17,7 +17,7 @@ export default function DesignPollingContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -65,6 +65,6 @@ export default function DesignPollingContent() {
           engagement model.
         </CaseStudyParagraph>
       </CaseStudyProse>
-    </div>
+    </>
   );
 }

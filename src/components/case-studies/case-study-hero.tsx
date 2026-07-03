@@ -13,7 +13,9 @@ import type { CaseStudyMetaSpecs } from "@/lib/project-content";
 interface CaseStudyHeroProps {
   title: string;
   year: string;
-  overview: string;
+  overview?: string;
+  /** Short highlight line below the title — stats, outcomes, etc. */
+  tagline?: ReactNode;
   /** Optional disclaimer or notice chip below the overview. */
   notice?: string;
   meta?: CaseStudyMetaSpecs;
@@ -25,6 +27,7 @@ export function CaseStudyHero({
   title,
   year,
   overview,
+  tagline,
   notice,
   meta,
   metaBottom,
@@ -41,7 +44,12 @@ export function CaseStudyHero({
           >
             {title}
           </h1>
-          <p className={`${CASE_STUDY_LEAD} ${CASE_STUDY_TEXT_COLUMN}`}>{overview}</p>
+          {tagline ? (
+            <p className={`case-study-hero-tagline ${CASE_STUDY_TEXT_COLUMN}`}>{tagline}</p>
+          ) : null}
+          {overview ? (
+            <p className={`${CASE_STUDY_LEAD} ${CASE_STUDY_TEXT_COLUMN}`}>{overview}</p>
+          ) : null}
           {notice ? (
             <p className={CASE_STUDY_TEXT_COLUMN}>
               <span

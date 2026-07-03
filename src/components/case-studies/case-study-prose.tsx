@@ -9,6 +9,7 @@ import {
   CASE_STUDY_CHAPTER,
   CASE_STUDY_H2,
   CASE_STUDY_H3,
+  CASE_STUDY_INFO,
   CASE_STUDY_LABEL,
   CASE_STUDY_LIST,
   CASE_STUDY_PAGE_GRID,
@@ -51,7 +52,7 @@ function headingText(children: ReactNode): string {
 interface CaseStudyProseProps {
   children: ReactNode;
   className?: string;
-  /** Halves default paragraph spacing (space-y-3). */
+  /** Halves default paragraph spacing (space-y-1.5). */
   dense?: boolean;
 }
 
@@ -64,7 +65,9 @@ export function CaseStudyProse({
 
   return (
     <div className={CASE_STUDY_PAGE_GRID}>
-      <div className={`${innerClass} ${className}`.trim()}>{children}</div>
+      <div className={`case-study-prose-band ${innerClass} ${className}`.trim()}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -259,19 +262,75 @@ export function CaseStudyYear({ children }: CaseStudyYearProps) {
 
 interface CaseStudyLabelProps {
   children: ReactNode;
+  className?: string;
 }
 
 /** In-page section kicker — PROJECT OVERVIEW, UX Principle Applied, etc. */
-export function CaseStudyLabel({ children }: CaseStudyLabelProps) {
-  return <p className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_LABEL}`}>{children}</p>;
+export function CaseStudyLabel({ children, className = "" }: CaseStudyLabelProps) {
+  return (
+    <p className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_LABEL} ${className}`.trim()}>
+      {children}
+    </p>
+  );
+}
+
+interface CaseStudyInfoProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export function CaseStudyInfo({ children, className = "" }: CaseStudyInfoProps) {
+  return (
+    <div
+      className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_INFO} ${className}`.trim()}
+      role="note"
+    >
+      <span className="flex shrink-0 items-center text-lg leading-none" aria-hidden>
+        💡
+      </span>
+      <p className="m-0">{children}</p>
+    </div>
+  );
 }
 
 interface CaseStudyListProps {
   items: string[];
   className?: string;
+  highlight?: boolean;
 }
 
-export function CaseStudyList({ items, className = "" }: CaseStudyListProps) {
+export function CaseStudyList({
+  items,
+  className = "",
+  highlight = false,
+}: CaseStudyListProps) {
+  if (highlight) {
+    return (
+      <ol className={`${CASE_STUDY_TEXT_COLUMN} case-study-rules__list ${className}`.trim()}>
+        {items.map((item, index) => {
+          const { lead, body } = splitCaseStudyListLead(item);
+
+          return (
+            <li key={item} className="case-study-rules__item">
+              <span className="case-study-rules__index" aria-hidden>
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <p className="case-study-rules__text">
+                {lead ? (
+                  <>
+                    <span className="case-study-rules__lead">{lead}</span> {body}
+                  </>
+                ) : (
+                  item
+                )}
+              </p>
+            </li>
+          );
+        })}
+      </ol>
+    );
+  }
+
   return (
     <ul className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_LIST} ${className}`.trim()}>
       {items.map((item) => {

@@ -33,6 +33,8 @@ interface CaseStudyMediaProps {
   paragraph?: ReactNode;
   /** Extra classes for the figcaption when `label` is set. */
   captionClassName?: string;
+  /** Shell corner radius utility — defaults to `rounded-lg`. */
+  rounded?: string;
 }
 
 const ASPECT_CLASS = {
@@ -69,6 +71,7 @@ export function CaseStudyMedia({
   shellBackground,
   paragraph,
   captionClassName,
+  rounded = "rounded-lg",
   priority = false,
 }: CaseStudyMediaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -99,8 +102,8 @@ export function CaseStudyMedia({
   }, [isRemote, priority, resolvedSrc]);
 
   const shellBase = borderless
-    ? "relative w-full overflow-hidden rounded-lg"
-    : "relative w-full overflow-hidden rounded-lg border border-white/10";
+    ? `relative w-full overflow-hidden ${rounded}`
+    : `relative w-full overflow-hidden ${rounded} border border-white/10`;
   const shellBackgroundColor = borderless
     ? undefined
     : (shellBackground ?? "#1a1a1a");

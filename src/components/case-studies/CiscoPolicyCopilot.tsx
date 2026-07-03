@@ -31,7 +31,7 @@ export default function CiscoPolicyCopilotContent() {
   const { isRevealed } = useCaseStudyRevealCountdownForSlug(SLUG);
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -635,6 +635,6 @@ export default function CiscoPolicyCopilotContent() {
         </CaseStudyParagraph>
       </CaseStudyProse>
       </div>
-    </div>
+    </>
   );
 }

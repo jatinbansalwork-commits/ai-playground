@@ -9,6 +9,8 @@ export interface CaseStudyBentoCell {
   src?: string;
   alt?: string;
   paragraph?: ReactNode;
+  borderless?: boolean;
+  rounded?: string;
 }
 
 interface CaseStudyBentoProps {
@@ -37,6 +39,8 @@ export function CaseStudyBento({
           src={cell.src}
           alt={cell.alt ?? cell.label}
           paragraph={cell.paragraph}
+          borderless={cell.borderless}
+          rounded={cell.rounded}
           className={cell.span === "full" ? "md:col-span-2" : undefined}
         />
       ))}

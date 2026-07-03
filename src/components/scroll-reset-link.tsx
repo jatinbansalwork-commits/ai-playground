@@ -27,7 +27,12 @@ export function ScrollResetLink({
       {...props}
       href={href}
       scroll={preserveIndexScroll ? false : scroll}
-      className={[className, FOCUS_RING].filter(Boolean).join(" ")}
+      className={[
+        className,
+        className.includes("focus-visible:outline") ? "" : FOCUS_RING,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       onClick={(event) => {
         if (!returnsToIndex && !leavesIndex) {
           resetDocumentScroll();

@@ -22,7 +22,7 @@ export default function SaltbotContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -234,6 +234,6 @@ export default function SaltbotContent() {
           alt="Saltbot action workflow"
         />
       </CaseStudyWide>
-    </div>
+    </>
   );
 }

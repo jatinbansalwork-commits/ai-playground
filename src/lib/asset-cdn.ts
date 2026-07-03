@@ -113,6 +113,81 @@ export const CASE_STUDY_CDN_MEDIA = {
     "/Freshprints/documentation.png",
   ),
   "freshprints-design-system-impact": cdnAsset("/Freshprints/Dp.png"),
+  "freshprints-design-system-foundation-tokens": cdnAsset(
+    "/Freshprint%20Design%20system/Token.svg",
+  ),
+  "freshprints-design-system-summary-problems": cdnAsset(
+    "/Freshprint%20Design%20system/Problem.svg",
+  ),
+  "freshprints-design-system-summary-solution": cdnAsset(
+    "/Freshprint%20Design%20system/Solution.svg",
+  ),
+  "freshprints-design-system-summary-results": cdnAsset(
+    "/Freshprint%20Design%20system/Result.svg",
+  ),
+  "freshprints-design-system-chat": cdnAsset(
+    "/Freshprint%20Design%20system/Chat.svg",
+  ),
+  "freshprints-design-system-team": cdnAsset(
+    "/Freshprint%20Design%20system/chat.png",
+  ),
+  "freshprints-design-system-constraints": cdnAsset(
+    "/Freshprint%20Design%20system/calander.svg",
+  ),
+  "freshprints-design-system-gallery-avatar": cdnAsset(
+    "/Freshprint%20Design%20system/avatar.png",
+  ),
+  "freshprints-design-system-gallery-component": cdnAsset(
+    "/Freshprint%20Design%20system/component.png",
+  ),
+  "freshprints-design-system-gallery-mob": cdnAsset(
+    "/Freshprint%20Design%20system/mob.png",
+  ),
+  "freshprints-design-system-patterns": cdnAsset(
+    "/Freshprint%20Design%20system/Folder.svg",
+  ),
+  "freshprints-design-system-gallery-ds": cdnAsset(
+    "/Freshprint%20Design%20system/DS.png",
+  ),
+  "freshprints-design-system-gallery-m2": cdnAsset(
+    "/Freshprint%20Design%20system/M2.png",
+  ),
+  "freshprints-design-system-gallery-m1": cdnAsset(
+    "/Freshprint%20Design%20system/M1.png",
+  ),
+  "freshprints-design-system-workflow": cdnAsset(
+    "/Freshprint%20Design%20system/connection.png",
+  ),
+  "freshprints-design-system-ux-overlap": cdnAsset(
+    "/Freshprint%20Design%20system/overlap.svg",
+  ),
+  "freshprints-design-system-ux-chips": cdnAsset(
+    "/Freshprint%20Design%20system/chip.svg",
+  ),
+  "freshprints-design-system-ux-good": cdnAsset(
+    "/Freshprint%20Design%20system/good%20UX.png",
+  ),
+  "freshprints-design-system-icons-after": cdnAsset(
+    "/Freshprint%20Design%20system/new.svg",
+  ),
+  "freshprints-design-system-icons-before": cdnAsset(
+    "/Freshprint%20Design%20system/old.svg",
+  ),
+  "freshprints-design-system-icons-grid": cdnAsset(
+    "/Freshprint%20Design%20system/icons.svg",
+  ),
+  "freshprints-design-system-icons-guide": cdnAsset(
+    "/Freshprint%20Design%20system/icon%20huide.svg",
+  ),
+  "freshprints-design-system-results-alignment": cdnAsset(
+    "/Freshprint%20Design%20system/aligment.svg",
+  ),
+  "freshprints-design-system-results-average": cdnAsset(
+    "/Freshprint%20Design%20system/average.svg",
+  ),
+  "freshprints-design-system-results-systemic": cdnAsset(
+    "/Freshprint%20Design%20system/systemic.svg",
+  ),
   "freshprints-design-system-ds-card-1": cdnAsset("/Freshprints/ds/Card-1.png"),
   "freshprints-design-system-ds-card-2": cdnAsset("/Freshprints/ds/Card-2.png"),
   "freshprints-design-system-ds-card-3": cdnAsset("/Freshprints/ds/Card-3.png"),

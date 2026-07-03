@@ -35,7 +35,7 @@ export default function NewProjectContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -430,6 +430,6 @@ export default function NewProjectContent() {
           </CaseStudyParagraph>
         </CaseStudySection>
       </CaseStudyProse>
-    </div>
+    </>
   );
 }

@@ -17,7 +17,7 @@ export default function DesignToolContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -58,6 +58,6 @@ export default function DesignToolContent() {
           handoffs stay legible under deadline pressure.
         </CaseStudyParagraph>
       </CaseStudyProse>
-    </div>
+    </>
   );
 }

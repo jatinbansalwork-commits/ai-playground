@@ -17,6 +17,22 @@ interface ProjectMetaSpecsProps extends CaseStudyMetaSpecsData {
   children?: ReactNode;
 }
 
+function MetaInfoText({ text }: { text: string }) {
+  const paragraphs = text.split(/\n\n+/).map((paragraph) => paragraph.trim()).filter(Boolean);
+
+  if (paragraphs.length <= 1) {
+    return <dd className={CASE_STUDY_META_INFO}>{text}</dd>;
+  }
+
+  return (
+    <dd className={`${CASE_STUDY_META_INFO} space-y-4`}>
+      {paragraphs.map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+    </dd>
+  );
+}
+
 export function ProjectMetaSpecs({
   services,
   client,
@@ -56,7 +72,7 @@ export function ProjectMetaSpecs({
       <dl className="flex flex-col justify-between space-y-6 md:col-span-2">
         <div className="space-y-2">
           <dt className={CASE_STUDY_META_LABEL}>Info</dt>
-          <dd className={CASE_STUDY_META_INFO}>{infoText}</dd>
+          <MetaInfoText text={infoText} />
           {figmaUrl ? (
             <dd>
               <a

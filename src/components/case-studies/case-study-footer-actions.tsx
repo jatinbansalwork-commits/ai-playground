@@ -1,13 +1,14 @@
 "use client";
 
 import { ScrollResetLink } from "@/components/scroll-reset-link";
-import { CASE_STUDY_FOOTER_NAV_LABEL, FOCUS_RING, TARGET_HIT_AREA } from "@/lib/a11y";
+import { CASE_STUDY_FOOTER_NAV_LABEL, FOCUS_RING, SITE_BACK_TYPEFACE, TARGET_HIT_AREA } from "@/lib/a11y";
+import { SITE_BACK_LINK_STYLE } from "@/lib/fonts";
 import { ROUTES } from "@/lib/constants";
 
 const CASE_STUDY_BUTTON_CLASS = [
   TARGET_HIT_AREA,
   "h-11 w-full rounded-lg border border-white/15 bg-white/5 px-6 sm:w-auto",
-  "font-sans text-sm font-medium text-neutral-300",
+  `${SITE_BACK_TYPEFACE} text-sm font-medium text-neutral-300`,
   "transition-colors hover:border-white/25 hover:bg-white/10 hover:text-white",
   "touch-manipulation",
   FOCUS_RING,
@@ -16,7 +17,7 @@ const CASE_STUDY_BUTTON_CLASS = [
 const CASE_STUDY_BUTTON_PRIMARY_CLASS = [
   TARGET_HIT_AREA,
   "h-11 w-full rounded-lg border border-[#6B36FF]/40 bg-[#6B36FF]/15 px-6 sm:w-auto",
-  "font-sans text-sm font-medium text-[#D4BBFF]",
+  `${SITE_BACK_TYPEFACE} text-sm font-medium text-[#D4BBFF]`,
   "transition-colors hover:border-[#6B36FF]/60 hover:bg-[#6B36FF]/25 hover:text-white",
   "touch-manipulation",
   FOCUS_RING,
@@ -38,6 +39,7 @@ export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps
             href={backHref}
             scroll={true}
             className={CASE_STUDY_BUTTON_PRIMARY_CLASS}
+            style={SITE_BACK_LINK_STYLE}
           >
             Back to projects
           </ScrollResetLink>
@@ -46,6 +48,7 @@ export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps
             href={ROUTES.home}
             scroll={true}
             className={CASE_STUDY_BUTTON_CLASS}
+            style={SITE_BACK_LINK_STYLE}
           >
             Back to home
           </ScrollResetLink>

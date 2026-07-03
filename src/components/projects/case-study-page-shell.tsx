@@ -4,13 +4,12 @@ import { useRef, type ReactNode } from "react";
 import { CaseStudyFooterActions } from "@/components/case-studies/case-study-footer-actions";
 import { CaseStudySkipLink } from "@/components/case-studies/case-study-skip-link";
 import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-context";
+import { NavBackLink } from "@/components/navigation/nav-back-link";
 import { ScrollMinimapRuler } from "@/components/models/scroll-minimap-ruler";
-import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
-import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { useCaseStudyPageAnalytics } from "@/hooks/use-case-study-page-analytics";
 import { useCaseStudyHashFocus } from "@/hooks/use-case-study-hash-focus";
-import { backNavigationLabel, NAV_BACK_LINK_CLASS } from "@/lib/a11y";
 import type { ProjectOpenSource } from "@/lib/analytics";
+import { CASE_STUDY_EDITORIAL_CLASS } from "@/components/case-studies/case-study-editorial-fonts";
 import {
   CASE_STUDY_BODY_ID,
   CASE_STUDY_TITLE_ID,
@@ -60,22 +59,15 @@ export function CaseStudyPageShell({
         tabIndex={-1}
       >
         <CaseStudySkipLink />
-        <ScrollResetLink
-          href={navBackHref}
-          scroll={true}
-          className={NAV_BACK_LINK_CLASS}
-          aria-label={backNavigationLabel(navBackDestination)}
-        >
-          <NavBackLinkLabel destination={navBackDestination} />
-        </ScrollResetLink>
+        <NavBackLink href={navBackHref} destination={navBackDestination} />
 
         <article
           id={CASE_STUDY_BODY_ID}
           tabIndex={-1}
           aria-labelledby={CASE_STUDY_TITLE_ID}
-          className="case-study-body mx-auto w-full max-w-5xl px-4 outline-none sm:px-8"
+          className={`case-study-body ${CASE_STUDY_EDITORIAL_CLASS} mx-auto w-full max-w-5xl px-4 outline-none sm:px-8`}
         >
-          {children}
+          <div className="case-study-editorial-flow">{children}</div>
           <CaseStudyFooterActions backHref={backHref} />
         </article>
       </main>

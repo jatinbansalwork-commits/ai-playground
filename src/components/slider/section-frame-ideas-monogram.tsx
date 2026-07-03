@@ -1,6 +1,7 @@
 "use client";
 
 import { useWireframe } from "@/context/wireframe-context";
+import { IDEAS_ROBOT_PRIMARY_COLOR } from "@/lib/ideas-robot";
 
 interface SectionFrameIdeasMonogramProps {
   src: string;
@@ -16,7 +17,10 @@ export function SectionFrameIdeasMonogram({ src }: SectionFrameIdeasMonogramProp
   const imageSrc = wireframe ? IDEAS_MONOGRAM_WIREFRAME : src;
 
   return (
-    <div className="ideas-robot flex h-full w-full items-center justify-center overflow-hidden">
+    <div
+      className="ideas-robot flex h-full w-full items-center justify-center overflow-hidden"
+      style={{ "--ideas-robot-primary": IDEAS_ROBOT_PRIMARY_COLOR } as React.CSSProperties}
+    >
       <div className="ideas-robot__float relative">
         <div className="ideas-robot__body relative inline-block">
           {/* eslint-disable-next-line @next/next/no-img-element */}

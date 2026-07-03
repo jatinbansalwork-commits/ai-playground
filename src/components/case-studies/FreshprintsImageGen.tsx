@@ -4,6 +4,7 @@ import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyH2,
+  CaseStudyDivider,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
@@ -22,7 +23,7 @@ export default function FreshprintsImageGenContent() {
   const content = getCaseStudyContent(SLUG)!;
 
   return (
-    <div className="w-full space-y-16">
+    <>
       <CaseStudyHero
         title={content.title}
         year={content.year}
@@ -50,6 +51,7 @@ export default function FreshprintsImageGenContent() {
           that fits, the excitement fades. That initial spark disappears—and many users
           simply don&apos;t return.
         </CaseStudyParagraph>
+        <CaseStudyDivider />
         <CaseStudyH2>Collaboration with</CaseStudyH2>
         <CaseStudyTightStack>
           <CaseStudyParagraph tight>
@@ -243,6 +245,6 @@ export default function FreshprintsImageGenContent() {
           from here!
         </CaseStudyParagraph>
       </CaseStudyProse>
-    </div>
+    </>
   );
 }

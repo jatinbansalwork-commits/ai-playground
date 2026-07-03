@@ -11,7 +11,7 @@ interface ArticleSectionContentProps {
 
 export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
   return (
-    <div className="space-y-4 text-[15px] leading-relaxed text-neutral-300">
+    <div className="craft-article-prose space-y-3">
       {blocks.map((block, index) => {
         if (block.type === "paragraph") {
           return <p key={`paragraph-${index}`}>{block.text}</p>;
@@ -21,7 +21,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <blockquote
               key={`quote-${index}`}
-              className="border-l-2 border-[#6B36FF] pl-6 text-lg font-medium leading-relaxed tracking-tight text-white"
+              className="border-l-2 border-[#6B36FF] pl-6 font-medium leading-relaxed tracking-tight text-white"
             >
               {block.text}
             </blockquote>
@@ -30,12 +30,12 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
 
         if (block.type === "heading") {
           return (
-            <h2
+            <h3
               key={`heading-${index}`}
-              className="mb-4 text-xl font-normal"
+              className="craft-article-section-title text-lg text-white md:text-xl"
             >
               {block.text}
-            </h2>
+            </h3>
           );
         }
 
@@ -43,7 +43,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <hr
               key={`divider-${index}`}
-              className="!my-8 border-neutral-800"
+              className="!my-6 border-0"
               aria-hidden
             />
           );

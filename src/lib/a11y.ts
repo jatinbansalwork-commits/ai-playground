@@ -47,16 +47,19 @@ export const TARGET_HIT_AREA =
 /** @deprecated Use `TARGET_HIT_AREA`. */
 export const ICON_BUTTON_HIT_AREA = TARGET_HIT_AREA;
 
+/** IBM Plex Sans — back navigation labels site-wide (pairs with `.site-back-type` in globals.css). */
+export const SITE_BACK_TYPEFACE = "site-back-type";
+
 /** Large icon back control (`←`) — fun, archive, minimap exits. */
 export const BACK_LINK_CLASS =
-  `${TARGET_HIT_AREA} text-4xl leading-none text-neutral-400 transition-colors hover:text-white ${FOCUS_RING}`;
+  `${TARGET_HIT_AREA} ${SITE_BACK_TYPEFACE} text-4xl leading-none text-neutral-400 transition-colors hover:text-white ${FOCUS_RING}`;
 
 /**
  * Text back control — Track A/B navigation flows.
  * Hit area padded to 44×44 while label remains text-sized (2.5.8).
  */
 export const NAV_BACK_LINK_CLASS =
-  `nav-back-link fixed top-8 left-8 z-50 ${TARGET_HIT_AREA} pr-3 text-sm text-neutral-400 transition-colors hover:text-white touch-manipulation ${FOCUS_RING}`;
+  `nav-back-link ${SITE_BACK_TYPEFACE} fixed top-8 left-8 z-50 ${TARGET_HIT_AREA} pr-3 text-sm text-neutral-400 transition-colors hover:text-white touch-manipulation ${FOCUS_RING}`;
 
 /** Full-width list row — 44px min height for pointer targets (2.5.8). */
 export const PROJECTS_ROW_LINK_CLASS =

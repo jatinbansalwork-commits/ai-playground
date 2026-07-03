@@ -34,11 +34,11 @@ export const CASE_STUDY_PROGRESS_LINK_ACTIVE = "text-white";
 
 /** Prose band — full canvas width, left-aligned to hero rail. */
 export const CASE_STUDY_PROSE_INNER =
-  "w-full space-y-6 md:col-span-3";
+  "w-full space-y-3 md:col-span-3";
 
 /** Tighter vertical rhythm — half the default prose gap. */
 export const CASE_STUDY_PROSE_INNER_DENSE =
-  "w-full space-y-3 md:col-span-3";
+  "w-full space-y-1.5 md:col-span-3";
 
 /** Wide media / gallery band inside the case study canvas. */
 export const CASE_STUDY_WIDE_WRAPPER = "w-full max-w-5xl mx-auto";
@@ -60,11 +60,11 @@ export const CASE_STUDY_PARAGRAPH =
 export const CASE_STUDY_PARAGRAPH_DENSE =
   "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal antialiased";
 
-/** Half dense gap — pairs with CASE_STUDY_TIGHT_STACK (space-y-1.5). */
+/** Half dense gap — pairs with CASE_STUDY_TIGHT_STACK (space-y-0.5). */
 export const CASE_STUDY_PARAGRAPH_TIGHT =
   "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal antialiased";
 
-export const CASE_STUDY_TIGHT_STACK = "space-y-1.5";
+export const CASE_STUDY_TIGHT_STACK = "space-y-0.5";
 
 export const CASE_STUDY_QUOTE =
   "text-lg md:text-xl text-white font-medium leading-relaxed tracking-tight border-l-2 border-[#6B36FF] pl-6 antialiased";
@@ -91,7 +91,7 @@ export const CASE_STUDY_H3 =
   "text-lg md:text-xl font-semibold tracking-tight text-white";
 
 export const CASE_STUDY_LIST =
-  "list-disc list-outside pl-5 space-y-3 text-neutral-300 antialiased";
+  "list-disc list-outside pl-5 space-y-1.5 text-neutral-300 antialiased";
 
 export const CASE_STUDY_CAPTION =
   "text-xs tracking-wide text-neutral-400 antialiased";
@@ -104,6 +104,9 @@ export const CASE_STUDY_META_VALUE =
 
 export const CASE_STUDY_META_INFO =
   "text-sm md:text-base text-neutral-300 font-sans leading-relaxed tracking-normal antialiased";
+
+export const CASE_STUDY_INFO =
+  "flex items-center gap-3 rounded-xl border border-amber-400/25 bg-amber-500/[0.08] px-4 py-3 text-base leading-relaxed text-neutral-200 md:px-5 md:py-4 md:text-lg antialiased";
 
 export const CASE_STUDY_META_GRID =
   `${CASE_STUDY_PAGE_GRID} pt-12 pb-16 border-b border-neutral-800/40 my-12`;

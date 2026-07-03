@@ -30,7 +30,7 @@ function StepImage({
 
 function StepBody({ body }: { body: CraftArticleProcessStepBlock[] }) {
   return (
-    <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-neutral-300">
+    <div className="craft-article-prose mt-3 space-y-2">
       {body.map((block, index) => {
         if (block.type === "paragraph") {
           return <p key={`paragraph-${index}`}>{block.text}</p>;
@@ -101,7 +101,9 @@ export function ArticleProcessSteps({ steps }: ArticleProcessStepsProps) {
           </div>
 
           <div className="min-w-0 rounded-xl border border-[#6B36FF]/20 bg-[#1a1a20] px-5 py-5 md:px-6">
-            <h3 className="text-base font-normal text-white">{step.title}</h3>
+            <h3 className="craft-article-process-step__title text-lg text-white">
+              {step.title}
+            </h3>
             <StepBody body={step.body} />
           </div>
         </li>

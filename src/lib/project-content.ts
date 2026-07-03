@@ -45,7 +45,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-image-gen-ai": entry(
     "freshprints-image-gen-ai",
-    "✅ FreshPrints - Image Gen AI",
+    "FreshPrints - Image Gen AI",
     "2025",
     "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
     {
@@ -67,15 +67,15 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-design-system": entry(
     "freshprints-design-system",
-    "✅ FreshPrints - Design System",
+    "FreshPrints - Design System",
     "2025",
-    "Built a scalable design system from 0 to 1 for FreshPrints — tokens, components, documentation, and UI architecture to support global e-commerce growth.",
+    "A design system that stopped UI debates and helped 4 product teams ship faster.",
     {
       services: ["Design Systems", "UI Architecture", "Documentation"],
       client: "FreshPrints",
       location: "New York, NY",
       infoText:
-        "FreshPrints' e-commerce platform has been a favourite for schools, colleges, sororities, fraternities, clubs, and sports teams across the USA for over a decade. Now, with the addition of content creation, the platform is growing even further. However, the current design systems and UI technology are struggling with scalability and consistency. As FreshPrints looks to expand globally, it's crucial to elevate our systems and design standards to match the expectations of modern creators.",
+        "The product didn't have a design system problem. It had a decision problem. Every small UI choice turned into a discussion. Patterns weren't shared. Components couldn't evolve.\n\n\u201CIf it's not in the library, we don't build it.\u201D\n\nSo teams either argued or built one-offs. Delivery slowed down. And a lot of small UX fixes never made it onto the roadmap. I pushed to rebuild the system in a way people would actually use.",
     },
   ),
   "freshprints-heal-tool": entry(
@@ -93,7 +93,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "saltbot-ai-saltmine": entry(
     "saltbot-ai-saltmine",
-    "✅ Saltbot AI (Saltmine)",
+    "Saltbot AI (Saltmine)",
     "2024",
     "Saltbot AI conversational assistant for Saltmine — report analytics, automation guardrails, and desktop + mobile UX for workplace insights.",
     {
@@ -126,7 +126,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "kalash-rewards": entry(
     "kalash-rewards",
-    "✅ Kalash - Your New Gold",
+    "Kalash - Your New Gold",
     "2024",
     "Helping 1M+ users from their wealth with Digital gold",
     {
@@ -150,7 +150,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "kalash-year-end-recap": entry(
     "kalash-year-end-recap",
-    "✅ Kalash - Year-end Recap",
+    "Kalash - Year-end Recap",
     "2024",
     "Years of investment history, distilled into one delightful experience",
     {
@@ -170,7 +170,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-reduced-mutual-fund-support-tickets": entry(
     "piggy-reduced-mutual-fund-support-tickets",
-    "✅ Piggy - Reduced Support Tickets",
+    "Piggy - Reduced Support Tickets",
     "2023",
     "How we reduced mutual fund support tickets by 19% at Piggy",
     {

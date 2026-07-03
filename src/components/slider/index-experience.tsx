@@ -24,7 +24,7 @@ import { SectionFramePanel } from "@/components/slider/section-frame";
 import { ContactFramePanel } from "@/components/slider/contact-frame";
 import { ManifestFramePanel } from "@/components/slider/manifest-frame";
 import { IndexScrollHint } from "@/components/slider/index-scroll-hint";
-import { SiteFooter } from "@/components/site-footer";
+import { IndexFloatingPixels } from "@/components/slider/index-floating-pixels";
 
 function IndexCanvas() {
   const {
@@ -72,6 +72,8 @@ function IndexCanvas() {
           } as React.CSSProperties
         }
       >
+        <IndexFloatingPixels />
+
         <Minimap
           frameCount={frameCount}
           onSelectFrame={(index) => {
@@ -80,7 +82,7 @@ function IndexCanvas() {
           }}
         />
 
-        <div className="scrollable-content pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible">
+        <div className="scrollable-content pointer-events-none absolute inset-0 z-[1] flex items-center justify-center overflow-visible">
           <motion.div
             className="pointer-events-auto origin-center"
             style={{ scale: springScaleValue }}
@@ -153,8 +155,6 @@ function IndexCanvas() {
         />
 
         <IndexScrollHint activeFrameIndex={activeFrameIndex} />
-
-        <SiteFooter pinned />
 
         <p className="sr-only">
           Use arrow keys, Page Up, Page Down, Home, or End to move between slides. On touch
