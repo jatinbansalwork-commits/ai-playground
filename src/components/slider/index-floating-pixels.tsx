@@ -74,7 +74,7 @@ function spawnParticle(
   return { x, y, vx, vy, color, size };
 }
 
-/** Full-viewport floating pixel field behind the index slider (Mosaic.select style). */
+/** Full-viewport floating pixel field behind the index slider. */
 export function IndexFloatingPixels() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);

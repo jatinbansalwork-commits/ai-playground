@@ -6,12 +6,12 @@ export interface HeroPillDefinition {
   color: string;
   icon: HeroPillIconId;
   bordered?: boolean;
-  /** Measured widths from xhulia.com hero at desktop scale. */
+  /** Measured pill width at desktop scale. */
   width: number;
   iconOnly?: boolean;
 }
 
-/** Exact pill order, copy, colours, and sizes from https://www.xhulia.com/ */
+/** Hero physics pill definitions — order, copy, colours, and sizes. */
 export const HERO_PILLS: HeroPillDefinition[] = [
   { id: "pill-10", color: "#D9C9FF", icon: "pound", width: 58, iconOnly: true },
   {

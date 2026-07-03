@@ -5,10 +5,10 @@ export const INDEX_FLOATING_PIXEL_COLORS: readonly string[] = [
   ...new Set(HERO_PILLS.map((pill) => pill.color)),
 ];
 
-/** Viewport-wide field — sparse like the Mosaic hero. */
+/** Viewport-wide sparse floating pixel field. */
 export const INDEX_FLOATING_PIXEL_COUNT = 32;
 export const INDEX_FLOATING_PIXEL_BASE_SIZE = 6;
-/** Matches Mosaic `Rectangle_Random` speed prop (default ~1). */
+/** Base drift speed for floating pixels. */
 export const INDEX_FLOATING_PIXEL_SPEED = 1;
 export const INDEX_FLOATING_PIXEL_REPULSION_RADIUS = 200;
 export const INDEX_FLOATING_PIXEL_REPULSION_FORCE = 1.2;
