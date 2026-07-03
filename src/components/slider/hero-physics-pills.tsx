@@ -29,6 +29,8 @@ const PHYSICS = {
   dragStrength: 0.32,
   throwStrength: 0.16,
   startY: 20,
+  /** Global pill size vs design tokens (1.2 = 20% larger). */
+  sizeScale: 1.2,
   /** Scale pills when the physics container is narrow (tablet / laptop). */
   compactScale: 0.72,
   compactScaleBreakpoint: 640,
@@ -143,13 +145,17 @@ function HeroPillSurface({
   layoutScale: number;
   bodyRef: (element: HTMLDivElement | null) => void;
 }) {
-  const height = HERO_PILL_HEIGHT_PX * layoutScale;
-  const width = (pill.iconOnly ? HERO_PILL_HEIGHT_PX : pill.width) * layoutScale;
+  const height = HERO_PILL_HEIGHT_PX * layoutScale * PHYSICS.sizeScale;
+  const width =
+    (pill.iconOnly ? HERO_PILL_HEIGHT_PX : pill.width) * layoutScale * PHYSICS.sizeScale;
   const padding = pill.iconOnly
-    ? `${HERO_PILL_PADDING_ICON_PX * layoutScale}px`
-    : `${HERO_PILL_PADDING_TEXT_Y_PX * layoutScale}px ${HERO_PILL_PADDING_TEXT_X_PX * layoutScale}px`;
-  const iconSize = Math.max(12, Math.round(HERO_PILL_ICON_SIZE_PX * layoutScale));
-  const fontSize = Math.max(10, Math.round(13 * layoutScale));
+    ? `${HERO_PILL_PADDING_ICON_PX * layoutScale * PHYSICS.sizeScale}px`
+    : `${HERO_PILL_PADDING_TEXT_Y_PX * layoutScale * PHYSICS.sizeScale}px ${HERO_PILL_PADDING_TEXT_X_PX * layoutScale * PHYSICS.sizeScale}px`;
+  const iconSize = Math.max(
+    12,
+    Math.round(HERO_PILL_ICON_SIZE_PX * layoutScale * PHYSICS.sizeScale),
+  );
+  const fontSize = Math.max(10, Math.round(13 * layoutScale * PHYSICS.sizeScale));
 
   return (
     <div
@@ -173,7 +179,7 @@ function HeroPillSurface({
         style={{
           minHeight: height,
           minWidth: width,
-          gap: HERO_PILL_GAP_PX * layoutScale,
+          gap: HERO_PILL_GAP_PX * layoutScale * PHYSICS.sizeScale,
           padding,
           borderRadius: 0,
           backgroundColor: pill.color,
