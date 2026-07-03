@@ -78,7 +78,7 @@ function measurePillZoneMinY(
   container: HTMLElement,
   height: number,
 ): number {
-  const headlineEl = container.parentElement?.querySelector(
+  const headlineEl = container.parentElement?.querySelector<HTMLElement>(
     ".index-slide-hero-copy h1",
   );
   let pillZoneMinY = Math.round(height * 0.48);
