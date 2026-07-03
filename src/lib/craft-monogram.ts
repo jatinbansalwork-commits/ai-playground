@@ -1,2 +1,2 @@
-/** Paint accent on the index Craft brush monogram. */
-export const CRAFT_MONOGRAM_PRIMARY_COLOR = "#F8784F";
+/** Accent colour for the index Craft monogram pixel asset. */
+export const CRAFT_MONOGRAM_PRIMARY_COLOR = "#00C896";

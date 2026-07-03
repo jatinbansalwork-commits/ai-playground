@@ -1,9 +1,9 @@
-/** Mosaic.select floating pixel palette (blue, red, cream). */
-export const INDEX_FLOATING_PIXEL_COLORS = [
-  "#0443B5",
-  "#E0223E",
-  "#FBFAF9",
-] as const;
+import { HERO_PILLS } from "@/lib/hero-pills-data";
+
+/** Floating pixel palette — unique hero pill fill colours. */
+export const INDEX_FLOATING_PIXEL_COLORS: readonly string[] = [
+  ...new Set(HERO_PILLS.map((pill) => pill.color)),
+];
 
 /** Viewport-wide field — sparse like the Mosaic hero. */
 export const INDEX_FLOATING_PIXEL_COUNT = 32;
