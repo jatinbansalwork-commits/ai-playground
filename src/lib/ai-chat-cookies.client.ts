@@ -5,6 +5,8 @@ import {
   AI_CHAT_PROMPT_LIMIT,
 } from "@/lib/ai-chat-config";
 
+const CHAT_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+
 function readCookieCount(name: string): number {
   if (typeof document === "undefined") return 0;
 
@@ -31,4 +33,28 @@ export function getClientRemainingOpenAi(): number {
     0,
     AI_CHAT_OPENAI_MAX_PER_USER - readCookieCount(AI_CHAT_OPENAI_COOKIE_NAME),
   );
+}
+
+/** Mirror server session counts — streaming responses cannot always set Set-Cookie. */
+export function syncClientChatBudget(options: {
+  remainingPrompts: number;
+  remainingOpenAi: number;
+}): void {
+  if (typeof document === "undefined") return;
+
+  const promptCount = Math.max(
+    0,
+    Math.min(AI_CHAT_PROMPT_LIMIT, AI_CHAT_PROMPT_LIMIT - options.remainingPrompts),
+  );
+  const openAiCount = Math.max(
+    0,
+    Math.min(
+      AI_CHAT_OPENAI_MAX_PER_USER,
+      AI_CHAT_OPENAI_MAX_PER_USER - options.remainingOpenAi,
+    ),
+  );
+
+  const base = `path=/; max-age=${CHAT_COOKIE_MAX_AGE_SECONDS}; samesite=lax`;
+  document.cookie = `${AI_CHAT_COOKIE_NAME}=${promptCount}; ${base}`;
+  document.cookie = `${AI_CHAT_OPENAI_COOKIE_NAME}=${openAiCount}; ${base}`;
 }

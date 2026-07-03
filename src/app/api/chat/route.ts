@@ -19,7 +19,6 @@ import {
 import {
   getChatPromptCount,
   getOpenAiBudgetState,
-  getRemainingChatPrompts,
   incrementChatPromptCount,
   incrementOpenAiCallCount,
 } from "@/lib/ai-chat-cookies.server";
@@ -109,19 +108,18 @@ async function streamOpenAiWithFallback(
   emit: (event: ChatStreamEvent) => void,
   messages: ChatMessage[],
   pagePath: string | undefined,
-  remainingPromptsBefore: number,
-  remainingOpenAiBefore: number,
+  remainingPrompts: number,
+  remainingOpenAi: number,
   showOpenAiNotice: boolean,
   visitorIntent: ReturnType<typeof detectQuestionIntent>,
 ): Promise<{
   reply: string;
   source: ChatReplySource;
-  remainingOpenAi: number;
 }> {
   emit({
     type: "meta",
-    remainingPrompts: remainingPromptsBefore,
-    remainingOpenAi: remainingOpenAiBefore,
+    remainingPrompts,
+    remainingOpenAi,
     source: "openai",
   });
 
@@ -138,8 +136,7 @@ async function streamOpenAiWithFallback(
       throw new Error("OpenAI returned an empty reply.");
     }
 
-    const remainingOpenAi = await incrementOpenAiCallCount();
-    return { reply: trimmed, source: "openai", remainingOpenAi };
+    return { reply: trimmed, source: "openai" };
   } catch {
     const fallback = generateFallbackReply(
       lastUserMessage(messages),
@@ -154,7 +151,6 @@ async function streamOpenAiWithFallback(
     return {
       reply: fallback.reply,
       source: "fallback",
-      remainingOpenAi: remainingOpenAiBefore,
     };
   }
 }
@@ -179,7 +175,6 @@ export async function POST(request: Request): Promise<Response> {
   const intentId = resolveChipIntentId(messages, body.intentId);
   const userMessage = lastUserMessage(messages);
   const visitorIntent = detectQuestionIntent(userMessage, pagePath);
-  const remainingPromptsBefore = getRemainingChatPrompts(promptCount);
 
   if (promptCount >= AI_CHAT_PROMPT_LIMIT) {
     return createChatStreamResponse(async (emit) => {
@@ -209,18 +204,19 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  return createChatStreamResponse(async (emit) => {
-    const openAiBudget = await getOpenAiBudgetState();
-    const showOpenAiNotice = !openAiBudget.canUseOpenAi;
+  const openAiBudget = await getOpenAiBudgetState();
+  const showOpenAiNotice = !openAiBudget.canUseOpenAi;
 
-    if (isChipFirstTurn(messages) || (body.intentId && messages.length === 1)) {
-      const chipIntentId = resolveChipIntentId(messages, body.intentId);
-      const staticReply = chipIntentId
-        ? getChipStaticReply(chipIntentId)
-        : undefined;
+  if (isChipFirstTurn(messages) || (body.intentId && messages.length === 1)) {
+    const chipIntentId = resolveChipIntentId(messages, body.intentId);
+    const staticReply = chipIntentId
+      ? getChipStaticReply(chipIntentId)
+      : undefined;
 
-      if (staticReply) {
-        const remainingPrompts = await incrementChatPromptCount();
+    if (staticReply) {
+      const remainingPrompts = await incrementChatPromptCount();
+
+      return createChatStreamResponse(async (emit) => {
         const followUps = buildFollowUpSuggestions({
           lastUserMessage: userMessage,
           pagePath,
@@ -252,13 +248,16 @@ export async function POST(request: Request): Promise<Response> {
             staticReply,
           ),
         );
-      }
+      });
     }
+  }
 
-    const curatedReply = buildIntentReply(visitorIntent, userMessage, pagePath);
+  const curatedReply = buildIntentReply(visitorIntent, userMessage, pagePath);
 
-    if (curatedReply && shouldUseCuratedReply(visitorIntent)) {
-      const remainingPrompts = await incrementChatPromptCount();
+  if (curatedReply && shouldUseCuratedReply(visitorIntent)) {
+    const remainingPrompts = await incrementChatPromptCount();
+
+    return createChatStreamResponse(async (emit) => {
       const followUps = buildFollowUpSuggestions({
         lastUserMessage: userMessage,
         pagePath,
@@ -287,30 +286,36 @@ export async function POST(request: Request): Promise<Response> {
         result,
         fetchChatReactionGif(userMessage, intentId, usedGifIds, curatedReply),
       );
-    }
+    });
+  }
 
-    const canUseOpenAi =
-      openAiBudget.canUseOpenAi &&
-      isOpenAiChatEnabled() &&
-      Boolean(process.env.OPENAI_API_KEY);
+  const canUseOpenAi =
+    openAiBudget.canUseOpenAi &&
+    isOpenAiChatEnabled() &&
+    Boolean(process.env.OPENAI_API_KEY);
 
+  const remainingPrompts = await incrementChatPromptCount();
+  let remainingOpenAi = openAiBudget.remainingOpenAi;
+  if (canUseOpenAi) {
+    remainingOpenAi = await incrementOpenAiCallCount();
+  }
+
+  return createChatStreamResponse(async (emit) => {
     let reply = "";
     let source: ChatReplySource = "fallback";
-    let remainingOpenAi = openAiBudget.remainingOpenAi;
 
     if (canUseOpenAi) {
       const streamed = await streamOpenAiWithFallback(
         emit,
         messages,
         pagePath,
-        remainingPromptsBefore,
-        openAiBudget.remainingOpenAi,
+        remainingPrompts,
+        remainingOpenAi,
         showOpenAiNotice,
         visitorIntent,
       );
       reply = streamed.reply;
       source = streamed.source;
-      remainingOpenAi = streamed.remainingOpenAi;
     } else {
       const fallback = generateFallbackReply(
         userMessage,
@@ -324,12 +329,11 @@ export async function POST(request: Request): Promise<Response> {
         reply,
         followUps: [],
         source,
-        remainingPrompts: remainingPromptsBefore,
+        remainingPrompts,
         remainingOpenAi,
       });
     }
 
-    const remainingPrompts = await incrementChatPromptCount();
     const followUps = buildFollowUpSuggestions({
       lastUserMessage: userMessage,
       pagePath,

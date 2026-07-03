@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { CONTACT_EMAIL } from "@/lib/constants";
 import { FOCUS_RING } from "@/lib/a11y";
 import { trackContactClick } from "@/lib/analytics";
-import { INDEX_SLIDE_CONTACT, INDEX_SLIDE_CONTACT_SIZE_PX } from "@/lib/index-typography";
+import { INDEX_SLIDE_CONTACT } from "@/lib/index-typography";
 import { springLabel } from "@/lib/spring";
 
 interface ContactEmailButtonProps {
@@ -39,7 +39,6 @@ export function ContactEmailButton({
         onMouseDown={onInteract}
         onClick={() => void handleCopyEmail()}
         className={`cursor-copy rounded-xl text-left ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${className}`.trim()}
-        style={{ fontSize: INDEX_SLIDE_CONTACT_SIZE_PX }}
       >
         <span className="relative block h-[1em] overflow-hidden leading-none">
           <motion.span

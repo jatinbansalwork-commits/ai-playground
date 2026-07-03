@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion";
 import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { HERO_COPY, HERO_LINES } from "@/lib/constants";
-import { INDEX_SLIDE_HERO, INDEX_SLIDE_HERO_SIZE_PX } from "@/lib/index-typography";
+import { INDEX_SLIDE_HERO } from "@/lib/index-typography";
 import { springContainer } from "@/lib/spring";
 import { ClipReveal } from "@/components/slider/clip-reveal";
 import { FrameShell } from "@/components/slider/frame-shell";
@@ -22,24 +23,25 @@ export function HeroFramePanel({
   onInteract,
 }: HeroFramePanelProps) {
   const mounted = useIsMounted();
+  const reducedMotion = useReducedMotion();
 
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
       <motion.div
-        initial={mounted ? { scale: 0 } : false}
+        initial={mounted && !reducedMotion ? { scale: 0 } : false}
         animate={{ scale: 1 }}
-        transition={springContainer}
-        className="relative flex h-full items-center py-16 text-black"
+        transition={reducedMotion ? { duration: 0 } : springContainer}
+        className="relative h-full w-full text-black"
       >
-        <HeroPhysicsPills className="z-[1]" onInteract={onInteract} />
+        <HeroPhysicsPills
+          className="absolute inset-0 z-[1]"
+          onInteract={onInteract}
+        />
 
-        <div className="pointer-events-none relative z-10 max-w-[85%] pl-16">
-          <h1
-            className={INDEX_SLIDE_HERO}
-            style={{ fontSize: INDEX_SLIDE_HERO_SIZE_PX }}
-          >
+        <div className="index-slide-hero-copy pointer-events-none relative z-10 pt-8 sm:pt-10 md:pt-12">
+          <h1 className={INDEX_SLIDE_HERO}>
             {HERO_LINES.map((line, lineIndex) => (
-              <span key={line} className="block whitespace-nowrap">
+              <span key={line} className="index-slide-hero-line block">
                 <ClipReveal delay={lineIndex * 0.1}>{line}</ClipReveal>
               </span>
             ))}

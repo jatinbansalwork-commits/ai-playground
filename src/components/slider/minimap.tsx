@@ -9,6 +9,7 @@ import {
   MINIMAP_LINE_HEIGHT,
   MINIMAP_LINE_WIDTH,
   MINIMAP_TRACKER_WIDTH,
+  INDEX_MINIMAP_TOP,
   SITE_NAME,
 } from "@/lib/constants";
 import { minimapLineToFrameIndex } from "@/lib/minimap-frame-index";
@@ -34,7 +35,7 @@ interface MinimapProps {
 
 export function Minimap({
   href,
-  className = "pointer-events-none fixed top-16 left-1/2 z-30 -translate-x-1/2",
+  className = `pointer-events-none fixed ${INDEX_MINIMAP_TOP} left-1/2 z-30 -translate-x-1/2`,
   linkClassName,
   variant = "index",
   frameCount,

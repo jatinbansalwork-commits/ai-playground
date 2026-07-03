@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useState } from "react";
 import { FOCUS_RING } from "@/lib/a11y";
+import { INDEX_SCROLL_HINT_BOTTOM } from "@/lib/constants";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const INDEX_SCROLL_HINT_KEY = "index_scroll_hint_dismissed";
@@ -55,7 +56,7 @@ export function IndexScrollHint({ activeFrameIndex }: IndexScrollHintProps) {
     <div
       id={hintId}
       role="status"
-      className={`index-scroll-hint pointer-events-auto fixed bottom-[calc(3.5rem+3.75rem)] left-1/2 z-40 flex max-w-sm -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-neutral-200 backdrop-blur-sm${reducedMotion ? "" : " index-scroll-hint--motion"}`}
+      className={`index-scroll-hint pointer-events-auto fixed ${INDEX_SCROLL_HINT_BOTTOM} left-1/2 z-40 flex max-w-[min(100%,20rem)] -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/70 px-4 py-2.5 text-sm text-neutral-200 backdrop-blur-sm${reducedMotion ? "" : " index-scroll-hint--motion"}`}
     >
       <span>Scroll or swipe to explore</span>
       <button

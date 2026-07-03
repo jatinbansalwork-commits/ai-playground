@@ -3,7 +3,7 @@
 import { CONTACT_LINKS } from "@/lib/constants";
 import { FOCUS_RING, externalLinkLabel } from "@/lib/a11y";
 import { trackContactClick, trackResumeDownload } from "@/lib/analytics";
-import { INDEX_SLIDE_CONTACT, INDEX_SLIDE_CONTACT_SIZE_PX } from "@/lib/index-typography";
+import { INDEX_SLIDE_CONTACT } from "@/lib/index-typography";
 import { ContactEmailButton } from "@/components/slider/contact-email-button";
 import { FrameShell } from "@/components/slider/frame-shell";
 import type { ContactFrame } from "@/types";
@@ -15,10 +15,10 @@ interface ContactFramePanelProps {
 }
 
 const POSITION_CLASSES = {
-  "top-left": "top-[50px] left-[50px]",
-  "top-right": "top-[50px] right-[50px]",
-  "bottom-left": "bottom-[50px] left-[50px]",
-  "bottom-right": "bottom-[50px] right-[50px]",
+  "top-left": "top-[30px] left-[24px] sm:top-[50px] sm:left-[50px]",
+  "top-right": "top-[30px] right-[24px] sm:top-[50px] sm:right-[50px]",
+  "bottom-left": "bottom-[30px] left-[24px] sm:bottom-[50px] sm:left-[50px]",
+  "bottom-right": "bottom-[30px] right-[24px] sm:bottom-[50px] sm:right-[50px]",
 } as const;
 
 function trackContactLink(label: (typeof CONTACT_LINKS)[number]["label"]): void {
@@ -55,7 +55,6 @@ export function ContactFramePanel({
             onMouseDown={onInteract}
             onClick={() => trackContactLink(link.label)}
             className={`absolute rounded-xl ${INDEX_SLIDE_CONTACT} ${FOCUS_RING} ${POSITION_CLASSES[link.position]}`}
-            style={{ fontSize: INDEX_SLIDE_CONTACT_SIZE_PX }}
           >
             {link.label}
           </a>

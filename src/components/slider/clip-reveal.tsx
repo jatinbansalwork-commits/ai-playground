@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { springClipReveal } from "@/lib/spring";
 
 interface ClipRevealProps {
@@ -14,15 +15,18 @@ export function ClipReveal({
   delay = 0,
 }: ClipRevealProps) {
   const mounted = useIsMounted();
+  const reducedMotion = useReducedMotion();
 
   return (
     <motion.div className="overflow-hidden pb-[0.14em]">
       <motion.span
         className="inline-block will-change-transform"
-        initial={mounted ? { y: 100 } : false}
+        initial={mounted && !reducedMotion ? { y: 100 } : false}
         animate={{ y: 0 }}
         transition={{
-          y: { ...springClipReveal, delay: delay + 0.2 },
+          y: reducedMotion
+            ? { duration: 0 }
+            : { ...springClipReveal, delay: delay + 0.2 },
         }}
       >
         {children}

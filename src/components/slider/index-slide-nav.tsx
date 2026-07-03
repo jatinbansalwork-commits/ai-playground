@@ -66,7 +66,7 @@ export function IndexSlideNav({
   return (
     <nav
       aria-label="Slide navigation"
-      className={`pointer-events-auto fixed ${INDEX_FLOATING_BOTTOM} left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white backdrop-blur-sm`}
+      className={`pointer-events-auto fixed ${INDEX_FLOATING_BOTTOM} left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/60 px-2.5 py-2 text-sm text-white backdrop-blur-sm sm:gap-3 sm:px-3`}
       onPointerDown={(event) => {
         event.stopPropagation();
       }}
@@ -78,7 +78,7 @@ export function IndexSlideNav({
         onActivate={() => onSelect(activeIndex - 1)}
       />
 
-      <p className="min-w-[9rem] text-center text-neutral-300" aria-live="polite">
+      <p className="min-w-[7.5rem] text-center text-neutral-300 sm:min-w-[9rem]" aria-live="polite">
         <span className="sr-only">Current slide: </span>
         {activeLabel}{" "}
         <span className="text-neutral-400">

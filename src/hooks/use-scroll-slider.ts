@@ -79,12 +79,22 @@ function syncDocumentScrollOffset(value: number) {
   }
 }
 
+function getViewportSize() {
+  if (typeof window === "undefined") {
+    return { width: SCALE_VIEWPORT_WIDTH, height: SCALE_VIEWPORT_HEIGHT };
+  }
+
+  const viewport = window.visualViewport;
+  return {
+    width: viewport?.width ?? window.innerWidth,
+    height: viewport?.height ?? window.innerHeight,
+  };
+}
+
 function computeBaseScale() {
+  const { width, height } = getViewportSize();
   return clamp(
-    Math.min(
-      window.innerWidth / SCALE_VIEWPORT_WIDTH,
-      window.innerHeight / SCALE_VIEWPORT_HEIGHT,
-    ),
+    Math.min(width / SCALE_VIEWPORT_WIDTH, height / SCALE_VIEWPORT_HEIGHT),
     SCALE_BASE_MIN,
     1,
   );
@@ -152,7 +162,7 @@ function eventTargetHasScrollableAncestor(
 }
 
 const SLIDER_POINTER_IGNORE_SELECTOR =
-  'a[href], button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"]';
+  'a[href], button, [role="button"], input, textarea, select, label, summary, [contenteditable="true"], [role="dialog"], .hero-physics-pills, .hero-physics-pill';
 
 const SLIDER_DRAG_AXIS_LOCK_PX = 6;
 const SLIDER_DRAG_AXIS_LOCK_COARSE_PX = 6;
@@ -425,6 +435,9 @@ export function useScrollSlider() {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", syncBaseScale);
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", syncBaseScale);
+    viewport?.addEventListener("scroll", syncBaseScale);
 
     return () => {
       isReadyRef.current = false;
@@ -432,6 +445,8 @@ export function useScrollSlider() {
       window.clearTimeout(readyTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", syncBaseScale);
+      viewport?.removeEventListener("resize", syncBaseScale);
+      viewport?.removeEventListener("scroll", syncBaseScale);
     };
   }, [
     cancelSnapAnimation,

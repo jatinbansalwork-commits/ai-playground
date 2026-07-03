@@ -27,8 +27,15 @@ export function createSeededRandom(seed: number) {
 
 export function getViewportPixelCount(width: number, height: number) {
   const area = width * height;
+  const isNarrow = width < 768;
+  const maxCount = isNarrow ? 24 : 48;
+  const areaDivisor = isNarrow ? 52_000 : 42_000;
+  const baseCount = isNarrow
+    ? Math.min(INDEX_FLOATING_PIXEL_COUNT, 20)
+    : INDEX_FLOATING_PIXEL_COUNT;
+
   return Math.min(
-    48,
-    Math.max(INDEX_FLOATING_PIXEL_COUNT, Math.round(area / 42_000)),
+    maxCount,
+    Math.max(baseCount, Math.round(area / areaDivisor)),
   );
 }

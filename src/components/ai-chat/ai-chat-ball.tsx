@@ -32,6 +32,7 @@ import {
 import {
   getClientRemainingOpenAi,
   getClientRemainingPrompts,
+  syncClientChatBudget,
 } from "@/lib/ai-chat-cookies.client";
 import { buildFollowUpSuggestions } from "@/lib/ai-chat-follow-ups";
 import type { OpenAiChatDetail } from "@/lib/ai-chat-open.client";
@@ -324,6 +325,7 @@ export function AiChatBall() {
 
           setMessages((current) => [
             ...current,
+            { role: "user", content },
             { role: "assistant", content: AI_CHAT_LIMIT_MESSAGE },
           ]);
         }
@@ -399,6 +401,10 @@ export function AiChatBall() {
               event.source === "static" || event.source === "fallback";
             setRemainingPrompts(event.remainingPrompts);
             setRemainingOpenAi(event.remainingOpenAi);
+            syncClientChatBudget({
+              remainingPrompts: event.remainingPrompts,
+              remainingOpenAi: event.remainingOpenAi,
+            });
           },
           onDelta: async (delta) => {
             if (usesTypingReplay) {
@@ -460,7 +466,10 @@ export function AiChatBall() {
         setRemainingOpenAi(result.remainingOpenAi);
         setFollowUps(result.followUps);
         trackAiChatReplySource(result.source);
-        refreshRemaining();
+        syncClientChatBudget({
+          remainingPrompts: result.remainingPrompts,
+          remainingOpenAi: result.remainingOpenAi,
+        });
       } catch {
         trackAiChatError("network");
         await waitForMinimumThinking(startedAt, minThinkingMs);
@@ -644,6 +653,12 @@ export function AiChatBall() {
                 <p id={descriptionId} className="mt-0.5 text-xs text-neutral-400">
                   {AI_CHAT_TAGLINE}
                 </p>
+                {remainingPrompts > 0 && remainingPrompts <= 3 ? (
+                  <p className="mt-1 text-[11px] text-amber-200/75">
+                    {remainingPrompts} message{remainingPrompts === 1 ? "" : "s"}{" "}
+                    left this session
+                  </p>
+                ) : null}
                 <p className="sr-only" aria-live="polite">
                   {remainingPrompts <= 0
                     ? "Chat limit reached."

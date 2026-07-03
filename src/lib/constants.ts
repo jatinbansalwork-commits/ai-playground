@@ -97,11 +97,21 @@ export const MINIMAP_LINE_COUNT = 20;
 export const MINIMAP_TRACKER_WIDTH = 30;
 export const MINIMAP_RANGE = 160;
 
-/** Bottom offset for floating index chrome (slide nav + chat). */
-export const INDEX_FLOATING_BOTTOM = "bottom-8";
+/** Bottom offset for floating index chrome (slide nav + chat) — respects home-indicator safe area. */
+export const INDEX_FLOATING_BOTTOM =
+  "bottom-[max(2rem,env(safe-area-inset-bottom))]";
 
 /** Mobile index chat FAB — above slide nav so Prev/Next stay tappable. */
-export const AI_CHAT_FAB_MOBILE_INDEX_BOTTOM = "bottom-24";
+export const AI_CHAT_FAB_MOBILE_INDEX_BOTTOM =
+  "bottom-[max(6rem,calc(env(safe-area-inset-bottom)+5rem))]";
+
+/** Scroll hint sits above slide nav + safe area. */
+export const INDEX_SCROLL_HINT_BOTTOM =
+  "bottom-[max(7.25rem,calc(env(safe-area-inset-bottom)+6.25rem))]";
+
+/** Minimap / top index chrome — clear notch and Dynamic Island. */
+export const INDEX_MINIMAP_TOP =
+  "top-[max(4rem,env(safe-area-inset-top))]";
 
 /** Chat ball diameter — keep in sync with `AiChatFab` trigger size. */
 export const AI_CHAT_BALL_SIZE_PX = 72;

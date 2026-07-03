@@ -4,8 +4,9 @@
  */
 export const INDEX_SLIDE_TYPE = "index-slide-type";
 
-export const INDEX_SLIDE_HERO = `${INDEX_SLIDE_TYPE} font-normal tracking-tight leading-[1.05] text-black`;
+export const INDEX_SLIDE_HERO = `${INDEX_SLIDE_TYPE} index-slide-hero-size font-normal tracking-tight leading-[1.05] text-black`;
 
+/** Design-space hero size inside the 1200px frame — scales with the canvas. */
 export const INDEX_SLIDE_HERO_SIZE_PX = 80;
 
 export const INDEX_SLIDE_MONOGRAM = `${INDEX_SLIDE_TYPE} font-normal tracking-tighter leading-none whitespace-nowrap text-black`;
@@ -22,10 +23,10 @@ export function getIndexMonogramFontSize(label: string): number {
 
 export const INDEX_SLIDE_LABEL = `${INDEX_SLIDE_TYPE} font-normal tracking-tight leading-none text-[1.2rem] text-neutral-500`;
 
-export const INDEX_SLIDE_CONTACT = `${INDEX_SLIDE_TYPE} font-normal tracking-tight leading-none text-black`;
+export const INDEX_SLIDE_CONTACT = `${INDEX_SLIDE_TYPE} index-slide-contact-size font-normal tracking-tight leading-none text-black`;
 
 export const INDEX_SLIDE_CONTACT_SIZE_PX = 102;
 
-export const INDEX_SLIDE_MANIFEST = `${INDEX_SLIDE_TYPE} font-normal tracking-tight leading-[1.15] text-white`;
+export const INDEX_SLIDE_MANIFEST = `${INDEX_SLIDE_TYPE} index-slide-manifest-size font-normal tracking-tight leading-[1.15] text-white`;
 
 export const INDEX_SLIDE_MANIFEST_SIZE_PX = 90;

@@ -1140,6 +1140,8 @@ body {
   min-height: 100%;
   height: auto;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -1168,6 +1170,53 @@ main.index-root .index-slide-type {
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Index hero copy — design-space layout inside the scaled 1200px frame. */
+.index-slide-hero-copy {
+  max-width: 92%;
+  padding-left: 2rem;
+}
+
+.index-slide-hero-line {
+  text-wrap: balance;
+}
+
+.index-slide-hero-size {
+  font-size: 60px;
+}
+
+.index-slide-contact-size {
+  font-size: 102px;
+}
+
+.index-slide-manifest-size {
+  font-size: 90px;
+}
+
+@media (max-width: 767px) {
+  .index-slide-hero-copy {
+    max-width: 88%;
+    padding-left: 1.25rem;
+    padding-right: 0.5rem;
+  }
+
+  .index-slide-hero-size {
+    font-size: 48px;
+  }
+
+  .index-slide-contact-size {
+    font-size: 72px;
+  }
+
+  .index-slide-manifest-size {
+    font-size: 64px;
+  }
+}
+
+.hero-physics-pills {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .wireframe-mode,
