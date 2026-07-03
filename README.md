@@ -33,7 +33,7 @@ Impact-card illustration (light mode):
 | Doc | Contents |
 |-----|----------|
 | [`IA.md`](./IA.md) | Site tree, index frames, case study visibility, media sources |
-| [`design.md`](./design.md) | Slider, Craft/Ideas rules, case study components, JB illustrations |
+| [`design.md`](./design.md) | Slider, Craft/Ideas rules, case study components, Policy Copilot demo, analytics catalogue |
 | `.cursor/skills/jb_illustrations/` | Cursor skill for generating editorial art |
 | `.cursor/rules/case-study-headings.mdc` | Title case for headings & captions |
 
@@ -157,10 +157,31 @@ Deploy on [Vercel](https://vercel.com). Media is served from Vercel Blob CDN —
 
 ## SEO and monitoring
 
-SEO metadata, sitemap, and structured data live in `src/lib/seo.ts`. After deploy, verify:
+SEO metadata, sitemap, structured data, and social cards live in `src/lib/seo.ts`. Case study copy and services for SERP descriptions live in `src/lib/project-content.ts`.
+
+After deploy, verify:
 
 - `https://<your-domain>/robots.txt`
 - `https://<your-domain>/sitemap.xml`
+
+### Social presence (Open Graph & Twitter)
+
+Every public page emits Open Graph and Twitter `summary_large_image` metadata via `buildSocialMetadata()`:
+
+| Field | Source |
+|-------|--------|
+| `og:title` / `twitter:title` | Page title (case studies: `{title} · Projects`) |
+| `og:description` | `buildCaseStudyMetaDescription()` or route-specific copy |
+| `og:image` | Per-slug hover illustration (`HOVER_THUMBNAIL_OVERRIDES`) or `/opengraph-image` fallback |
+| `og:type` | `article` for case studies; `website` elsewhere |
+| `og:locale` | `en_GB` |
+| `twitter:card` | `summary_large_image` |
+| `twitter:creator` | `@jatinbansal` |
+| JSON-LD | `Article` + `BreadcrumbList` on case studies; `Person` + `WebSite` on root |
+
+**Flagship share URL:** `https://<your-domain>/projects/cisco-policy-copilot` (legacy alias `/recent`). OG image: `policy-copilot-projects-hover` JB illustration.
+
+Per-slug SEO keywords: `CASE_STUDY_SEO_KEYWORDS` in `seo.ts` (Cisco includes Hybrid Mesh Firewall, Policy Copilot, AgentiOps).
 
 ### Google Search Console (search rankings)
 
@@ -191,6 +212,7 @@ In the Vercel dashboard: **Project → Analytics → Production**
 | Projects list clicks | Events → `project_list_click` (filter `slug`) |
 | Case study opens | Events → `project_open` (filter `slug`, `source`) |
 | Case study scroll depth | Events → `case_study_scroll_depth` (filter `slug`, `depth`) |
+| Policy Copilot demo funnel | Events → `policy_copilot_demo` (filter `action`, `scenario_id`) |
 | Craft / Ideas gallery views | Events → `craft_view`, `ai_experiment_view` |
 | Craft / Ideas item clicks | Events → `craft_item_click`, `ai_experiment_item_click` |
 | External demo opens | Events → `external_demo_open` |
@@ -198,7 +220,26 @@ In the Vercel dashboard: **Project → Analytics → Production**
 | Contact / resume | Events → `contact_click`, `resume_download` |
 | Video / motion plays | Events → `media_play` (filter `surface`, `slug`) |
 
-Full event catalogue: [`design.md` § Analytics](./design.md#analytics).
+Full event catalogue and page-wise map: [`design.md` § Analytics](./design.md#analytics).
+
+#### Policy Copilot demo funnel (`policy_copilot_demo`)
+
+Interactive workspace on `/projects/cisco-policy-copilot`. Filter by `action` in Vercel Analytics:
+
+| Action | When |
+|--------|------|
+| `prompt_select` | Example prompt chip clicked |
+| `understand_intent` | Primary CTA — demo started |
+| `clarification_answer` | Inline clarification card answered |
+| `draft_revealed` | Policy draft section appears |
+| `validation_complete` | All validation checks finished |
+| `simulation_visible` | Impact simulation section appears |
+| `recommendation_apply` | Recommendation applied |
+| `recommendation_dismiss` | Recommendation dismissed |
+| `approve` | Policy approved |
+| `reset` | Start Over clicked |
+
+Pair with `project_open` and `case_study_scroll_depth` for the same `slug` to measure read-through vs demo engagement.
 
 ### Vercel Speed Insights (Core Web Vitals)
 
@@ -215,11 +256,12 @@ Use [PageSpeed Insights](https://pagespeed.web.dev/) to see what Google’s CrUX
 Once a month, open **Vercel → Project → Analytics → Production** and work through this checklist:
 
 1. **Case studies opened but not read** — filter `project_open` by `slug`, then compare with `case_study_scroll_depth` for the same slug. Slugs with opens but no 50%+ depth need a stronger hook or faster LCP.
-2. **Repeated chat intents** — filter `ai_chat_intent` by `intent_id`. Intents with high volume but low confidence suggest missing copy or nav.
-3. **Gallery drop-off** — compare `craft_view` / `ai_experiment_view` with `craft_item_click` / `ai_experiment_item_click`. Low click-through means card previews or hints need work.
-4. **Index discovery** — check `index_frame_view` for frame 1 vs later frames. If most sessions never leave slide 1, revisit index hints or JB_AI “Show me around”.
-5. **JBAI Q&A sheet** — scan the Google Sheet for unanswered patterns, typos in questions, and pages where visitors get stuck (`Page` column).
-6. **Speed Insights** — note routes with poor LCP; case study hero preloads and below-fold lazy media live in `src/app/projects/[slug]/layout.tsx` and `CaseStudyMedia`.
+2. **Policy Copilot demo drop-off** — compare `understand_intent` → `draft_revealed` → `approve` counts on `policy_copilot_demo`. Low draft rate may mean clarifications are blocking; low approve rate may mean the demo runs too long.
+3. **Repeated chat intents** — filter `ai_chat_intent` by `intent_id`. Intents with high volume but low confidence suggest missing copy or nav.
+4. **Gallery drop-off** — compare `craft_view` / `ai_experiment_view` with `craft_item_click` / `ai_experiment_item_click`. Low click-through means card previews or hints need work.
+5. **Index discovery** — check `index_frame_view` for frame 1 vs later frames. If most sessions never leave slide 1, revisit index hints or JB_AI “Show me around”.
+6. **JBAI Q&A sheet** — scan the Google Sheet for unanswered patterns, typos in questions, and pages where visitors get stuck (`Page` column).
+7. **Speed Insights** — note routes with poor LCP; case study hero preloads and below-fold lazy media live in `src/app/projects/[slug]/layout.tsx` and `CaseStudyMedia`.
 
 Export or screenshot top findings so copy and nav tweaks stay intentional rather than reactive.
 

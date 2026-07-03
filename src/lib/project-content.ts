@@ -32,15 +32,21 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "⏳ Cisco - AgentiOps Firewall Copilot",
+    "Cisco - AgentiOps Firewall Copilot",
     "2026",
-    "Designing an AI-powered Cisco security teammate that turns business intent into reviewable, deployable firewall policies for enterprise administrators.",
+    "Case study: designing Policy Copilot for Cisco Hybrid Mesh Firewall — an AI-native workspace that turns business intent into reviewable, deployable firewall policies. Includes an interactive living-canvas demo with intent understanding, inline clarifications, continuous validation, and deployment readiness.",
     {
-      services: [],
+      services: [
+        "UX / UI for desktop + mobile",
+        "Conceptualization",
+        "UX Research",
+        "Micro-interactions",
+        "Dev handoff",
+      ],
       client: "Cisco",
       location: "San Jose, CA",
       infoText:
-        "Policy Copilot, an AI-assisted experience embedded directly into the policy creation workflow. Instead of asking administrators to manually assemble firewall rules, the product helps them describe what they want in natural language, generates a draft policy, validates it against organisational constraints, and keeps the administrator in control until deployment.",
+        "Policy Copilot is an AI-assisted experience embedded in the firewall policy workflow. Administrators describe outcomes in plain language; Copilot builds understanding inline, surfaces clarifications as compact cards, drafts policy as editable smart objects, validates continuously, and keeps humans in control until deployment.",
     },
   ),
   "freshprints-image-gen-ai": entry(

@@ -29,8 +29,8 @@ const PHYSICS = {
   dragStrength: 0.32,
   throwStrength: 0.16,
   startY: 20,
-  /** Global pill size vs design tokens (1.2 = 20% larger). */
-  sizeScale: 1.2,
+  /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
+  sizeScale: 1.44,
   /** Scale pills when the physics container is narrow (tablet / laptop). */
   compactScale: 0.72,
   compactScaleBreakpoint: 640,

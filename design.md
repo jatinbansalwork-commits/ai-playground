@@ -170,9 +170,28 @@ Infrastructure for blurring case study body copy until a case study is **publish
 
 | Slug | Mode | Status |
 |------|------|--------|
-| `cisco-policy-copilot` | `daily-reset` | Pre-launch — blurred body, countdown in hero |
+| — | — | No slugs gated — `CASE_STUDY_REVEAL_SCHEDULE` is `{}` |
 
 Rules: `.cursor/rules/case-study-reveal-timer.mdc`
+
+### Policy Copilot interactive demo
+
+Living-canvas workspace after **Begin** — reference home screen with sidebar, then inline policy build.
+
+| Piece | Location |
+|-------|----------|
+| Home screen (reference UI) | `policy-copilot-home.tsx` — hero, intent card, secondary starts |
+| Shared shell | `policy-copilot-shell.tsx` — sidebar, flow progress, atmosphere, motion primitives |
+| Interpret intent (Step 1) | `policy-copilot-interpret.tsx` — three-column chat + contract panel |
+| Case study shell | `CiscoPolicyCopilot.tsx` |
+| Living workspace | `policy-copilot-workspace.tsx` |
+| Home + canvas data | `policy-copilot-data.ts` — `COPILOT_NAV_ITEMS`, `COPILOT_RECENT_POLICIES`, `INTENT_CARD_EXAMPLE` |
+| Home tokens | `policy-copilot-momentum.ts` → `CLAUDE` (warm dark + coral) |
+| Canvas tokens | `CLAUDE` (same token set for home and post-Begin canvas) |
+
+**Start Over** remounts the workspace via `copilotKey` in `CiscoPolicyCopilot.tsx`.
+
+**Dev-only preview:** `http://localhost:3000/dev/policy-copilot` — isolated workspace (404 in production builds). Same component as the case study hero; not in sitemap or nav.
 
 ### Analytics
 
@@ -210,6 +229,26 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `ai_chat_wireframe_toggle` | `enabled` | Wireframe mode toggle |
 | `ai_chat_gif` | `giphy_id?` | Reaction GIF shown |
 | `ai_chat_error` | `reason` | Chat stream or network error |
+| `policy_copilot_demo` | `action`, `slug`, `scenario_id?`, `prompt?`, `confidence?` | Cisco hero workspace — intent, clarifications, draft, validation, simulation, recommendations, approve, reset |
+
+### Page-wise tracking
+
+| Route | Hook / component | Event(s) |
+|-------|------------------|----------|
+| `/` | `use-scroll-slider.ts` | `index_frame_view`, `index_frame_navigate`, `index_slide_click` |
+| `/projects` | `use-projects-page-analytics.ts` | `projects_view` |
+| `/projects` rows | `projects-list.tsx` | `project_list_click` |
+| `/projects/[slug]` | `case-study-page-shell.tsx` → `use-case-study-page-analytics.ts` | `project_open`, `case_study_scroll_depth` (25 / 50 / 75 / 100 %) |
+| `/projects/cisco-policy-copilot` | `policy-copilot-workspace.tsx`, `CiscoPolicyCopilot.tsx` | `policy_copilot_demo` — see actions below |
+| `/craft` | `use-craft-page-analytics.ts` | `craft_view` |
+| `/craft/[slug]` | `craft-article-page-analytics.tsx` | `design_review_view` |
+| `/ideas` | `use-ideas-page-analytics.ts` | `ai_experiment_view` |
+| `/archive` | `use-archive-page-analytics.ts` | `archive_view` |
+| Case study / craft / ideas media | `use-track-media-play.ts` | `media_play` |
+| All pages | `site-entry-analytics.tsx` | `site_entry` (once per session) |
+| JBAI chat | `ai-chat/*` | `ai_chat_*` events |
+
+**`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset`
 
 Dashboard quick reference: [`README.md` § Vercel Web Analytics](./README.md#vercel-web-analytics-traffic-and-behaviour).
 
@@ -285,12 +324,26 @@ Hand-drawn editorial illustrations (English labels). Adapted from [Ian Xiaohei I
 
 | Section | Library ID |
 |---------|------------|
+| Hero interactive demo | `PolicyCopilotWorkspace` — living canvas (Claude-inspired tokens in `policy-copilot-momentum.ts`) |
 | Impact cards | `idea-press`, `handoff-path`, `trust-bridge`, `sort-by-purpose` |
 | Opportunity | `policy-copilot-opportunity` |
 | Inspiration (Google Maps) | `policy-copilot-google-maps-inspiration` |
 | From Copilot to Agent | `policy-copilot-decision-triptych` |
 | Agent framework lifecycle | `policy-copilot-lifecycle-triptych` |
 | Understand / Propose UI | `cisco-policy-copilot-trust-ui`, `cisco-policy-copilot-propose-recommend-ui` (CDN SVGs in `asset-cdn.ts`) |
+
+### SEO and social (case studies)
+
+| Piece | Location |
+|-------|----------|
+| Meta description builder | `src/lib/seo.ts` → `buildCaseStudyMetaDescription()` |
+| Per-slug keywords | `CASE_STUDY_SEO_KEYWORDS` in `seo.ts` |
+| OG image | `HOVER_THUMBNAIL_OVERRIDES[slug]` in `projects-list-data.ts` |
+| Open Graph + Twitter | `buildSocialMetadata()` — `summary_large_image`, `twitter:creator` |
+| Article JSON-LD | `caseStudyArticleJsonLd()` in `projects/[slug]/layout.tsx` |
+| Sitemap priority | `sitemap.ts` — Cisco `0.95` |
+
+Canonical share URL: `https://<domain>/projects/cisco-policy-copilot` (also `/recent`).
 
 `CaseStudyImpactCards` accepts an optional `illustration` id for a text + illustration row layout:
 

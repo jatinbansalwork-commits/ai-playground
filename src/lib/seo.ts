@@ -20,13 +20,33 @@ export const SEO_KEYWORDS = [
   "fintech design",
   "design systems",
   "AI product design",
+  "enterprise security UX",
+  "firewall policy design",
+  "AI copilot design",
 ] as const;
+
+/** Per-slug keyword extensions merged into page metadata for case studies. */
+export const CASE_STUDY_SEO_KEYWORDS: Partial<Record<string, readonly string[]>> = {
+  "cisco-policy-copilot": [
+    "Cisco Hybrid Mesh Firewall",
+    "Policy Copilot",
+    "AgentiOps",
+    "firewall administrator UX",
+    "natural language security policy",
+    "enterprise AI workspace",
+  ],
+};
+
+export function caseStudySeoKeywords(slug: string): string[] {
+  const extra = CASE_STUDY_SEO_KEYWORDS[slug] ?? [];
+  return [...SEO_KEYWORDS, ...extra];
+}
 
 export const DEFAULT_SITE_DESCRIPTION =
   "Jatin Bansal (JB) — product designer portfolio featuring cybersecurity, fintech, and AI product case studies, design systems, motion graphics, and interface experiments.";
 
 export const HOME_SEO_DESCRIPTION =
-  "Jatin Bansal is a product designer working on cybersecurity by day and AI experiments by night. Explore UX case studies for Cisco, FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
+  "Jatin Bansal is a product designer working on cybersecurity by day and AI experiments by night. Explore UX case studies including Cisco Policy Copilot — an interactive AI firewall workspace demo — plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
 
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image";
 
@@ -93,6 +113,13 @@ interface PageSeoInput {
   image?: string;
   noIndex?: boolean;
   openGraphType?: "website" | "article";
+  keywords?: string[];
+  article?: {
+    publishedTime?: string;
+    authors?: string[];
+    section?: string;
+    tags?: string[];
+  };
 }
 
 export function buildSocialMetadata({
@@ -102,6 +129,7 @@ export function buildSocialMetadata({
   image,
   noIndex,
   openGraphType = "website",
+  article,
 }: PageSeoInput): Pick<Metadata, "alternates" | "robots" | "openGraph" | "twitter"> {
   const ogImage = isUsableOgImage(image)
     ? absoluteUrl(image)
@@ -120,12 +148,17 @@ export function buildSocialMetadata({
       description,
       url: path ? absoluteUrl(path) : SITE_URL,
       images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      ...(article?.publishedTime ? { publishedTime: article.publishedTime } : {}),
+      ...(article?.authors ? { authors: article.authors } : {}),
+      ...(article?.section ? { section: article.section } : {}),
+      ...(article?.tags ? { tags: article.tags } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       images: [ogImage],
+      creator: "@jatinbansal",
     },
   };
 }
@@ -134,7 +167,7 @@ export function buildPageMetadata(input: PageSeoInput): Metadata {
   return {
     title: input.title,
     description: truncateMetaDescription(input.description),
-    keywords: [...SEO_KEYWORDS],
+    keywords: input.keywords ?? [...SEO_KEYWORDS],
     ...buildSocialMetadata(input),
   };
 }

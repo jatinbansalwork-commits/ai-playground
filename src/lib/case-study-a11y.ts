@@ -32,6 +32,31 @@ export function scrollCaseStudyRootToTop() {
   window.scrollTo({ top: 0, behavior });
 }
 
+/** Clears sticky nav when scrolling an in-article embed (e.g. Policy Copilot) into view. */
+const CASE_STUDY_EMBED_SCROLL_CLEARANCE_PX = 128;
+
+export function scrollCaseStudyWorkspaceIntoView(
+  element: HTMLElement | null,
+  behavior?: ScrollBehavior,
+) {
+  if (!element || typeof window === "undefined") return;
+
+  const scrollBehavior = behavior ?? getCaseStudyScrollBehavior();
+  const scrollRoot = element.closest(".case-study-main") as HTMLElement | null;
+
+  if (scrollRoot) {
+    const rootTop = scrollRoot.getBoundingClientRect().top;
+    const elTop = element.getBoundingClientRect().top;
+    const target =
+      scrollRoot.scrollTop + (elTop - rootTop) - CASE_STUDY_EMBED_SCROLL_CLEARANCE_PX;
+
+    scrollRoot.scrollTo({ top: Math.max(0, target), behavior: scrollBehavior });
+    return;
+  }
+
+  element.scrollIntoView({ behavior: scrollBehavior, block: "start" });
+}
+
 export function focusCaseStudyHashTarget() {
   const hash = window.location.hash.slice(1);
   if (!hash) return;

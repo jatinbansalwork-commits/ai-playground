@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { CopilotActivationInfographic } from "@/components/case-studies/copilot-activation-infographic";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyRevealCountdown } from "@/components/case-studies/case-study-reveal-countdown";
 import {
   CaseStudyImpactCards,
 } from "@/components/case-studies/case-study-impact-cards";
+import { PolicyCopilotWorkspace } from "@/components/case-studies/policy-copilot/policy-copilot-workspace";
+import { WORKSPACE_HOST_BREAKOUT } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
   CaseStudyChips,
@@ -19,6 +22,7 @@ import {
   CaseStudyQuote,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
+import { trackPolicyCopilotDemo } from "@/lib/analytics";
 import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getJbIllustration } from "@/lib/jb-illustration-library";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -28,6 +32,7 @@ const SLUG = "cisco-policy-copilot";
 
 export default function CiscoPolicyCopilotContent() {
   const content = getCaseStudyContent(SLUG)!;
+  const [copilotKey, setCopilotKey] = useState(0);
   const { isRevealed } = useCaseStudyRevealCountdownForSlug(SLUG);
 
   return (
@@ -49,12 +54,23 @@ export default function CiscoPolicyCopilotContent() {
         <CaseStudyH1>
           Turning business requests into secure firewall policies with AI
         </CaseStudyH1>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — fragmented policy workflow"
-          />
+        <CaseStudyWide className="!mt-8 pb-2 md:!mt-10">
+          <div className={WORKSPACE_HOST_BREAKOUT}>
+            <PolicyCopilotWorkspace key={copilotKey} />
+          </div>
         </CaseStudyWide>
+        <div className="flex justify-end pb-6">
+          <button
+            type="button"
+            onClick={() => {
+              trackPolicyCopilotDemo({ action: "reset" });
+              setCopilotKey((key) => key + 1);
+            }}
+            className="text-xs font-medium text-neutral-500 transition-colors hover:text-neutral-300"
+          >
+            Start Over
+          </button>
+        </div>
         <CaseStudyH2>Every Firewall Policy Starts with a Conversation.</CaseStudyH2>
         <CaseStudyParagraph>
           For most people, a firewall is invisible. For a security administrator, every rule is a

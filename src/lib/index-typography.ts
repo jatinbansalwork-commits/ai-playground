@@ -7,7 +7,7 @@ export const INDEX_SLIDE_TYPE = "index-slide-type";
 export const INDEX_SLIDE_HERO = `${INDEX_SLIDE_TYPE} index-slide-hero-size font-normal tracking-tight leading-[1.05] text-black`;
 
 /** Design-space hero size inside the 1200px frame — scales with the canvas. */
-export const INDEX_SLIDE_HERO_SIZE_PX = 80;
+export const INDEX_SLIDE_HERO_SIZE_PX = 100;
 
 export const INDEX_SLIDE_MONOGRAM = `${INDEX_SLIDE_TYPE} font-normal tracking-tighter leading-none whitespace-nowrap text-black`;
 

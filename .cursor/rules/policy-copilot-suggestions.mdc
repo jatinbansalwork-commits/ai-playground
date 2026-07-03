@@ -1,0 +1,50 @@
+---
+description: Policy Copilot — scenario-specific suggestions only after intent is understood
+globs: src/components/case-studies/policy-copilot/**
+alwaysApply: false
+---
+
+# Policy Copilot suggestions
+
+Suggestions and recommendations are **scenario-specific** and appear **only after intent is checked** — never during `invite` or `understand`.
+
+## When to show what
+
+| Phase | Footer / chips | Source |
+|-------|----------------|--------|
+| `invite` | **Examples only** — label “Try an example”, not “Suggestions” | `STARTER_PROMPTS` |
+| `understand` | **Hidden** — skeleton + thinking beat | — |
+| `clarify`+ | **Recommendations** — confirm + scenario clarify chips | `resolveIntentClarification` + `resolveScenarioThreadSuggestions` |
+
+## Rules
+
+1. **Check intent first** — resolve the scenario preset (`resolveLivingPreset`) and intent clarification (`resolveIntentClarification`) before building any suggestion list.
+2. **Scenario-specific copy** — every chip `text`, `reply`, and `insight` must reference that scenario’s entities, frameworks, or blast radius. No generic placeholders shared across scenarios.
+3. **Centralise data** — add per-scenario chips to `policy-copilot-intent-clarification.ts` (clarify) or `policy-copilot-scenario-suggestions.ts` (draft/check/refine). Do not hardcode suggestion strings in `policy-copilot-living.tsx`.
+4. **Orchestrator** — call `resolveScenarioThreadSuggestions({ preset, clarification, phase, usedIds, mappingDone })`; return `[]` for `invite` and `understand`.
+
+## Examples
+
+```typescript
+// ❌ BAD — generic, same for every scenario
+{ id: "add-mfa", text: "Require MFA", reply: "MFA step-up added." }
+
+// ✅ GOOD — tied to preset
+{
+  id: "add-mfa",
+  text: preset.mfaTitle,
+  reply: `${preset.mfaTitle} — ${preset.mfaWhy}`,
+  insight: preset.mfaTradeoff,
+  action: "applyMfa",
+}
+```
+
+```tsx
+// ❌ BAD — recommendations on invite
+<ThreadSuggestions label="Suggestions" items={draftChips} />
+
+// ✅ GOOD — examples on invite; recommendations after clarify
+{phase === "invite" ? (
+  <ThreadSuggestions label="Try an example" items={starterExamples} />
+) : null}
+```

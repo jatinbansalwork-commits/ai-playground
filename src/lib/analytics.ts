@@ -241,3 +241,42 @@ export function trackAiChatGif(giphyId?: string): void {
 export function trackAiChatError(reason: "network" | "stream"): void {
   track("ai_chat_error", { reason });
 }
+
+/** Policy Copilot interactive demo — Cisco case study hero workspace. */
+export type PolicyCopilotDemoAction =
+  | "prompt_select"
+  | "understand_intent"
+  | "clarification_answer"
+  | "draft_revealed"
+  | "validation_complete"
+  | "simulation_visible"
+  | "recommendation_apply"
+  | "recommendation_dismiss"
+  | "approve"
+  | "reset"
+  | "dashboard_stat";
+
+export function trackPolicyCopilotDemo(properties: {
+  action: PolicyCopilotDemoAction;
+  scenario_id?: string;
+  prompt?: string;
+  clarification_id?: string;
+  recommendation_id?: string;
+  confidence?: number;
+}): void {
+  track("policy_copilot_demo", {
+    action: properties.action,
+    slug: "cisco-policy-copilot",
+    ...(properties.scenario_id ? { scenario_id: properties.scenario_id } : {}),
+    ...(properties.prompt ? { prompt: properties.prompt.slice(0, 80) } : {}),
+    ...(properties.clarification_id
+      ? { clarification_id: properties.clarification_id }
+      : {}),
+    ...(properties.recommendation_id
+      ? { recommendation_id: properties.recommendation_id }
+      : {}),
+    ...(properties.confidence != null
+      ? { confidence: String(properties.confidence) }
+      : {}),
+  });
+}

@@ -124,11 +124,9 @@ export const SCALE_VIEWPORT_WIDTH = 1300;
 export const SCALE_VIEWPORT_HEIGHT = 1020;
 
 export const HERO_LINES = [
-  "JB is a Product Designer",
-  "working on",
-  "cybersecurity by day",
-  "and AI experiments",
-  "by night.",
+  "JB is a product designer",
+  "working on cybersecurity by day",
+  "and AI experiments by night",
 ] as const;
 
 export const HERO_COPY = HERO_LINES.join(" ");

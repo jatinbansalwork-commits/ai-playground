@@ -89,39 +89,6 @@ export const AiChatFab = forwardRef<HTMLButtonElement, AiChatFabProps>(
             />
           </div>
 
-          {!reducedMotion ? (
-            <>
-              <motion.span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-full border-2 border-[#6B36FF]/70"
-                animate={{
-                  scale: showProactiveBubble ? [1, 1.28, 1] : [1, 1.22, 1],
-                  opacity: [0.7, 0, 0.7],
-                }}
-                transition={{
-                  duration: showProactiveBubble ? 1.8 : 2.6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-full bg-[#6B36FF]/20 blur-md"
-                animate={{ opacity: showProactiveBubble ? [0.45, 0.7, 0.45] : [0.35, 0.55, 0.35] }}
-                transition={{
-                  duration: showProactiveBubble ? 1.8 : 2.6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </>
-          ) : (
-            <span
-              aria-hidden
-              className="pointer-events-none absolute -inset-1 rounded-full border-2 border-[#6B36FF]/50"
-            />
-          )}
-
           <motion.div
             animate={
               showProactiveBubble && !reducedMotion
@@ -148,7 +115,7 @@ export const AiChatFab = forwardRef<HTMLButtonElement, AiChatFabProps>(
                 dismissProactiveBubble();
                 onOpen();
               }}
-              className={`relative overflow-hidden rounded-full border-2 border-[#6B36FF]/45 bg-[#262626] shadow-[0_0_0_4px_rgba(107,54,255,0.14),0_16px_48px_rgba(0,0,0,0.45)] ${FOCUS_RING}`}
+              className={`relative overflow-hidden rounded-full border border-white/[0.12] bg-[#262626] shadow-[0_16px_48px_rgba(0,0,0,0.45)] ${FOCUS_RING}`}
               style={{
                 width: AI_CHAT_BALL_SIZE_PX,
                 height: AI_CHAT_BALL_SIZE_PX,

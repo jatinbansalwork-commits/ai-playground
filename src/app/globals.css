@@ -1175,7 +1175,7 @@ main.index-root .index-slide-type {
 /* Index hero copy — design-space layout inside the scaled 1200px frame. */
 .index-slide-hero-copy {
   max-width: 92%;
-  padding-left: 2rem;
+  padding-left: 4rem;
 }
 
 .index-slide-hero-line {
@@ -1183,7 +1183,7 @@ main.index-root .index-slide-type {
 }
 
 .index-slide-hero-size {
-  font-size: 60px;
+  font-size: 75px;
 }
 
 .index-slide-contact-size {
@@ -1197,12 +1197,12 @@ main.index-root .index-slide-type {
 @media (max-width: 767px) {
   .index-slide-hero-copy {
     max-width: 88%;
-    padding-left: 1.25rem;
+    padding-left: 2.5rem;
     padding-right: 0.5rem;
   }
 
   .index-slide-hero-size {
-    font-size: 48px;
+    font-size: 60px;
   }
 
   .index-slide-contact-size {

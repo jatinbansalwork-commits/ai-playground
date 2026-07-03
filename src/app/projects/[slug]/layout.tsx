@@ -5,8 +5,11 @@ import { getCaseStudyContent } from "@/lib/project-content";
 import {
   buildCaseStudyMetaDescription,
   buildPageMetadata,
+  CASE_STUDY_SEO_KEYWORDS,
   caseStudyArticleJsonLd,
   caseStudyOgImage,
+  caseStudySeoKeywords,
+  SITE_AUTHOR,
   stripCaseStudyStatusPrefix,
 } from "@/lib/seo";
 
@@ -42,6 +45,17 @@ export async function generateMetadata({
     image: caseStudyOgImage(slug),
     noIndex: isNoIndexProjectSlug(slug),
     openGraphType: "article",
+    keywords: caseStudySeoKeywords(slug),
+    article: {
+      publishedTime: `${content.year}-01-01T00:00:00.000Z`,
+      authors: [SITE_AUTHOR],
+      section: "Product Design Case Studies",
+      tags: [
+        content.meta.client,
+        ...content.meta.services.slice(0, 4),
+        ...(CASE_STUDY_SEO_KEYWORDS[slug] ?? []).slice(0, 4),
+      ].filter(Boolean),
+    },
   });
 }
 

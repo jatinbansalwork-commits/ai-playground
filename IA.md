@@ -60,9 +60,10 @@ Monogram assets: `public/assets/index/` (`craft-monogram.png`, `ideas-monogram.p
 | On `/projects` index | All case studies except `HIDDEN_PROJECT_SLUGS` |
 | Hidden from index | `freshprints-heal-tool`, `piggy-personalised-mutual-fund-recommendation`, `saltmine-sync` |
 | `noindex` (sitemap) | Same three drafts — see `getIndexableCaseStudySlugs()` |
-| Pre-launch blur gate | `cisco-policy-copilot` — daily IST reset (`CASE_STUDY_REVEAL_SCHEDULE`) |
+| Flagship case study | `cisco-policy-copilot` — published, indexable, sitemap priority `0.95`, interactive Policy Copilot demo in hero |
+| Legacy alias | `/recent` → `/projects/cisco-policy-copilot` |
 
-Direct URLs work for hidden and gated case studies; gating only affects blur + countdown UX.
+Direct URLs work for hidden case studies. Pre-launch blur gate (`CASE_STUDY_REVEAL_SCHEDULE`) is optional — currently empty (no gated slugs).
 
 ---
 

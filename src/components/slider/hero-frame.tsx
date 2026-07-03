@@ -38,7 +38,7 @@ export function HeroFramePanel({
           onInteract={onInteract}
         />
 
-        <div className="index-slide-hero-copy pointer-events-none relative z-10 pt-8 sm:pt-10 md:pt-12">
+        <div className="index-slide-hero-copy pointer-events-none relative z-10 pt-16 sm:pt-20 md:pt-24">
           <h1 className={INDEX_SLIDE_HERO}>
             {HERO_LINES.map((line, lineIndex) => (
               <span key={line} className="index-slide-hero-line block">
