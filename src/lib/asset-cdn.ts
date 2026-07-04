@@ -114,7 +114,7 @@ export const CASE_STUDY_CDN_MEDIA = {
   ),
   "freshprints-design-system-impact": cdnAsset("/Freshprints/Dp.png"),
   "freshprints-design-system-foundation-tokens": cdnAsset(
-    "/Freshprint%20Design%20system/Token.svg",
+    "/Freshprints/Token%201.png",
   ),
   "freshprints-design-system-summary-problems": cdnAsset(
     "/Freshprint%20Design%20system/Problem.svg",
