@@ -61,6 +61,8 @@ export const LIVING_MOTION = {
   confidence: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
   /** MOTION_PURPOSE.confirm — user committed */
   confirm: { type: "spring" as const, stiffness: 480, damping: 30 },
+  /** Multi-keyframe pulse — tween only (spring supports two keyframes max). */
+  pulse: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
 } as const;
 
 /** Reference viewport — dev preview and case study embed share one frame. */

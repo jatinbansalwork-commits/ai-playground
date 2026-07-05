@@ -66,18 +66,13 @@ export function showImpactCanvas(phase: LivingPhase): boolean {
   return phase === "approve";
 }
 
-export function showComplianceSummaryCanvas(phase: LivingPhase, allChecksPassed: boolean): boolean {
-  return phase === "refine" && allChecksPassed;
+export function showComplianceSummaryCanvas(phase: LivingPhase, _allChecksPassed: boolean): boolean {
+  return phase === "refine";
 }
 
 export function showApprovalSummaryCanvas(
   phase: LivingPhase,
   opts: { simulateAcknowledged: boolean; approvalReviewReady: boolean; allChecksPassed: boolean },
 ): boolean {
-  return (
-    phase === "approve" &&
-    opts.approvalReviewReady &&
-    opts.simulateAcknowledged &&
-    opts.allChecksPassed
-  );
+  return phase === "approve" && opts.approvalReviewReady && opts.simulateAcknowledged;
 }

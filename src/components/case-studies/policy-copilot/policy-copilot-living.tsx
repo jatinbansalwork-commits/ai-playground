@@ -313,6 +313,9 @@ export function PolicyCopilotLiving({
   }, [presentation]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadEndRef = useRef<HTMLDivElement>(null);
+  const canvasScrollRef = useRef<HTMLDivElement>(null);
+  const canvasEndRef = useRef<HTMLDivElement>(null);
+  const canvasStickToBottomRef = useRef(true);
   const timersRef = useRef<number[]>([]);
   const skipScrollRef = useRef(true);
   const analyzingRef = useRef(false);
@@ -487,6 +490,90 @@ export function PolicyCopilotLiving({
       block: "end",
     });
   }, [thread, phase, reduced]);
+
+  const isCanvasNearBottom = useCallback((threshold = 96) => {
+    const el = canvasScrollRef.current;
+    if (!el) return true;
+    return el.scrollHeight - el.scrollTop - el.clientHeight <= threshold;
+  }, []);
+
+  const scrollCanvasToTop = useCallback(
+    (behavior: ScrollBehavior = reduced ? "auto" : "smooth") => {
+      requestAnimationFrame(() => {
+        canvasScrollRef.current?.scrollTo({ top: 0, behavior });
+      });
+    },
+    [reduced],
+  );
+
+  const scrollCanvasToEnd = useCallback(
+    (options?: { behavior?: ScrollBehavior; force?: boolean }) => {
+      const behavior = options?.behavior ?? (reduced ? "auto" : "smooth");
+      const force = options?.force ?? false;
+      if (!force && !canvasStickToBottomRef.current) return;
+
+      requestAnimationFrame(() => {
+        scrollIntoNearestScrollParent(canvasEndRef.current, {
+          behavior,
+          block: "end",
+        });
+      });
+    },
+    [reduced],
+  );
+
+  useEffect(() => {
+    const el = canvasScrollRef.current;
+    if (!el) return;
+
+    const onScroll = () => {
+      canvasStickToBottomRef.current = isCanvasNearBottom();
+    };
+
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [inLifecycle, isCanvasNearBottom]);
+
+  useEffect(() => {
+    canvasStickToBottomRef.current = false;
+    scrollCanvasToTop("auto");
+    const afterMount = window.setTimeout(() => scrollCanvasToTop(reduced ? "auto" : "smooth"), 220);
+    const afterMotion = window.setTimeout(() => scrollCanvasToTop("auto"), 480);
+    return () => {
+      window.clearTimeout(afterMount);
+      window.clearTimeout(afterMotion);
+    };
+  }, [phase, reduced, scrollCanvasToTop]);
+
+  const canvasAppendsDown =
+    phase === "understand" || phase === "clarify" || phase === "sense" || phase === "check";
+
+  useEffect(() => {
+    if (!canvasAppendsDown) return;
+    canvasStickToBottomRef.current = true;
+    scrollCanvasToEnd();
+  }, [
+    canvasAppendsDown,
+    entityReveal,
+    understandingConfirmed,
+    checkStatus,
+    reflectionFieldOverrides,
+    whatIfSelected,
+    scrollCanvasToEnd,
+  ]);
+
+  useEffect(() => {
+    if (!canvasAppendsDown) return;
+    const content = canvasEndRef.current?.parentElement;
+    if (!content) return;
+
+    const ro = new ResizeObserver(() => {
+      scrollCanvasToEnd({ behavior: "auto" });
+    });
+    ro.observe(content);
+    return () => ro.disconnect();
+  }, [canvasAppendsDown, scrollCanvasToEnd]);
 
   useEffect(() => {
     if (skipScrollRef.current) {
@@ -1343,6 +1430,13 @@ export function PolicyCopilotLiving({
   const showIntentBanner = Boolean(intent) && inLifecycle && phase === "clarify";
   const showChecks = showValidationCanvas(phase);
   const showRecs = showOptimiseCanvas(phase);
+  const canvasFillsWidth =
+    phase === "refine" ||
+    phase === "check" ||
+    phase === "approve" ||
+    isIntentSummaryPresentation;
+  const showRefineBlastRadius =
+    phase === "refine" && flowMode === "author" && !approvalReviewReady;
   const collapseSafetyChecks = false;
   const driftRec = scenarioPreset.driftRec;
   const pendingRecActions = [
@@ -1636,6 +1730,7 @@ export function PolicyCopilotLiving({
           {/* Living canvas */}
           <main className="relative flex min-h-0 flex-1 flex-col">
             <div
+              ref={canvasScrollRef}
               className={cn(
                 "no-scrollbar min-h-0 flex-1 overflow-y-auto p-4 md:p-5 transition-[filter,opacity] duration-500",
                 isPresentation && "pointer-events-auto",
@@ -1653,7 +1748,7 @@ export function PolicyCopilotLiving({
               <div
                 className={cn(
                   "flex w-full flex-col gap-4",
-                  isIntentSummaryPresentation ? "max-w-none" : "max-w-2xl",
+                  canvasFillsWidth ? "max-w-none" : "max-w-2xl",
                   isPresentation && "pointer-events-none",
                 )}
               >
@@ -2038,17 +2133,32 @@ export function PolicyCopilotLiving({
               {phase === "refine" ? (
                 <>
                   {recommendationsBlock}
-                  <LivingCard title="Rule priority" subtitle="Drag to reorder evaluation order" delay={0.1} badge={<EnforcementWatermark mode={enforcementMode} />}>
-                    <RefineRulesReorder
-                      rules={journeyContent.rules}
-                      order={ruleOrder}
-                      onReorder={setRuleOrder}
-                    />
-                  </LivingCard>
+                  <div
+                    className={cn(
+                      "grid grid-cols-1 gap-4 lg:items-start",
+                      showRefineBlastRadius && "lg:grid-cols-2",
+                    )}
+                  >
+                    <LivingCard title="Rule priority" subtitle="Drag to reorder evaluation order" delay={0.1} badge={<EnforcementWatermark mode={enforcementMode} />}>
+                      <RefineRulesReorder
+                        rules={journeyContent.rules}
+                        order={ruleOrder}
+                        onReorder={setRuleOrder}
+                      />
+                    </LivingCard>
+                    {showRefineBlastRadius ? (
+                      <BlastRadiusPreview
+                        summary={scenarioPreset.blastRadius}
+                        groups={blastRadiusGroupsFor(scenarioPreset)}
+                        people={parsePeopleFromBlastRadius(scenarioPreset.blastRadius)}
+                        delay={0.12}
+                      />
+                    ) : null}
+                  </div>
                 </>
               ) : null}
 
-              {(phase === "approve" || phase === "refine") && flowMode === "author" && allChecksPassed && !approvalReviewReady ? (
+              {phase === "approve" && flowMode === "author" && !approvalReviewReady ? (
                 <BlastRadiusPreview
                   summary={scenarioPreset.blastRadius}
                   groups={blastRadiusGroupsFor(scenarioPreset)}
@@ -2115,7 +2225,7 @@ export function PolicyCopilotLiving({
                 <DeployReadyCard
                   title="Rule ready for deployment"
                   summary={[
-                    ...journeyContent.deploySummary,
+                    ...journeyContent.deploySummary.filter((line) => !line.startsWith("MFA ")),
                     mfaApplied ? "MFA applied" : "MFA optional",
                   ]}
                   authorName={scenarioPreset.approval.authorName}
@@ -2178,6 +2288,7 @@ export function PolicyCopilotLiving({
               ) : null}
                 </>
               )}
+              <div ref={canvasEndRef} className="h-px shrink-0" aria-hidden />
               </div>
             </div>
 

@@ -83,7 +83,7 @@ const JOURNEY_BY_ID: Record<string, ScenarioJourneyContent> = {
         patternCount: 18,
       },
     ],
-    deploySummary: ["MFA optional", "SIEM audit logging on", "90-day review cadence"],
+    deploySummary: ["SIEM audit logging on", "90-day review cadence"],
   },
   "finance-sap": {
     interpretations: [

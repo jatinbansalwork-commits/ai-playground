@@ -238,7 +238,11 @@ export function EntityChip({
           ? { opacity: 1, scale: [1, 1.04, 1], boxShadow: [`inset 0 0 0 1px ${typeTokens.color}22`, `0 0 0 2px ${typeTokens.color}88`, `inset 0 0 0 1px ${typeTokens.color}22`] }
           : { opacity: 1, scale: 1 }
       }
-      transition={{ ...LIVING_MOTION.discover, delay, duration: handoffPulse ? 0.45 : undefined }}
+      transition={
+        handoffPulse && !reduced
+          ? { ...LIVING_MOTION.pulse, delay }
+          : { ...LIVING_MOTION.discover, delay }
+      }
       className="group/chip relative flex flex-col gap-1 rounded-xl px-3 py-2"
       onMouseEnter={() => setShowProv(true)}
       onMouseLeave={() => setShowProv(false)}
@@ -361,7 +365,7 @@ export function SafetyCheckRow({
         }
         transition={
           status === "pass"
-            ? { ...LIVING_MOTION.confirm, duration: 0.45 }
+            ? LIVING_MOTION.pulse
             : status === "running"
               ? LIVING_MOTION.breathe
               : undefined
