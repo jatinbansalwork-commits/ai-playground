@@ -1187,6 +1187,19 @@ main.index-root .index-slide-type {
   text-wrap: balance;
 }
 
+.index-slide-hero-line:not(.index-slide-hero-subline) {
+  margin-bottom: 0.45em;
+}
+
+.index-slide-hero-subline {
+  font-size: 0.6em;
+  line-height: 1.15;
+}
+
+.index-slide-hero-credit {
+  margin-top: 0.85em;
+}
+
 .index-slide-hero-size {
   font-size: 75px;
 }

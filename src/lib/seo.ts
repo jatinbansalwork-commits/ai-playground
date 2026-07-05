@@ -133,7 +133,7 @@ export const DEFAULT_SITE_DESCRIPTION =
   "Jatin Bansal (JB) — product designer portfolio featuring cybersecurity, fintech, and AI product case studies, design systems, motion graphics, and interface experiments.";
 
 export const HOME_SEO_DESCRIPTION =
-  "Jatin Bansal is a product designer working on cybersecurity by day and AI experiments by night. Explore UX case studies including Cisco Policy Copilot—AI-assisted firewall policy design with an interactive workspace demo—plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
+  "Howdy, I'm JB. I design AI products, prototype them in code, and raise the bar for craft in teams I'm part of at Cisco. Explore UX case studies including Cisco Policy Copilot—AI-assisted firewall policy design with an interactive workspace demo—plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
 
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image";
 

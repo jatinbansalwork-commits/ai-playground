@@ -41,7 +41,12 @@ export function HeroFramePanel({
         <div className="index-slide-hero-copy pointer-events-none relative z-10 pt-16 sm:pt-20 md:pt-24">
           <h1 className={INDEX_SLIDE_HERO}>
             {HERO_LINES.map((line, lineIndex) => (
-              <span key={line} className="index-slide-hero-line block">
+              <span
+                key={line}
+                className={`index-slide-hero-line block${
+                  lineIndex > 0 ? " index-slide-hero-subline" : ""
+                }`}
+              >
                 <ClipReveal delay={lineIndex * 0.1}>{line}</ClipReveal>
               </span>
             ))}
