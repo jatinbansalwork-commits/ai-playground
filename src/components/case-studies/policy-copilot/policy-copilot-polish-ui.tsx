@@ -3,14 +3,20 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type { LivingPhase } from "@/components/case-studies/policy-copilot/policy-copilot-living";
+import { scrollIntoNearestScrollParent } from "@/lib/case-study-a11y";
 import {
+  CANVAS_PREVIEW_COPY,
   CANVAS_SECTION_IDS,
+  CANVAS_SECTION_SKILL,
+  confidenceBlocker,
   confidenceLabel,
   confidenceTooltip,
+  SKILL_STEP_TOOLTIPS,
+  SKILL_TOKENS,
   type CanvasSectionId,
   type InsightKind,
+  INSIGHT_KIND_COLORS,
   INSIGHT_KIND_LABEL,
-  SKILL_TOKENS,
 } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
 import {
   COPILOT_SKILLS,
@@ -18,7 +24,7 @@ import {
   type CopilotSkillId,
 } from "@/components/case-studies/policy-copilot/policy-copilot-skills";
 import { CopilotMark } from "@/components/case-studies/policy-copilot/policy-copilot-shell";
-import { CLAUDE, COPILOT_FOCUS, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { CLAUDE, COPILOT_FOCUS, COPILOT_TARGET, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 function SkillIcon({ icon, className }: { icon: (typeof SKILL_TOKENS)[CopilotSkillId]["icon"]; className?: string }) {
@@ -37,54 +43,120 @@ function SkillIcon({ icon, className }: { icon: (typeof SKILL_TOKENS)[CopilotSki
   );
 }
 
-export function JourneyStepIndicatorRich({ activeSkill }: { activeSkill: CopilotSkillId }) {
+export function JourneySkillProgressBar({ activeSkill }: { activeSkill: CopilotSkillId }) {
+  return (
+    <div className="flex gap-1" aria-hidden>
+      {COPILOT_SKILLS.map((s) => {
+        const complete = isSkillComplete(s.id, activeSkill);
+        const active = s.id === activeSkill;
+        const t = SKILL_TOKENS[s.id];
+        const tips = SKILL_STEP_TOOLTIPS[s.id];
+
+        return (
+          <div
+            key={s.id}
+            className="group/step relative h-1 flex-1 overflow-hidden rounded-full"
+            style={{ backgroundColor: CLAUDE.surfaceOverlay }}
+          >
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: complete ? "100%" : active ? "55%" : "0%",
+                backgroundColor: complete ? CLAUDE.validated : active ? t.color : "transparent",
+                boxShadow: active ? `0 0 8px ${t.color}55` : undefined,
+              }}
+            />
+            <span
+              className="pointer-events-none absolute -bottom-9 left-1/2 z-30 hidden w-44 -translate-x-1/2 rounded-lg px-2 py-1.5 text-[9px] leading-snug group-hover/step:block"
+              style={{
+                backgroundColor: CLAUDE.surfaceRaised,
+                color: CLAUDE.textMuted,
+                boxShadow: `0 0 0 1px ${CLAUDE.hairline}`,
+              }}
+              role="tooltip"
+            >
+              <span className="font-medium" style={{ color: t.color }}>
+                {s.label}
+              </span>
+              {active ? ` — ${tips.active}` : complete ? " — complete" : ` — ${tips.next}`}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function JourneyStepIndicatorRich({
+  activeSkill,
+  showProgress = true,
+  caseStudyStep,
+}: {
+  activeSkill: CopilotSkillId;
+  showProgress?: boolean;
+  /** Case study walkthrough label — e.g. "Step 4 of 8 — Assemble the Policy" */
+  caseStudyStep?: string;
+}) {
   const activeIdx = COPILOT_SKILLS.findIndex((s) => s.id === activeSkill);
   const skill = COPILOT_SKILLS[activeIdx];
   const tokens = SKILL_TOKENS[activeSkill];
+  const stepTips = SKILL_STEP_TOOLTIPS[activeSkill];
+  const nextSkill = COPILOT_SKILLS[activeIdx + 1];
+
+  const titleBlock = (
+    <>
+      <div
+        className="group/skill relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: tokens.muted, color: tokens.color, boxShadow: `0 0 0 1px ${tokens.color}40` }}
+        title={stepTips.active}
+      >
+        <SkillIcon icon={tokens.icon} />
+        <span
+          className="pointer-events-none absolute left-0 top-full z-30 mt-2 hidden w-52 rounded-lg px-2.5 py-2 text-[10px] leading-snug group-hover/skill:block"
+          style={{ backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.textMuted, boxShadow: `0 0 0 1px ${CLAUDE.hairline}` }}
+          role="tooltip"
+        >
+          <span className="font-medium" style={{ color: CLAUDE.text }}>
+            Now:{" "}
+          </span>
+          {stepTips.active}
+          {nextSkill ? (
+            <>
+              <br />
+              <span className="mt-1 inline-block font-medium" style={{ color: tokens.color }}>
+                Next — {nextSkill.label}:{" "}
+              </span>
+              {stepTips.next}
+            </>
+          ) : null}
+        </span>
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <p className="truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+          {skill?.label ?? "Intent"}
+        </p>
+        {caseStudyStep ? (
+          <p className={cn(COPILOT_TYPE.caption, "truncate")} style={{ color: CLAUDE.textMuted }}>
+            {caseStudyStep}
+          </p>
+        ) : null}
+      </div>
+    </>
+  );
+
+  if (!showProgress) {
+    return (
+      <div className="flex min-w-0 flex-1 items-center gap-3" aria-label="Policy journey progress">
+        {titleBlock}
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-2" aria-label="Policy journey progress">
-      <div className="flex items-center gap-3">
-        <div
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
-          style={{ backgroundColor: tokens.muted, color: tokens.color, boxShadow: `0 0 0 1px ${tokens.color}40` }}
-        >
-          <SkillIcon icon={tokens.icon} />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline justify-between gap-2">
-            <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
-              {skill?.label ?? "Intent"}
-            </p>
-            <p className={cn(COPILOT_TYPE.caption, "tabular-nums")} style={{ color: CLAUDE.textMuted }}>
-              {activeIdx + 1} of {COPILOT_SKILLS.length}
-            </p>
-          </div>
-          <div className="mt-1.5 flex gap-1">
-            {COPILOT_SKILLS.map((s, i) => {
-              const complete = isSkillComplete(s.id, activeSkill);
-              const active = s.id === activeSkill;
-              const t = SKILL_TOKENS[s.id];
-              return (
-                <div
-                  key={s.id}
-                  className="h-1 flex-1 overflow-hidden rounded-full"
-                  style={{ backgroundColor: CLAUDE.surfaceOverlay }}
-                  title={s.label}
-                >
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: complete ? "100%" : active ? "55%" : "0%",
-                      backgroundColor: complete ? CLAUDE.validated : active ? t.color : "transparent",
-                      boxShadow: active ? `0 0 8px ${t.color}55` : undefined,
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <div className="flex items-center gap-3">{titleBlock}</div>
+      <div className="pl-11">
+        <JourneySkillProgressBar activeSkill={activeSkill} />
       </div>
     </div>
   );
@@ -94,17 +166,22 @@ export function ConfidenceRing({
   phase,
   value,
   className,
+  checksPassed,
+  mappingDone,
 }: {
   phase: LivingPhase;
   value: number;
   className?: string;
+  checksPassed?: boolean;
+  mappingDone?: boolean;
 }) {
   const reduced = useReducedMotion();
   const r = 18;
   const c = 2 * Math.PI * r;
   const offset = c - (value / 100) * c;
   const label = confidenceLabel(phase, value);
-  const tip = confidenceTooltip(phase, value);
+  const blocker = confidenceBlocker(phase, value, { checksPassed, mappingDone });
+  const tip = blocker ?? confidenceTooltip(phase, value);
 
   return (
     <div className={cn("group relative shrink-0", className)} title={tip}>
@@ -115,7 +192,7 @@ export function ConfidenceRing({
           cy="22"
           r={r}
           fill="none"
-          stroke={CLAUDE.primary}
+          stroke={blocker ? CLAUDE.warning : CLAUDE.primary}
           strokeWidth="3"
           strokeLinecap="round"
           strokeDasharray={c}
@@ -124,47 +201,138 @@ export function ConfidenceRing({
           transition={LIVING_MOTION.confidence}
           transform="rotate(-90 22 22)"
         />
-        <text x="22" y="23" textAnchor="middle" className="fill-current text-[9px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+        <text x="22" y="23" textAnchor="middle" className="fill-current text-[8px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
           {value}
         </text>
       </svg>
       <span
-        className="pointer-events-none absolute -bottom-8 right-0 z-20 hidden w-48 rounded-lg px-2 py-1.5 text-[11px] leading-snug group-hover:block"
+        className="pointer-events-none absolute -bottom-8 right-0 z-20 hidden w-52 rounded-lg px-2 py-1.5 text-[10px] leading-snug group-hover:block"
         style={{ backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.textMuted, boxShadow: `0 0 0 1px ${CLAUDE.hairline}` }}
         role="tooltip"
       >
-        {tip}
+        {blocker ? (
+          <span style={{ color: CLAUDE.warning }}>{blocker}</span>
+        ) : (
+          tip
+        )}
       </span>
     </div>
   );
 }
 
-export function SafetyStrip({
+export function EnforcementWatermark({
   mode,
 }: {
   mode: "draft" | "live" | "deploying";
 }) {
   const copy =
     mode === "live"
-      ? { text: "Live in production regions", tone: CLAUDE.validated, bg: CLAUDE.validatedMuted }
+      ? {
+          label: "Live in 3 regions",
+          tone: CLAUDE.validated,
+          bg: CLAUDE.validatedMuted,
+          border: CLAUDE.validated,
+        }
       : mode === "deploying"
-        ? { text: "Deploying — rollback armed", tone: CLAUDE.accentTeal, bg: CLAUDE.accentTealMuted }
+        ? {
+            label: "Deploying",
+            tone: CLAUDE.accentTeal,
+            bg: CLAUDE.accentTealMuted,
+            border: CLAUDE.accentTeal,
+          }
         : {
-            text: "Nothing deploys until you approve — draft only",
+            label: "Draft — not enforced",
             tone: CLAUDE.warning,
             bg: CLAUDE.warningMuted,
+            border: CLAUDE.warning,
           };
 
   return (
+    <span
+      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium"
+      style={{
+        color: copy.tone,
+        backgroundColor: copy.bg,
+        borderColor: `${copy.border}44`,
+      }}
+    >
+      {mode === "draft" ? (
+        <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" aria-hidden>
+          <rect x="2.5" y="5" width="7" height="5" rx="0.75" stroke="currentColor" strokeWidth="1" />
+          <path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+        </svg>
+      ) : (
+        <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: copy.tone }} />
+      )}
+      {copy.label}
+    </span>
+  );
+}
+
+export function SafetyStrip({
+  mode,
+}: {
+  mode: "draft" | "checking" | "ready" | "live" | "deploying";
+}) {
+  const copy =
+    mode === "live"
+      ? {
+          text: "Live in production regions — enforced",
+          sub: "Changes require re-approval",
+          tone: CLAUDE.validated,
+          bg: CLAUDE.validatedMuted,
+          pulse: false,
+        }
+      : mode === "deploying"
+        ? {
+            text: "Deploying — rollback armed",
+            sub: "0 rules changed until each region confirms",
+            tone: CLAUDE.accentTeal,
+            bg: CLAUDE.accentTealMuted,
+            pulse: true,
+          }
+        : mode === "checking"
+          ? {
+              text: "Running safety checks — still draft only",
+              tone: CLAUDE.warning,
+              bg: CLAUDE.warningMuted,
+              pulse: true,
+            }
+          : mode === "ready"
+            ? {
+                text: "All checks passed — ready to approve when you are",
+                sub: "Nothing deploys until you confirm",
+                tone: CLAUDE.validated,
+                bg: CLAUDE.validatedMuted,
+                pulse: false,
+              }
+            : {
+                text: "Nothing deploys until you approve — draft only",
+                tone: CLAUDE.warning,
+                bg: CLAUDE.warningMuted,
+                pulse: true,
+              };
+
+  return (
     <div
-      className="flex shrink-0 items-center gap-2 border-b px-4 py-1.5 md:px-5"
+      className="flex shrink-0 items-center gap-2.5 border-b px-4 py-1.5 md:px-5"
       style={{ borderColor: CLAUDE.hairline, backgroundColor: copy.bg }}
       role="status"
     >
-      <span className="h-1.5 w-1.5 shrink-0 rounded-full animate-pulse" style={{ backgroundColor: copy.tone }} />
-      <p className={cn(COPILOT_TYPE.caption, "font-medium")} style={{ color: copy.tone }}>
-        {copy.text}
-      </p>
+      <span
+        className={cn("h-1.5 w-1.5 shrink-0 rounded-full", copy.pulse && "animate-pulse")}
+        style={{ backgroundColor: copy.tone }}
+      />
+      <div className="min-w-0">
+        <p className={cn(COPILOT_TYPE.caption, "font-medium")} style={{ color: copy.tone }}>
+          {copy.text}
+        </p>
+        {"sub" in copy && copy.sub ? (
+          <p className="text-[10px] leading-snug" style={{ color: CLAUDE.textMuted }}>
+            {copy.sub}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -186,7 +354,7 @@ export function AgentStatusBar({
       style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surface }}
     >
       <CopilotMark size={16} />
-      <p className="min-w-0 flex-1 truncate text-[13px]" style={{ color: CLAUDE.textSecondary }}>
+      <p className="min-w-0 flex-1 truncate text-[12px]" style={{ color: CLAUDE.textSecondary }}>
         <span className="font-medium" style={{ color: CLAUDE.textMuted }}>
           Now:{" "}
         </span>
@@ -196,7 +364,7 @@ export function AgentStatusBar({
         <button
           type="button"
           onClick={onWhy}
-          className={cn(COPILOT_FOCUS, "shrink-0 text-[12px] font-medium")}
+          className={cn(COPILOT_FOCUS, "shrink-0 text-[11px] font-medium")}
           style={{ color: CLAUDE.primary }}
         >
           Why?
@@ -211,22 +379,55 @@ export function CanvasSectionAnchor({
   children,
   className,
   highlight,
+  activeSkill,
+  whyAnnotation,
 }: {
   id: CanvasSectionId;
   children: ReactNode;
   className?: string;
   highlight?: boolean;
+  activeSkill?: CopilotSkillId;
+  whyAnnotation?: string | null;
 }) {
+  const sectionSkill = CANVAS_SECTION_SKILL[id];
+  const skill = activeSkill ?? sectionSkill;
+  const tokens = SKILL_TOKENS[skill];
+
   return (
     <div
       id={id}
       className={cn(
-        "scroll-mt-4 rounded-xl transition-[box-shadow] duration-300",
+        "relative scroll-mt-4 rounded-2xl transition-shadow duration-300",
         highlight && "ring-2 ring-offset-2 ring-offset-[#1f1e1b]",
         className,
       )}
-      style={highlight ? { boxShadow: `0 0 0 2px ${CLAUDE.primary}` } : undefined}
+      style={
+        highlight
+          ? { boxShadow: `0 0 0 2px ${tokens.color}66` }
+          : undefined
+      }
     >
+      {whyAnnotation ? (
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="absolute -top-2 left-4 right-4 z-10 flex items-start gap-2 rounded-lg border px-3 py-2"
+          style={{
+            backgroundColor: CLAUDE.surfaceRaised,
+            borderColor: `${tokens.color}55`,
+            boxShadow: `0 4px 16px rgb(0 0 0 / 0.2)`,
+          }}
+          role="note"
+        >
+          <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wide" style={{ color: tokens.color }}>
+            Why?
+          </span>
+          <p className="text-[11px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
+            {whyAnnotation}
+          </p>
+        </motion.div>
+      ) : null}
       {children}
     </div>
   );
@@ -241,15 +442,43 @@ export function CanvasDeepLink({
   children: ReactNode;
   onNavigate: (id: CanvasSectionId) => void;
 }) {
+  const preview = CANVAS_PREVIEW_COPY[section];
+  const skill = CANVAS_SECTION_SKILL[section];
+  const tokens = SKILL_TOKENS[skill];
+
   return (
-    <button
-      type="button"
-      onClick={() => onNavigate(section)}
-      className={cn(COPILOT_FOCUS, "font-medium underline decoration-dotted underline-offset-2")}
-      style={{ color: CLAUDE.primary }}
-    >
-      {children}
-    </button>
+    <span className="group/deeplink relative inline">
+      <button
+        type="button"
+        onClick={() => onNavigate(section)}
+        className={cn(COPILOT_FOCUS, "font-medium underline decoration-dotted underline-offset-2")}
+        style={{ color: CLAUDE.primary }}
+      >
+        {children}
+      </button>
+      <span
+        className="pointer-events-none absolute bottom-full left-0 z-30 mb-2 hidden w-44 rounded-lg p-2 group-hover/deeplink:block"
+        style={{
+          backgroundColor: CLAUDE.surfaceRaised,
+          boxShadow: `0 0 0 1px ${CLAUDE.hairline}, 0 8px 24px rgb(0 0 0 / 0.35)`,
+        }}
+        role="tooltip"
+      >
+        <span
+          className="mb-1.5 block h-8 rounded-md"
+          style={{
+            background: `linear-gradient(135deg, ${tokens.muted} 0%, ${CLAUDE.surfaceOverlay} 100%)`,
+            boxShadow: `inset 0 0 0 1px ${tokens.color}33`,
+          }}
+        />
+        <span className="block text-[10px] font-medium" style={{ color: CLAUDE.text }}>
+          {preview.title}
+        </span>
+        <span className="mt-0.5 block text-[9px] leading-snug" style={{ color: CLAUDE.textMuted }}>
+          {preview.hint}
+        </span>
+      </span>
+    </span>
   );
 }
 
@@ -275,15 +504,18 @@ export function InsightBreadcrumbRich({
       animate={{ opacity: 1, x: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
       className="flex items-start gap-2 rounded-xl border-l-[3px] px-3 py-2"
-      style={{ backgroundColor: CLAUDE.primaryMuted, borderLeftColor: CLAUDE.primary }}
+      style={{
+        backgroundColor: INSIGHT_KIND_COLORS[kind].muted,
+        borderLeftColor: INSIGHT_KIND_COLORS[kind].color,
+      }}
     >
       <span
-        className="mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
-        style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.primary }}
+        className="mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
+        style={{ backgroundColor: CLAUDE.surfaceOverlay, color: INSIGHT_KIND_COLORS[kind].color }}
       >
         {INSIGHT_KIND_LABEL[kind]}
       </span>
-      <p className={cn(COPILOT_TYPE.bodySm, "min-w-0 flex-1 md:text-sm")} style={{ color: CLAUDE.textSecondary }}>
+      <p className={cn(COPILOT_TYPE.bodySm, "min-w-0 flex-1 md:text-[13px]")} style={{ color: CLAUDE.textSecondary }}>
         {children}
         {canvasLink && onCanvasNavigate ? (
           <>
@@ -325,7 +557,7 @@ export function GovernExportButton({
       }}
       className={cn(
         COPILOT_FOCUS,
-        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[13px] font-medium transition-colors hover:bg-white/[0.04]",
+        "inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/[0.04]",
       )}
       style={{
         borderColor: exported ? CLAUDE.validated : CLAUDE.border,
@@ -387,7 +619,7 @@ export function GovernPolicyPassport({
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
-            className={cn(COPILOT_FOCUS, "shrink-0 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors")}
+            className={cn(COPILOT_FOCUS, "shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors")}
             style={{
               backgroundColor: tab === t.id ? CLAUDE.surfaceOverlay : "transparent",
               color: tab === t.id ? CLAUDE.text : CLAUDE.textMuted,
@@ -444,10 +676,76 @@ export function usePolicyCopilotKeyboard({
 }
 
 export function scrollToCanvasSection(id: CanvasSectionId, onHighlight?: (id: CanvasSectionId | null) => void) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToFirstCanvasSection([id], onHighlight);
+}
+
+export function scrollToFirstCanvasSection(
+  ids: CanvasSectionId[],
+  onHighlight?: (id: CanvasSectionId | null) => void,
+  onAnnotation?: (id: CanvasSectionId | null) => void,
+): boolean {
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    scrollIntoNearestScrollParent(el, { behavior: "smooth", block: "start" });
     onHighlight?.(id);
-    window.setTimeout(() => onHighlight?.(null), 2000);
+    onAnnotation?.(id);
+    window.setTimeout(() => {
+      onHighlight?.(null);
+      onAnnotation?.(null);
+    }, 2000);
+    return true;
   }
+  return false;
+}
+
+export function DeploySimulateStrip({
+  onSimulate,
+  onProceed,
+  simulating,
+}: {
+  onSimulate: () => void;
+  onProceed: () => void;
+  simulating?: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="overflow-hidden rounded-xl border"
+      style={{ borderColor: CLAUDE.accentTealMuted, backgroundColor: CLAUDE.accentTealMuted }}
+      role="region"
+      aria-label="Pre-deploy simulation"
+    >
+      <div className="flex flex-wrap items-center gap-3 px-4 py-3">
+        <div className="min-w-0 flex-1">
+          <p className="text-[13px] font-medium" style={{ color: CLAUDE.accentTeal }}>
+            Pause & simulate
+          </p>
+          <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textSecondary }}>
+            Run a dry-run against production topology before you ship — rollback stays armed.
+          </p>
+        </div>
+        <div className="flex shrink-0 gap-2">
+          <button
+            type="button"
+            onClick={onSimulate}
+            disabled={simulating}
+            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full border px-3 text-[12px] font-medium")}
+            style={{ borderColor: CLAUDE.accentTeal, color: CLAUDE.accentTeal }}
+          >
+            {simulating ? "Simulating…" : "Run simulation"}
+          </button>
+          <button
+            type="button"
+            onClick={onProceed}
+            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-3 text-[12px] font-medium text-white")}
+            style={{ backgroundColor: CLAUDE.accentTeal }}
+          >
+            Proceed to deploy
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
 }

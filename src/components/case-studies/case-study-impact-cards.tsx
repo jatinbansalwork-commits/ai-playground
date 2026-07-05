@@ -29,7 +29,7 @@ export function CaseStudyImpactCards({
             .join(" ")}
         >
           <span
-            className="pt-0.5 font-mono text-2xl font-medium tabular-nums leading-none text-[#B794FF] md:text-3xl"
+            className="pt-0.5 font-mono text-2xl font-medium tabular-nums leading-none text-brand-accent-soft md:text-3xl"
             aria-hidden
           >
             {String(item.number ?? index + 1).padStart(2, "0")}

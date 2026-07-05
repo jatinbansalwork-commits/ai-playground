@@ -10,6 +10,7 @@ import {
 } from "@/components/case-studies/policy-copilot/policy-copilot-agentic-ui";
 import {
   DASHBOARD_STAT_INTROS,
+  DRIFT_FLAGS,
   type ActivePolicyRow,
   type CheckIssueRow,
   type DriftFlagRow,
@@ -23,8 +24,29 @@ import {
   type CopilotRecentItem,
 } from "@/components/case-studies/policy-copilot/policy-copilot-data";
 import {
-  resolveIntentClarification,
-} from "@/components/case-studies/policy-copilot/policy-copilot-intent-clarification";
+  BUSINESS_INTENT_PLACEHOLDER,
+  createBusinessIntentPresentationState,
+  createContinuousValidationPresentationState,
+  createIntentSummaryPresentationState,
+  createLivingWorkspacePresentationState,
+  createSimulationImpactPresentationState,
+  type PolicyCopilotPresentation,
+} from "@/components/case-studies/policy-copilot/policy-copilot-presentation";
+import {
+  showApprovalSummaryCanvas,
+  showAuthorPanelCanvas,
+  showComplianceSummaryCanvas,
+  showDraftCanvas,
+  showMappingCanvas,
+  showOptimiseCanvas,
+  showTechnicalRulesCanvas,
+  showValidationCanvas,
+} from "@/components/case-studies/policy-copilot/policy-copilot-canvas-focus";
+import {
+  journeyStepLabel,
+  resolveJourneyStep,
+} from "@/components/case-studies/policy-copilot/policy-copilot-journey-steps";
+import { resolveIntentClarification } from "@/components/case-studies/policy-copilot/policy-copilot-intent-clarification";
 import {
   LEGACY_DOCUMENT_STORY,
   resolveLivingPreset,
@@ -32,6 +54,12 @@ import {
   type DashboardStatId,
   type LivingScenarioPreset,
 } from "@/components/case-studies/policy-copilot/policy-copilot-living-scenarios";
+import {
+  entityMappingDuration,
+  livingDelay,
+  LIVING_DELAY_MS,
+  safetyChecksDuration,
+} from "@/components/case-studies/policy-copilot/policy-copilot-living-pacing";
 import {
   resolveJourneyContent,
 } from "@/components/case-studies/policy-copilot/policy-copilot-journey-content";
@@ -42,23 +70,30 @@ import {
   GovernRecordPanel,
   GovernPolicyOverview,
   IntentBanner,
+  RefineRulesReorder,
 } from "@/components/case-studies/policy-copilot/policy-copilot-journey-ui";
 import {
+  buildResumeDiffSummary,
   clearDraftCheckpoint,
   draftCheckpointForPrompt,
   loadDraftCheckpoint,
   saveDraftCheckpoint,
+  type DraftResumeCheckpoint,
 } from "@/components/case-studies/policy-copilot/policy-copilot-draft-resume";
-import { CANVAS_SECTION_IDS } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
+import { scrollIntoNearestScrollParent } from "@/lib/case-study-a11y";
+import { CANVAS_SECTION_IDS, resolveWhyAnnotation, resolveWhyCanvasSections, SKILL_TOKENS, type CanvasSectionId } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
 import {
   AgentStatusBar,
   CanvasSectionAnchor,
   ConfidenceRing,
+  DeploySimulateStrip,
+  EnforcementWatermark,
   GovernExportButton,
   GovernPolicyPassport,
   JourneyStepIndicatorRich,
-  SafetyStrip,
+  JourneySkillProgressBar,
   scrollToCanvasSection,
+  scrollToFirstCanvasSection,
 } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
 import {
   resolveLivePreview,
@@ -66,27 +101,32 @@ import {
 import { skillForPhase } from "@/components/case-studies/policy-copilot/policy-copilot-skills";
 import {
   BlastRadiusPreview,
+  ConfirmUnderstandingGate,
   CopilotAnalyticsPanel,
   CopilotDashboardPanel,
   DriftDetectionPanel,
   EntityChip,
+  EntityMappingProgress,
   IntentAnalyzingSkeleton,
   InviteStarterPanel,
   LegacyDocumentationPanel,
   LivePolicyPreview,
   LivingCard,
-  NextActionHint,
   PolicyMemoryPanel,
   RecommendationTile,
   RelatedRolesPanel,
+  ResumeDraftSummaryCard,
   RiskInsightCard,
-  SafetyCheckRow,
+  SafetyCheckQueue,
   SafetyChecksSummary,
   ScenarioPreviewPanel,
+  ThreadCanvasHandoffPulse,
   ThreadMessage,
   ThreadSuggestions,
-  TopologyLive,
+  TechnicalRulesPanel,
+  TopologyStrip,
   UnderstandingReflectionCard,
+  ValidationBlockedBanner,
   WhatIfSuggestionCard,
 } from "@/components/case-studies/policy-copilot/policy-copilot-living-ui";
 import { CLAUDE, COPILOT_FOCUS, COPILOT_TARGET, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
@@ -136,8 +176,21 @@ function buildSafetyChecks(preset: LivingScenarioPreset) {
     { id: "hipaa", label: preset.complianceCheck.label, detail: preset.complianceCheck.detail },
     { id: "blast", label: "Who is affected", detail: preset.blastRadius },
     { id: "risk", label: "Privilege paths", detail: preset.riskDetail },
-    { id: "conflict", label: "Similar policies", detail: "No conflicting allow rules" },
+    {
+      id: "conflict",
+      label: "Similar policies",
+      detail:
+        preset.id === "vendor-vpn"
+          ? "Overlaps with Old-Vendor-VPN-Pool — MFA not enforced yet"
+          : preset.id === "contractors"
+            ? "Legacy exception may bypass deny rule"
+            : "No conflicting allow rules",
+    },
   ] as const;
+}
+
+function shouldWarnOnConflict(preset: LivingScenarioPreset): boolean {
+  return preset.id === "vendor-vpn" || preset.id === "contractors";
 }
 
 const DEFAULT_PRESET = resolveLivingPreset(
@@ -183,6 +236,22 @@ function blastRadiusGroupsFor(preset: LivingScenarioPreset) {
   ];
 }
 
+function parsePeopleFromBlastRadius(text: string) {
+  const inScope = Number.parseInt(text.match(/(\d+)\s+people/)?.[1] ?? "0", 10);
+  const blocked = Number.parseInt(text.match(/(\d+)\s+\w+\s+blocked/)?.[1] ?? "0", 10);
+  const surprise = Number.parseInt(text.match(/(\d+)\s+surprise/)?.[1] ?? "0", 10);
+  return { inScope, blocked, surprise };
+}
+
+function enforcementWatermarkMode(
+  phase: LivingPhase,
+  policyEntry: PolicyEntry,
+): "draft" | "live" | "deploying" {
+  if (phase === "ship") return "deploying";
+  if (phase === "done" && policyEntry === "journey") return "live";
+  return "draft";
+}
+
 function phaseConfidence(phase: LivingPhase): number {
   switch (phase) {
     case "invite":
@@ -214,71 +283,53 @@ function phaseConfidence(phase: LivingPhase): number {
   }
 }
 
-function nextHint(
-  phase: LivingPhase,
-  pendingActions = 0,
-  view: WorkspaceView = "lifecycle",
-  memoryFieldsLeft = 0,
-): string {
-  if (view === "dashboard") return "Open a recent policy or start new";
-  if (view === "analytics") return "Review policy health metrics";
-  switch (phase) {
-    case "invite":
-      return "Describe who needs access and to what";
-    case "understand":
-      return "Understanding your intent…";
-    case "clarify":
-      return "Confirm my understanding before I draft";
-    case "sense":
-      return "Review what I mapped";
-    case "draft":
-      return "Run safety checks";
-    case "check":
-      return "Review suggestions";
-    case "refine":
-      return pendingActions > 0
-        ? `${pendingActions} optional ${pendingActions === 1 ? "action" : "actions"} — apply or skip`
-        : "Ready to approve";
-    case "memory":
-      return "Review drift against golden intent";
-    case "capture":
-      return memoryFieldsLeft > 0
-        ? `${memoryFieldsLeft} memory ${memoryFieldsLeft === 1 ? "field" : "fields"} to capture`
-        : "Save institutional memory";
-    case "approve":
-      return "Build secure policy";
-    case "ship":
-      return "Deploying across regions";
-    case "done":
-      return "Start another policy or review the record";
-    default:
-      return "";
-  }
-}
-
 export function PolicyCopilotLiving({
   className,
   onStepChange,
   onReset,
+  presentation,
 }: {
   className?: string;
   onStepChange?: () => void;
   onReset?: () => void;
+  presentation?: PolicyCopilotPresentation;
 }) {
   const reduced = useReducedMotion();
+  const isPresentation =
+    presentation === "intent-summary" ||
+    presentation === "business-intent" ||
+    presentation === "living-workspace" ||
+    presentation === "continuous-validation" ||
+    presentation === "simulation-impact";
+  const isBusinessIntentPresentation = presentation === "business-intent";
+  const isIntentSummaryPresentation = presentation === "intent-summary";
+  const presentationState = useMemo(() => {
+    if (presentation === "intent-summary") return createIntentSummaryPresentationState();
+    if (presentation === "business-intent") return createBusinessIntentPresentationState();
+    if (presentation === "living-workspace") return createLivingWorkspacePresentationState();
+    if (presentation === "continuous-validation") return createContinuousValidationPresentationState();
+    if (presentation === "simulation-impact") return createSimulationImpactPresentationState();
+    return null;
+  }, [presentation]);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const threadEndRef = useRef<HTMLDivElement>(null);
   const timersRef = useRef<number[]>([]);
   const skipScrollRef = useRef(true);
   const analyzingRef = useRef(false);
 
-  const [phase, setPhase] = useState<LivingPhase>("invite");
-  const [workspaceView, setWorkspaceView] = useState<WorkspaceView>("dashboard");
-  const [activeNav, setActiveNav] = useState<CopilotNavId>("dashboard");
+  const [phase, setPhase] = useState<LivingPhase>(presentationState?.phase ?? "invite");
+  const [workspaceView, setWorkspaceView] = useState<WorkspaceView>(
+    presentationState?.workspaceView ?? "lifecycle",
+  );
+  const [activeNav, setActiveNav] = useState<CopilotNavId>(presentationState?.activeNav ?? "lifecycle");
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeRecentLabel, setActiveRecentLabel] = useState<string | undefined>();
-  const [draft, setDraft] = useState("");
-  const [intent, setIntent] = useState("");
+  const [activeRecentLabel, setActiveRecentLabel] = useState<string | undefined>(
+    presentationState?.activeRecentLabel,
+  );
+  const [draft, setDraft] = useState(
+    presentationState && "draft" in presentationState ? presentationState.draft : "",
+  );
+  const [intent, setIntent] = useState(presentationState?.intent ?? "");
   const scenarioPreset = useMemo(
     () => (intent.trim() ? resolveLivingPreset(intent) : DEFAULT_PRESET),
     [intent],
@@ -287,32 +338,72 @@ export function PolicyCopilotLiving({
     () => resolveIntentClarification(scenarioPreset),
     [scenarioPreset],
   );
-  const [thread, setThread] = useState<ThreadItem[]>([]);
-  const [entityReveal, setEntityReveal] = useState(0);
-  const [checkStatus, setCheckStatus] = useState<Record<string, "pending" | "running" | "pass" | "warn">>({});
+  const [thread, setThread] = useState<ThreadItem[]>(presentationState?.thread ?? []);
+  const [entityReveal, setEntityReveal] = useState(
+    presentationState && "entityReveal" in presentationState ? presentationState.entityReveal : 0,
+  );
+  const [checkStatus, setCheckStatus] = useState<Record<string, "pending" | "running" | "pass" | "warn">>(
+    presentationState && "initialCheckStatus" in presentationState
+      ? presentationState.initialCheckStatus
+      : {},
+  );
   const [mfaApplied, setMfaApplied] = useState(false);
   const [siemAlertApplied, setSiemAlertApplied] = useState(false);
   const [driftResolved, setDriftResolved] = useState(false);
   const [composerFocused, setComposerFocused] = useState(false);
+  const [adminNote, setAdminNote] = useState("");
   const [usedSuggestions, setUsedSuggestions] = useState<Set<string>>(new Set());
   const [managedDevicesOnly, setManagedDevicesOnly] = useState(false);
-  const [flowMode, setFlowMode] = useState<LivingFlowMode>("author");
+  const [flowMode, setFlowMode] = useState<LivingFlowMode>(presentationState?.flowMode ?? "author");
   const [memoryCaptured, setMemoryCaptured] = useState<Record<string, boolean>>({});
   const [whatIfSelected, setWhatIfSelected] = useState<string | undefined>();
   const [relatedRoles, setRelatedRoles] = useState<Record<string, boolean>>({});
-  const [riskDismissed, setRiskDismissed] = useState(false);
+  const [riskDismissed, setRiskDismissed] = useState(
+    presentationState && "riskDismissed" in presentationState ? presentationState.riskDismissed : false,
+  );
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [scenarioPreviewOpen, setScenarioPreviewOpen] = useState(false);
   const [dashboardDrilldown, setDashboardDrilldown] = useState<DashboardStatId | null>(null);
-  const [policyEntry, setPolicyEntry] = useState<PolicyEntry>(null);
+  const [policyEntry, setPolicyEntry] = useState<PolicyEntry>(presentationState?.policyEntry ?? null);
   const [governPolicyRow, setGovernPolicyRow] = useState<ActivePolicyRow | null>(null);
   const [canvasHighlight, setCanvasHighlight] = useState<string | null>(null);
-  const [checkLastRunSec, setCheckLastRunSec] = useState<number | undefined>();
+  const [checkLastRunSec, setCheckLastRunSec] = useState<number | undefined>(
+    presentationState && "checkLastRunSec" in presentationState
+      ? presentationState.checkLastRunSec
+      : undefined,
+  );
+  const [simulateAcknowledged, setSimulateAcknowledged] = useState(
+    presentationState && "simulateAcknowledged" in presentationState
+      ? presentationState.simulateAcknowledged
+      : false,
+  );
+  const [simulateRunning, setSimulateRunning] = useState(false);
+  const [driftFromDashboard, setDriftFromDashboard] = useState(false);
+  const [canvasPulse, setCanvasPulse] = useState(false);
+  const [ruleOrder, setRuleOrder] = useState<number[]>([]);
+  const [understandingConfirmed, setUnderstandingConfirmed] = useState(
+    presentationState && "understandingConfirmed" in presentationState
+      ? presentationState.understandingConfirmed
+      : false,
+  );
+  const [whyAnnotation, setWhyAnnotation] = useState<{ section: CanvasSectionId; text: string } | null>(null);
+  const [handoffPulse, setHandoffPulse] = useState(false);
+  const [checkElapsed, setCheckElapsed] = useState(0);
+  const [approvalReviewReady, setApprovalReviewReady] = useState(false);
+  const [reflectionFieldOverrides, setReflectionFieldOverrides] = useState<Record<string, string>>({});
+  const [resumeSummary, setResumeSummary] = useState<{
+    label: string;
+    items: ReturnType<typeof buildResumeDiffSummary>;
+    savedAt: number;
+  } | null>(null);
   const savedDraftCheckpoint = useMemo(() => loadDraftCheckpoint(), [workspaceView, phase]);
 
-  const safetyChecks = buildSafetyChecks(scenarioPreset);
+  const safetyChecks = useMemo(() => buildSafetyChecks(scenarioPreset), [scenarioPreset]);
   const entityMappings = scenarioPreset.entityMappings;
   const journeyContent = useMemo(() => resolveJourneyContent(scenarioPreset), [scenarioPreset]);
+  useEffect(() => {
+    setRuleOrder(journeyContent.rules.map((_, i) => i));
+  }, [journeyContent.rules]);
   const agenticEvidence = useMemo(() => resolveAgenticEvidence(scenarioPreset), [scenarioPreset]);
   const inLifecycle = workspaceView === "lifecycle";
   const navigateToCanvas = useCallback((id: string) => {
@@ -332,8 +423,17 @@ export function PolicyCopilotLiving({
   }, [phase, scenarioPreset]);
 
   const activeSkill = skillForPhase(phase, flowMode);
+  const skillTokens = SKILL_TOKENS[activeSkill];
+  const mappingDone = entityReveal >= entityMappings.length;
+  const canvasDesaturated =
+    flowMode === "author" &&
+    inLifecycle &&
+    (phase === "draft" || phase === "check" || phase === "refine");
   const memoryFieldsLeft = LEGACY_DOCUMENT_STORY.captureFields.filter((f) => !memoryCaptured[f.id]).length;
   const confidence = phaseConfidence(phase);
+  const composerPlaceholder = isBusinessIntentPresentation
+    ? BUSINESS_INTENT_PLACEHOLDER
+    : DEFAULT_PLACEHOLDER;
   const canSend = draft.trim().length > 0 && phase === "invite" && inLifecycle;
 
   const clearTimers = useCallback(() => {
@@ -352,6 +452,7 @@ export function PolicyCopilotLiving({
   useEffect(() => () => clearTimers(), [clearTimers]);
 
   useEffect(() => {
+    if (isPresentation) return;
     if (!inLifecycle || flowMode !== "author") return;
     if (phase === "draft" || phase === "check" || phase === "refine") {
       saveDraftCheckpoint({
@@ -368,6 +469,7 @@ export function PolicyCopilotLiving({
       clearDraftCheckpoint();
     }
   }, [
+    isPresentation,
     inLifecycle,
     flowMode,
     phase,
@@ -380,7 +482,10 @@ export function PolicyCopilotLiving({
   ]);
 
   useEffect(() => {
-    threadEndRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    scrollIntoNearestScrollParent(threadEndRef.current, {
+      behavior: reduced ? "auto" : "smooth",
+      block: "end",
+    });
   }, [thread, phase, reduced]);
 
   useEffect(() => {
@@ -391,7 +496,25 @@ export function PolicyCopilotLiving({
     onStepChange?.();
   }, [phase, onStepChange]);
 
-  function resumeFromDraft(checkpoint: NonNullable<ReturnType<typeof loadDraftCheckpoint>>) {
+  useEffect(() => {
+    if (phase !== "sense" || entityReveal === 0) return;
+    setHandoffPulse(true);
+    const t = window.setTimeout(() => setHandoffPulse(false), 500);
+    return () => window.clearTimeout(t);
+  }, [entityReveal, phase]);
+
+  useEffect(() => {
+    if (phase !== "check") {
+      setCheckElapsed(0);
+      return;
+    }
+    const running = safetyChecks.some((c) => checkStatus[c.id] === "running");
+    if (!running) return;
+    const iv = window.setInterval(() => setCheckElapsed((s) => s + 1), 1000);
+    return () => window.clearInterval(iv);
+  }, [phase, checkStatus, safetyChecks]);
+
+  function resumeFromDraft(checkpoint: DraftResumeCheckpoint) {
     const preset = resolveLivingPreset(checkpoint.prompt);
     const clarification = resolveIntentClarification(preset);
     clearTimers();
@@ -405,6 +528,16 @@ export function PolicyCopilotLiving({
     setMfaApplied(checkpoint.mfaApplied);
     setPhase(checkpoint.phase);
     setPolicyEntry("journey");
+    setUnderstandingConfirmed(true);
+    setResumeSummary({
+      label: checkpoint.label,
+      items: buildResumeDiffSummary(
+        checkpoint,
+        preset.entityMappings.length,
+        buildSafetyChecks(preset).map((c) => c.id),
+      ),
+      savedAt: checkpoint.savedAt,
+    });
     setThread(
       buildAuthoringThreadHistory(preset, clarification, checkpoint.prompt).slice(
         0,
@@ -412,6 +545,46 @@ export function PolicyCopilotLiving({
       ),
     );
     trackPolicyCopilotDemo({ action: "prompt_select", prompt: checkpoint.prompt, scenario_id: `${preset.id}-resume` });
+  }
+
+  function confirmUnderstanding() {
+    if (understandingConfirmed || phase !== "clarify") return;
+    setUnderstandingConfirmed(true);
+    pushThread({ role: "user", text: "Yes, that's right", time: "Now" });
+    schedule(() => {
+      pushThread({
+        role: "copilot",
+        text: "Thanks — I'll map your words to inventory objects next. Nothing deploys until you approve.",
+        time: "Now",
+      });
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
+  }
+
+  function handleReflectionFieldEdit(fieldId: string, label: string, value: string) {
+    setReflectionFieldOverrides((prev) => ({ ...prev, [fieldId]: value }));
+    setUnderstandingConfirmed(false);
+    pushThread({ role: "user", text: `Change ${label.toLowerCase()} to: ${value}`, time: "Now" });
+    schedule(() => {
+      pushThread({
+        role: "copilot",
+        text: `Updated — ${label} now reads "${value}". Confirm the summary when you're ready and I'll map objects.`,
+        time: "Now",
+      });
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
+    trackPolicyCopilotDemo({ action: "clarification_field_edit", scenario_id: scenarioPreset.id, clarification_id: fieldId });
+  }
+
+  function handleReflectionFieldWhy(fieldId: string, label: string, why: string) {
+    pushThread({
+      role: "insight",
+      text: `${label}: ${why}`,
+      insightKind: "evidence",
+    });
+    trackPolicyCopilotDemo({ action: "clarification_field_why", scenario_id: scenarioPreset.id, clarification_id: fieldId });
+  }
+
+  function whyAnnotationFor(section: CanvasSectionId) {
+    return whyAnnotation?.section === section ? whyAnnotation.text : undefined;
   }
 
   function handleResumeDraft() {
@@ -442,6 +615,18 @@ export function PolicyCopilotLiving({
     setDashboardDrilldown(null);
     setPolicyEntry(null);
     setGovernPolicyRow(null);
+    setSimulateAcknowledged(false);
+    setSimulateRunning(false);
+    setDriftFromDashboard(false);
+    setCanvasPulse(false);
+    setUnderstandingConfirmed(false);
+    setWhyAnnotation(null);
+    setHandoffPulse(false);
+    setCheckElapsed(0);
+    setResumeSummary(null);
+    setApprovalReviewReady(false);
+    setReflectionFieldOverrides({});
+    setAdminNote("");
     analyzingRef.current = false;
   }
 
@@ -465,28 +650,18 @@ export function PolicyCopilotLiving({
   }
 
   function handleNavChange(nav: CopilotNavId) {
+    if (nav === "dashboard" && activeNav === "dashboard" && dashboardDrilldown) {
+      setDashboardDrilldown(null);
+      return;
+    }
     setActiveNav(nav);
     setWorkspaceView(nav);
     if (nav !== "dashboard") setDashboardDrilldown(null);
   }
 
-  function pushDashboardThread(statId: DashboardStatId) {
-    const intro = DASHBOARD_STAT_INTROS[statId];
-    setThread([
-      { id: "d-1", role: "user", text: `Open ${intro.title.toLowerCase()}`, time: "Now" },
-      { id: "d-2", role: "copilot", text: intro.copilot, time: "Now" },
-    ]);
-  }
-
   function handleDashboardStat(statId: DashboardStatId) {
     setDashboardDrilldown(statId);
-    pushDashboardThread(statId);
     trackPolicyCopilotDemo({ action: "dashboard_stat", scenario_id: statId });
-  }
-
-  function handleDashboardBack() {
-    setDashboardDrilldown(null);
-    setThread([]);
   }
 
   function seedAuthorLifecycle(
@@ -518,6 +693,7 @@ export function PolicyCopilotLiving({
     setDriftResolved(false);
     setUsedSuggestions(new Set());
     setRiskDismissed(false);
+    setApprovalReviewReady(false);
     setPhase(targetPhase);
     setPolicyEntry(options?.entry ?? "journey");
     setThread(
@@ -584,18 +760,68 @@ export function PolicyCopilotLiving({
 
   function handleOpenDriftFlag(row: DriftFlagRow) {
     setDashboardDrilldown(null);
-    beginReviewFlow({
-      label: "Team Collaboration Access",
-      prompt: row.prompt,
-      flowMode: "review",
-    });
+    setDriftFromDashboard(true);
+    setWorkspaceView("lifecycle");
+    setActiveNav("lifecycle");
+    setActiveRecentLabel(row.rule);
+    beginReviewFlow(
+      {
+        label: row.rule,
+        prompt: row.prompt,
+        flowMode: "review",
+      },
+      {
+        fromDashboard: true,
+        driftRow: row,
+      },
+    );
   }
 
   function handleOpenCheckIssue(row: CheckIssueRow) {
+    const preset = resolveLivingPreset(row.prompt);
+    const warnId = preset.id === "vendor-vpn" ? "conflict" : "hipaa";
     seedAuthorLifecycle(row.prompt, row.policy, "refine", {
       user: `Fix ${row.check} on ${row.policy}`,
-      copilot: `${row.detail}. Apply the MFA suggestion to clear this before deploy.`,
-    }, { warnCheckId: "hipaa" });
+      copilot: `${row.detail}. Apply the suggested fix to clear this before deploy.`,
+    }, { warnCheckId: warnId });
+  }
+
+  function handleTryScenario(scenario: "ehr" | "vendor" | "drift") {
+    trackPolicyCopilotDemo({ action: "prompt_select", scenario_id: scenario });
+    if (scenario === "drift") {
+      handleOpenDriftFlag(DRIFT_FLAGS[0]!);
+      return;
+    }
+    clearTimers();
+    clearDraftCheckpoint();
+    resetFlowState();
+    setActiveRecentLabel(undefined);
+    setWorkspaceView("lifecycle");
+    setActiveNav("lifecycle");
+    const prompt =
+      scenario === "ehr"
+        ? "Allow doctors to securely access Electronic Health Records from hospital-managed devices"
+        : "Allow external vendor VPN access to staging only";
+    beginSense(prompt);
+  }
+
+  function fixValidationWarning() {
+    setMfaApplied(true);
+    setCheckStatus((s) => {
+      const next = { ...s };
+      for (const check of safetyChecks) {
+        if (next[check.id] === "warn") next[check.id] = "pass";
+      }
+      return next;
+    });
+    pushThread({
+      role: "copilot",
+      text: "Fix applied — warning cleared. You can continue toward approval.",
+      time: "Now",
+    });
+    if (phase === "check") {
+      schedule(() => setPhase("refine"), livingDelay(LIVING_DELAY_MS.threadReply, reduced));
+    }
   }
 
   function handleOpenPolicy(item: CopilotRecentItem) {
@@ -614,28 +840,57 @@ export function PolicyCopilotLiving({
     }
   }
 
-  function beginReviewFlow(item: CopilotRecentItem) {
+  function beginReviewFlow(
+    item: CopilotRecentItem,
+    opts?: { fromDashboard?: boolean; driftRow?: DriftFlagRow },
+  ) {
     setFlowMode("review");
     setIntent(item.prompt);
     setPhase("memory");
     setDriftResolved(false);
+    setSimulateAcknowledged(false);
     trackPolicyCopilotDemo({
       action: "prompt_select",
       prompt: item.prompt,
       scenario_id: "review-drift",
     });
-    pushThread({ role: "user", text: REVIEW_DRIFT_STORY.request, time: "Now" });
-    pushThread({
-      role: "insight",
-      text: "Memory surfaced — full context for who approved this and why it exists.",
-    });
+    const userLine = opts?.fromDashboard
+      ? `Review drift on ${opts.driftRow?.rule ?? REVIEW_DRIFT_STORY.rule}`
+      : REVIEW_DRIFT_STORY.request;
+    const intro = opts?.fromDashboard ? DASHBOARD_STAT_INTROS.drift.copilot : null;
+    setThread(
+      opts?.fromDashboard
+        ? [
+            { id: `t-${Date.now()}`, role: "user", text: userLine, time: "Now" },
+            { id: `t-${Date.now() + 1}`, role: "copilot", text: intro ?? "", time: "Now" },
+            {
+              id: `t-${Date.now() + 2}`,
+              role: "insight",
+              text: "Memory surfaced — full context for who approved this and why it exists.",
+              insightKind: "evidence",
+            },
+          ]
+        : [],
+    );
+    if (!opts?.fromDashboard) {
+      pushThread({ role: "user", text: REVIEW_DRIFT_STORY.request, time: "Now" });
+      pushThread({
+        role: "insight",
+        text: "Memory surfaced — full context for who approved this and why it exists.",
+        insightKind: "evidence",
+      });
+    }
     schedule(() => {
       pushThread({
         role: "copilot",
-        text: `I compared ${REVIEW_DRIFT_STORY.rule} to its golden intent. Drift detected — details are on the canvas.`,
+        text: `I compared ${REVIEW_DRIFT_STORY.rule} to its golden intent. Drift detected — compliance impact is on the canvas.`,
         time: "Now",
+        canvasLink: CANVAS_SECTION_IDS.compliance,
       });
-    }, reduced ? 0 : 320);
+      if (opts?.fromDashboard) {
+        navigateToCanvas(CANVAS_SECTION_IDS.compliance);
+      }
+    }, livingDelay(LIVING_DELAY_MS.reviewBeat, reduced));
   }
 
   function beginDocumentFlow(item: CopilotRecentItem) {
@@ -659,7 +914,7 @@ export function PolicyCopilotLiving({
         text: `Found ${LEGACY_DOCUMENT_STORY.rule}. Use the suggestions below to record justification, owner, and review cadence.`,
         time: "Now",
       });
-    }, reduced ? 0 : 320);
+    }, livingDelay(LIVING_DELAY_MS.reviewBeat, reduced));
   }
 
   function handleSuggestion(suggestion: ThreadSuggestionDef) {
@@ -673,26 +928,30 @@ export function PolicyCopilotLiving({
         pushThread({ role: "insight", text: suggestion.insight });
       }
       pushThread({ role: "copilot", text: suggestion.reply, time: "Now" });
-    }, reduced ? 0 : 280);
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
 
     if (suggestion.action === "runChecks" && phase === "draft") {
-      schedule(() => runSafetyChecks(), reduced ? 100 : 600);
+      schedule(() => runSafetyChecks(), livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.action === "approve" && phase === "refine") {
-      schedule(() => setPhase("approve"), reduced ? 100 : 500);
+      schedule(() => setPhase("approve"), livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.action === "retire" && phase === "memory") {
       schedule(() => {
         setDriftResolved(true);
         setPhase("approve");
-      }, reduced ? 100 : 450);
+      }, livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.action === "capture") {
       const fieldId = suggestion.id;
-      schedule(() => setMemoryCaptured((prev) => ({ ...prev, [fieldId]: true })), reduced ? 0 : 200);
+      schedule(
+        () => setMemoryCaptured((prev) => ({ ...prev, [fieldId]: true })),
+        livingDelay(LIVING_DELAY_MS.captureField, reduced),
+      );
     } else if (suggestion.action === "proceed" && phase === "clarify") {
-      schedule(() => proceedToMapping(), reduced ? 100 : 400);
+      setUnderstandingConfirmed(true);
+      schedule(() => proceedToMapping(), livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.action === "applyMfa") {
-      schedule(() => setMfaApplied(true), reduced ? 100 : 400);
+      schedule(() => setMfaApplied(true), livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.action === "build" && phase === "approve") {
-      schedule(() => handlePrimaryAction(), reduced ? 100 : 500);
+      schedule(() => handlePrimaryAction(), livingDelay(LIVING_DELAY_MS.suggestionAction, reduced));
     } else if (suggestion.id === "managed-devices") {
       setManagedDevicesOnly(true);
     } else if (phase === "clarify") {
@@ -714,7 +973,7 @@ export function PolicyCopilotLiving({
     schedule(() => {
       if (option.insight) pushThread({ role: "insight", text: option.insight });
       pushThread({ role: "copilot", text: option.reply, time: "Now" });
-    }, reduced ? 0 : 260);
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
   }
 
   function handleRiskAction(id: string) {
@@ -724,11 +983,11 @@ export function PolicyCopilotLiving({
     schedule(() => {
       pushThread({ role: "copilot", text: action.reply, time: "Now" });
       setRiskDismissed(true);
-    }, reduced ? 0 : 280);
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
   }
 
   function proceedToMapping() {
-    if (phase !== "clarify") return;
+    if (phase !== "clarify" || !understandingConfirmed) return;
     const preset = scenarioPreset;
     setPhase("sense");
     pushThread({
@@ -737,7 +996,11 @@ export function PolicyCopilotLiving({
       time: "Now",
     });
     preset.entityMappings.forEach((_, i) => {
-      schedule(() => setEntityReveal(i + 1), 400 + i * (reduced ? 80 : 320));
+      schedule(
+        () => setEntityReveal(i + 1),
+        livingDelay(LIVING_DELAY_MS.entityMapStart, reduced) +
+          i * livingDelay(LIVING_DELAY_MS.entityMapStep, reduced),
+      );
     });
     schedule(() => {
       pushThread({
@@ -750,7 +1013,7 @@ export function PolicyCopilotLiving({
         time: "Now",
       });
       setPhase("draft");
-    }, 400 + preset.entityMappings.length * (reduced ? 80 : 320) + 400);
+    }, entityMappingDuration(preset.entityMappings.length, reduced));
   }
 
   function getThreadSuggestions(): ThreadSuggestionDef[] {
@@ -824,13 +1087,20 @@ export function PolicyCopilotLiving({
     setSiemAlertApplied(false);
     setDriftResolved(false);
     setUsedSuggestions(new Set());
+    setUnderstandingConfirmed(false);
+    setResumeSummary(null);
+    setApprovalReviewReady(false);
+    setSimulateAcknowledged(false);
+    setReflectionFieldOverrides({});
+    setRiskDismissed(false);
+    setWhyAnnotation(null);
     setIntent(text);
     setDraft("");
     setPolicyEntry("journey");
     setPhase("understand");
     setThread([{ id: `t-${Date.now()}`, role: "user", text, time: "Now" }]);
 
-    const revealDelay = reduced ? 280 : 1650;
+    const revealDelay = livingDelay(LIVING_DELAY_MS.understandToClarify, reduced);
 
     schedule(() => {
       setPhase("clarify");
@@ -845,31 +1115,52 @@ export function PolicyCopilotLiving({
 
   function runSafetyChecks() {
     setPhase("check");
+    setCheckElapsed(0);
+    const expectConflictWarn = shouldWarnOnConflict(scenarioPreset) && !mfaApplied;
     pushThread({
       role: "copilot",
       text: `Checking whether this rule breaks ${scenarioPreset.complianceCheck.label.toLowerCase()} or creates surprise blocks — each result should reduce uncertainty before you approve.`,
       time: "Now",
     });
     safetyChecks.forEach((check, i) => {
+      const step = livingDelay(LIVING_DELAY_MS.checkStep, reduced);
       schedule(() => {
         setCheckStatus((s) => ({ ...s, [check.id]: "running" }));
-      }, i * (reduced ? 100 : 450));
+      }, i * step);
       schedule(
         () => {
-          setCheckStatus((s) => ({ ...s, [check.id]: "pass" }));
+          const result =
+            check.id === "conflict" && expectConflictWarn ? "warn" : "pass";
+          setCheckStatus((s) => ({ ...s, [check.id]: result }));
         },
-        i * (reduced ? 100 : 450) + (reduced ? 120 : 380),
+        i * step + livingDelay(LIVING_DELAY_MS.checkResolve, reduced),
       );
     });
     schedule(() => {
+      setCheckLastRunSec(reduced ? 1 : 18);
+      setCanvasPulse(true);
+      window.setTimeout(() => setCanvasPulse(false), livingDelay(LIVING_DELAY_MS.canvasPulse, reduced));
+      if (expectConflictWarn) {
+        pushThread({
+          role: "copilot",
+          text: "Validation blocked — one check flagged a conflict. Apply vendor MFA on the canvas before you can proceed to approval.",
+          time: "Now",
+        });
+        return;
+      }
       pushThread({
         role: "copilot",
         text: "Compliance check completed successfully. Scope and compliance summaries are on the canvas — two optional optimisations below.",
         time: "Now",
       });
       setPhase("refine");
-      setCheckLastRunSec(reduced ? 1 : 12);
-    }, safetyChecks.length * (reduced ? 220 : 830) + 200);
+      if (!reduced) {
+        window.setTimeout(() => {
+          const approveCta = document.getElementById("approve-cta");
+          scrollIntoNearestScrollParent(approveCta, { behavior: "smooth", block: "center" });
+        }, livingDelay(LIVING_DELAY_MS.scrollToApprove, reduced));
+      }
+    }, safetyChecksDuration(safetyChecks.length, reduced));
   }
 
   function handleSubmit() {
@@ -880,11 +1171,29 @@ export function PolicyCopilotLiving({
     beginSense(text);
   }
 
+  function submitAdminNote() {
+    const text = adminNote.trim();
+    if (!text) return;
+    pushThread({ role: "user", text, time: "Now" });
+    schedule(() => {
+      pushThread({
+        role: "copilot",
+        text: "Noted — I'll factor that into the draft and audit record.",
+        time: "Now",
+      });
+    }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
+    setAdminNote("");
+  }
+
   function handlePrimaryAction() {
     if (phase === "clarify") proceedToMapping();
     else if (phase === "draft") runSafetyChecks();
-    else if (phase === "refine") setPhase("approve");
-    else if (phase === "memory") {
+    else if (phase === "refine") {
+      if (hasCheckWarnings) return;
+      setApprovalReviewReady(false);
+      setSimulateAcknowledged(false);
+      setPhase("approve");
+    } else if (phase === "memory") {
       setDriftResolved(true);
       setPhase("approve");
     } else if (phase === "capture" && memoryFieldsLeft === 0) {
@@ -895,6 +1204,19 @@ export function PolicyCopilotLiving({
         time: "Now",
       });
     } else if (phase === "approve") {
+      if (!simulateAcknowledged && flowMode === "author") {
+        setSimulateAcknowledged(true);
+        return;
+      }
+      if (!approvalReviewReady && flowMode === "author") {
+        setApprovalReviewReady(true);
+        pushThread({
+          role: "copilot",
+          text: "Final approval summary is on the canvas — confirm deploy when you're ready.",
+          time: "Now",
+        });
+        return;
+      }
       setPhase("ship");
       const shipMsg =
         flowMode === "review"
@@ -911,7 +1233,7 @@ export function PolicyCopilotLiving({
               ? "Policy is live. Full record saved — every step traceable."
               : "Policy is live. Full record saved — every step traceable.";
         pushThread({ role: "copilot", text: doneMsg, time: "Now" });
-      }, reduced ? 400 : 2800);
+      }, livingDelay(LIVING_DELAY_MS.shipComplete, reduced));
     } else if (phase === "done" && policyEntry === "journey") {
       handleStartNewPolicy();
     }
@@ -919,24 +1241,32 @@ export function PolicyCopilotLiving({
 
   const isGovernView = inLifecycle && phase === "done" && policyEntry === "portfolio";
   const isJourneyComplete = inLifecycle && phase === "done" && policyEntry === "journey";
+  const hasCheckWarnings = safetyChecks.some((c) => checkStatus[c.id] === "warn");
+  const allChecksPassed = safetyChecks.every((c) => checkStatus[c.id] === "pass");
 
-  const safetyStripMode = useMemo((): "draft" | "live" | "deploying" | null => {
-    if (!inLifecycle || phase === "invite") return null;
-    if (isGovernView || (phase === "done" && policyEntry === "journey")) return "live";
-    if (phase === "ship") return "deploying";
-    if (phase !== "done") return "draft";
-    return null;
-  }, [inLifecycle, phase, isGovernView, policyEntry]);
+  const journeyStep = useMemo(
+    () =>
+      resolveJourneyStep(phase, {
+        understandingConfirmed,
+        simulateAcknowledged,
+        approvalReviewReady,
+      }),
+    [phase, understandingConfirmed, simulateAcknowledged, approvalReviewReady],
+  );
 
   const primaryLabel =
     !inLifecycle || isGovernView
       ? null
       : phase === "clarify"
-        ? "Confirm & draft"
+        ? understandingConfirmed
+          ? "Confirm & map"
+          : null
       : phase === "draft"
       ? "Run safety checks"
       : phase === "refine"
-        ? "Ready to approve"
+        ? hasCheckWarnings
+          ? null
+          : "Continue to impact review"
         : phase === "memory"
           ? "Approve retirement"
           : phase === "capture"
@@ -946,12 +1276,32 @@ export function PolicyCopilotLiving({
         : phase === "approve"
           ? flowMode === "review"
             ? "Retire rule"
-            : "Build secure policy"
+            : !simulateAcknowledged
+              ? "Review blast radius"
+              : !approvalReviewReady
+                ? "Open approval summary"
+                : null
           : phase === "done" && isJourneyComplete
             ? "Start new policy"
             : null;
 
-  const allChecksPassed = safetyChecks.every((c) => checkStatus[c.id] === "pass");
+  const navigateToWhy = useCallback(() => {
+    scrollToFirstCanvasSection(
+      resolveWhyCanvasSections(phase, { flowMode, allChecksPassed, isGovernView }),
+      setCanvasHighlight,
+      (id) => {
+        if (!id) {
+          setWhyAnnotation(null);
+          return;
+        }
+        setWhyAnnotation({
+          section: id,
+          text: resolveWhyAnnotation(phase, id, { flowMode, allChecksPassed }),
+        });
+      },
+    );
+  }, [phase, flowMode, allChecksPassed, isGovernView]);
+
   const livePreview = useMemo(
     () =>
       flowMode === "author" && workspaceView === "lifecycle"
@@ -973,23 +1323,26 @@ export function PolicyCopilotLiving({
   );
 
   const showCanvas = phase !== "invite";
-  const showThreadPanel =
-    inLifecycle || (workspaceView === "dashboard" && dashboardDrilldown != null);
+  const showThreadPanel = inLifecycle;
   const isInviteFocus = inLifecycle && phase === "invite";
   const isAnalyzingFocus = inLifecycle && phase === "understand";
   const showJourneyChrome = inLifecycle && !isInviteFocus;
   const showLifecycleCanvas = inLifecycle && !isGovernView;
   const showAuthorPanel =
     flowMode === "author" &&
-    (phase === "draft" || phase === "check") &&
-    entityReveal >= entityMappings.length;
-  const showLivePreview = flowMode === "author" && phase === "sense" && livePreview != null;
-  const showTopology = false;
+    showAuthorPanelCanvas(phase, entityReveal, entityMappings.length);
+  const showLivePreview = flowMode === "author" && showMappingCanvas(phase) && livePreview != null;
+  const showTopology =
+    flowMode === "author" &&
+    scenarioPreset.id === "ehr" &&
+    showMappingCanvas(phase);
+  const enforcementMode = enforcementWatermarkMode(phase, policyEntry);
   const showProves = flowMode === "author" && phase === "check" && allChecksPassed;
-  const showSummarize = flowMode === "author" && allChecksPassed && phase === "refine";
+  const showSummarize =
+    flowMode === "author" && showComplianceSummaryCanvas(phase, allChecksPassed);
   const showIntentBanner = Boolean(intent) && inLifecycle && phase === "clarify";
-  const showChecks = phase === "check";
-  const showRecs = phase === "refine";
+  const showChecks = showValidationCanvas(phase);
+  const showRecs = showOptimiseCanvas(phase);
   const collapseSafetyChecks = false;
   const driftRec = scenarioPreset.driftRec;
   const pendingRecActions = [
@@ -1023,6 +1376,7 @@ export function PolicyCopilotLiving({
       subtitle="Evidence-based suggestions — optional"
       delay={0.14}
       accent={phase === "refine" ? "insight" : "default"}
+      badge={<EnforcementWatermark mode={enforcementMode} />}
     >
       <div className="space-y-2">
         {journeyContent.evidenceRecs.map((rec, i) => (
@@ -1053,24 +1407,17 @@ export function PolicyCopilotLiving({
         <SafetyChecksSummary count={safetyChecks.length} lastRunSec={checkLastRunSec} />
       </LivingCard>
     ) : (
-      <LivingCard title="Safety checks" subtitle="Validating blast radius and compliance posture" delay={0.12}>
-        <div className="space-y-1">
-          {safetyChecks.map((check, i) => (
-            <SafetyCheckRow
-              key={check.id}
-              label={check.label}
-              detail={checkStatus[check.id] === "pass" ? check.detail : undefined}
-              status={checkStatus[check.id] ?? "pending"}
-              delay={i * 0.04}
-            />
-          ))}
-        </div>
-      </LivingCard>
+      <SafetyCheckQueue
+        checks={safetyChecks}
+        checkStatus={checkStatus}
+        lastRunSec={checkElapsed || checkLastRunSec}
+      />
     )
   ) : null;
 
-  return (
+  const livingUi = (
     <PolicyCopilotFrame className={cn("h-full", className)}>
+      <div className={cn(isPresentation && "pointer-events-none")}>
       <PolicyCopilotSidebar
         variant={phase === "invite" && inLifecycle ? "home" : "flow"}
         activeNav={activeNav}
@@ -1078,40 +1425,56 @@ export function PolicyCopilotLiving({
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         activeRecentLabel={activeRecentLabel}
-        onBack={inLifecycle && phase !== "invite" ? handleReset : undefined}
+        onBack={isPresentation ? undefined : inLifecycle && phase !== "invite" ? handleReset : undefined}
         onStartNewPolicy={handleStartNewPolicy}
         onRecentSelect={handleOpenPolicy}
       />
+      </div>
 
       <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col">
         {showJourneyChrome ? (
         <header
-          className="flex shrink-0 items-center gap-3 border-b px-4 py-2.5 md:px-5"
+          className={cn(
+            "flex shrink-0 flex-col gap-2.5 border-b px-4 py-2.5 md:px-5",
+            isPresentation && "pointer-events-none",
+          )}
           style={{ borderColor: CLAUDE.hairline }}
         >
-          <JourneyStepIndicatorRich activeSkill={activeSkill} />
-          <NextActionHint className="hidden min-w-0 flex-1 sm:block">
-            {isGovernView
-              ? "Edit this policy or return to dashboard"
-              : nextHint(phase, pendingRecActions.length, workspaceView, memoryFieldsLeft)}
-          </NextActionHint>
-          <ConfidenceRing phase={phase} value={confidence} />
+          <div className="flex items-center gap-3 md:gap-4">
+            <JourneyStepIndicatorRich
+              activeSkill={activeSkill}
+              showProgress={false}
+              caseStudyStep={journeyStepLabel(journeyStep)}
+            />
+            <ConfidenceRing
+              phase={phase}
+              value={confidence}
+              checksPassed={allChecksPassed}
+              mappingDone={mappingDone}
+            />
+          </div>
+          <JourneySkillProgressBar activeSkill={activeSkill} />
         </header>
         ) : null}
 
 
-        {safetyStripMode ? <SafetyStrip mode={safetyStripMode} /> : null}
-
         {inLifecycle && agentStatusMessage && phase !== "invite" && phase !== "done" ? (
+          <div className={cn(isPresentation && "pointer-events-none")}>
           <AgentStatusBar
             message={agentStatusMessage}
             phase={phase}
-            onWhy={() => navigateToCanvas(CANVAS_SECTION_IDS.reasoning)}
+            onWhy={isPresentation ? undefined : navigateToWhy}
           />
+          </div>
         ) : null}
 
         {isInviteFocus ? (
-          <div className="flex min-h-0 flex-1 flex-col">
+          <div
+            className={cn(
+              "flex min-h-0 flex-1 flex-col overflow-hidden",
+              isPresentation && "pointer-events-none",
+            )}
+          >
             <div className="no-scrollbar min-h-0 flex-1 overflow-y-auto">
               <InviteStarterPanel
                 onSelect={(prompt) => {
@@ -1131,7 +1494,7 @@ export function PolicyCopilotLiving({
                   )}
                   style={{
                     boxShadow: composerFocused
-                      ? `0 0 0 1px ${CLAUDE.primaryBorder}, 0 12px 40px rgb(0 0 0 / 0.2)`
+                      ? `0 0 0 1px ${skillTokens.color}88, 0 12px 40px rgb(0 0 0 / 0.2)`
                       : undefined,
                     backgroundColor: CLAUDE.surfaceRaised,
                   }}
@@ -1148,11 +1511,12 @@ export function PolicyCopilotLiving({
                         handleSubmit();
                       }
                     }}
-                    rows={2}
-                    placeholder={DEFAULT_PLACEHOLDER}
+                    rows={isBusinessIntentPresentation ? 3 : 2}
+                    placeholder={composerPlaceholder}
                     className={cn(
                       COPILOT_FOCUS,
-                      "min-h-[3.25rem] w-full resize-none bg-transparent px-4 py-3 pr-14 text-sm leading-relaxed outline-none [&::placeholder]:text-[#a8a49c]",
+                      "w-full resize-none bg-transparent px-4 py-3 pr-14 text-[13px] leading-relaxed outline-none [&::placeholder]:text-[#a8a49c]",
+                      isBusinessIntentPresentation ? "min-h-[4.5rem]" : "min-h-[3.25rem]",
                     )}
                     style={{ color: CLAUDE.text }}
                     aria-label="Describe your policy intent"
@@ -1166,7 +1530,7 @@ export function PolicyCopilotLiving({
                         COPILOT_TARGET.iconSm,
                         "absolute bottom-2 right-2 rounded-full",
                       )}
-                      style={{ backgroundColor: CLAUDE.primary }}
+                      style={{ backgroundColor: skillTokens.color }}
                       aria-label="Send"
                     >
                       <svg className="h-4 w-4 text-white" viewBox="0 0 16 16" fill="none" aria-hidden>
@@ -1186,18 +1550,30 @@ export function PolicyCopilotLiving({
         ) : (
         <>
         <div className={cn(
-          "grid min-h-0 flex-1",
+          "relative grid min-h-0 flex-1",
           isGovernView
             ? "grid-cols-1 lg:grid-cols-[minmax(0,300px)_1fr]"
             : showThreadPanel
-              ? "grid-cols-1 lg:grid-cols-[minmax(0,340px)_1fr]"
+              ? isIntentSummaryPresentation
+                ? "grid-cols-1 lg:grid-cols-[minmax(0,300px)_1fr]"
+                : "grid-cols-1 lg:grid-cols-[minmax(0,340px)_1fr]"
               : "grid-cols-1",
         )}>
+          <ThreadCanvasHandoffPulse active={handoffPulse} />
           {/* Conversation thread — lifecycle and dashboard drilldowns only */}
           {showThreadPanel ? (
           <aside
-            className="flex min-h-0 flex-col overflow-hidden border-b lg:border-b-0 lg:border-r"
-            style={{ borderColor: CLAUDE.hairline }}
+            className={cn(
+              "flex min-h-0 flex-col overflow-hidden border-b lg:border-b-0 lg:border-r",
+              isPresentation && "pointer-events-none",
+            )}
+            style={{
+              borderColor: driftFromDashboard && flowMode === "review" ? CLAUDE.warning : CLAUDE.hairline,
+              boxShadow:
+                driftFromDashboard && flowMode === "review"
+                  ? `inset 3px 0 0 0 ${CLAUDE.warning}88`
+                  : undefined,
+            }}
           >
             <div className="no-scrollbar flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-3 md:p-4">
               {!inLifecycle && phase === "invite" && !dashboardDrilldown && thread.length === 0 ? (
@@ -1208,12 +1584,12 @@ export function PolicyCopilotLiving({
                 >
                   <CopilotMark size={36} glow />
                   <p
-                    className="mt-3 text-base font-normal tracking-tight"
+                    className="mt-3 text-[14px] font-normal tracking-tight"
                     style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
                   >
                     Policy Copilot
                   </p>
-                  <p className="mt-2 max-w-[240px] text-sm leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-2 max-w-[240px] text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                     Pick a recent policy from the sidebar, or start new to begin authoring.
                   </p>
                 </motion.div>
@@ -1242,10 +1618,14 @@ export function PolicyCopilotLiving({
               ) : null}
               {inLifecycle && phase === "sense" && entityReveal < entityMappings.length ? (
                 <ThreadMessage role="copilot">
-                  <span className="inline-flex items-center gap-2">
-                    Mapping
-                    <ThinkingDots />
-                  </span>
+                  {reduced ? (
+                    <EntityMappingProgress mapped={entityReveal} total={entityMappings.length} />
+                  ) : (
+                    <span className="inline-flex items-center gap-2">
+                      Mapping
+                      <ThinkingDots />
+                    </span>
+                  )}
                 </ThreadMessage>
               ) : null}
               <div ref={threadEndRef} />
@@ -1257,16 +1637,30 @@ export function PolicyCopilotLiving({
           <main className="relative flex min-h-0 flex-1 flex-col">
             <div
               className={cn(
-                "no-scrollbar min-h-0 flex-1 overflow-y-auto p-4 md:p-5",
-                workspaceView === "dashboard" && !dashboardDrilldown && "flex items-center justify-center",
+                "no-scrollbar min-h-0 flex-1 overflow-y-auto p-4 md:p-5 transition-[filter,opacity] duration-500",
+                isPresentation && "pointer-events-auto",
+                (workspaceView === "dashboard" || workspaceView === "analytics") &&
+                  "flex items-center justify-center",
+                canvasDesaturated && "opacity-[0.88] saturate-[0.72]",
+                canvasPulse && !reduced && "ring-2 ring-inset",
               )}
+              style={
+                canvasPulse && !reduced
+                  ? { boxShadow: `inset 0 0 0 2px ${CLAUDE.validated}55` }
+                  : undefined
+              }
             >
-              <div className="flex w-full max-w-2xl flex-col gap-4">
+              <div
+                className={cn(
+                  "flex w-full flex-col gap-4",
+                  isIntentSummaryPresentation ? "max-w-none" : "max-w-2xl",
+                  isPresentation && "pointer-events-none",
+                )}
+              >
               {workspaceView === "dashboard" ? (
                 dashboardDrilldown ? (
                   <DashboardDrilldownPanel
                     statId={dashboardDrilldown}
-                    onBack={handleDashboardBack}
                     onOpenActive={handleOpenActivePolicy}
                     onOpenPending={handleOpenPendingReview}
                     onOpenDrift={handleOpenDriftFlag}
@@ -1277,6 +1671,7 @@ export function PolicyCopilotLiving({
                     recentItems={FLAT_RECENT_ITEMS}
                     onOpenPolicy={handleOpenPolicy}
                     onStartNew={handleStartNewPolicy}
+                    onTryScenario={isPresentation ? undefined : handleTryScenario}
                     onStatSelect={handleDashboardStat}
                     resumeDraft={
                       savedDraftCheckpoint
@@ -1293,22 +1688,37 @@ export function PolicyCopilotLiving({
                 <CopilotAnalyticsPanel />
               ) : (
                 <>
+              {resumeSummary ? (
+                <ResumeDraftSummaryCard
+                  label={resumeSummary.label}
+                  items={resumeSummary.items}
+                  savedAt={resumeSummary.savedAt}
+                  onDismiss={() => setResumeSummary(null)}
+                />
+              ) : null}
               {phase === "memory" ? (
                 <>
                   <IntentBanner intent={REVIEW_DRIFT_STORY.request} />
                   <PolicyMemoryPanel rule={REVIEW_DRIFT_STORY.rule} memory={REVIEW_DRIFT_STORY.memory} />
-                  <DriftDetectionPanel
-                    rule={REVIEW_DRIFT_STORY.rule}
-                    goldenIntent={REVIEW_DRIFT_STORY.goldenIntent}
-                    currentState={REVIEW_DRIFT_STORY.currentState}
-                    detail={REVIEW_DRIFT_STORY.driftDetail}
-                  />
+                  <CanvasSectionAnchor
+                    id={CANVAS_SECTION_IDS.compliance}
+                    highlight={canvasHighlight === CANVAS_SECTION_IDS.compliance}
+                    activeSkill={activeSkill}
+                  >
+                    <DriftDetectionPanel
+                      rule={REVIEW_DRIFT_STORY.rule}
+                      goldenIntent={REVIEW_DRIFT_STORY.goldenIntent}
+                      currentState={REVIEW_DRIFT_STORY.currentState}
+                      detail={REVIEW_DRIFT_STORY.driftDetail}
+                    />
+                  </CanvasSectionAnchor>
                   <LivingCard title="Recommendation" subtitle="Based on memory and drift analysis" delay={0.12}>
                     <RecommendationTile
                       title={`Retire ${REVIEW_DRIFT_STORY.rule}`}
                       why={REVIEW_DRIFT_STORY.driftDetail}
                       tradeoff="Marketing can request a new time-boxed exception if needed."
                       applied={driftResolved}
+                      insightKind="pattern"
                       onApply={() => {
                         setDriftResolved(true);
                         setPhase("approve");
@@ -1321,13 +1731,19 @@ export function PolicyCopilotLiving({
               {phase === "capture" ? (
                 <>
                   <IntentBanner intent={LEGACY_DOCUMENT_STORY.request} />
-                  <LegacyDocumentationPanel
-                    rule={LEGACY_DOCUMENT_STORY.rule}
-                    problem={LEGACY_DOCUMENT_STORY.problem}
-                    risk={LEGACY_DOCUMENT_STORY.risk}
-                    fields={LEGACY_DOCUMENT_STORY.captureFields}
-                    captured={memoryCaptured}
-                  />
+                  <CanvasSectionAnchor
+                    id={CANVAS_SECTION_IDS.govern}
+                    highlight={canvasHighlight === CANVAS_SECTION_IDS.govern}
+                    activeSkill={activeSkill}
+                  >
+                    <LegacyDocumentationPanel
+                      rule={LEGACY_DOCUMENT_STORY.rule}
+                      problem={LEGACY_DOCUMENT_STORY.problem}
+                      risk={LEGACY_DOCUMENT_STORY.risk}
+                      fields={LEGACY_DOCUMENT_STORY.captureFields}
+                      captured={memoryCaptured}
+                    />
+                  </CanvasSectionAnchor>
                 </>
               ) : null}
 
@@ -1392,7 +1808,13 @@ export function PolicyCopilotLiving({
                     exit={reduced ? undefined : { opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <IntentAnalyzingSkeleton intent={intent} />
+                    <CanvasSectionAnchor
+                      id={CANVAS_SECTION_IDS.reflection}
+                      highlight={canvasHighlight === CANVAS_SECTION_IDS.reflection}
+                      activeSkill={activeSkill}
+                    >
+                      <IntentAnalyzingSkeleton intent={intent} />
+                    </CanvasSectionAnchor>
                   </motion.div>
                 ) : phase === "clarify" && flowMode === "author" ? (
                   <motion.div
@@ -1401,17 +1823,28 @@ export function PolicyCopilotLiving({
                     animate={{ opacity: 1, y: 0 }}
                     exit={reduced ? undefined : { opacity: 0 }}
                     transition={{ ...LIVING_MOTION.discover, duration: 0.35 }}
+                    className="flex flex-col gap-2"
                   >
                     <CanvasSectionAnchor
                       id={CANVAS_SECTION_IDS.reflection}
                       highlight={canvasHighlight === CANVAS_SECTION_IDS.reflection}
+                      activeSkill={activeSkill}
+                      whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.reflection)}
                     >
                       <UnderstandingReflectionCard
                         reflection={intentClarification.understandingReflection}
                         delay={0}
                         patternHint={scenarioPreset.insightLine}
+                        confidence={confidence}
+                        className="w-full"
+                        fieldOverrides={reflectionFieldOverrides}
+                        onFieldEdit={isPresentation ? undefined : handleReflectionFieldEdit}
+                        onFieldWhy={isPresentation ? undefined : handleReflectionFieldWhy}
+                        interactive={!isPresentation}
                       />
                     </CanvasSectionAnchor>
+                    {!isIntentSummaryPresentation ? (
+                      <>
                     <WhatIfSuggestionCard
                       summary={intentClarification.intentSummary}
                       prompt={intentClarification.whatIfPrompt}
@@ -1425,10 +1858,17 @@ export function PolicyCopilotLiving({
                           schedule(() => {
                             if (opt.insight) pushThread({ role: "insight", text: opt.insight });
                             pushThread({ role: "copilot", text: opt.reply, time: "Now" });
-                          }, reduced ? 0 : 280);
+                          }, livingDelay(LIVING_DELAY_MS.threadReply, reduced));
                         }
                       }}
                     />
+                    <ConfirmUnderstandingGate
+                      confirmed={understandingConfirmed}
+                      onConfirm={confirmUnderstanding}
+                      confirmPrompt={intentClarification.understandingReflection.confirmPrompt}
+                    />
+                      </>
+                    ) : null}
                   </motion.div>
                 ) : null}
               </AnimatePresence>
@@ -1437,13 +1877,31 @@ export function PolicyCopilotLiving({
                 <>
               {intent && showIntentBanner ? <IntentBanner intent={intent} /> : null}
 
+              {showTopology ? <TopologyStrip defaultOpen={phase === "sense"} showNurses /> : null}
+
               {showLivePreview ? (
-                <LivePolicyPreview
-                  status={livePreview!.status}
-                  statusLabel={livePreview!.statusLabel}
-                  slots={livePreview!.slots}
-                  emptyMessage={livePreview!.emptyMessage}
-                />
+                entityReveal === 0 ? (
+                  <CanvasSectionAnchor
+                    id={CANVAS_SECTION_IDS.author}
+                    highlight={canvasHighlight === CANVAS_SECTION_IDS.author}
+                    activeSkill={activeSkill}
+                    whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.author)}
+                  >
+                    <LivePolicyPreview
+                      status={livePreview!.status}
+                      statusLabel={livePreview!.statusLabel}
+                      slots={livePreview!.slots}
+                      emptyMessage={livePreview!.emptyMessage}
+                    />
+                  </CanvasSectionAnchor>
+                ) : (
+                  <LivePolicyPreview
+                    status={livePreview!.status}
+                    statusLabel={livePreview!.statusLabel}
+                    slots={livePreview!.slots}
+                    emptyMessage={livePreview!.emptyMessage}
+                  />
+                )
               ) : null}
 
               {showAuthorPanel ? (
@@ -1456,7 +1914,12 @@ export function PolicyCopilotLiving({
                 <CanvasSectionAnchor
                   id={CANVAS_SECTION_IDS.author}
                   highlight={canvasHighlight === CANVAS_SECTION_IDS.author}
+                  activeSkill={activeSkill}
+                  whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.author)}
                 >
+                  <div className="mb-2 flex justify-end">
+                    <EnforcementWatermark mode={enforcementMode} />
+                  </div>
                   <AuthorValidationPanel
                     interpretations={journeyContent.interpretations}
                     rules={journeyContent.rules}
@@ -1470,10 +1933,20 @@ export function PolicyCopilotLiving({
                 </motion.div>
               ) : null}
 
+              {livePreview?.technicalRules && showTechnicalRulesCanvas(phase) ? (
+                <TechnicalRulesPanel
+                  allow={livePreview.technicalRules.allow}
+                  deny={livePreview.technicalRules.deny}
+                  delay={0.08}
+                />
+              ) : null}
+
               {showProves ? (
                 <CanvasSectionAnchor
                   id={CANVAS_SECTION_IDS.reasoning}
                   highlight={canvasHighlight === CANVAS_SECTION_IDS.reasoning}
+                  activeSkill={activeSkill}
+                  whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.reasoning)}
                 >
                   <ReasoningEvidencePanel evidence={agenticEvidence.reasoning} delay={0.06} />
                 </CanvasSectionAnchor>
@@ -1483,6 +1956,8 @@ export function PolicyCopilotLiving({
                 <CanvasSectionAnchor
                   id={CANVAS_SECTION_IDS.compliance}
                   highlight={canvasHighlight === CANVAS_SECTION_IDS.compliance}
+                  activeSkill={activeSkill}
+                  whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.compliance)}
                 >
                   <ComplianceSummaryPanel
                     scope={agenticEvidence.scope}
@@ -1493,28 +1968,37 @@ export function PolicyCopilotLiving({
                 </CanvasSectionAnchor>
               ) : null}
 
-              {phase !== "clarify" && phase !== "refine" && phase !== "approve" && phase !== "ship" && phase !== "done" ? (
+              {phase !== "clarify" && flowMode === "author" && (showMappingCanvas(phase) || (showDraftCanvas(phase) && !showAuthorPanel)) ? (
                 <>
                   {entityReveal > 0 && phase === "sense" ? (
-                    <LivingCard
-                      key={`mapped-${scenarioPreset.id}`}
-                      title="What I mapped"
-                      subtitle="Natural language → real objects in your environment"
-                      delay={0.05}
+                    <CanvasSectionAnchor
+                      id={CANVAS_SECTION_IDS.author}
+                      highlight={canvasHighlight === CANVAS_SECTION_IDS.author}
+                      activeSkill={activeSkill}
+                      whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.author)}
                     >
-                      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                        {entityMappings.slice(0, entityReveal).map((row, i) => (
-                          <EntityChip
-                            key={row.term}
-                            term={row.term}
-                            resolved={row.resolved}
-                            type={row.type}
-                            state={i === entityReveal - 1 && phase === "sense" ? "thinking" : "confirmed"}
-                            delay={i * LIVING_MOTION.stagger}
-                          />
-                        ))}
-                      </div>
-                    </LivingCard>
+                      <LivingCard
+                        key={`mapped-${scenarioPreset.id}`}
+                        title="What I mapped"
+                        subtitle="Natural language → real objects in your environment"
+                        delay={0.05}
+                        badge={<EnforcementWatermark mode={enforcementMode} />}
+                      >
+                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                          {entityMappings.slice(0, entityReveal).map((row, i) => (
+                            <EntityChip
+                              key={row.term}
+                              term={row.term}
+                              resolved={row.resolved}
+                              type={row.type}
+                              state={i === entityReveal - 1 && phase === "sense" ? "thinking" : "confirmed"}
+                              delay={i * LIVING_MOTION.stagger}
+                              handoffPulse={handoffPulse && i === entityReveal - 1}
+                            />
+                          ))}
+                        </div>
+                      </LivingCard>
+                    </CanvasSectionAnchor>
                   ) : null}
 
                   {entityReveal >= entityMappings.length && phase === "draft" && !showAuthorPanel ? (
@@ -1523,8 +2007,9 @@ export function PolicyCopilotLiving({
                       title="Proposed rules"
                       subtitle="In plain English — verify before anything ships"
                       delay={0.1}
+                      badge={<EnforcementWatermark mode={enforcementMode} />}
                     >
-                      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+                      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
                         {scenarioPreset.ruleReasoning}
                       </p>
                       {phase === "draft" && flowMode === "author" ? (
@@ -1550,12 +2035,24 @@ export function PolicyCopilotLiving({
                 </>
               ) : null}
 
-              {phase === "refine" ? recommendationsBlock : null}
+              {phase === "refine" ? (
+                <>
+                  {recommendationsBlock}
+                  <LivingCard title="Rule priority" subtitle="Drag to reorder evaluation order" delay={0.1} badge={<EnforcementWatermark mode={enforcementMode} />}>
+                    <RefineRulesReorder
+                      rules={journeyContent.rules}
+                      order={ruleOrder}
+                      onReorder={setRuleOrder}
+                    />
+                  </LivingCard>
+                </>
+              ) : null}
 
-              {(phase === "refine" || phase === "approve") && flowMode === "author" && allChecksPassed ? (
+              {(phase === "approve" || phase === "refine") && flowMode === "author" && allChecksPassed && !approvalReviewReady ? (
                 <BlastRadiusPreview
                   summary={scenarioPreset.blastRadius}
                   groups={blastRadiusGroupsFor(scenarioPreset)}
+                  people={parsePeopleFromBlastRadius(scenarioPreset.blastRadius)}
                   delay={0.12}
                 />
               ) : null}
@@ -1575,16 +2072,46 @@ export function PolicyCopilotLiving({
                 />
               ) : null}
 
+              {hasCheckWarnings && (phase === "check" || phase === "refine") ? (
+                <ValidationBlockedBanner
+                  checks={safetyChecks}
+                  checkStatus={checkStatus}
+                  onFix={isPresentation ? undefined : fixValidationWarning}
+                  fixLabel={
+                    scenarioPreset.id === "vendor-vpn" || scenarioPreset.id === "contractors"
+                      ? "Apply vendor MFA requirement"
+                      : "Apply fix to clear warning"
+                  }
+                />
+              ) : null}
+
               {safetyChecksBlock ? (
                 <CanvasSectionAnchor
                   id={CANVAS_SECTION_IDS.checks}
                   highlight={canvasHighlight === CANVAS_SECTION_IDS.checks}
+                  activeSkill={activeSkill}
+                  whyAnnotation={whyAnnotationFor(CANVAS_SECTION_IDS.checks)}
                 >
                   {safetyChecksBlock}
                 </CanvasSectionAnchor>
               ) : null}
 
-              {phase === "approve" && flowMode === "author" ? (
+              {phase === "approve" && flowMode === "author" && simulateAcknowledged && !approvalReviewReady ? (
+                <DeploySimulateStrip
+                  simulating={simulateRunning}
+                  onSimulate={() => {
+                    setSimulateRunning(true);
+                    schedule(() => setSimulateRunning(false), livingDelay(LIVING_DELAY_MS.blastSimulation, reduced));
+                  }}
+                  onProceed={handlePrimaryAction}
+                />
+              ) : null}
+
+              {showApprovalSummaryCanvas(phase, {
+                simulateAcknowledged,
+                approvalReviewReady,
+                allChecksPassed,
+              }) && flowMode === "author" ? (
                 <DeployReadyCard
                   title="Rule ready for deployment"
                   summary={[
@@ -1593,7 +2120,7 @@ export function PolicyCopilotLiving({
                   ]}
                   authorName={scenarioPreset.approval.authorName}
                   reviewSchedule={scenarioPreset.approval.reviewSchedule}
-                  onDeploy={handlePrimaryAction}
+                  onDeploy={isPresentation ? undefined : handlePrimaryAction}
                   delay={0.16}
                 />
               ) : null}
@@ -1614,7 +2141,7 @@ export function PolicyCopilotLiving({
 
               {phase === "ship" ? (
                 <LivingCard title="Deploying" subtitle="Building secure policy across regions" accent="success" delay={0.16}>
-                  <p className="text-sm" style={{ color: CLAUDE.textSecondary }}>
+                  <p className="text-[13px]" style={{ color: CLAUDE.textSecondary }}>
                     {flowMode === "review"
                       ? `Retiring ${REVIEW_DRIFT_STORY.rule}…`
                       : scenarioPreset.approval.justification}
@@ -1660,7 +2187,10 @@ export function PolicyCopilotLiving({
         {/* Suggestions + primary action */}
         {!isAnalyzingFocus ? (
         <footer
-          className="shrink-0 border-t"
+          className={cn(
+            "shrink-0 border-t",
+            isPresentation && "pointer-events-none",
+          )}
           style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surface }}
         >
           {inLifecycle && (phase === "clarify" || phase === "draft" || phase === "memory" || phase === "capture") ? (
@@ -1680,6 +2210,8 @@ export function PolicyCopilotLiving({
               text: s.text,
               primary: s.primary,
               consequence: s.consequence,
+              reply: s.reply,
+              insight: s.insight,
             }))}
             onSelect={(id) => {
               const suggestion = threadSuggestions.find((s) => s.id === id);
@@ -1692,7 +2224,7 @@ export function PolicyCopilotLiving({
             <button
               type="button"
               onClick={handleBackToDashboard}
-              className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[13px] font-medium")}
+              className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[12px] font-medium")}
               style={{ color: CLAUDE.textMuted }}
             >
               Back to dashboard
@@ -1704,7 +2236,7 @@ export function PolicyCopilotLiving({
               className={cn(
                 COPILOT_FOCUS,
                 COPILOT_TARGET.button,
-                "rounded-full px-5 text-sm font-medium text-white",
+                "rounded-full px-5 text-[13px] font-medium text-white",
               )}
               style={{ backgroundColor: CLAUDE.primary }}
             >
@@ -1716,7 +2248,7 @@ export function PolicyCopilotLiving({
             <button
               type="button"
               onClick={handleBackToDashboard}
-              className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[13px] font-medium")}
+              className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[12px] font-medium")}
               style={{ color: CLAUDE.textMuted }}
             >
               Back to dashboard
@@ -1728,15 +2260,52 @@ export function PolicyCopilotLiving({
               className={cn(
                 COPILOT_FOCUS,
                 COPILOT_TARGET.button,
-                "rounded-full px-5 text-sm font-medium text-white",
+                "rounded-full px-5 text-[13px] font-medium text-white",
               )}
               style={{ backgroundColor: CLAUDE.primary }}
             >
               Start new policy
             </motion.button>
           </div>
-          ) : primaryLabel ? (
-          <div className="flex items-center justify-end gap-3 px-4 py-3 md:px-5">
+          ) : primaryLabel || phase === "refine" ? (
+          <div className="flex items-center gap-3 px-4 py-3 md:px-5">
+            <input
+              type="text"
+              value={adminNote}
+              onChange={(e) => setAdminNote(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  submitAdminNote();
+                }
+              }}
+              placeholder="Add a note for the network admin record…"
+              className={cn(
+                COPILOT_FOCUS,
+                "min-w-0 flex-1 rounded-full border bg-transparent px-4 py-2 text-[13px] outline-none",
+              )}
+              style={{
+                borderColor: CLAUDE.border,
+                color: CLAUDE.textSecondary,
+              }}
+              aria-label="Add a note for the network admin record"
+            />
+            {phase === "refine" && !hasCheckWarnings ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setApprovalReviewReady(false);
+                  setSimulateAcknowledged(false);
+                  setPhase("approve");
+                }}
+                title="All mandatory checks passed. Optimisations are evidence-based, not required."
+                className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "shrink-0 rounded-full px-4 text-[12px] font-medium")}
+                style={{ color: CLAUDE.textMuted }}
+              >
+                Skip optimisations → Impact review
+              </button>
+            ) : null}
+            {primaryLabel ? (
             <motion.button
               type="button"
               onClick={handlePrimaryAction}
@@ -1745,7 +2314,7 @@ export function PolicyCopilotLiving({
               className={cn(
                 COPILOT_FOCUS,
                 COPILOT_TARGET.button,
-                "rounded-full px-5 text-sm font-medium text-white disabled:opacity-50",
+                "shrink-0 rounded-full px-5 text-[13px] font-medium text-white disabled:opacity-50",
               )}
               style={{ backgroundColor: CLAUDE.primary }}
             >
@@ -1758,6 +2327,7 @@ export function PolicyCopilotLiving({
                 primaryLabel
               )}
             </motion.button>
+            ) : null}
           </div>
           ) : null}
         </footer>
@@ -1767,4 +2337,21 @@ export function PolicyCopilotLiving({
       </div>
     </PolicyCopilotFrame>
   );
+
+  if (isPresentation) {
+    const presentationAriaLabel =
+      presentation === "business-intent"
+        ? "Policy Copilot business intent — workspace with natural-language input and suggested prompts, read-only"
+        : presentation === "living-workspace"
+          ? "Policy Copilot living workspace — continuous canvas with mapped entities, topology, and draft policy, read-only"
+          : "Policy Copilot intent summary — full workspace with chat and reflection canvas, read-only";
+
+    return (
+      <div className="h-full select-none" aria-label={presentationAriaLabel}>
+        {livingUi}
+      </div>
+    );
+  }
+
+  return livingUi;
 }

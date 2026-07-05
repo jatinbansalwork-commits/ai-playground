@@ -1,9 +1,9 @@
 "use client";
 
-import { NavBackLink } from "@/components/navigation/nav-back-link";
+import { SessionNavBackLink } from "@/components/navigation/session-nav-back-link";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { useArchivePageAnalytics } from "@/hooks/use-archive-page-analytics";
-import { ROUTES } from "@/lib/constants";
+import { BACK_HOME } from "@/lib/session-navigation";
 
 export function MePage() {
   useArchivePageAnalytics();
@@ -16,7 +16,7 @@ export function MePage() {
     >
       <h1 className="sr-only">Me</h1>
 
-      <NavBackLink href={ROUTES.home} destination="Home" />
+      <SessionNavBackLink fallback={BACK_HOME} />
 
       <MeIntroVideo variant="page" />
     </main>

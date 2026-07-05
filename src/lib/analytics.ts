@@ -247,6 +247,8 @@ export type PolicyCopilotDemoAction =
   | "prompt_select"
   | "understand_intent"
   | "clarification_answer"
+  | "clarification_field_edit"
+  | "clarification_field_why"
   | "draft_revealed"
   | "validation_complete"
   | "simulation_visible"

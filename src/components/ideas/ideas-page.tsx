@@ -1,10 +1,10 @@
 "use client";
 
-import { NavBackLink } from "@/components/navigation/nav-back-link";
+import { SessionNavBackLink } from "@/components/navigation/session-nav-back-link";
 import { IdeasGrid } from "@/components/ideas/ideas-grid";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { useIdeasPageAnalytics } from "@/hooks/use-ideas-page-analytics";
-import { ROUTES } from "@/lib/constants";
+import { BACK_HOME } from "@/lib/session-navigation";
 import { IDEAS_PAGE_INTRO } from "@/lib/ideas-page-data";
 import { getIdeasGalleryItems } from "@/lib/experiments-registry";
 
@@ -21,7 +21,7 @@ export function IdeasPage() {
       tabIndex={-1}
       className="ideas-page no-scrollbar fixed inset-0 z-10 overflow-y-auto overflow-x-hidden bg-background text-white"
     >
-      <NavBackLink href={ROUTES.home} destination="Home" />
+      <SessionNavBackLink fallback={BACK_HOME} />
 
       <div className="ideas-page__shell">
         <header className="ideas-page__header">

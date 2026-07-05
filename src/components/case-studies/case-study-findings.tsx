@@ -23,7 +23,7 @@ export function CaseStudyTags({
         {tags.map((tag) => (
           <li
             key={tag}
-            className="rounded-full border border-[#6B36FF]/50 bg-[#6B36FF]/10 px-4 py-2 text-sm leading-snug text-[#B794FF] md:text-base"
+            className="rounded-full border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm leading-snug text-brand-accent-soft md:text-base"
           >
             {tag}
           </li>

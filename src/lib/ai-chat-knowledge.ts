@@ -18,6 +18,12 @@ interface CaseStudyChatMeta {
 
 /** Curated routing tags — keep in sync with public projects on `/projects`. */
 const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = {
+  "cisco-policy-copilot": {
+    bestFor:
+      "Cybersecurity AI, firewall policy UX, enterprise copilots, explainable AI, human-in-the-loop security",
+    outcome:
+      "Designed Policy Copilot—AI-assisted firewall policy for Cisco Hybrid Mesh Firewall with intent-first workflows and an interactive workspace demo.",
+  },
   "freshprints-design-system": {
     bestFor: "Design systems, UI architecture, documentation, scaling design orgs",
     outcome: "Built a scalable design system from 0→1 for a growing e-commerce platform.",

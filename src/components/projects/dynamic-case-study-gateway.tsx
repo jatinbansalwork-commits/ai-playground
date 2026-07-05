@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import type { ComponentType } from "react";
 import { notFound, useParams } from "next/navigation";
 import { CaseStudyPageShell } from "@/components/projects/case-study-page-shell";
-import { ROUTES } from "@/lib/constants";
+import { BACK_PROJECTS } from "@/lib/session-navigation";
 import { getCaseStudyContent } from "@/lib/project-content";
 
 const caseStudyComponents: Record<string, ComponentType> = {
@@ -49,8 +49,8 @@ export default function DynamicCaseStudyGateway() {
 
   return (
     <CaseStudyPageShell
-      backHref={ROUTES.projects}
-      backDestination="Projects"
+      backHref={BACK_PROJECTS.href}
+      backDestination={BACK_PROJECTS.destination}
       analyticsSlug={slug}
       analyticsTitle={content?.title}
       analyticsSource="projects"

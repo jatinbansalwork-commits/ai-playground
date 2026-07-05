@@ -372,7 +372,7 @@ export function CaseStudyChips({
       {items.map((item) => (
         <li
           key={item}
-          className="rounded-full border border-[#6B36FF]/50 bg-[#6B36FF]/10 px-4 py-2 text-sm leading-snug text-[#B794FF] md:text-base"
+          className="rounded-full border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm leading-snug text-brand-accent-soft md:text-base"
         >
           {item}
         </li>
@@ -404,7 +404,7 @@ export function CaseStudyQuestionStack({
           className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-base leading-relaxed text-neutral-200"
         >
           <span
-            className="shrink-0 font-mono text-xs font-medium tabular-nums text-[#B794FF]"
+            className="shrink-0 font-mono text-xs font-medium tabular-nums text-brand-accent-soft"
             aria-hidden
           >
             {String(index + 1).padStart(2, "0")}

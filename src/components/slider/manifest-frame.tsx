@@ -19,7 +19,7 @@ export function ManifestFramePanel({
 }: ManifestFramePanelProps) {
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
-      <div className="manifest-panel flex h-full items-center bg-[#6B36FF] p-6 text-white sm:p-[50px]">
+      <div className="manifest-panel flex h-full items-center bg-brand-accent p-6 text-brand-accent-foreground sm:p-[50px]">
         <p
           data-size="medium"
           className={INDEX_SLIDE_MANIFEST}

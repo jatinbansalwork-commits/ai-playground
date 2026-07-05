@@ -43,8 +43,8 @@ export function PolicyCopilotHome({
                 className={cn(
                   "max-w-md text-center font-normal leading-snug tracking-tight",
                   compact
-                    ? "mt-3 text-[15px] md:text-[17px]"
-                    : "mt-5 text-[17px] md:text-[20px]",
+                    ? "mt-3 text-[13px] md:text-[15px]"
+                    : "mt-5 text-[15px] md:text-[18px]",
                 )}
                 style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
               >
@@ -53,7 +53,7 @@ export function PolicyCopilotHome({
               <p
                 className={cn(
                   "mt-1.5 max-w-sm text-center leading-relaxed",
-                  compact ? "text-[10px] md:text-[11px]" : "text-[11px] md:text-[12px]",
+                  compact ? "text-[9px] md:text-[10px]" : "text-[10px] md:text-[11px]",
                 )}
                 style={{ color: CLAUDE.textMuted }}
               >
@@ -90,11 +90,11 @@ export function PolicyCopilotHome({
                   </div>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+                      <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
                         Describe your intent
                       </p>
                       <span
-                        className="rounded-full border px-2 py-0.5 text-[8px] font-medium"
+                        className="rounded-full border px-2 py-0.5 text-[7px] font-medium"
                         style={{
                           borderColor: CLAUDE.primaryBorder,
                           color: CLAUDE.primary,
@@ -104,14 +104,14 @@ export function PolicyCopilotHome({
                         Recommended
                       </span>
                     </div>
-                    <p className="mt-1.5 text-[10px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                    <p className="mt-1.5 text-[9px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                       &lsquo;{INTENT_CARD_EXAMPLE}&rsquo;
                     </p>
                   </div>
                 </div>
                 <div className="flex shrink-0 justify-end sm:justify-center">
                   <span
-                    className="inline-flex h-9 items-center rounded-full px-4 text-[13px] font-medium text-white transition-opacity group-hover:opacity-90"
+                    className="inline-flex h-9 items-center rounded-full px-4 text-[12px] font-medium text-white transition-opacity group-hover:opacity-90"
                     style={{ backgroundColor: CLAUDE.primary }}
                   >
                     Begin →
@@ -119,7 +119,7 @@ export function PolicyCopilotHome({
                 </div>
               </div>
               <p
-                className="mt-3 flex items-center gap-1.5 text-[9px]"
+                className="mt-3 flex items-center gap-1.5 text-[8px]"
                 style={{ color: CLAUDE.textSecondary }}
               >
                 <span
@@ -133,7 +133,7 @@ export function PolicyCopilotHome({
           </Stagger>
 
           <Stagger delay={0.2} className={cn("w-full", compact ? "mt-4 max-w-lg" : "mt-6 max-w-xl")}>
-            <p className="mb-2 text-center text-[10px]" style={{ color: CLAUDE.textSoft }}>
+            <p className="mb-2 text-center text-[9px]" style={{ color: CLAUDE.textSoft }}>
               Or try another path
             </p>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -149,13 +149,13 @@ export function PolicyCopilotHome({
                   className="rounded-xl border p-3 text-left transition-colors hover:border-[rgb(92_151_238/0.25)]"
                   style={{ backgroundColor: CLAUDE.surface, borderColor: CLAUDE.border }}
                 >
-                  <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
+                  <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
                     {card.title}
                   </p>
-                  <p className="mt-1 text-[10px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-1 text-[9px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                     {card.description}
                   </p>
-                  <p className="mt-2 text-[10px] font-medium" style={{ color: CLAUDE.primary }}>
+                  <p className="mt-2 text-[9px] font-medium" style={{ color: CLAUDE.primary }}>
                     {card.linkLabel}
                   </p>
                 </motion.button>

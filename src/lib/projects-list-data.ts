@@ -43,6 +43,7 @@ function hoverThumbnailForSlug(slug: string): string {
 /** Hidden from the projects index until the case study is ready to promote. */
 const HIDDEN_PROJECT_SLUGS = new Set([
   "freshprints-heal-tool",
+  "kalash-year-end-recap",
   "piggy-personalised-mutual-fund-recommendation",
   "saltmine-sync",
 ]);

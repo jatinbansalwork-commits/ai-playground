@@ -15,6 +15,11 @@ import {
   type CopilotSkillId,
 } from "@/components/case-studies/policy-copilot/policy-copilot-skills";
 import { SKILL_TOKENS } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
+import {
+  INSIGHT_KIND_COLORS,
+  INSIGHT_KIND_LABEL,
+  type InsightKind,
+} from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
 import { CLAUDE, COPILOT_FOCUS, COPILOT_TARGET, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
@@ -28,7 +33,7 @@ function CheckIcon() {
 
 function AllowIcon() {
   return (
-    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold" style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}>
+    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold" style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}>
       ✓
     </span>
   );
@@ -36,7 +41,7 @@ function AllowIcon() {
 
 function DenyIcon() {
   return (
-    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold" style={{ backgroundColor: "rgba(239,68,68,0.15)", color: "#f87171" }}>
+    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold" style={{ backgroundColor: "rgba(239,68,68,0.15)", color: "#f87171" }}>
       ✕
     </span>
   );
@@ -44,7 +49,7 @@ function DenyIcon() {
 
 function NeutralIcon() {
   return (
-    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px]" style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textMuted }}>
+    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px]" style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textMuted }}>
       ·
     </span>
   );
@@ -59,12 +64,12 @@ export function JourneyStepIndicator({ activeSkill }: { activeSkill: CopilotSkil
     <div className="flex min-w-0 flex-1 flex-col gap-1.5" aria-label="Policy journey progress">
       <div className="flex items-center gap-2">
         <span
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[9px] font-bold"
           style={{ backgroundColor: tokens.muted, color: tokens.color }}
         >
           {activeIdx + 1}
         </span>
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           {skill?.label ?? "Intent"}
         </p>
         <p className={cn("ml-auto", COPILOT_TYPE.caption, "tabular-nums")} style={{ color: CLAUDE.textMuted }}>
@@ -117,7 +122,7 @@ export function PolicySkillStepper({ activeSkill }: { activeSkill: CopilotSkillI
                   backgroundColor: complete ? CLAUDE.validatedMuted : active ? CLAUDE.primary : CLAUDE.surfaceOverlay,
                   color: complete ? CLAUDE.validated : active ? "#fff" : CLAUDE.textMuted,
                 }}
-                className="flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold"
+                className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-semibold"
               >
                 {complete ? <CheckIcon /> : i + 1}
               </motion.div>
@@ -154,7 +159,7 @@ export function IntentBanner({ intent }: { intent: string }) {
       <p className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.1em]")} style={{ color: CLAUDE.textSoft }}>
         Your intent
       </p>
-      <p className="mt-1 text-sm leading-relaxed" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
+      <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
         {intent}
       </p>
     </motion.div>
@@ -198,16 +203,16 @@ export function AuthorValidationPanel({
     >
       <div className="flex flex-wrap items-center justify-between gap-2 border-b px-4 py-3" style={{ borderColor: CLAUDE.hairline }}>
         <div>
-          <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+          <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
             {panelTitle}
           </p>
-          <p className="text-[13px]" style={{ color: CLAUDE.textMuted }}>
+          <p className="text-[12px]" style={{ color: CLAUDE.textMuted }}>
             {panelSubtitle}
           </p>
         </div>
         {showPassedBadge ? (
           <span
-            className="rounded-full px-2.5 py-1 text-xs font-medium"
+            className="rounded-full px-2.5 py-1 text-[11px] font-medium"
             style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
           >
             {isGovern ? (complianceLabel ?? "Live") : (complianceLabel ?? "Checks passed")}
@@ -215,7 +220,7 @@ export function AuthorValidationPanel({
         ) : null}
       </div>
 
-      <div className="flex flex-wrap gap-2 border-b px-4 py-2.5 text-[13px]" style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textMuted }}>
+      <div className="flex flex-wrap gap-2 border-b px-4 py-2.5 text-[12px]" style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textMuted }}>
         <span>{stats.groups} groups mapped</span>
         <span aria-hidden>·</span>
         <span>{stats.resources} resource{stats.resources !== 1 ? "s" : ""}</span>
@@ -225,14 +230,14 @@ export function AuthorValidationPanel({
 
       <div className="grid gap-0 md:grid-cols-2">
         <div className="border-b p-4 md:border-b-0 md:border-r" style={{ borderColor: CLAUDE.hairline }}>
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.1em]" style={{ color: CLAUDE.textSoft }}>
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.1em]" style={{ color: CLAUDE.textSoft }}>
             Interpretation
           </p>
           <ul className="space-y-2.5">
             {interpretations.map((line) => (
               <li key={line.text} className="flex items-start gap-2.5">
                 {line.kind === "allow" ? <AllowIcon /> : line.kind === "deny" ? <DenyIcon /> : <NeutralIcon />}
-                <span className="text-sm leading-snug" style={{ color: CLAUDE.textSecondary }}>
+                <span className="text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
                   {line.text}
                 </span>
               </li>
@@ -240,7 +245,7 @@ export function AuthorValidationPanel({
           </ul>
         </div>
         <div className="p-4">
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.1em]" style={{ color: CLAUDE.textSoft }}>
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.1em]" style={{ color: CLAUDE.textSoft }}>
             Generated rules
           </p>
           <ul className="space-y-2">
@@ -258,11 +263,11 @@ export function AuthorValidationPanel({
                   boxShadow: `inset 0 0 0 1px ${isAllow ? CLAUDE.validatedMuted : isDeny ? "rgba(239,68,68,0.2)" : CLAUDE.hairline}`,
                 }}
               >
-                <p className="flex items-center gap-1.5 text-sm font-medium" style={{ color: isAllow ? CLAUDE.validated : isDeny ? "#f87171" : CLAUDE.text }}>
+                <p className="flex items-center gap-1.5 text-[13px] font-medium" style={{ color: isAllow ? CLAUDE.validated : isDeny ? "#f87171" : CLAUDE.text }}>
                   <span aria-hidden>{isAllow ? "✓" : isDeny ? "⊘" : "◉"}</span>
                   {rule.label}
                 </p>
-                <p className="mt-0.5 text-[13px] font-mono" style={{ color: CLAUDE.textMuted, fontFamily: CLAUDE.fontMono }}>
+                <p className="mt-0.5 text-[12px] font-mono" style={{ color: CLAUDE.textMuted, fontFamily: CLAUDE.fontMono }}>
                   {rule.detail}
                 </p>
               </li>
@@ -294,7 +299,7 @@ export function ContextBrowserTabs({ data }: { data: ContextBrowserData }) {
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
-            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "shrink-0 rounded-lg px-3 text-[13px] font-medium transition-colors")}
+            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "shrink-0 rounded-lg px-3 text-[12px] font-medium transition-colors")}
             style={{
               backgroundColor: tab === t.id ? CLAUDE.surfaceOverlay : "transparent",
               color: tab === t.id ? CLAUDE.text : CLAUDE.textMuted,
@@ -308,9 +313,9 @@ export function ContextBrowserTabs({ data }: { data: ContextBrowserData }) {
         {tab === "objects" ? (
           <ul className="space-y-2">
             {data.objects.map((o) => (
-              <li key={o.name} className="flex justify-between gap-2 text-sm">
+              <li key={o.name} className="flex justify-between gap-2 text-[13px]">
                 <span style={{ color: CLAUDE.textSecondary }}>{o.name}</span>
-                <span className="text-[13px]" style={{ color: CLAUDE.textMuted }}>
+                <span className="text-[12px]" style={{ color: CLAUDE.textMuted }}>
                   {o.type}
                 </span>
               </li>
@@ -321,10 +326,10 @@ export function ContextBrowserTabs({ data }: { data: ContextBrowserData }) {
           <ul className="space-y-2">
             {data.compliance.map((c) => (
               <li key={c.framework} className="rounded-lg px-3 py-2" style={{ backgroundColor: CLAUDE.surfaceOverlay }}>
-                <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+                <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                   {c.framework}
                 </p>
-                <p className="text-[13px]" style={{ color: CLAUDE.textMuted }}>
+                <p className="text-[12px]" style={{ color: CLAUDE.textMuted }}>
                   {c.status}
                 </p>
               </li>
@@ -334,7 +339,7 @@ export function ContextBrowserTabs({ data }: { data: ContextBrowserData }) {
         {tab === "patterns" ? (
           <ul className="space-y-2">
             {data.patterns.map((p) => (
-              <li key={p.name} className="flex justify-between text-sm">
+              <li key={p.name} className="flex justify-between text-[13px]">
                 <span style={{ color: CLAUDE.textSecondary }}>{p.name}</span>
                 <span className="font-medium tabular-nums" style={{ color: CLAUDE.primary }}>
                   {p.count}
@@ -344,11 +349,96 @@ export function ContextBrowserTabs({ data }: { data: ContextBrowserData }) {
           </ul>
         ) : null}
         {tab === "context" ? (
-          <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+          <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
             {data.businessContext}
           </p>
         ) : null}
       </div>
+    </div>
+  );
+}
+
+export function RefineRulesReorder({
+  rules,
+  order,
+  onReorder,
+}: {
+  rules: GeneratedRule[];
+  order: number[];
+  onReorder: (next: number[]) => void;
+}) {
+  const ordered = order.map((i) => rules[i]).filter(Boolean);
+
+  function moveRule(from: number, to: number) {
+    if (to < 0 || to >= order.length) return;
+    const next = [...order];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    onReorder(next);
+  }
+
+  return (
+    <div className="space-y-2">
+      <p className="text-[12px]" style={{ color: CLAUDE.textMuted }}>
+        Drag priority — evaluation order affects which rule matches first
+      </p>
+      {ordered.map((rule, i) => {
+        const isAllow = rule.kind === "allow";
+        const isDeny = rule.kind === "deny";
+        const rail = isAllow ? CLAUDE.validated : isDeny ? "#f87171" : CLAUDE.primary;
+        return (
+          <div
+            key={`${rule.label}-${i}`}
+            draggable
+            onDragStart={(e) => e.dataTransfer.setData("text/plain", String(i))}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const from = Number(e.dataTransfer.getData("text/plain"));
+              if (!Number.isNaN(from)) moveRule(from, i);
+            }}
+            className="flex cursor-grab items-start gap-2 rounded-lg border-l-[3px] px-3 py-2.5 active:cursor-grabbing"
+            style={{
+              borderLeftColor: rail,
+              backgroundColor: CLAUDE.surfaceOverlay,
+            }}
+          >
+            <span className="mt-0.5 text-[10px] tabular-nums" style={{ color: CLAUDE.textSoft }}>
+              {i + 1}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-[13px] font-medium" style={{ color: isAllow ? CLAUDE.validated : isDeny ? "#f87171" : CLAUDE.text }}>
+                {rule.label}
+              </p>
+              <p className="mt-0.5 text-[12px] font-mono" style={{ color: CLAUDE.textMuted, fontFamily: CLAUDE.fontMono }}>
+                {rule.detail}
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-0.5">
+              <button
+                type="button"
+                onClick={() => moveRule(i, i - 1)}
+                disabled={i === 0}
+                className={cn(COPILOT_FOCUS, "rounded px-1 text-[9px]")}
+                style={{ color: CLAUDE.textMuted }}
+                aria-label="Move up"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                onClick={() => moveRule(i, i + 1)}
+                disabled={i === ordered.length - 1}
+                className={cn(COPILOT_FOCUS, "rounded px-1 text-[9px]")}
+                style={{ color: CLAUDE.textMuted }}
+                aria-label="Move down"
+              >
+                ↓
+              </button>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -365,6 +455,8 @@ export function EvidenceRecommendationCard({
   delay?: number;
 }) {
   const reduced = useReducedMotion();
+  const insightKind: InsightKind = rec.patternCount ? "pattern" : rec.frameworks?.length ? "evidence" : "status";
+  const kindColors = INSIGHT_KIND_COLORS[insightKind];
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -377,20 +469,26 @@ export function EvidenceRecommendationCard({
       }}
     >
       <div className="flex flex-wrap items-start gap-2">
-        <p className="flex-1 text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <span
+          className="rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
+          style={{ backgroundColor: kindColors.muted, color: kindColors.color }}
+        >
+          {INSIGHT_KIND_LABEL[insightKind]}
+        </span>
+        <p className="flex-1 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           {rec.title}
         </p>
         {rec.frameworks?.map((f) => (
           <span
             key={f}
-            className="rounded-full px-2 py-0.5 text-[11px] font-medium"
+            className="rounded-full px-2 py-0.5 text-[10px] font-medium"
             style={{ backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.textMuted }}
           >
             {f}
           </span>
         ))}
       </div>
-      <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+      <p className="mt-2 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
         <span className="font-medium" style={{ color: CLAUDE.textSecondary }}>
           Why this suggestion:{" "}
         </span>
@@ -399,20 +497,20 @@ export function EvidenceRecommendationCard({
           <span style={{ color: CLAUDE.primary }}> ({rec.patternCount} similar policies)</span>
         ) : null}
       </p>
-      <p className="mt-1 text-[13px]" style={{ color: CLAUDE.textSoft }}>
+      <p className="mt-1 text-[12px]" style={{ color: CLAUDE.textSoft }}>
         Trade-off: {rec.tradeoff}
       </p>
       {!applied ? (
         <button
           type="button"
           onClick={onApply}
-          className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2.5 rounded-full px-3 text-[13px] font-medium transition-opacity hover:opacity-90")}
+          className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2.5 rounded-full px-3 text-[12px] font-medium transition-opacity hover:opacity-90")}
           style={{ backgroundColor: CLAUDE.primary, color: "#fff" }}
         >
           Apply
         </button>
       ) : (
-        <p className="mt-2 text-xs font-medium" style={{ color: CLAUDE.validated }}>
+        <p className="mt-2 text-[11px] font-medium" style={{ color: CLAUDE.validated }}>
           Applied
         </p>
       )}
@@ -442,6 +540,7 @@ export function DeployReadyCard({
   const reduced = useReducedMotion();
   return (
     <motion.div
+      id="approve-cta"
       initial={reduced ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
@@ -449,18 +548,18 @@ export function DeployReadyCard({
       style={{ backgroundColor: CLAUDE.validatedMuted, boxShadow: `0 0 0 1px ${CLAUDE.validatedMuted}` }}
     >
       <div className="px-4 py-4">
-        <p className="text-sm font-medium" style={{ color: CLAUDE.validated }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.validated }}>
           {title}
         </p>
         <ul className="mt-2 space-y-1">
           {summary.map((line) => (
-            <li key={line} className="flex items-center gap-2 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
+            <li key={line} className="flex items-center gap-2 text-[12px]" style={{ color: CLAUDE.textSecondary }}>
               <CheckIcon />
               {line}
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-3 text-[12px]" style={{ color: CLAUDE.textMuted }}>
           {authorName} · {reviewSchedule}
         </p>
       </div>
@@ -470,7 +569,7 @@ export function DeployReadyCard({
             type="button"
             onClick={onCancel}
             disabled={deploying}
-            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[13px] font-medium")}
+            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-full px-4 text-[12px] font-medium")}
             style={{ color: CLAUDE.textMuted }}
           >
             Cancel
@@ -479,7 +578,7 @@ export function DeployReadyCard({
             type="button"
             onClick={onDeploy}
             disabled={deploying}
-            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "ml-auto rounded-full px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60")}
+            className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "ml-auto rounded-full px-4 text-[12px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60")}
             style={{ backgroundColor: CLAUDE.validated }}
           >
             {deploying ? "Deploying…" : "Deploy"}
@@ -523,15 +622,15 @@ export function GovernPolicyOverview({
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+          <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
             {name}
           </p>
-          <p className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+          <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textMuted }}>
             {contextLine}
           </p>
         </div>
         <span
-          className="rounded-full px-2.5 py-1 text-xs font-medium"
+          className="rounded-full px-2.5 py-1 text-[11px] font-medium"
           style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
         >
           {status}
@@ -542,7 +641,7 @@ export function GovernPolicyOverview({
           <dt className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.08em]")} style={{ color: CLAUDE.textSoft }}>
             Owner
           </dt>
-          <dd className="mt-0.5 text-sm" style={{ color: CLAUDE.textSecondary }}>
+          <dd className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
             {owner}
           </dd>
         </div>
@@ -550,7 +649,7 @@ export function GovernPolicyOverview({
           <dt className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.08em]")} style={{ color: CLAUDE.textSoft }}>
             Coverage
           </dt>
-          <dd className="mt-0.5 text-sm" style={{ color: CLAUDE.textSecondary }}>
+          <dd className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
             {regions}
             {lastChange ? ` · Updated ${lastChange.toLowerCase()}` : null}
           </dd>
@@ -559,7 +658,7 @@ export function GovernPolicyOverview({
           <dt className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.08em]")} style={{ color: CLAUDE.textSoft }}>
             Compliance
           </dt>
-          <dd className="mt-0.5 text-sm" style={{ color: CLAUDE.textSecondary }}>
+          <dd className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
             {complianceLabel}
           </dd>
         </div>
@@ -567,7 +666,7 @@ export function GovernPolicyOverview({
           <dt className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.08em]")} style={{ color: CLAUDE.textSoft }}>
             Blast radius
           </dt>
-          <dd className="mt-0.5 text-sm" style={{ color: CLAUDE.textSecondary }}>
+          <dd className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
             {blastRadius}
           </dd>
         </div>
@@ -592,10 +691,10 @@ export function GovernRecordPanel({
       className="rounded-xl p-4"
       style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
     >
-      <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+      <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
         Govern — policy record
       </p>
-      <p className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+      <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textMuted }}>
         Every stage traceable for audit
       </p>
       <div className="mt-4 space-y-3">
@@ -606,10 +705,10 @@ export function GovernRecordPanel({
               style={{ backgroundColor: CLAUDE.primary, opacity: 0.4 + i * 0.12 }}
             />
             <div>
-              <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                 {ev.stage}
               </p>
-              <p className="text-[13px]" style={{ color: CLAUDE.textMuted }}>
+              <p className="text-[12px]" style={{ color: CLAUDE.textMuted }}>
                 {ev.evidence}
               </p>
             </div>

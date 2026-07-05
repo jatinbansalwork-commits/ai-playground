@@ -93,7 +93,7 @@ function renderLink(
 ): ReactNode {
   const external = /^https?:\/\//i.test(href);
   const className = [
-    "underline decoration-[#6B36FF]/50 underline-offset-[3px] transition-colors hover:text-white hover:decoration-[#6B36FF]",
+    "underline decoration-brand-accent/50 underline-offset-[3px] transition-colors hover:text-white hover:decoration-brand-accent",
     strong ? "font-semibold text-white" : "text-[#d4c4ff]",
     FOCUS_RING,
   ].join(" ");
@@ -198,7 +198,7 @@ function MessageList({ lead, items }: { lead?: string; items: string[] }) {
           <li key={`${lead ?? "list"}-${index}`} className="flex gap-2.5">
             <span
               aria-hidden
-              className="mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-[#6B36FF]"
+              className="mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-brand-accent"
             />
             <span className="min-w-0 text-[14px] leading-[1.65] text-neutral-200">
               {renderInline(item, `li-${index}`)}

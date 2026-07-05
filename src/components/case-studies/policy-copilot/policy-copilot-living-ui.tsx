@@ -1,8 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
-import { resolveEntityProvenance } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
+import {
+  entityTypeKey,
+  ENTITY_TYPE_TOKENS,
+  INSIGHT_KIND_COLORS,
+  INSIGHT_KIND_LABEL,
+  resolveEntityProvenance,
+  SAFETY_CHECK_ICON_KIND,
+  type InsightKind,
+} from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
+import { BlastRadiusIcon, EntityTypeIcon, SafetyCheckIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
 import {
   POLICY_STARTER_SUGGESTIONS,
   POLICY_STARTER_TEMPLATES,
@@ -10,6 +19,7 @@ import {
   starterIcon,
 } from "@/components/case-studies/policy-copilot/policy-copilot-starters";
 import { CopilotMark } from "@/components/case-studies/policy-copilot/policy-copilot-shell";
+import { EnforcementWatermark } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
 import {
   COPILOT_ANALYTICS_METRICS,
   COPILOT_DASHBOARD_STATS,
@@ -62,7 +72,7 @@ export function ConfidenceRing({
           />
         </svg>
         <span
-          className="absolute inset-0 flex items-center justify-center text-[13px] font-medium tabular-nums"
+          className="absolute inset-0 flex items-center justify-center text-[12px] font-medium tabular-nums"
           style={{ color: CLAUDE.text }}
         >
           {Math.round(value)}
@@ -70,10 +80,10 @@ export function ConfidenceRing({
       </div>
       {label ? (
         <div className="min-w-0">
-          <p className="text-xs font-medium uppercase tracking-[0.12em]" style={{ color: CLAUDE.textSoft }}>
+          <p className="text-[11px] font-medium uppercase tracking-[0.12em]" style={{ color: CLAUDE.textSoft }}>
             Confidence
           </p>
-          <p className="text-sm leading-snug" style={{ color: CLAUDE.textSecondary }}>
+          <p className="text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
             {label}
           </p>
         </div>
@@ -115,16 +125,20 @@ export function LivingCard({
       initial={reduced ? false : { opacity: 0, y: 18, scale: 0.985 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
-      className={cn("rounded-2xl p-4 md:p-5", className)}
+      className={cn("overflow-hidden rounded-2xl p-4 md:p-5", className)}
       style={{
         background: `linear-gradient(165deg, ${CLAUDE.surfaceRaised} 0%, ${CLAUDE.surface} 88%)`,
-        boxShadow:
-          "0 1px 0 rgb(250 249 245 / 0.05) inset, 0 12px 40px rgb(0 0 0 / 0.14)",
-        borderLeft: accent ? `2px solid ${accentBorder}` : undefined,
+        boxShadow: [
+          accent ? `inset 3px 0 0 0 ${accentBorder}` : null,
+          "0 1px 0 rgb(250 249 245 / 0.05) inset",
+          "0 8px 24px rgb(0 0 0 / 0.12)",
+        ]
+          .filter(Boolean)
+          .join(", "),
       }}
     >
       {title || badge ? (
-        <div className="mb-3 flex items-start justify-between gap-2">
+        <div className="mb-2.5 flex items-start justify-between gap-2">
           <div className="min-w-0">
             {title ? (
               <h3 className={COPILOT_TYPE.titleLg} style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}>
@@ -132,7 +146,7 @@ export function LivingCard({
               </h3>
             ) : null}
             {subtitle ? (
-              <p className="mt-0.5 text-sm leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+              <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                 {subtitle}
               </p>
             ) : null}
@@ -148,41 +162,33 @@ export function LivingCard({
 export function InsightBreadcrumb({
   children,
   delay = 0,
-  kind,
+  kind = "status",
   canvasLink,
   onCanvasNavigate,
 }: {
   children: React.ReactNode;
   delay?: number;
-  kind?: "pattern" | "status" | "evidence";
+  kind?: InsightKind;
   canvasLink?: string;
   onCanvasNavigate?: (id: string) => void;
 }) {
   const reduced = useReducedMotion();
-  const labels = { pattern: "Pattern", status: "Status", evidence: "Evidence" };
+  const colors = INSIGHT_KIND_COLORS[kind];
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
       className="flex items-start gap-2 rounded-xl border-l-[3px] px-3 py-2"
-      style={{ backgroundColor: CLAUDE.primaryMuted, borderLeftColor: CLAUDE.primary }}
+      style={{ backgroundColor: colors.muted, borderLeftColor: colors.color }}
     >
-      {kind ? (
-        <span
-          className="mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
-          style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.primary }}
-        >
-          {labels[kind]}
-        </span>
-      ) : (
-        <span
-          className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-          style={{ backgroundColor: CLAUDE.primary }}
-          aria-hidden
-        />
-      )}
-      <p className={cn(COPILOT_TYPE.bodySm, "min-w-0 flex-1 md:text-sm")} style={{ color: CLAUDE.textSecondary }}>
+      <span
+        className="mt-0.5 shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
+        style={{ backgroundColor: CLAUDE.surfaceOverlay, color: colors.color }}
+      >
+        {INSIGHT_KIND_LABEL[kind]}
+      </span>
+      <p className={cn(COPILOT_TYPE.bodySm, "min-w-0 flex-1 md:text-[13px]")} style={{ color: CLAUDE.textSecondary }}>
         {children}
         {canvasLink && onCanvasNavigate ? (
           <>
@@ -208,54 +214,68 @@ export function EntityChip({
   type,
   state = "confirmed",
   delay = 0,
+  handoffPulse = false,
 }: {
   term: string;
   resolved: string;
   type?: string;
   state?: "suggested" | "confirmed" | "thinking";
   delay?: number;
+  handoffPulse?: boolean;
 }) {
   const reduced = useReducedMotion();
+  const typeKey = entityTypeKey(type);
+  const typeTokens = ENTITY_TYPE_TOKENS[typeKey];
   const provenance = type ? resolveEntityProvenance(resolved, type) : null;
-  const tip = provenance
-    ? `${provenance.source} · ${provenance.objectId}\nSynced ${provenance.synced} · Owner ${provenance.owner}`
-    : undefined;
+  const [showProv, setShowProv] = useState(false);
 
   return (
     <motion.div
       layout={!reduced}
       initial={reduced ? false : { opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ ...LIVING_MOTION.discover, delay }}
-      className="flex flex-col gap-1 rounded-xl px-3 py-2"
-      title={tip}
+      animate={
+        handoffPulse && !reduced
+          ? { opacity: 1, scale: [1, 1.04, 1], boxShadow: [`inset 0 0 0 1px ${typeTokens.color}22`, `0 0 0 2px ${typeTokens.color}88`, `inset 0 0 0 1px ${typeTokens.color}22`] }
+          : { opacity: 1, scale: 1 }
+      }
+      transition={{ ...LIVING_MOTION.discover, delay, duration: handoffPulse ? 0.45 : undefined }}
+      className="group/chip relative flex flex-col gap-1 rounded-xl px-3 py-2"
+      onMouseEnter={() => setShowProv(true)}
+      onMouseLeave={() => setShowProv(false)}
+      onFocus={() => setShowProv(true)}
+      onBlur={() => setShowProv(false)}
       style={{
-        backgroundColor:
-          state === "thinking" ? CLAUDE.surfaceOverlay : CLAUDE.surfaceRaised,
-        boxShadow: "0 1px 0 rgb(250 249 245 / 0.03) inset",
+        backgroundColor: state === "thinking" ? CLAUDE.surfaceOverlay : typeTokens.muted,
+        boxShadow: `inset 0 0 0 1px ${typeTokens.color}22`,
       }}
     >
       <div className="flex items-center justify-between gap-1">
-        <span className={COPILOT_TYPE.caption} style={{ color: CLAUDE.textMuted }}>
-          {term}
-        </span>
-        {provenance ? (
+        <span className="flex items-center gap-1.5">
           <span
-            className="rounded px-1 py-0.5 text-[9px] font-medium uppercase tracking-wide"
-            style={{ backgroundColor: CLAUDE.primaryMuted, color: CLAUDE.primary }}
+            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md"
+            style={{ backgroundColor: CLAUDE.surfaceRaised, color: typeTokens.color }}
           >
-            {provenance.source}
+            <EntityTypeIcon type={typeKey} className="h-3 w-3" />
           </span>
-        ) : null}
+          <span className={COPILOT_TYPE.caption} style={{ color: CLAUDE.textMuted }}>
+            {term}
+          </span>
+        </span>
+        <span
+          className="rounded px-1 py-0.5 text-[8px] font-medium uppercase tracking-wide"
+          style={{ backgroundColor: CLAUDE.surfaceOverlay, color: typeTokens.color }}
+        >
+          {typeTokens.label}
+        </span>
       </div>
       <span
-        className="text-sm font-medium"
+        className="text-[13px] font-medium"
         style={{
           fontFamily: CLAUDE.fontMono,
-          fontSize: "0.8125rem",
+          fontSize: "0.75rem",
           color:
             state === "confirmed"
-              ? CLAUDE.primary
+              ? typeTokens.color
               : state === "thinking"
                 ? CLAUDE.textMuted
                 : CLAUDE.textSecondary,
@@ -263,6 +283,20 @@ export function EntityChip({
       >
         {resolved}
       </span>
+      {provenance && showProv ? (
+        <div
+          className="absolute left-0 top-full z-20 mt-1 w-full rounded-lg px-2.5 py-2 text-[9px] leading-snug"
+          style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `0 0 0 1px ${CLAUDE.hairline}` }}
+          role="tooltip"
+        >
+          <p className="font-mono" style={{ color: CLAUDE.textSecondary }}>
+            {provenance.objectId}
+          </p>
+          <p className="mt-0.5" style={{ color: CLAUDE.textMuted }}>
+            {provenance.source} · synced {provenance.synced} · {provenance.owner}
+          </p>
+        </div>
+      ) : null}
     </motion.div>
   );
 }
@@ -272,13 +306,22 @@ export function SafetyCheckRow({
   status,
   detail,
   delay = 0,
+  checkId,
+  queueIndex,
+  isLast = false,
+  elapsedSec,
 }: {
   label: string;
   status: "pending" | "running" | "pass" | "warn";
   detail?: string;
   delay?: number;
+  checkId?: string;
+  queueIndex?: number;
+  isLast?: boolean;
+  elapsedSec?: number;
 }) {
   const reduced = useReducedMotion();
+  const iconKind = (checkId && SAFETY_CHECK_ICON_KIND[checkId]) || "shield";
   const iconColor =
     status === "pass"
       ? CLAUDE.validated
@@ -293,16 +336,27 @@ export function SafetyCheckRow({
       initial={reduced ? false : { opacity: 0, x: 6 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
-      className="flex items-start gap-2.5 py-1.5"
+      className="relative flex items-start gap-2.5 py-1.5 pl-1"
     >
+      {queueIndex != null ? (
+        <div
+          className="absolute left-[0.65rem] top-7 w-px"
+          style={{
+            height: isLast ? 0 : "calc(100% + 2px)",
+            backgroundColor:
+              status === "pass" ? CLAUDE.validatedMuted : CLAUDE.surfaceOverlay,
+          }}
+          aria-hidden
+        />
+      ) : null}
       <motion.span
-        className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+        className="relative z-[1] mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
         initial={false}
         animate={
           status === "pass" && !reduced
-            ? { scale: [1, 1.2, 1], opacity: 1 }
+            ? { scale: [1, 1.15, 1], opacity: 1 }
             : status === "running" && !reduced
-              ? { scale: [1, 1.12, 1], opacity: [0.7, 1, 0.7] }
+              ? { scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }
               : { scale: 1, opacity: 1 }
         }
         transition={
@@ -318,30 +372,319 @@ export function SafetyCheckRow({
               ? CLAUDE.validatedMuted
               : status === "warn"
                 ? CLAUDE.warningMuted
-                : CLAUDE.primaryMuted,
+                : status === "running"
+                  ? CLAUDE.primaryMuted
+                  : CLAUDE.surfaceOverlay,
+          color: iconColor,
         }}
       >
         {status === "pass" ? (
-          <svg className="h-2.5 w-2.5" viewBox="0 0 8 8" fill="none" style={{ color: iconColor }}>
+          <svg className="h-2.5 w-2.5" viewBox="0 0 8 8" fill="none" aria-hidden>
             <path d="M1.5 4l2 2 3-3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-        ) : status === "running" ? (
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: iconColor }} />
-        ) : (
-          <span className="h-1 w-1 rounded-full" style={{ backgroundColor: iconColor }} />
-        )}
+        ) : status === "running" && !reduced ? (
+          <span
+            className="absolute inset-0 rounded-full animate-pulse"
+            style={{ boxShadow: `0 0 0 2px ${CLAUDE.primary}33` }}
+            aria-hidden
+          />
+        ) : null}
+        {status !== "pass" ? <SafetyCheckIcon kind={iconKind} className="h-3 w-3" /> : null}
       </motion.span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
-          {label}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+            {label}
+          </p>
+          {queueIndex != null ? (
+            <span className="text-[9px] tabular-nums uppercase tracking-wide" style={{ color: CLAUDE.textSoft }}>
+              {status === "pending" ? "Queued" : status === "running" ? "Running" : status === "pass" ? "Done" : "Warn"}
+            </span>
+          ) : null}
+          {status === "running" && elapsedSec != null ? (
+            <span className="ml-auto text-[10px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
+              {elapsedSec}s
+            </span>
+          ) : null}
+        </div>
         {detail ? (
-          <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+          <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
             {detail}
+          </p>
+        ) : status === "running" ? (
+          <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            Validating against policy baseline…
           </p>
         ) : null}
       </div>
     </motion.div>
+  );
+}
+
+export function SafetyCheckQueue({
+  checks,
+  checkStatus,
+  lastRunSec,
+}: {
+  checks: readonly { id: string; label: string; detail: string }[];
+  checkStatus: Record<string, "pending" | "running" | "pass" | "warn">;
+  lastRunSec?: number;
+}) {
+  const runningId = checks.find((c) => checkStatus[c.id] === "running")?.id;
+  const allPassed = checks.every((c) => checkStatus[c.id] === "pass");
+
+  return (
+    <LivingCard
+      title="Safety checks"
+      subtitle={allPassed ? "All clear — review optimisations next" : "Validating blast radius and compliance posture"}
+      delay={0.12}
+      accent={allPassed ? "success" : "default"}
+      badge={<EnforcementWatermark mode="draft" />}
+    >
+      <div className="space-y-0.5">
+        {checks.map((check, i) => (
+          <SafetyCheckRow
+            key={check.id}
+            checkId={check.id}
+            label={check.label}
+            detail={checkStatus[check.id] === "pass" ? check.detail : undefined}
+            status={checkStatus[check.id] ?? "pending"}
+            delay={i * 0.04}
+            queueIndex={i}
+            isLast={i === checks.length - 1}
+            elapsedSec={runningId === check.id && lastRunSec != null ? lastRunSec : undefined}
+          />
+        ))}
+      </div>
+    </LivingCard>
+  );
+}
+
+export function ValidationBlockedBanner({
+  checks,
+  checkStatus,
+  onFix,
+  fixLabel,
+}: {
+  checks: readonly { id: string; label: string; detail: string }[];
+  checkStatus: Record<string, "pending" | "running" | "pass" | "warn">;
+  onFix?: () => void;
+  fixLabel?: string;
+}) {
+  const warnings = checks.filter((c) => checkStatus[c.id] === "warn");
+  if (warnings.length === 0) return null;
+
+  return (
+    <LivingCard
+      title="Validation blocked"
+      subtitle="Resolve warnings before you can approve or deploy"
+      accent="warning"
+      delay={0.1}
+    >
+      <ul className="space-y-2">
+        {warnings.map((check) => (
+          <li key={check.id} className="flex items-start gap-2 text-[12px]" style={{ color: CLAUDE.textSecondary }}>
+            <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: CLAUDE.warning }} />
+            <span>
+              <span className="font-medium" style={{ color: CLAUDE.warning }}>
+                {check.label}
+              </span>
+              {" — "}
+              {check.detail}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {onFix && fixLabel ? (
+        <button
+          type="button"
+          onClick={onFix}
+          className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-3 rounded-full px-4 py-1.5 text-[12px] font-medium text-white")}
+          style={{ backgroundColor: CLAUDE.warning }}
+        >
+          {fixLabel}
+        </button>
+      ) : null}
+    </LivingCard>
+  );
+}
+
+export function ConfirmUnderstandingGate({
+  confirmed,
+  onConfirm,
+  confirmPrompt,
+}: {
+  confirmed: boolean;
+  onConfirm: () => void;
+  confirmPrompt: string;
+}) {
+  const reduced = useReducedMotion();
+  if (confirmed) {
+    return (
+      <motion.div
+        initial={reduced ? false : { opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-2 rounded-xl px-3 py-2.5"
+        style={{ backgroundColor: CLAUDE.validatedMuted }}
+      >
+        <svg className="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="none" style={{ color: CLAUDE.validated }} aria-hidden>
+          <path d="M3 8l3 3 7-7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+        </svg>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.validated }}>
+          Understanding confirmed — ready to map inventory
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={reduced ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl border p-3"
+      style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: CLAUDE.primaryMuted }}
+    >
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+        {confirmPrompt}
+      </p>
+      <button
+        type="button"
+        onClick={onConfirm}
+        className={cn(COPILOT_FOCUS, COPILOT_TARGET.button, "mt-3 rounded-full px-4 py-2 text-[13px] font-medium text-white")}
+        style={{ backgroundColor: CLAUDE.primary }}
+      >
+        Yes, that&apos;s right
+      </button>
+    </motion.div>
+  );
+}
+
+export function ResumeDraftSummaryCard({
+  label,
+  items,
+  savedAt,
+  onDismiss,
+}: {
+  label: string;
+  items: { label: string; tone: "done" | "pending" | "warn" }[];
+  savedAt: number;
+  onDismiss: () => void;
+}) {
+  const reduced = useReducedMotion();
+  const toneColor = (tone: "done" | "pending" | "warn") =>
+    tone === "done" ? CLAUDE.validated : tone === "warn" ? CLAUDE.warning : CLAUDE.textMuted;
+
+  return (
+    <motion.div
+      initial={reduced ? false : { opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl border p-4"
+      style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: CLAUDE.surfaceRaised }}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-wide" style={{ color: CLAUDE.primary }}>
+            Since you left
+          </p>
+          <p className="mt-0.5 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+            {label}
+          </p>
+          <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
+            Saved {new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className={cn(COPILOT_FOCUS, "text-[11px] font-medium")}
+          style={{ color: CLAUDE.textMuted }}
+        >
+          Dismiss
+        </button>
+      </div>
+      <ul className="mt-3 space-y-1.5">
+        {items.map((item) => (
+          <li key={item.label} className="flex items-center gap-2 text-[12px]" style={{ color: toneColor(item.tone) }}>
+            <span
+              className="h-1.5 w-1.5 shrink-0 rounded-full"
+              style={{ backgroundColor: toneColor(item.tone) }}
+            />
+            {item.label}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+}
+
+export function ThreadCanvasHandoffPulse({ active }: { active: boolean }) {
+  const reduced = useReducedMotion();
+  if (!active || reduced) return null;
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-y-0 left-[min(340px,40%)] z-20 hidden w-24 lg:block"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      aria-hidden
+    >
+      <motion.div
+        className="absolute top-1/2 h-px w-full -translate-y-1/2"
+        style={{
+          background: `linear-gradient(90deg, transparent, ${CLAUDE.primary}, transparent)`,
+        }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: [0, 1, 1], opacity: [0, 1, 0] }}
+        transition={{ duration: 0.5, ease: LIVING_MOTION.confidence.ease }}
+      />
+    </motion.div>
+  );
+}
+
+export function TopologyStrip({
+  defaultOpen = true,
+  showNurses = true,
+}: {
+  defaultOpen?: boolean;
+  showNurses?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  const reduced = useReducedMotion();
+
+  return (
+    <LivingCard
+      title="Access topology"
+      subtitle="Hover paths to inspect allow and deny rules"
+      delay={0.03}
+      badge={<EnforcementWatermark mode="draft" />}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={cn(COPILOT_FOCUS, "mb-2 flex w-full items-center justify-between text-[12px] font-medium")}
+        style={{ color: CLAUDE.textMuted }}
+        aria-expanded={open}
+      >
+        {open ? "Hide diagram" : "Show diagram"}
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          ▾
+        </motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            initial={reduced ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduced ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <TopologyLive showNurses={showNurses} animateLines />
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </LivingCard>
   );
 }
 
@@ -361,16 +704,16 @@ export function SafetyChecksSummary({ count, lastRunSec }: { count: number; last
         </svg>
       </span>
       <div className="min-w-0">
-        <p className="text-sm font-medium" style={{ color: CLAUDE.validated }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.validated }}>
           {count} safety checks passed
         </p>
-        <p className="text-[13px]" style={{ color: CLAUDE.textSecondary }}>
+        <p className="text-[12px]" style={{ color: CLAUDE.textSecondary }}>
           HIPAA · blast radius · conflicts · privilege paths
         </p>
       </div>
       </div>
       {lastRunSec != null ? (
-        <p className="shrink-0 text-[11px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
+        <p className="shrink-0 text-[10px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
           Last run {lastRunSec}s ago
         </p>
       ) : null}
@@ -410,7 +753,7 @@ export function CanvasActionDock({
       <div className="mx-auto flex max-w-2xl flex-wrap items-center gap-2">
         {pendingCount > 0 ? (
           <>
-            <p className="mr-1 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+            <p className="mr-1 text-[12px] font-medium" style={{ color: CLAUDE.text }}>
               {pendingCount} optional {pendingCount === 1 ? "action" : "actions"}
             </p>
             {actions.map((action) => (
@@ -421,7 +764,7 @@ export function CanvasActionDock({
                 className={cn(
                   COPILOT_FOCUS,
                   COPILOT_TARGET.chip,
-                  "rounded-full border text-[13px] font-medium transition-colors hover:bg-white/[0.06]",
+                  "rounded-full border text-[12px] font-medium transition-colors hover:bg-white/[0.06]",
                 )}
                 style={{
                   borderColor: CLAUDE.primaryBorder,
@@ -441,7 +784,7 @@ export function CanvasActionDock({
             className={cn(
               COPILOT_FOCUS,
               COPILOT_TARGET.chip,
-              "rounded-full px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90",
+              "rounded-full px-3 text-[12px] font-medium text-white transition-opacity hover:opacity-90",
               pendingCount > 0 ? "ml-auto" : "",
             )}
             style={{ backgroundColor: CLAUDE.primary }}
@@ -461,6 +804,7 @@ export function RecommendationTile({
   applied,
   onApply,
   delay = 0,
+  insightKind = "evidence",
 }: {
   title: string;
   why: string;
@@ -468,8 +812,10 @@ export function RecommendationTile({
   applied: boolean;
   onApply: () => void;
   delay?: number;
+  insightKind?: InsightKind;
 }) {
   const reduced = useReducedMotion();
+  const kindColors = INSIGHT_KIND_COLORS[insightKind];
   return (
     <motion.div
       layout={!reduced}
@@ -482,27 +828,35 @@ export function RecommendationTile({
         boxShadow: applied ? `0 0 0 1px ${CLAUDE.validatedMuted}` : undefined,
       }}
     >
-      <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
-        {title}
-      </p>
-      <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+      <div className="flex flex-wrap items-center gap-2">
+        <span
+          className="rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
+          style={{ backgroundColor: kindColors.muted, color: kindColors.color }}
+        >
+          {INSIGHT_KIND_LABEL[insightKind]}
+        </span>
+        <p className="flex-1 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+          {title}
+        </p>
+      </div>
+      <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
         <span style={{ color: CLAUDE.textSecondary }}>Why: </span>
         {why}
       </p>
-      <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSoft }}>
+      <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSoft }}>
         Trade-off: {tradeoff}
       </p>
       {!applied ? (
         <button
           type="button"
           onClick={onApply}
-          className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2.5 rounded-full px-3 text-[13px] font-medium transition-opacity hover:opacity-90")}
+          className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2.5 rounded-full px-3 text-[12px] font-medium transition-opacity hover:opacity-90")}
           style={{ backgroundColor: CLAUDE.primary, color: "#fff" }}
         >
           Apply
         </button>
       ) : (
-        <p className="mt-2 text-xs font-medium" style={{ color: CLAUDE.validated }}>
+        <p className="mt-2 text-[11px] font-medium" style={{ color: CLAUDE.validated }}>
           Applied
         </p>
       )}
@@ -759,7 +1113,7 @@ export function TopologyLive({
             y={47}
             textAnchor="middle"
             fill={CLAUDE.validated}
-            fontSize={9}
+            fontSize={8}
             fontWeight={600}
           >
             Allow
@@ -778,7 +1132,7 @@ export function TopologyLive({
               y={91}
               textAnchor="middle"
               fill={CLAUDE.risk}
-              fontSize={9}
+              fontSize={8}
               fontWeight={600}
             >
               Deny
@@ -791,14 +1145,14 @@ export function TopologyLive({
         key={focusDetail}
         initial={reduced ? false : { opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mt-2 text-center text-xs leading-relaxed"
+        className="mt-2 text-center text-[11px] leading-relaxed"
         style={{ color: focus ? CLAUDE.textSecondary : CLAUDE.textSoft }}
       >
         {focusDetail}
       </motion.p>
 
       <motion.p
-        className="mt-1 flex items-center justify-center gap-1.5 text-center text-xs"
+        className="mt-1 flex items-center justify-center gap-1.5 text-center text-[11px]"
         style={{ color: CLAUDE.textSoft }}
         animate={reduced ? undefined : { opacity: [0.55, 1, 0.55] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
@@ -878,7 +1232,7 @@ function TopologyNode({
         y={y + 4}
         textAnchor="middle"
         fill={CLAUDE.text}
-        fontSize={10}
+        fontSize={9}
         fontWeight={500}
       >
         {label}
@@ -889,7 +1243,7 @@ function TopologyNode({
 
 export function NextActionHint({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <p className={cn("text-sm leading-snug", className)} style={{ color: CLAUDE.textMuted }}>
+    <p className={cn("text-[13px] leading-snug", className)} style={{ color: CLAUDE.textMuted }}>
       <span style={{ color: CLAUDE.textSecondary }}>Next: </span>
       {children}
     </p>
@@ -913,7 +1267,7 @@ function PreviewStatusBadge({
 
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium"
+      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium"
       style={{
         backgroundColor: styles.bg,
         color: styles.color,
@@ -966,7 +1320,7 @@ export function LivePolicyPreview({
           className="mb-3 rounded-xl border border-dashed px-4 py-8 text-center"
           style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceOverlay }}
         >
-          <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+          <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
             {emptyMessage}
           </p>
         </div>
@@ -995,7 +1349,7 @@ export function LivePolicyPreview({
               </p>
               {slot.badge ? (
                 <span
-                  className="shrink-0 rounded-full px-1.5 py-0.5 text-xs font-medium tabular-nums"
+                  className="shrink-0 rounded-full px-1.5 py-0.5 text-[11px] font-medium tabular-nums"
                   style={{
                     backgroundColor: CLAUDE.primaryMuted,
                     color: CLAUDE.primary,
@@ -1006,11 +1360,11 @@ export function LivePolicyPreview({
               ) : null}
             </div>
             {slot.value ? (
-              <p className="mt-1 text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+              <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
                 {slot.value}
               </p>
             ) : slot.state === "empty" ? (
-              <p className="mt-1 text-xs italic" style={{ color: CLAUDE.textSoft }}>
+              <p className="mt-1 text-[11px] italic" style={{ color: CLAUDE.textSoft }}>
                 —
               </p>
             ) : null}
@@ -1031,7 +1385,7 @@ export function TechnicalRulesPanel({
   delay?: number;
 }) {
   const reduced = useReducedMotion();
-  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"plain" | "acl">("plain");
 
   return (
     <motion.div
@@ -1041,24 +1395,49 @@ export function TechnicalRulesPanel({
     >
       <LivingCard
         title="Technical rule set"
-        subtitle="Plain English above · ACL for administrator validation"
+        subtitle="Plain English for review · ACL for administrator validation"
         delay={0}
       >
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className={cn(
-            COPILOT_FOCUS,
-            "text-sm font-medium transition-opacity hover:opacity-80",
-          )}
-          style={{ color: CLAUDE.primary }}
-          aria-expanded={open}
-        >
-          {open ? "Hide ACL lines" : "View ACL lines"}
-        </button>
-        {open ? (
+        <div className="flex items-center gap-1 rounded-lg p-0.5" style={{ backgroundColor: CLAUDE.surfaceOverlay }}>
+          <button
+            type="button"
+            onClick={() => setMode("plain")}
+            className={cn(COPILOT_FOCUS, "flex-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium")}
+            style={{
+              backgroundColor: mode === "plain" ? CLAUDE.surfaceRaised : "transparent",
+              color: mode === "plain" ? CLAUDE.text : CLAUDE.textMuted,
+            }}
+            title="Human-readable interpretation — share with requesters"
+          >
+            Plain English
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("acl")}
+            className={cn(COPILOT_FOCUS, "flex-1 rounded-md px-2.5 py-1.5 text-[11px] font-medium")}
+            style={{
+              backgroundColor: mode === "acl" ? CLAUDE.surfaceRaised : "transparent",
+              color: mode === "acl" ? CLAUDE.text : CLAUDE.textMuted,
+            }}
+            title="ACL lines for firewall admins — matches generated rules"
+          >
+            ACL lines
+          </button>
+        </div>
+        {mode === "plain" ? (
+          <div className="mt-3 space-y-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            <p>
+              <span style={{ color: CLAUDE.validated }}>Allow: </span>
+              {allow}
+            </p>
+            <p>
+              <span style={{ color: CLAUDE.risk }}>Deny: </span>
+              {deny}
+            </p>
+          </div>
+        ) : (
           <div
-            className="mt-3 space-y-2 rounded-xl border p-3 font-mono text-xs leading-relaxed"
+            className="mt-3 space-y-2 rounded-xl border p-3 font-mono text-[11px] leading-relaxed"
             style={{
               borderColor: CLAUDE.border,
               backgroundColor: CLAUDE.surfaceOverlay,
@@ -1074,9 +1453,23 @@ export function TechnicalRulesPanel({
               {deny.replace(/^deny application /, "")}
             </p>
           </div>
-        ) : null}
+        )}
       </LivingCard>
     </motion.div>
+  );
+}
+
+export function EntityMappingProgress({
+  mapped,
+  total,
+}: {
+  mapped: number;
+  total: number;
+}) {
+  return (
+    <p className="text-[12px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
+      Mapped <span style={{ color: CLAUDE.primary }}>{mapped}</span> of {total} objects
+    </p>
   );
 }
 
@@ -1100,7 +1493,7 @@ export function InviteCopilotMessage({ examples }: { examples: readonly string[]
 }
 
 /** Single-focus invite — centred hero, no split layout or empty preview. */
-export function InviteFocusHero({ compact = false }: { compact?: boolean }) {
+export function InviteFocusHero({ compact = false, dense = false }: { compact?: boolean; dense?: boolean }) {
   const reduced = useReducedMotion();
   return (
     <motion.div
@@ -1112,18 +1505,25 @@ export function InviteFocusHero({ compact = false }: { compact?: boolean }) {
         compact ? "max-w-xl px-2" : "max-w-lg px-6",
       )}
     >
-      <CopilotMark size={compact ? 36 : 44} glow={!compact} />
+      <CopilotMark size={dense ? 28 : compact ? 36 : 44} glow={!compact && !dense} />
       <h1
         className={cn(
           "font-normal leading-snug tracking-tight",
-          compact ? "mt-4 text-xl md:text-[1.35rem]" : "mt-6 text-[1.35rem] md:text-2xl",
+          dense
+            ? "mt-2 text-[16px] md:text-[18px]"
+            : compact
+              ? "mt-4 text-[18px] md:text-[1.2125rem]"
+              : "mt-6 text-[1.2125rem] md:text-[22px]",
         )}
         style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
       >
         What should this policy do?
       </h1>
       <p
-        className={cn("leading-relaxed", compact ? "mt-2 text-sm" : "mt-3 text-sm md:text-[15px]")}
+        className={cn(
+          "leading-relaxed",
+          dense ? "mt-1 text-[11px] md:text-[13px]" : compact ? "mt-2 text-[13px]" : "mt-3 text-[13px] md:text-[14px]",
+        )}
         style={{ color: CLAUDE.textMuted }}
       >
         Pick a template, try a suggestion, or describe intent in plain language.
@@ -1140,12 +1540,12 @@ export function InviteStarterPanel({
   const reduced = useReducedMotion();
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-6 md:px-6 md:py-8">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-5 md:px-6 md:py-6">
       <InviteFocusHero compact />
 
       <section>
         <div className="mb-3 flex items-baseline justify-between gap-2">
-          <h2 className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+          <h2 className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
             Templates
           </h2>
           <p className={cn(COPILOT_TYPE.caption)} style={{ color: CLAUDE.textMuted }}>
@@ -1170,17 +1570,17 @@ export function InviteStarterPanel({
             >
               <div className="flex items-start gap-2.5">
                 <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-base"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[15px]"
                   style={{ backgroundColor: CLAUDE.surfaceOverlay }}
                   aria-hidden
                 >
                   {starterIcon(template.prompt)}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium leading-snug" style={{ color: CLAUDE.text }}>
+                  <p className="text-[13px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
                     {template.title}
                   </p>
-                  <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                     {template.description}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-1">
@@ -1209,7 +1609,7 @@ export function InviteStarterPanel({
 
       <section>
         <div className="mb-3">
-          <h2 className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+          <h2 className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
             Suggestions
           </h2>
           <p className={cn("mt-0.5", COPILOT_TYPE.caption)} style={{ color: CLAUDE.textMuted }}>
@@ -1235,7 +1635,7 @@ export function InviteStarterPanel({
               }}
               title={item.hint}
             >
-              <span className="text-sm leading-snug" style={{ color: CLAUDE.textSecondary }}>
+              <span className="text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
                 {item.text}
               </span>
               <span className={cn(COPILOT_TYPE.caption, "shrink-0")} style={{ color: CLAUDE.primary }}>
@@ -1257,7 +1657,14 @@ export function ThreadSuggestions({
   variant = "inline",
 }: {
   label?: string;
-  items: { id: string; text: string; primary?: boolean; consequence?: string }[];
+  items: {
+    id: string;
+    text: string;
+    primary?: boolean;
+    consequence?: string;
+    reply?: string;
+    insight?: string;
+  }[];
   onSelect: (id: string, text: string) => void;
   className?: string;
   variant?: "inline" | "dock";
@@ -1292,40 +1699,82 @@ export function ThreadSuggestions({
         {label}
       </p>
       <div className={cn("flex flex-wrap gap-1.5", isDock && "gap-2")}>
-        {items.map((item, i) => (
-          <motion.button
-            key={item.id}
-            type="button"
-            initial={reduced ? false : { opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ ...LIVING_MOTION.discover, delay: i * 0.04 }}
-            whileHover={reduced ? undefined : { y: -1 }}
-            whileTap={reduced ? undefined : { scale: 0.98 }}
-            onClick={() => onSelect(item.id, item.text)}
-            title={item.consequence}
-            className={cn(
-              COPILOT_FOCUS,
-              COPILOT_TARGET.chip,
-              "rounded-full border font-medium leading-snug transition-colors hover:bg-white/[0.04]",
-              isDock ? "px-3 text-[13px]" : "px-3 text-sm",
-            )}
-            style={
-              item.primary
-                ? {
-                    borderColor: CLAUDE.primaryBorder,
-                    backgroundColor: CLAUDE.primaryMuted,
-                    color: CLAUDE.text,
-                  }
-                : {
-                    borderColor: CLAUDE.border,
-                    backgroundColor: CLAUDE.surfaceOverlay,
-                    color: CLAUDE.textMuted,
-                  }
-            }
-          >
-            {item.text}
-          </motion.button>
-        ))}
+        {items.map((item, i) => {
+          const reply = item.reply?.trim();
+          const insight = item.insight?.trim();
+          const consequence = item.consequence?.trim();
+          const tooltipLines = [
+            reply || consequence || "",
+            insight && insight !== reply ? insight : "",
+          ].filter(Boolean);
+          const hasTooltip = tooltipLines.length > 0;
+
+          return (
+            <motion.button
+              key={item.id}
+              type="button"
+              initial={reduced ? false : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ ...LIVING_MOTION.discover, delay: i * 0.04 }}
+              whileHover={reduced ? undefined : { y: -1 }}
+              whileTap={reduced ? undefined : { scale: 0.98 }}
+              onClick={() => onSelect(item.id, item.text)}
+              aria-describedby={hasTooltip ? `suggestion-tip-${item.id}` : undefined}
+              className={cn(
+                COPILOT_FOCUS,
+                COPILOT_TARGET.chip,
+                "group/sug relative inline-flex max-w-full items-center gap-1.5 rounded-full border font-medium leading-snug transition-colors hover:bg-white/[0.04]",
+                isDock ? "px-3 text-[12px]" : "px-3 text-[13px]",
+              )}
+              style={
+                item.primary
+                  ? {
+                      borderColor: CLAUDE.primaryBorder,
+                      backgroundColor: CLAUDE.primaryMuted,
+                      color: CLAUDE.text,
+                    }
+                  : {
+                      borderColor: CLAUDE.border,
+                      backgroundColor: CLAUDE.surfaceOverlay,
+                      color: CLAUDE.textMuted,
+                    }
+              }
+            >
+              <span className="truncate">{item.text}</span>
+              {hasTooltip ? (
+                <>
+                  <BlastRadiusIcon className="h-3 w-3 shrink-0 opacity-60" />
+                  <span
+                    id={`suggestion-tip-${item.id}`}
+                    className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 hidden w-[min(18rem,calc(100vw-2rem))] -translate-x-1/2 rounded-lg px-3 py-2.5 text-left group-hover/sug:block group-focus-visible/sug:block"
+                    style={{
+                      backgroundColor: CLAUDE.surfaceRaised,
+                      boxShadow: `0 0 0 1px ${CLAUDE.hairline}, 0 8px 24px rgb(0 0 0 / 0.35)`,
+                    }}
+                    role="tooltip"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: CLAUDE.textSoft }}>
+                      If you choose this
+                    </p>
+                    <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.text }}>
+                      {tooltipLines[0]}
+                    </p>
+                    {tooltipLines[1] ? (
+                      <>
+                        <p className="mt-2 text-[10px] font-semibold uppercase tracking-wide" style={{ color: CLAUDE.textSoft }}>
+                          Impact
+                        </p>
+                        <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+                          {tooltipLines[1]}
+                        </p>
+                      </>
+                    ) : null}
+                  </span>
+                </>
+              ) : null}
+            </motion.button>
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -1346,11 +1795,17 @@ export function WhatIfSuggestionCard({
 }) {
   const reduced = useReducedMotion();
   return (
-    <LivingCard title="What if?" subtitle="Optional — refine before I analyse" accent="insight" delay={0.04}>
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+    <LivingCard
+      title="What if?"
+      subtitle="Optional — refine before I analyse"
+      accent="insight"
+      delay={0.04}
+      className="!pt-3 md:!pt-3.5"
+    >
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {summary}
       </p>
-      <p className="mt-2 text-sm leading-relaxed" style={{ color: CLAUDE.text }}>
+      <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.text }}>
         {prompt}
       </p>
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -1365,7 +1820,7 @@ export function WhatIfSuggestionCard({
             className={cn(
               COPILOT_FOCUS,
               COPILOT_TARGET.chip,
-              "rounded-full border px-3 text-[13px] font-medium transition-colors hover:bg-white/[0.05]",
+              "rounded-full border px-3 text-[12px] font-medium transition-colors hover:bg-white/[0.05]",
             )}
             style={
               selectedId === opt.id
@@ -1421,7 +1876,7 @@ export function IntentAnalyzingSkeleton({ intent }: { intent: string }) {
         <p className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.1em]")} style={{ color: CLAUDE.textSoft }}>
           Your intent
         </p>
-        <p className="mt-1 text-sm leading-relaxed" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
+        <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
           {intent}
         </p>
       </div>
@@ -1433,7 +1888,7 @@ export function IntentAnalyzingSkeleton({ intent }: { intent: string }) {
         delay={0}
         badge={
           <span
-            className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium"
+            className="inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium"
             style={{
               borderColor: CLAUDE.primaryBorder,
               backgroundColor: CLAUDE.primaryMuted,
@@ -1466,7 +1921,7 @@ export function IntentAnalyzingSkeleton({ intent }: { intent: string }) {
                   {label}
                 </span>
                 {done ? (
-                  <span className="text-[10px] font-medium" style={{ color: CLAUDE.validated }} aria-hidden>
+                  <span className="text-[9px] font-medium" style={{ color: CLAUDE.validated }} aria-hidden>
                     ✓
                   </span>
                 ) : active ? (
@@ -1494,26 +1949,90 @@ export function UnderstandingReflectionCard({
   reflection,
   delay = 0,
   patternHint,
+  confidence,
+  className,
+  fieldOverrides,
+  onFieldEdit,
+  onFieldWhy,
+  interactive = true,
 }: {
   reflection: {
     lead: string;
-    users: { label: string; value: string; certainty?: "explicit" | "inferred" }[];
-    application: { label: string; value: string; certainty?: "explicit" | "inferred" };
-    devices: { label: string; value: string; certainty?: "explicit" | "inferred" };
+    users: {
+      fieldId?: string;
+      label: string;
+      value: string;
+      certainty?: "explicit" | "inferred";
+      why?: string;
+    }[];
+    application: {
+      fieldId?: string;
+      label: string;
+      value: string;
+      certainty?: "explicit" | "inferred";
+      why?: string;
+    };
+    devices: {
+      fieldId?: string;
+      label: string;
+      value: string;
+      certainty?: "explicit" | "inferred";
+      why?: string;
+    };
+    networkZones?: {
+      fieldId?: string;
+      label: string;
+      value: string;
+      certainty?: "explicit" | "inferred";
+      why?: string;
+    };
     assumptions: string[];
     uncertainties: { id: string; question: string; detail: string }[];
     confirmPrompt: string;
   };
   delay?: number;
   patternHint?: string;
+  confidence?: number;
+  className?: string;
+  fieldOverrides?: Record<string, string>;
+  onFieldEdit?: (fieldId: string, label: string, value: string) => void;
+  onFieldWhy?: (fieldId: string, label: string, why: string) => void;
+  interactive?: boolean;
 }) {
   const reduced = useReducedMotion();
+  const [whyOpenId, setWhyOpenId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draftValue, setDraftValue] = useState("");
+
+  type ReflectionRow = {
+    fieldId: string;
+    label: string;
+    value: string;
+    certainty?: "explicit" | "inferred";
+    why?: string;
+  };
+
+  const rows: ReflectionRow[] = [
+    ...reflection.users.map((row, i) => ({
+      ...row,
+      fieldId: row.fieldId ?? `users-${i}`,
+    })),
+    { ...reflection.application, fieldId: reflection.application.fieldId ?? "application" },
+    { ...reflection.devices, fieldId: reflection.devices.fieldId ?? "devices" },
+    ...(reflection.networkZones
+      ? [{ ...reflection.networkZones, fieldId: reflection.networkZones.fieldId ?? "network-zones" }]
+      : []),
+  ];
+
+  function displayValue(row: ReflectionRow) {
+    return fieldOverrides?.[row.fieldId] ?? row.value;
+  }
 
   function certaintyBadge(certainty?: "explicit" | "inferred") {
     if (!certainty || certainty === "explicit") return null;
     return (
       <span
-        className="ml-1.5 rounded px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide"
+        className="ml-1.5 rounded px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wide"
         style={{ backgroundColor: CLAUDE.warningMuted, color: CLAUDE.warning }}
       >
         Inferred
@@ -1521,74 +2040,226 @@ export function UnderstandingReflectionCard({
     );
   }
 
-  function FieldRow({
-    label,
-    value,
-    certainty,
-  }: {
-    label: string;
-    value: string;
-    certainty?: "explicit" | "inferred";
-  }) {
+  function startEdit(row: ReflectionRow) {
+    if (!interactive) return;
+    setWhyOpenId(null);
+    setEditingId(row.fieldId);
+    setDraftValue(displayValue(row));
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+    setDraftValue("");
+  }
+
+  function saveEdit(row: ReflectionRow) {
+    const trimmed = draftValue.trim();
+    if (!trimmed || trimmed === displayValue(row)) {
+      cancelEdit();
+      return;
+    }
+    onFieldEdit?.(row.fieldId, row.label, trimmed);
+    cancelEdit();
+  }
+
+  function toggleWhy(row: ReflectionRow) {
+    if (!interactive) return;
+    const why =
+      row.why ??
+      (row.certainty === "inferred"
+        ? "Inferred from similar policies — not explicitly stated in your request."
+        : "Taken directly from your request.");
+    if (whyOpenId === row.fieldId) {
+      setWhyOpenId(null);
+      return;
+    }
+    setEditingId(null);
+    setWhyOpenId(row.fieldId);
+    onFieldWhy?.(row.fieldId, row.label, why);
+  }
+
+  function FieldRow({ row }: { row: ReflectionRow }) {
+    const isEditing = editingId === row.fieldId;
+    const isWhyOpen = whyOpenId === row.fieldId;
+    const whyText =
+      row.why ??
+      (row.certainty === "inferred"
+        ? "Inferred from similar policies — not explicitly stated in your request."
+        : "Taken directly from your request.");
+
     return (
       <div
-        className="rounded-lg px-3 py-2.5"
-        style={{ backgroundColor: CLAUDE.surfaceOverlay }}
+        className={cn(
+          "rounded-lg px-3 py-2.5 transition-colors",
+          isWhyOpen && "ring-1 ring-inset",
+        )}
+        style={{
+          backgroundColor: CLAUDE.surfaceOverlay,
+          boxShadow: isWhyOpen ? `inset 0 0 0 1px ${CLAUDE.primary}44` : undefined,
+        }}
       >
-        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
-          {label}
-          {certaintyBadge(certainty)}
-        </p>
-        <p className="mt-1 text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
-          {value}
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
+              {row.label}
+              {certaintyBadge(row.certainty)}
+            </p>
+            {isEditing ? (
+              <input
+                type="text"
+                value={draftValue}
+                onChange={(e) => setDraftValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    saveEdit(row);
+                  }
+                  if (e.key === "Escape") cancelEdit();
+                }}
+                className={cn(
+                  COPILOT_FOCUS,
+                  "mt-1 w-full rounded-lg border bg-transparent px-2.5 py-1.5 text-[13px] outline-none",
+                )}
+                style={{ borderColor: CLAUDE.primaryBorder, color: CLAUDE.text }}
+                autoFocus
+                aria-label={`Edit ${row.label}`}
+              />
+            ) : (
+              <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+                {displayValue(row)}
+                {fieldOverrides?.[row.fieldId] ? (
+                  <span className="ml-1.5 text-[10px] font-medium" style={{ color: CLAUDE.validated }}>
+                    · edited
+                  </span>
+                ) : null}
+              </p>
+            )}
+          </div>
+          {interactive && !isEditing ? (
+            <div className="flex shrink-0 items-center gap-1">
+              <button
+                type="button"
+                onClick={() => startEdit(row)}
+                className={cn(
+                  COPILOT_FOCUS,
+                  COPILOT_TARGET.chip,
+                  "rounded-md px-2 py-1 text-[10px] font-medium",
+                )}
+                style={{ color: CLAUDE.textMuted }}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleWhy(row)}
+                className={cn(
+                  COPILOT_FOCUS,
+                  COPILOT_TARGET.chip,
+                  "rounded-md px-2 py-1 text-[10px] font-medium",
+                )}
+                style={{ color: isWhyOpen ? CLAUDE.text : CLAUDE.primary }}
+                aria-expanded={isWhyOpen}
+              >
+                Why?
+              </button>
+            </div>
+          ) : null}
+          {isEditing ? (
+            <div className="flex shrink-0 items-center gap-1">
+              <button
+                type="button"
+                onClick={cancelEdit}
+                className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-md px-2 py-1 text-[10px] font-medium")}
+                style={{ color: CLAUDE.textMuted }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => saveEdit(row)}
+                className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-md px-2 py-1 text-[10px] font-medium text-white")}
+                style={{ backgroundColor: CLAUDE.primary }}
+              >
+                Save
+              </button>
+            </div>
+          ) : null}
+        </div>
+        {isWhyOpen ? (
+          <motion.div
+            initial={reduced ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mt-2 border-t pt-2"
+            style={{ borderColor: CLAUDE.hairline }}
+          >
+            <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.primary }}>
+              Why I read it this way
+            </p>
+            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+              {whyText}
+            </p>
+          </motion.div>
+        ) : null}
       </div>
     );
   }
 
   return (
     <LivingCard
-      title="My understanding"
-      subtitle="Reflection before draft — confirm or correct"
+      title="Intent Summary"
+      subtitle="Reflection before draft — confirm or correct each item"
       accent="insight"
       delay={delay}
+      className={cn("!pb-3.5 md:!pb-4", className)}
       badge={
-        patternHint ? (
-          <span
-            className="max-w-[200px] truncate rounded-full border px-2 py-0.5 text-[10px] font-medium"
-            style={{
-              borderColor: CLAUDE.primaryBorder,
-              backgroundColor: CLAUDE.primaryMuted,
-              color: CLAUDE.text,
-            }}
-            title={patternHint}
-          >
-            Pattern match
-          </span>
-        ) : (
-        <span
-          className="rounded-full border px-2 py-0.5 text-xs font-medium"
-          style={{
-            borderColor: CLAUDE.primaryBorder,
-            backgroundColor: CLAUDE.primaryMuted,
-            color: CLAUDE.text,
-          }}
-        >
-          No draft yet
-        </span>
-        )
+        <div className="flex flex-col items-end gap-1.5">
+          {confidence !== undefined ? (
+            <span
+              className="rounded-full border px-2 py-0.5 text-[10px] font-medium tabular-nums"
+              style={{
+                borderColor: CLAUDE.primaryBorder,
+                backgroundColor: CLAUDE.primaryMuted,
+                color: CLAUDE.text,
+              }}
+            >
+              Confidence · {confidence}%
+            </span>
+          ) : null}
+          {patternHint ? (
+            <span
+              className="max-w-[200px] truncate rounded-full border px-2 py-0.5 text-[9px] font-medium"
+              style={{
+                borderColor: CLAUDE.primaryBorder,
+                backgroundColor: CLAUDE.primaryMuted,
+                color: CLAUDE.text,
+              }}
+              title={patternHint}
+            >
+              Pattern match
+            </span>
+          ) : (
+            <span
+              className="rounded-full border px-2 py-0.5 text-[11px] font-medium"
+              style={{
+                borderColor: CLAUDE.primaryBorder,
+                backgroundColor: CLAUDE.primaryMuted,
+                color: CLAUDE.text,
+              }}
+            >
+              No draft yet
+            </span>
+          )}
+        </div>
       }
     >
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {reflection.lead}
       </p>
 
       <div className="mt-4 space-y-2">
-        {reflection.users.map((row) => (
-          <FieldRow key={`${row.label}-${row.value}`} {...row} />
+        {rows.map((row) => (
+          <FieldRow key={row.fieldId} row={row} />
         ))}
-        <FieldRow {...reflection.application} />
-        <FieldRow {...reflection.devices} />
       </div>
 
       <div className="mt-4">
@@ -1599,7 +2270,7 @@ export function UnderstandingReflectionCard({
           {reflection.assumptions.map((item) => (
             <li
               key={item}
-              className="flex items-start gap-2 text-sm leading-relaxed"
+              className="flex items-start gap-2 text-[13px] leading-relaxed"
               style={{ color: CLAUDE.textMuted }}
             >
               <span
@@ -1630,10 +2301,10 @@ export function UnderstandingReflectionCard({
           <ul className="mt-2 space-y-2">
             {reflection.uncertainties.map((u) => (
               <li key={u.id}>
-                <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+                <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                   {u.question}
                 </p>
-                <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                   {u.detail}
                 </p>
               </li>
@@ -1642,7 +2313,7 @@ export function UnderstandingReflectionCard({
         </motion.div>
       ) : null}
 
-      <p className="mt-4 text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="mt-3 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {reflection.confirmPrompt}
       </p>
     </LivingCard>
@@ -1662,19 +2333,19 @@ export function InterpretationScopeCard({
 }) {
   return (
     <LivingCard title="Here's How I'll Apply Your Intent" subtitle="Plain-language confirmation" delay={0.08}>
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {body}
       </p>
       <button
         type="button"
         onClick={onToggleLearnMore}
-        className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2 text-[13px] font-medium transition-opacity hover:opacity-80")}
+        className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "mt-2 text-[12px] font-medium transition-opacity hover:opacity-80")}
         style={{ color: CLAUDE.primary }}
       >
         {learnMoreOpen ? "Hide details" : "Learn more"}
       </button>
       {learnMoreOpen ? (
-        <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-2 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
           {learnMore}
         </p>
       ) : null}
@@ -1695,7 +2366,7 @@ export function RelatedRolesPanel({
 }) {
   return (
     <LivingCard title="Related roles" subtitle={`${primaryRole} is in scope — others are opt-in only`} delay={0.1}>
-      <p className="mb-2 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+      <p className="mb-2 text-[12px]" style={{ color: CLAUDE.textMuted }}>
         In similar policies, teams often review access for:
       </p>
       <div className="space-y-1.5">
@@ -1715,10 +2386,10 @@ export function RelatedRolesPanel({
                 style={{ borderColor: CLAUDE.border }}
               />
               <span className="min-w-0">
-                <span className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+                <span className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                   {role.label}
                 </span>
-                <span className="mt-0.5 block text-[13px]" style={{ color: CLAUDE.textMuted }}>
+                <span className="mt-0.5 block text-[12px]" style={{ color: CLAUDE.textMuted }}>
                   {role.hint}
                 </span>
               </span>
@@ -1734,18 +2405,94 @@ export function BlastRadiusPreview({
   summary,
   groups,
   delay = 0,
+  people,
 }: {
   summary: string;
   groups: { label: string; impact: string; tone?: "allow" | "deny" | "warn" }[];
   delay?: number;
+  people?: { inScope: number; blocked: number; surprise: number };
 }) {
   const reduced = useReducedMotion();
   const toneColor = (tone?: "allow" | "deny" | "warn") =>
-    tone === "allow" ? CLAUDE.validated : tone === "warn" ? CLAUDE.warning : CLAUDE.textMuted;
+    tone === "allow" ? CLAUDE.validated : tone === "warn" ? CLAUDE.warning : CLAUDE.risk;
+
+  const heatSegments = groups.map((g) => ({
+    tone: g.tone ?? "warn",
+    color: toneColor(g.tone),
+  }));
+
+  const stacks = people
+    ? [
+        { label: "In scope", count: people.inScope, tone: "allow" as const },
+        { label: "Blocked as planned", count: people.blocked, tone: "deny" as const },
+        { label: "Surprise blocks", count: people.surprise, tone: "warn" as const },
+      ]
+    : [];
 
   return (
     <LivingCard title="Blast Radius" subtitle="Who gains or loses access if you approve" accent="warning" delay={delay}>
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      {people ? (
+        <div className="mb-4 flex flex-wrap gap-4">
+          {stacks.map((stack) => (
+            <div key={stack.label} className="group/stack relative min-w-[5.5rem]">
+              <div className="flex items-center">
+                {Array.from({ length: Math.min(stack.count, 5) }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="-ml-1.5 flex h-7 w-7 items-center justify-center rounded-full border text-[9px] font-medium first:ml-0"
+                    style={{
+                      backgroundColor: CLAUDE.surfaceRaised,
+                      borderColor: toneColor(stack.tone),
+                      color: toneColor(stack.tone),
+                      zIndex: 5 - i,
+                    }}
+                  >
+                    {i === 0 ? stack.count : ""}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-1.5 text-[11px] font-medium" style={{ color: CLAUDE.text }}>
+                {stack.count}
+              </p>
+              <p className="text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                {stack.label}
+              </p>
+              <span
+                className="pointer-events-none absolute -top-1 left-0 z-10 hidden w-40 rounded-lg px-2 py-1.5 text-[10px] group-hover/stack:block"
+                style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `0 0 0 1px ${CLAUDE.hairline}` }}
+                role="tooltip"
+              >
+                {stack.count} {stack.label.toLowerCase()} — {summary.split("·")[0]?.trim()}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      <div className="mb-3 flex h-2 overflow-hidden rounded-full" aria-label="Risk heat scale">
+        {heatSegments.map((seg, i) => (
+          <div
+            key={i}
+            className="flex-1 transition-opacity"
+            style={{ backgroundColor: seg.color, opacity: seg.tone === "deny" ? 0.85 : seg.tone === "warn" ? 0.65 : 0.45 }}
+            title={groups[i]?.label}
+          />
+        ))}
+      </div>
+      <div className="mb-2 flex gap-3 text-[9px]" style={{ color: CLAUDE.textSoft }}>
+        <span className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.validated }} />
+          Allow
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.warning }} />
+          Warn
+        </span>
+        <span className="flex items-center gap-1">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.risk }} />
+          Deny
+        </span>
+      </div>
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {summary}
       </p>
       <div className="mt-3 space-y-2">
@@ -1756,18 +2503,18 @@ export function BlastRadiusPreview({
             animate={{ opacity: 1, x: 0 }}
             transition={{ ...LIVING_MOTION.discover, delay: delay + i * 0.05 }}
             className="flex items-start gap-2 rounded-lg px-2.5 py-2"
-            style={{ backgroundColor: CLAUDE.surfaceOverlay }}
+            style={{
+              backgroundColor: CLAUDE.surfaceOverlay,
+              boxShadow: `inset 3px 0 0 0 ${toneColor(group.tone)}`,
+              color: toneColor(group.tone),
+            }}
           >
-            <span
-              className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-              style={{ backgroundColor: toneColor(group.tone) }}
-              aria-hidden
-            />
+            <BlastRadiusIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
             <div className="min-w-0">
-              <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
                 {group.label}
               </p>
-              <p className="mt-0.5 text-xs leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+              <p className="mt-0.5 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                 {group.impact}
               </p>
             </div>
@@ -1792,7 +2539,7 @@ export function RiskInsightCard({
   if (dismissed) return null;
   return (
     <LivingCard title="Potential Risk Scenario" subtitle="Business impact — not a compliance lecture" accent="warning" delay={0.06}>
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {body}
       </p>
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -1804,7 +2551,7 @@ export function RiskInsightCard({
             className={cn(
               COPILOT_FOCUS,
               COPILOT_TARGET.chip,
-              "rounded-full border px-3 text-[13px] font-medium transition-colors hover:bg-white/[0.05]",
+              "rounded-full border px-3 text-[12px] font-medium transition-colors hover:bg-white/[0.05]",
             )}
             style={{
               borderColor: action.id === "risk-continue" ? CLAUDE.border : CLAUDE.primaryBorder,
@@ -1834,7 +2581,7 @@ export function ScenarioPreviewPanel({
       <button
         type="button"
         onClick={onToggle}
-        className="text-[13px] font-medium transition-opacity hover:opacity-80"
+        className="text-[12px] font-medium transition-opacity hover:opacity-80"
         style={{ color: CLAUDE.primary }}
       >
         {open ? "Hide scenario preview" : "Preview scenarios"}
@@ -1847,10 +2594,10 @@ export function ScenarioPreviewPanel({
               className="rounded-xl px-2.5 py-2"
               style={{ backgroundColor: CLAUDE.surfaceOverlay }}
             >
-              <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
                 {preview.title}
               </p>
-              <p className="mt-1 text-xs leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+              <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                 {preview.outcome}
               </p>
             </div>
@@ -1894,7 +2641,7 @@ export function PolicyMemoryPanel({
             <p className={COPILOT_TYPE.eyebrow} style={{ color: CLAUDE.textMuted }}>
               {row.label}
             </p>
-            <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
               {row.value}
             </p>
           </div>
@@ -1922,7 +2669,7 @@ export function DriftDetectionPanel({
           <p className={COPILOT_TYPE.eyebrow} style={{ color: CLAUDE.validated }}>
             Golden intent
           </p>
-          <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+          <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
             {goldenIntent}
           </p>
         </div>
@@ -1933,11 +2680,11 @@ export function DriftDetectionPanel({
           <p className={COPILOT_TYPE.eyebrow} style={{ color: CLAUDE.primary }}>
             Current state
           </p>
-          <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+          <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
             {currentState}
           </p>
         </div>
-        <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
           {detail}
         </p>
       </div>
@@ -1967,13 +2714,13 @@ export function LegacyDocumentationPanel({
       accent={allCaptured ? "success" : "warning"}
       delay={0}
     >
-      <p className="text-sm leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         <span className="font-medium" style={{ color: CLAUDE.text }}>
           {rule}
         </span>{" "}
         — {problem}
       </p>
-      <p className="mt-2 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+      <p className="mt-2 text-[12px]" style={{ color: CLAUDE.textMuted }}>
         Risk: {risk}
       </p>
       <div className="mt-3 space-y-2">
@@ -1988,7 +2735,7 @@ export function LegacyDocumentationPanel({
             <p className={COPILOT_TYPE.eyebrow} style={{ color: CLAUDE.textMuted }}>
               {field.label}
             </p>
-            <p className="mt-0.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
               {captured[field.id] ? field.example : "Not recorded"}
             </p>
           </div>
@@ -2003,6 +2750,7 @@ export function CopilotDashboardPanel({
   onOpenPolicy,
   onStartNew,
   onStatSelect,
+  onTryScenario,
   resumeDraft,
   onResumeDraft,
 }: {
@@ -2010,13 +2758,73 @@ export function CopilotDashboardPanel({
   onOpenPolicy: (item: CopilotRecentItem) => void;
   onStartNew: () => void;
   onStatSelect?: (statId: DashboardStatId) => void;
+  onTryScenario?: (scenario: "ehr" | "vendor" | "drift") => void;
   resumeDraft?: { label: string; phase: string } | null;
   onResumeDraft?: () => void;
 }) {
   const reduced = useReducedMotion();
+
+  const exampleIntent =
+    "Allow EHR access for clinical staff on managed devices during business hours";
+
   return (
     <div className="flex w-full max-w-2xl flex-col gap-4">
-      <LivingCard title="Policy dashboard" subtitle="Overview across your organisation" delay={0}>
+      <LivingCard title="What access do you need to define?" subtitle="Describe the business need in plain language" delay={0}>
+        <button
+          type="button"
+          onClick={onStartNew}
+          className={cn(
+            COPILOT_FOCUS,
+            "flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-3.5 text-left transition-colors hover:bg-white/[0.04]",
+          )}
+          style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: CLAUDE.primaryMuted }}
+        >
+          <span className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            e.g. {exampleIntent}
+          </span>
+          <span
+            className="shrink-0 rounded-full px-4 py-1.5 text-[12px] font-medium text-white"
+            style={{ backgroundColor: CLAUDE.primary }}
+          >
+            Start new policy
+          </span>
+        </button>
+        {onTryScenario ? (
+          <div className="mt-3 space-y-2">
+            <p className={COPILOT_TYPE.eyebrow} style={{ color: CLAUDE.textMuted }}>
+              Try a scenario
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => onTryScenario("ehr")}
+                className={cn(COPILOT_FOCUS, "rounded-lg px-3 py-1.5 text-[12px] transition-colors hover:bg-white/[0.06]")}
+                style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textSecondary }}
+              >
+                EHR access (happy path)
+              </button>
+              <button
+                type="button"
+                onClick={() => onTryScenario("vendor")}
+                className={cn(COPILOT_FOCUS, "rounded-lg px-3 py-1.5 text-[12px] transition-colors hover:bg-white/[0.06]")}
+                style={{ backgroundColor: CLAUDE.warningMuted, color: CLAUDE.textSecondary }}
+              >
+                Vendor VPN (validation fails)
+              </button>
+              <button
+                type="button"
+                onClick={() => onTryScenario("drift")}
+                className={cn(COPILOT_FOCUS, "rounded-lg px-3 py-1.5 text-[12px] transition-colors hover:bg-white/[0.06]")}
+                style={{ backgroundColor: CLAUDE.warningMuted, color: CLAUDE.textSecondary }}
+              >
+                Marketing drift (review mode)
+              </button>
+            </div>
+          </div>
+        ) : null}
+      </LivingCard>
+
+      <LivingCard title="Policy dashboard" subtitle="Overview across your organisation" delay={0.08}>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {COPILOT_DASHBOARD_STATS.map((stat, i) => {
             const Tag = onStatSelect ? "button" : "div";
@@ -2041,10 +2849,10 @@ export function CopilotDashboardPanel({
                 <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
                   {stat.label}
                 </p>
-                <p className="mt-1 text-[15px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+                <p className="mt-1 text-[14px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
                   {stat.value}
                 </p>
-                <p className="mt-0.5 flex items-center justify-between gap-1 text-xs" style={{ color: CLAUDE.textMuted }}>
+                <p className="mt-0.5 flex items-center justify-between gap-1 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                   <span>{stat.delta}</span>
                   {onStatSelect ? (
                     <span className="opacity-0 transition-opacity group-hover:opacity-100" style={{ color: CLAUDE.primary }}>
@@ -2071,14 +2879,14 @@ export function CopilotDashboardPanel({
             style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: CLAUDE.primaryMuted }}
           >
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
+              <span className="block truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                 Resume {resumeDraft.label}
               </span>
-              <span className="mt-0.5 block text-xs" style={{ color: CLAUDE.textMuted }}>
+              <span className="mt-0.5 block text-[11px]" style={{ color: CLAUDE.textMuted }}>
                 Picked up at {resumeDraft.phase} — draft not deployed
               </span>
             </span>
-            <span className="shrink-0 text-xs font-medium" style={{ color: CLAUDE.primary }}>
+            <span className="shrink-0 text-[11px] font-medium" style={{ color: CLAUDE.primary }}>
               Resume →
             </span>
           </button>
@@ -2091,43 +2899,53 @@ export function CopilotDashboardPanel({
               onClick={() => onOpenPolicy(item)}
               className={cn(
                 COPILOT_FOCUS,
-                "flex min-h-9 w-full min-w-0 items-center justify-between gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-white/[0.04]",
+                "flex min-h-9 w-full min-w-0 flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left transition-colors hover:bg-white/[0.04]",
               )}
               style={{ backgroundColor: CLAUDE.surfaceOverlay }}
             >
-              <span className="min-w-0 flex-1 truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
-                {item.label}
-              </span>
-              <span className="flex shrink-0 items-center gap-1.5">
-                {item.flowMode && item.flowMode !== "author" ? (
-                  <span
-                    className={cn(COPILOT_TYPE.eyebrow, "rounded-full px-2 py-0.5")}
-                    style={{
-                      backgroundColor: item.flowMode === "review" ? CLAUDE.primaryMuted : CLAUDE.warningMuted,
-                      color: CLAUDE.textSecondary,
-                    }}
-                  >
-                    {item.flowMode === "review" ? "Review" : "Document"}
+              <span className="flex w-full items-center justify-between gap-3">
+                <span className="min-w-0 flex-1 truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+                  {item.label}
+                </span>
+                <span className="flex shrink-0 items-center gap-1.5">
+                  {item.flowMode && item.flowMode !== "author" ? (
+                    <span
+                      className={cn(COPILOT_TYPE.eyebrow, "rounded-full px-2 py-0.5")}
+                      style={{
+                        backgroundColor: item.flowMode === "review" ? CLAUDE.warningMuted : CLAUDE.surfaceOverlay,
+                        color: CLAUDE.textSecondary,
+                      }}
+                    >
+                      {item.flowMode === "review" ? "Review" : "Document"}
+                    </span>
+                  ) : null}
+                  <span className="text-[11px]" style={{ color: CLAUDE.primary }}>
+                    Open →
                   </span>
-                ) : null}
-                <span className="text-xs" style={{ color: CLAUDE.primary }}>
-                  Open →
                 </span>
               </span>
+              {item.modeHint ? (
+                <span className="text-[11px] leading-snug" style={{ color: CLAUDE.textMuted }}>
+                  {item.modeHint}
+                </span>
+              ) : (
+                <span className="truncate text-[11px]" style={{ color: CLAUDE.textMuted }}>
+                  {item.prompt}
+                </span>
+              )}
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          onClick={onStartNew}
-          className={cn(
-            COPILOT_FOCUS,
-            "mt-3 inline-flex min-h-11 items-center justify-center self-start rounded-full px-5 text-[13px] font-medium text-white transition-opacity hover:opacity-90",
-          )}
-          style={{ backgroundColor: CLAUDE.primary }}
-        >
-          Start new policy
-        </button>
+        <p className="mt-3 text-center text-[12px]" style={{ color: CLAUDE.textMuted }}>
+          <button
+            type="button"
+            onClick={onStartNew}
+            className={cn(COPILOT_FOCUS, "underline-offset-2 hover:underline")}
+            style={{ color: CLAUDE.textMuted }}
+          >
+            Or start from a blank prompt
+          </button>
+        </p>
       </LivingCard>
     </div>
   );
@@ -2138,7 +2956,7 @@ export function CopilotAnalyticsPanel() {
   const bars = [62, 78, 45, 88, 71, 94, 56];
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-4">
+    <div className="flex w-full max-w-2xl flex-col gap-4">
       <LivingCard title="Policy analytics" subtitle="Last 7 days · all regions" delay={0}>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {COPILOT_ANALYTICS_METRICS.map((metric, i) => (
@@ -2153,10 +2971,10 @@ export function CopilotAnalyticsPanel() {
               <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
                 {metric.label}
               </p>
-              <p className="mt-1 text-[14px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+              <p className="mt-1 text-[13px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
                 {metric.value}
               </p>
-              <p className="mt-0.5 text-xs" style={{ color: CLAUDE.textMuted }}>
+              <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                 {metric.sub}
               </p>
             </motion.div>
@@ -2181,7 +2999,7 @@ export function CopilotAnalyticsPanel() {
             />
           ))}
         </div>
-        <p className="mt-2 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-2 text-[12px]" style={{ color: CLAUDE.textMuted }}>
           Healthcare and finance policies drive most volume this week.
         </p>
       </LivingCard>

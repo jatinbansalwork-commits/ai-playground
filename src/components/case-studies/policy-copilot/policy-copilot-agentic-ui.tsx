@@ -1,5 +1,7 @@
 "use client";
 
+import { FrameworkStrokeIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
+
 import { motion, useReducedMotion } from "framer-motion";
 import { useState, type ReactNode } from "react";
 import type {
@@ -9,7 +11,6 @@ import type {
   RuleConstructionRow,
   ScopeCheckSummary,
 } from "@/components/case-studies/policy-copilot/policy-copilot-agentic-evidence";
-import { frameworkIcon } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
 import { CLAUDE, COPILOT_FOCUS, COPILOT_TARGET, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
@@ -52,7 +53,7 @@ function AccordionSection({
         >
           <path d="M3 4.5l3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
         </svg>
-        <span className="flex-1 text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <span className="flex-1 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           {title}
         </span>
         {badge}
@@ -85,15 +86,15 @@ export function ComplianceSummaryPanel({
       style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
     >
       <div className="border-b px-4 py-3" style={{ borderColor: CLAUDE.hairline }}>
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           Compliance verified — scope and controls aligned
         </p>
-        <p className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textMuted }}>
           Review attestation summary before deploy
         </p>
         <button
           type="button"
-          className={cn(COPILOT_FOCUS, "mt-2 text-[12px] font-medium")}
+          className={cn(COPILOT_FOCUS, "mt-2 text-[11px] font-medium")}
           style={{ color: CLAUDE.primary }}
           title="Demo — export not wired"
         >
@@ -102,7 +103,7 @@ export function ComplianceSummaryPanel({
       </div>
 
       <AccordionSection title="Scope check" badge={<StatusBadge label="Completed" tone="success" />}>
-        <dl className="space-y-2 text-[13px]">
+        <dl className="space-y-2 text-[12px]">
           <div>
             <dt className="font-medium" style={{ color: CLAUDE.textSecondary }}>Access scope</dt>
             <dd style={{ color: CLAUDE.textMuted }}>{scope.accessScope}</dd>
@@ -122,11 +123,11 @@ export function ComplianceSummaryPanel({
             return (
               <span
                 key={b}
-                className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium"
+                className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium"
                 style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textMuted }}
                 title={b}
               >
-                <span aria-hidden>{frameworkIcon(fw)}</span>
+                <FrameworkStrokeIcon framework={fw} className="h-3 w-3" />
                 {fw}
               </span>
             );
@@ -137,14 +138,14 @@ export function ComplianceSummaryPanel({
       <AccordionSection title="Compliance check" badge={<StatusBadge label="Success" tone="success" />} defaultOpen={false}>
         <ul className="space-y-2">
           {compliance.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+            <li key={b} className="flex items-start gap-2 text-[12px]" style={{ color: CLAUDE.textMuted }}>
               <span aria-hidden>✓</span>
               {b}
             </li>
           ))}
         </ul>
         {compliance.auditNote ? (
-          <p className="mt-2 text-[13px] italic" style={{ color: CLAUDE.textSoft }}>
+          <p className="mt-2 text-[12px] italic" style={{ color: CLAUDE.textSoft }}>
             {compliance.auditNote}
           </p>
         ) : null}
@@ -171,10 +172,10 @@ export function ReasoningEvidencePanel({
       style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
     >
       <div className="border-b px-4 py-3" style={{ borderColor: CLAUDE.hairline }}>
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           Reasoning and evidence
         </p>
-        <p className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textMuted }}>
           Traceability — every claim linked to a source
         </p>
       </div>
@@ -182,9 +183,9 @@ export function ReasoningEvidencePanel({
       <AccordionSection title="Why this rule was proposed">
         <ol className="space-y-2 pl-0">
           {evidence.whyProposed.map((line, i) => (
-            <li key={line} className="flex gap-2.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            <li key={line} className="flex gap-2.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
               <span
-                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold tabular-nums"
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[9px] font-bold tabular-nums"
                 style={{ backgroundColor: CLAUDE.primaryMuted, color: CLAUDE.primary }}
               >
                 {i + 1}
@@ -198,7 +199,7 @@ export function ReasoningEvidencePanel({
       <AccordionSection title="Supporting sources" defaultOpen={false}>
         <ul className="space-y-2">
           {evidence.sources.map((s) => (
-            <li key={s.label} className="rounded-lg px-3 py-2 text-[13px]" style={{ backgroundColor: CLAUDE.surfaceOverlay }} title={s.detail}>
+            <li key={s.label} className="rounded-lg px-3 py-2 text-[12px]" style={{ backgroundColor: CLAUDE.surfaceOverlay }} title={s.detail}>
               <span className="font-medium" style={{ color: CLAUDE.textSecondary }}>{s.label}</span>
               <p className="mt-0.5" style={{ color: CLAUDE.primary }}>{s.detail}</p>
             </li>
@@ -208,10 +209,10 @@ export function ReasoningEvidencePanel({
 
       <div className="px-4 py-3">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-medium" style={{ color: CLAUDE.textMuted }}>
+          <p className="text-[11px] font-medium" style={{ color: CLAUDE.textMuted }}>
             AI confidence level
           </p>
-          <span className="text-xs font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+          <span className="text-[11px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
             {evidence.confidence}%
           </span>
         </div>
@@ -249,15 +250,15 @@ export function RuleConstructionPanel({
       style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
     >
       <div className="border-b px-4 py-3" style={{ borderColor: CLAUDE.hairline }}>
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
           Rule construction
         </p>
-        <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+        <p className="mt-2 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
           {outcomeSummary}
         </p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[280px] text-left text-[13px]">
+        <table className="w-full min-w-[280px] text-left text-[12px]">
           <thead>
             <tr style={{ color: CLAUDE.textMuted }}>
               <th className="px-4 py-2 font-medium">Component</th>
@@ -353,7 +354,7 @@ export function AgenticCanvasActionDock({
                 className={cn(
                   COPILOT_FOCUS,
                   COPILOT_TARGET.chip,
-                  "rounded-lg px-3 text-[13px] font-medium transition-opacity hover:opacity-90",
+                  "rounded-lg px-3 text-[12px] font-medium transition-opacity hover:opacity-90",
                   action.primary ? "text-white" : "border transition-colors hover:bg-white/[0.06]",
                 )}
                 style={
@@ -370,7 +371,7 @@ export function AgenticCanvasActionDock({
 
         {hasOptional ? (
           <div className="flex flex-wrap items-center gap-2">
-            <p className="mr-1 text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+            <p className="mr-1 text-[12px] font-medium" style={{ color: CLAUDE.text }}>
               <span style={{ color: CLAUDE.validated }}>0 blocking</span>
               <span style={{ color: CLAUDE.textMuted }}> · </span>
               {pendingCount} optional
@@ -383,7 +384,7 @@ export function AgenticCanvasActionDock({
                 className={cn(
                   COPILOT_FOCUS,
                   COPILOT_TARGET.chip,
-                  "rounded-full border px-3.5 text-[13px] font-medium transition-colors hover:bg-white/[0.06]",
+                  "rounded-full border px-3.5 text-[12px] font-medium transition-colors hover:bg-white/[0.06]",
                 )}
                 style={{
                   borderColor: CLAUDE.primaryBorder,
@@ -404,7 +405,7 @@ export function AgenticCanvasActionDock({
             className={cn(
               COPILOT_FOCUS,
               COPILOT_TARGET.chip,
-              "self-start rounded-full px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90",
+              "self-start rounded-full px-4 text-[12px] font-medium text-white transition-opacity hover:opacity-90",
             )}
             style={{ backgroundColor: CLAUDE.primary }}
           >
@@ -426,7 +427,7 @@ export function AgenticCanvasActionDock({
                   className={cn(
                     COPILOT_FOCUS,
                     COPILOT_TARGET.chip,
-                    "rounded-full border px-3 py-1 text-[12px] leading-snug transition-colors hover:bg-white/[0.04]",
+                    "rounded-full border px-3 py-1 text-[11px] leading-snug transition-colors hover:bg-white/[0.04]",
                   )}
                   style={{ borderColor: "rgba(167,139,250,0.4)", color: "#c4b5fd" }}
                 >

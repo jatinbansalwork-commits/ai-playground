@@ -42,7 +42,7 @@ export function CaseStudyRevealCountdown({
     return (
       <div className="px-5 py-5 text-center">
         <p className={CASE_STUDY_META_LABEL}>Case study</p>
-        <p className="mt-2 text-sm text-[#B794FF]">Now available to read.</p>
+        <p className="mt-2 text-sm text-brand-accent-soft">Now available to read.</p>
       </div>
     );
   }

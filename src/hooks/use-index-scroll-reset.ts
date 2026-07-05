@@ -18,6 +18,11 @@ export function resetDocumentScroll() {
     document.scrollingElement.scrollLeft = 0;
     document.scrollingElement.scrollTop = 0;
   }
+
+  document.querySelectorAll<HTMLElement>(".case-study-main").forEach((root) => {
+    root.scrollLeft = 0;
+    root.scrollTop = 0;
+  });
 }
 
 /** Synchronous pre-paint reset — no delayed retries that cause scroll flicker. */

@@ -25,7 +25,7 @@ export const CASE_STUDY_CHAPTER =
 export const CASE_STUDY_TOC_LINK =
   "inline-flex min-h-11 items-center rounded-sm text-sm text-neutral-400 underline-offset-4 transition-colors hover:text-white focus-visible:text-white focus-visible:underline";
 
-export const CASE_STUDY_TOC_LINK_ACTIVE = "text-[#C9B0FF]";
+export const CASE_STUDY_TOC_LINK_ACTIVE = "text-brand-accent-soft";
 
 export const CASE_STUDY_PROGRESS_LINK =
   "inline-flex min-h-11 shrink-0 items-center rounded-sm px-1 text-xs font-medium tracking-wide text-neutral-400 transition-colors hover:text-white whitespace-nowrap focus-visible:underline underline-offset-4";
@@ -67,7 +67,7 @@ export const CASE_STUDY_PARAGRAPH_TIGHT =
 export const CASE_STUDY_TIGHT_STACK = "space-y-0.5";
 
 export const CASE_STUDY_QUOTE =
-  "text-lg md:text-xl text-white font-medium leading-relaxed tracking-tight border-l-2 border-[#6B36FF] pl-6 antialiased";
+  "text-lg md:text-xl text-white font-medium leading-relaxed tracking-tight border-l-2 border-brand-accent pl-6 antialiased";
 
 export const CASE_STUDY_LEAD =
   "text-base md:text-lg text-neutral-300 font-sans leading-relaxed tracking-normal antialiased";

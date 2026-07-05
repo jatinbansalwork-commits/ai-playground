@@ -3,14 +3,16 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { isNoIndexProjectSlug } from "@/lib/projects-list-data";
 import { getCaseStudyContent } from "@/lib/project-content";
 import {
+  allProjectsSeoKeywords,
   buildCaseStudyMetaDescription,
+  buildCaseStudyContentKeywords,
   buildPageMetadata,
-  CASE_STUDY_SEO_KEYWORDS,
   caseStudyArticleJsonLd,
   caseStudyOgImage,
+  caseStudyPageTitle,
   caseStudySeoKeywords,
+  mergeSeoKeywords,
   SITE_AUTHOR,
-  stripCaseStudyStatusPrefix,
 } from "@/lib/seo";
 
 interface CaseStudyLayoutProps {
@@ -35,7 +37,7 @@ export async function generateMetadata({
     });
   }
 
-  const displayTitle = stripCaseStudyStatusPrefix(content.title);
+  const displayTitle = caseStudyPageTitle(slug, content.title);
   const description = buildCaseStudyMetaDescription(content);
 
   return buildPageMetadata({
@@ -50,11 +52,11 @@ export async function generateMetadata({
       publishedTime: `${content.year}-01-01T00:00:00.000Z`,
       authors: [SITE_AUTHOR],
       section: "Product Design Case Studies",
-      tags: [
-        content.meta.client,
-        ...content.meta.services.slice(0, 4),
-        ...(CASE_STUDY_SEO_KEYWORDS[slug] ?? []).slice(0, 4),
-      ].filter(Boolean),
+      tags: mergeSeoKeywords(
+        [content.meta.client],
+        content.meta.services,
+        buildCaseStudyContentKeywords(content),
+      ).slice(0, 12),
     },
   });
 }
@@ -70,7 +72,7 @@ export default async function CaseStudyLayout({
     return children;
   }
 
-  const displayTitle = stripCaseStudyStatusPrefix(content.title);
+  const displayTitle = caseStudyPageTitle(slug, content.title);
   const description = buildCaseStudyMetaDescription(content);
   const preloadImage = caseStudyOgImage(slug);
 

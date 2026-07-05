@@ -8,10 +8,13 @@ export interface ClarifyOption {
 }
 
 export interface UnderstandingField {
+  fieldId?: string;
   label: string;
   value: string;
   /** high = explicit in request; inferred = copilot filled a gap */
   certainty?: "explicit" | "inferred";
+  /** Shown when the user clicks Why? */
+  why?: string;
 }
 
 export interface UnderstandingUncertainty {
@@ -25,6 +28,7 @@ export interface UnderstandingReflection {
   users: UnderstandingField[];
   application: UnderstandingField;
   devices: UnderstandingField;
+  networkZones?: UnderstandingField;
   assumptions: string[];
   uncertainties: UnderstandingUncertainty[];
   confirmPrompt: string;
@@ -56,18 +60,41 @@ const CLARIFICATION_BY_SCENARIO: Record<string, IntentClarificationConfig> = {
     understandingReflection: {
       lead: "Before I generate a draft, here is how I understood your request. Nothing is written to policy until you confirm.",
       users: [
-        { label: "Users", value: "Doctors (Doctors-AD-Group)", certainty: "explicit" },
-        { label: "Not in scope unless you add them", value: "Nurses, locum, contractors, all others", certainty: "inferred" },
+        {
+          fieldId: "users-primary",
+          label: "Users",
+          value: "Doctors (Doctors-AD-Group)",
+          certainty: "explicit",
+          why: "You named doctors explicitly. I mapped them to Doctors-AD-Group — the standard clinical identity pool in your directory.",
+        },
+        {
+          fieldId: "users-excluded",
+          label: "Not in scope unless you add them",
+          value: "Nurses, locum, contractors, all others",
+          certainty: "inferred",
+          why: "You did not mention other roles. Deny-by-default is safer for ePHI — I listed common groups you may want to add later.",
+        },
       ],
       application: {
+        fieldId: "application",
         label: "Application",
         value: "Electronic Health Records (EHR-Application-Object)",
         certainty: "explicit",
+        why: "Electronic Health Records in your request maps to the EHR application object already in inventory — no new object needed.",
       },
       devices: {
+        fieldId: "devices",
         label: "Devices",
         value: "Hospital-managed endpoints only (Managed-Hospital-Endpoints)",
         certainty: "explicit",
+        why: "Hospital-managed devices implies the Managed-Hospital-Endpoints group — personal or BYOD devices stay blocked unless you say otherwise.",
+      },
+      networkZones: {
+        fieldId: "network-zones",
+        label: "Network zones",
+        value: "Clinical user segment → EHR application tier",
+        certainty: "inferred",
+        why: "You did not specify network paths. I inferred clinical segment to EHR tier from 12 similar hospital policies — confirm or edit before I draft.",
       },
       assumptions: [
         "Secure access implies authentication — MFA recommended for clinical paths",
@@ -371,27 +398,66 @@ function buildDefaultReflection(
       m.term.toLowerCase().includes("device") ||
       m.term.toLowerCase().includes("workstation"),
   );
+  const zoneMapping = preset.entityMappings.find(
+    (m) =>
+      m.type.toLowerCase().includes("zone") ||
+      m.type.toLowerCase().includes("network") ||
+      m.term.toLowerCase().includes("vlan"),
+  );
 
   return {
     lead: "Before I generate a draft, here is how I understood your request. Nothing is written to policy until you confirm.",
     users:
       userMappings.length > 0
-        ? userMappings.map((m) => ({
+        ? userMappings.map((m, i) => ({
+            fieldId: `users-${i}`,
             label: m.term,
             value: m.resolved,
             certainty: "explicit" as const,
+            why: `"${m.term}" in your request maps to ${m.resolved} in inventory.`,
           }))
-        : [{ label: "Users", value: preset.contextLine, certainty: "explicit" as const }],
+        : [
+            {
+              fieldId: "users-0",
+              label: "Users",
+              value: preset.contextLine,
+              certainty: "explicit" as const,
+              why: "Taken from the primary subject in your request.",
+            },
+          ],
     application: {
+      fieldId: "application",
       label: "Application",
       value: appMapping?.resolved ?? "Resolved from intent",
       certainty: "explicit",
+      why: appMapping
+        ? `Mapped "${appMapping.term}" to ${appMapping.resolved}.`
+        : "Resolved from the application mentioned in your request.",
     },
     devices: {
+      fieldId: "devices",
       label: "Devices / source",
       value: deviceMapping?.resolved ?? "Not specified — will confirm with you",
       certainty: deviceMapping ? "explicit" : "inferred",
+      why: deviceMapping
+        ? `Device scope taken from "${deviceMapping.term}".`
+        : "Device scope was not explicit — I flagged this for confirmation before drafting.",
     },
+    networkZones: zoneMapping
+      ? {
+          fieldId: "network-zones",
+          label: "Network zones",
+          value: zoneMapping.resolved,
+          certainty: "inferred" as const,
+          why: `Inferred network path from "${zoneMapping.term}" — similar policies use this segment pairing.`,
+        }
+      : {
+          fieldId: "network-zones",
+          label: "Network zones",
+          value: "To be confirmed with you",
+          certainty: "inferred" as const,
+          why: "Network path was not stated. I need your confirmation before mapping zones.",
+        },
     assumptions: [
       "Scope limited to what you described",
       "Authentication and logging per organisational baseline",

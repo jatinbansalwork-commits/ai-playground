@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { PolicyCopilotWorkspace } from "@/components/case-studies/policy-copilot/policy-copilot-workspace";
-import { WORKSPACE_HOST } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { WORKSPACE_EMBED_SHELL } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { BACK_HOME, saveSessionBackContext } from "@/lib/session-navigation";
 
 export function PolicyCopilotDevShell() {
   const [copilotKey, setCopilotKey] = useState(0);
@@ -22,15 +24,16 @@ export function PolicyCopilotDevShell() {
           >
             Start Over
           </button>
-          <a
+          <ScrollResetLink
             href="/projects/cisco-policy-copilot"
+            onClick={() => saveSessionBackContext(BACK_HOME)}
             className="text-xs font-medium text-neutral-400 transition-colors hover:text-neutral-200"
           >
             Open case study →
-          </a>
+          </ScrollResetLink>
         </div>
       </header>
-      <div className={`min-h-0 flex-1 p-3 md:p-4 ${WORKSPACE_HOST}`}>
+      <div className={`min-h-0 flex-1 ${WORKSPACE_EMBED_SHELL}`}>
         <PolicyCopilotWorkspace key={copilotKey} />
       </div>
     </main>

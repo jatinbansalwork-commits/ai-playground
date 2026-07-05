@@ -84,12 +84,12 @@ const ACTIVATION_MODELS: ActivationModelCard[] = [
     example: "Create a policy allowing Engineering access to GitHub.",
     badge: "Maximum Control",
     accent: {
-      border: "border-[#6B36FF]/25",
-      badgeBg: "bg-[#6B36FF]/15",
-      badgeText: "text-[#C9B0FF]",
-      iconBg: "bg-[#6B36FF]/12",
-      iconStroke: "text-[#B794FF]",
-      glow: "from-[#6B36FF]/10",
+      border: "border-brand-accent/25",
+      badgeBg: "bg-brand-accent/15",
+      badgeText: "text-brand-accent-soft",
+      iconBg: "bg-brand-accent/12",
+      iconStroke: "text-brand-accent-soft",
+      glow: "from-brand-accent/10",
     },
     icon: <ExplicitIcon className="h-5 w-5" />,
   },
@@ -195,7 +195,7 @@ export function CopilotActivationInfographic({
       <div className="space-y-4 px-1">
         <div className="relative mx-auto max-w-3xl">
           <div
-            className="h-px w-full bg-gradient-to-r from-[#6B36FF]/50 via-sky-500/40 to-amber-500/50"
+            className="h-px w-full bg-gradient-to-r from-brand-accent/50 via-sky-500/40 to-amber-500/50"
             aria-hidden
           />
           <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between px-[8%] md:px-[10%]">
@@ -204,7 +204,7 @@ export function CopilotActivationInfographic({
                 key={model.id}
                 className={`h-2 w-2 rounded-full ${
                   model.id === "explicit"
-                    ? "bg-[#B794FF]"
+                    ? "bg-brand-accent-soft"
                     : model.id === "ambient"
                       ? "bg-sky-400"
                       : "bg-amber-400"
@@ -221,7 +221,7 @@ export function CopilotActivationInfographic({
         </div>
 
         <div className="mx-auto grid max-w-3xl grid-cols-3 gap-2 text-center text-xs font-medium text-neutral-400">
-          <span className="text-[#C9B0FF]">Explicit</span>
+          <span className="text-brand-accent-soft">Explicit</span>
           <span className="text-sky-300">Ambient</span>
           <span className="text-amber-300">Proactive</span>
         </div>

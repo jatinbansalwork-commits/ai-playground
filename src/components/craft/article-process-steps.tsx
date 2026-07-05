@@ -50,7 +50,7 @@ function StepBody({ body }: { body: CraftArticleProcessStepBlock[] }) {
               {block.items.map((item) => (
                 <li
                   key={item}
-                  className="rounded-full border border-[#6B36FF]/40 bg-[#6B36FF]/10 px-3 py-1.5 text-sm leading-snug text-[#B794FF]"
+                  className="rounded-full border border-brand-accent/40 bg-brand-accent/10 px-3 py-1.5 text-sm leading-snug text-brand-accent-soft"
                 >
                   {item}
                 </li>
@@ -64,7 +64,7 @@ function StepBody({ body }: { body: CraftArticleProcessStepBlock[] }) {
             {block.items.map((item) => (
               <li key={item} className="flex gap-2.5">
                 <span
-                  className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-[#B794FF]"
+                  className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-brand-accent-soft"
                   aria-hidden
                 />
                 <span>{item}</span>
@@ -87,20 +87,20 @@ export function ArticleProcessSteps({ steps }: ArticleProcessStepsProps) {
         >
           <div className="flex flex-col items-center">
             <span
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#6B36FF]/50 bg-[#6B36FF]/15 text-sm font-medium text-[#B794FF]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-brand-accent/50 bg-brand-accent/15 text-sm font-medium text-brand-accent-soft"
               aria-hidden
             >
               {index + 1}
             </span>
             {index < steps.length - 1 ? (
               <span
-                className="mt-2 w-px flex-1 bg-gradient-to-b from-[#6B36FF]/35 to-[#6B36FF]/10"
+                className="mt-2 w-px flex-1 bg-gradient-to-b from-brand-accent/35 to-brand-accent/10"
                 aria-hidden
               />
             ) : null}
           </div>
 
-          <div className="min-w-0 rounded-xl border border-[#6B36FF]/20 bg-[#1a1a20] px-5 py-5 md:px-6">
+          <div className="min-w-0 rounded-xl border border-brand-accent/20 bg-[#1a1a20] px-5 py-5 md:px-6">
             <h3 className="craft-article-process-step__title text-lg text-white">
               {step.title}
             </h3>

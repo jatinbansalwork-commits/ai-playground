@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { CONTACT_LINKS, HERO_COPY, ROUTES, SITE_NAME } from "@/lib/constants";
-import type { CaseStudyContent } from "@/lib/project-content";
+import {
+  getAllCaseStudies,
+  getCaseStudyContent,
+  type CaseStudyContent,
+} from "@/lib/project-content";
 import { HOVER_THUMBNAIL_OVERRIDES } from "@/lib/projects-list-data";
 
 /** Production origin — set `NEXT_PUBLIC_SITE_URL` in Vercel env. */
@@ -23,30 +27,113 @@ export const SEO_KEYWORDS = [
   "enterprise security UX",
   "firewall policy design",
   "AI copilot design",
+  "network security UX",
+  "firewall administrator UX",
 ] as const;
 
-/** Per-slug keyword extensions merged into page metadata for case studies. */
+/** Per-slug keyword extensions merged after content-derived terms. */
 export const CASE_STUDY_SEO_KEYWORDS: Partial<Record<string, readonly string[]>> = {
   "cisco-policy-copilot": [
+    "Cisco Policy Copilot",
     "Cisco Hybrid Mesh Firewall",
-    "Policy Copilot",
+    "Cisco Secure Firewall",
     "AgentiOps",
+    "AI-assisted firewall policy",
+    "firewall policy management",
+    "firewall rule management",
+    "network security policy",
+    "natural language firewall policy",
+    "intent-based security policy",
+    "enterprise AI copilot",
+    "explainable AI security",
+    "human-in-the-loop AI",
+    "security policy automation",
+    "firewall policy validation",
+    "blast radius simulation",
+    "conversational security policy",
     "firewall administrator UX",
-    "natural language security policy",
-    "enterprise AI workspace",
+    "enterprise security AI",
+    "AI firewall UX case study",
   ],
 };
 
+/** SERP-optimised meta descriptions — used instead of `overviewText` when set. */
+export const CASE_STUDY_META_DESCRIPTIONS: Partial<Record<string, string>> = {
+  "cisco-policy-copilot":
+    "Cisco Policy Copilot UX case study: AI-assisted firewall policy design for Hybrid Mesh Firewall—natural language intent, explainable recommendations, continuous validation, and an interactive workspace demo.",
+};
+
+/** SERP-optimised page titles — used instead of registry title when set. */
+export const CASE_STUDY_PAGE_TITLES: Partial<Record<string, string>> = {
+  "cisco-policy-copilot": "Cisco Policy Copilot — AI Firewall UX Case Study",
+};
+
+const SEO_KEYWORD_CAP = 48;
+
+function normalizeSeoKeyword(term: string): string {
+  return term.replace(/\s+/g, " ").trim();
+}
+
+export function mergeSeoKeywords(
+  ...groups: ReadonlyArray<string | readonly string[]>
+): string[] {
+  const seen = new Set<string>();
+  const merged: string[] = [];
+
+  for (const group of groups) {
+    for (const term of group) {
+      const normalized = normalizeSeoKeyword(term);
+      const key = normalized.toLowerCase();
+      if (!normalized || key.length < 2 || seen.has(key)) continue;
+      seen.add(key);
+      merged.push(normalized);
+      if (merged.length >= SEO_KEYWORD_CAP) return merged;
+    }
+  }
+
+  return merged;
+}
+
+/** Keywords derived from a single case study's title, client, location, and services. */
+export function buildCaseStudyContentKeywords(content: CaseStudyContent): string[] {
+  const title = stripCaseStudyStatusPrefix(content.title);
+  const titleParts = title.split(/\s*[-–—]\s*/).map((part) => part.trim()).filter(Boolean);
+
+  return mergeSeoKeywords([
+    title,
+    ...titleParts,
+    content.meta.client,
+    content.meta.location,
+    ...content.meta.services,
+    `${content.meta.client} UX`,
+    `${content.meta.client} case study`,
+    `${content.year} case study`,
+  ]);
+}
+
+/** All indexable project keywords — for home, projects index, and section pages. */
+export function allProjectsSeoKeywords(): string[] {
+  return mergeSeoKeywords(
+    SEO_KEYWORDS,
+    ...getAllCaseStudies().map(buildCaseStudyContentKeywords),
+  );
+}
+
 export function caseStudySeoKeywords(slug: string): string[] {
-  const extra = CASE_STUDY_SEO_KEYWORDS[slug] ?? [];
-  return [...SEO_KEYWORDS, ...extra];
+  const content = getCaseStudyContent(slug);
+
+  return mergeSeoKeywords(
+    SEO_KEYWORDS,
+    content ? buildCaseStudyContentKeywords(content) : [],
+    CASE_STUDY_SEO_KEYWORDS[slug] ?? [],
+  );
 }
 
 export const DEFAULT_SITE_DESCRIPTION =
   "Jatin Bansal (JB) — product designer portfolio featuring cybersecurity, fintech, and AI product case studies, design systems, motion graphics, and interface experiments.";
 
 export const HOME_SEO_DESCRIPTION =
-  "Jatin Bansal is a product designer working on cybersecurity by day and AI experiments by night. Explore UX case studies including Cisco Policy Copilot — an interactive AI firewall workspace demo — plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
+  "Jatin Bansal is a product designer working on cybersecurity by day and AI experiments by night. Explore UX case studies including Cisco Policy Copilot—AI-assisted firewall policy design with an interactive workspace demo—plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
 
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image";
 
@@ -77,6 +164,10 @@ function isUsableOgImage(url: string | undefined): url is string {
   return !url.startsWith("data:");
 }
 
+export function caseStudyPageTitle(slug: string, fallbackTitle: string): string {
+  return CASE_STUDY_PAGE_TITLES[slug] ?? stripCaseStudyStatusPrefix(fallbackTitle);
+}
+
 export function caseStudyOgImage(slug: string): string | undefined {
   const image = HOVER_THUMBNAIL_OVERRIDES[slug];
   return isUsableOgImage(image) ? image : undefined;
@@ -84,6 +175,11 @@ export function caseStudyOgImage(slug: string): string | undefined {
 
 /** Rich meta description for case studies — client, outcome, and services when space allows. */
 export function buildCaseStudyMetaDescription(content: CaseStudyContent): string {
+  const slugOverride = CASE_STUDY_META_DESCRIPTIONS[content.slug];
+  if (slugOverride) {
+    return truncateMetaDescription(slugOverride);
+  }
+
   const title = stripCaseStudyStatusPrefix(content.title);
   const { client, services } = content.meta;
   const servicePhrase =
@@ -195,6 +291,7 @@ export const HOME_METADATA: Metadata = buildPageMetadata({
   title: `${SITE_AUTHOR} — Product Designer`,
   description: HOME_SEO_DESCRIPTION,
   path: "/",
+  keywords: allProjectsSeoKeywords(),
 });
 
 export function personJsonLd() {
@@ -212,6 +309,8 @@ export function personJsonLd() {
       "Product Design",
       "User Experience Design",
       "Cybersecurity",
+      "Firewall Policy Management",
+      "Enterprise AI",
       "Fintech",
       "Design Systems",
       "Artificial Intelligence",
@@ -314,7 +413,7 @@ export function caseStudyArticleJsonLd(input: {
       author: { "@id": `${SITE_URL}/#person` },
       publisher: { "@id": `${SITE_URL}/#person` },
       image: [image],
-      keywords: input.services.join(", "),
+      keywords: caseStudySeoKeywords(input.slug).join(", "),
       about: {
         "@type": "Organization",
         name: input.client,

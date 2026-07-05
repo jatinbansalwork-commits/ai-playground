@@ -14,42 +14,26 @@ import {
 } from "@/components/case-studies/policy-copilot/policy-copilot-dashboard-flows";
 import type { DashboardStatId } from "@/components/case-studies/policy-copilot/policy-copilot-living-scenarios";
 import { LivingCard } from "@/components/case-studies/policy-copilot/policy-copilot-living-ui";
-import { CLAUDE, COPILOT_FOCUS, COPILOT_TARGET, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { CLAUDE, COPILOT_FOCUS, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
-function DrilldownHeader({
-  statId,
-  onBack,
-}: {
-  statId: DashboardStatId;
-  onBack: () => void;
-}) {
+function DrilldownHeader({ statId }: { statId: DashboardStatId }) {
   const intro = DASHBOARD_STAT_INTROS[statId];
   return (
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <p className="text-sm font-medium" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
-          {intro.title}
-        </p>
-        <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-          {intro.copilot}
-        </p>
-      </div>
-      <button
-        type="button"
-        onClick={onBack}
-        className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "shrink-0 rounded-full px-3 text-[13px] font-medium")}
-        style={{ color: CLAUDE.textMuted }}
-      >
-        ← Dashboard
-      </button>
+    <div>
+      <p className="text-[13px] font-medium" style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}>
+        {intro.title}
+      </p>
+      <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        {intro.copilot}
+      </p>
     </div>
   );
 }
 
 function RowChevron() {
   return (
-    <span className="text-xs" style={{ color: CLAUDE.primary }}>
+    <span className="text-[11px]" style={{ color: CLAUDE.primary }}>
       Open →
     </span>
   );
@@ -57,14 +41,12 @@ function RowChevron() {
 
 export function DashboardDrilldownPanel({
   statId,
-  onBack,
   onOpenActive,
   onOpenPending,
   onOpenDrift,
   onOpenCheckIssue,
 }: {
   statId: DashboardStatId;
-  onBack: () => void;
   onOpenActive: (row: ActivePolicyRow) => void;
   onOpenPending: (row: PendingReviewRow) => void;
   onOpenDrift: (row: DriftFlagRow) => void;
@@ -76,7 +58,7 @@ export function DashboardDrilldownPanel({
     return (
       <div className="mx-auto flex max-w-2xl flex-col gap-4">
         <LivingCard title="Portfolio" subtitle="Govern · tune · retire" delay={0}>
-          <DrilldownHeader statId="active" onBack={onBack} />
+          <DrilldownHeader statId="active" />
           <div className="mt-4 space-y-1.5">
             {ACTIVE_PORTFOLIO.map((row, i) => (
               <motion.button
@@ -93,10 +75,10 @@ export function DashboardDrilldownPanel({
                 style={{ backgroundColor: CLAUDE.surfaceOverlay }}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
+                  <p className="truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                     {row.name}
                   </p>
-                  <p className="mt-0.5 text-xs" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                     {row.status} · {row.regions} · {row.lastChange}
                   </p>
                 </div>
@@ -104,7 +86,7 @@ export function DashboardDrilldownPanel({
               </motion.button>
             ))}
           </div>
-          <p className="mt-3 text-xs" style={{ color: CLAUDE.textSoft }}>
+          <p className="mt-3 text-[11px]" style={{ color: CLAUDE.textSoft }}>
             Showing 5 of 12 active policies
           </p>
         </LivingCard>
@@ -116,7 +98,7 @@ export function DashboardDrilldownPanel({
     return (
       <div className="mx-auto flex max-w-2xl flex-col gap-4">
         <LivingCard title="Approval queue" subtitle="Deploy gate — checks must pass first" delay={0}>
-          <DrilldownHeader statId="pending" onBack={onBack} />
+          <DrilldownHeader statId="pending" />
           <div className="mt-4 space-y-1.5">
             {PENDING_REVIEWS.map((row, i) => (
               <motion.button
@@ -137,7 +119,7 @@ export function DashboardDrilldownPanel({
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
+                    <p className="truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                       {row.name}
                     </p>
                     {row.urgent ? (
@@ -149,7 +131,7 @@ export function DashboardDrilldownPanel({
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-0.5 text-xs" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                     {row.author} · {row.checksSummary} · {row.dueLabel}
                   </p>
                 </div>
@@ -166,7 +148,7 @@ export function DashboardDrilldownPanel({
     return (
       <div className="mx-auto flex max-w-2xl flex-col gap-4">
         <LivingCard title="Drift review" subtitle="Optimise · retire · re-approve" delay={0}>
-          <DrilldownHeader statId="drift" onBack={onBack} />
+          <DrilldownHeader statId="drift" />
           <div className="mt-4 space-y-1.5">
             {DRIFT_FLAGS.map((row, i) => (
               <motion.button
@@ -183,13 +165,13 @@ export function DashboardDrilldownPanel({
                 style={{ backgroundColor: CLAUDE.warningMuted }}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
+                  <p className="truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                     {row.rule}
                   </p>
-                  <p className="mt-0.5 text-xs" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                     {row.severity} severity · detected {row.detected}
                   </p>
-                  <p className="mt-1 text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
+                  <p className="mt-1 text-[12px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
                     {row.summary}
                   </p>
                 </div>
@@ -206,7 +188,7 @@ export function DashboardDrilldownPanel({
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4">
       <LivingCard title="Safety checks" subtitle={`${health.passRate} passing · ${health.window}`} delay={0}>
-        <DrilldownHeader statId="checks" onBack={onBack} />
+        <DrilldownHeader statId="checks" />
         <div className="mt-4 grid grid-cols-3 gap-2">
           {[
             { label: "Pass rate", value: health.passRate },
@@ -217,7 +199,7 @@ export function DashboardDrilldownPanel({
               <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
                 {m.label}
               </p>
-              <p className="mt-1 text-[15px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+              <p className="mt-1 text-[14px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
                 {m.value}
               </p>
             </div>
@@ -243,13 +225,13 @@ export function DashboardDrilldownPanel({
                 style={{ backgroundColor: CLAUDE.warningMuted }}
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium" style={{ color: CLAUDE.text }}>
+                  <p className="truncate text-[13px] font-medium" style={{ color: CLAUDE.text }}>
                     {row.policy}
                   </p>
-                  <p className="mt-0.5 text-xs font-medium" style={{ color: CLAUDE.warning }}>
+                  <p className="mt-0.5 text-[11px] font-medium" style={{ color: CLAUDE.warning }}>
                     {row.check}
                   </p>
-                  <p className="mt-1 text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
+                  <p className="mt-1 text-[12px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
                     {row.detail}
                   </p>
                 </div>

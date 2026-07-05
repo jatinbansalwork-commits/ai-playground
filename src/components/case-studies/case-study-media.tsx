@@ -31,6 +31,8 @@ interface CaseStudyMediaProps {
   shellBackground?: string;
   /** Optional body copy rendered below the caption. */
   paragraph?: ReactNode;
+  /** Extra classes for the optional paragraph below the media. */
+  paragraphClassName?: string;
   /** Extra classes for the figcaption when `label` is set. */
   captionClassName?: string;
   /** Shell corner radius utility — defaults to `rounded-lg`. */
@@ -70,6 +72,7 @@ export function CaseStudyMedia({
   borderless = false,
   shellBackground,
   paragraph,
+  paragraphClassName,
   captionClassName,
   rounded = "rounded-lg",
   priority = false,
@@ -189,7 +192,9 @@ export function CaseStudyMedia({
         </figcaption>
       ) : null}
       {paragraph ? (
-        <p className={`${CASE_STUDY_PARAGRAPH_DENSE} mt-2`}>{paragraph}</p>
+        <p className={`${CASE_STUDY_PARAGRAPH_DENSE} mt-2 ${paragraphClassName ?? ""}`.trim()}>
+          {paragraph}
+        </p>
       ) : null}
     </figure>
   );

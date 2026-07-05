@@ -36,7 +36,7 @@ export function PromptForkHeader({
               aria-checked={highlightVariance}
               onClick={onToggleVariance}
               className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
-                highlightVariance ? "bg-[#6b36ff]" : "bg-neutral-600"
+                highlightVariance ? "bg-brand-accent" : "bg-neutral-600"
               } ${FOCUS_RING}`}
             >
               <span

@@ -28,7 +28,7 @@ export function AiChatThinkingLoader({
         {Array.from({ length: DOT_COUNT }, (_, index) => (
           <motion.span
             key={index}
-            className="size-2 rounded-full bg-[#6B36FF]"
+            className="size-2 rounded-full bg-brand-accent"
             animate={
               reducedMotion
                 ? { opacity: 0.85 }

@@ -21,7 +21,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <blockquote
               key={`quote-${index}`}
-              className="border-l-2 border-[#6B36FF] pl-6 font-medium leading-relaxed tracking-tight text-white"
+              className="border-l-2 border-brand-accent pl-6 font-medium leading-relaxed tracking-tight text-white"
             >
               {block.text}
             </blockquote>
@@ -87,7 +87,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
                 {block.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full border border-[#6B36FF]/50 bg-[#6B36FF]/10 px-4 py-2 text-sm leading-snug text-[#B794FF]"
+                    className="rounded-full border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm leading-snug text-brand-accent-soft"
                   >
                     {item}
                   </li>

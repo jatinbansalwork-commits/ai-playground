@@ -27,6 +27,6 @@ export const INDEX_SLIDE_CONTACT = `${INDEX_SLIDE_TYPE} index-slide-contact-size
 
 export const INDEX_SLIDE_CONTACT_SIZE_PX = 102;
 
-export const INDEX_SLIDE_MANIFEST = `${INDEX_SLIDE_TYPE} index-slide-manifest-size font-normal tracking-tight leading-[1.15] text-white`;
+export const INDEX_SLIDE_MANIFEST = `${INDEX_SLIDE_TYPE} index-slide-manifest-size font-normal tracking-tight leading-[1.15] text-brand-accent-foreground`;
 
 export const INDEX_SLIDE_MANIFEST_SIZE_PX = 90;

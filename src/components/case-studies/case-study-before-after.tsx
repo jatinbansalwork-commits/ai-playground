@@ -139,7 +139,7 @@ export function CaseStudyBeforeAfter({
         />
 
         <div
-          className="pointer-events-none absolute top-1/2 z-20 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-[#6B36FF] text-white shadow-lg"
+          className="pointer-events-none absolute top-1/2 z-20 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-brand-accent text-brand-accent-foreground shadow-lg"
           style={{ left: `${position}%` }}
           aria-hidden
         >

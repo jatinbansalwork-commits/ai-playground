@@ -3,6 +3,10 @@
 import { motion } from "framer-motion";
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { saveIndexActiveFrameForNavigation } from "@/lib/index-frame-memory";
+import {
+  backContextForIndexNavigation,
+  saveSessionBackContext,
+} from "@/lib/session-navigation";
 import { trackIndexSlideClick } from "@/lib/analytics";
 import {
   FRAME_HEIGHT,
@@ -40,6 +44,7 @@ function sectionLinkProps(
       ? undefined
       : () => {
           saveIndexActiveFrameForNavigation(frameIndex);
+          saveSessionBackContext(backContextForIndexNavigation(href));
           trackIndexSlideClick({
             frame_id: frame.id,
             frame_label: frame.label,

@@ -103,7 +103,7 @@ function MinimapTrack({
   const trackerClass =
     variant === "craft"
       ? "border border-[#FFEF00] bg-[#FFEF00]"
-      : "border border-[#6B36FF] bg-[#6B36FF]";
+      : "border border-brand-accent bg-brand-accent";
 
   return (
     <div aria-hidden style={style}>

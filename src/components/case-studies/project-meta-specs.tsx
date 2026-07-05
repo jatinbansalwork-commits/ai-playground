@@ -15,6 +15,7 @@ import type { CaseStudyMetaSpecs as CaseStudyMetaSpecsData } from "@/lib/project
 
 interface ProjectMetaSpecsProps extends CaseStudyMetaSpecsData {
   children?: ReactNode;
+  className?: string;
 }
 
 function MetaInfoText({ text }: { text: string }) {
@@ -35,19 +36,23 @@ function MetaInfoText({ text }: { text: string }) {
 
 export function ProjectMetaSpecs({
   services,
+  servicesLabel = "Services",
   client,
+  clientLabel = "Client",
   location,
+  locationLabel = "Location",
   infoText,
   liveLinkUrl,
   figmaUrl,
   children,
+  className = "",
 }: ProjectMetaSpecsProps) {
   return (
-    <section className={CASE_STUDY_META_GRID} aria-label="Project details">
+    <section className={`${CASE_STUDY_META_GRID} ${className}`.trim()} aria-label="Project details">
       <dl className="flex flex-col space-y-8 md:col-span-1 max-md:rounded-xl max-md:border max-md:border-white/10 max-md:bg-white/[0.03] max-md:p-4">
         {services.length > 0 ? (
           <div className="space-y-2">
-            <dt className={CASE_STUDY_META_LABEL}>Services</dt>
+            <dt className={CASE_STUDY_META_LABEL}>{servicesLabel}</dt>
             <dd>
               <ul className={`${CASE_STUDY_META_VALUE} space-y-1`}>
                 {services.map((service) => (
@@ -59,12 +64,12 @@ export function ProjectMetaSpecs({
         ) : null}
 
         <div className="space-y-1">
-          <dt className={CASE_STUDY_META_LABEL}>Client</dt>
+          <dt className={CASE_STUDY_META_LABEL}>{clientLabel}</dt>
           <dd className={CASE_STUDY_META_VALUE}>{client}</dd>
         </div>
 
         <div className="space-y-1">
-          <dt className={CASE_STUDY_META_LABEL}>Location</dt>
+          <dt className={CASE_STUDY_META_LABEL}>{locationLabel}</dt>
           <dd className={CASE_STUDY_META_VALUE}>{location}</dd>
         </div>
       </dl>

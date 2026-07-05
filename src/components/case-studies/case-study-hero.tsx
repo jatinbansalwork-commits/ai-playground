@@ -20,6 +20,7 @@ interface CaseStudyHeroProps {
   notice?: string;
   meta?: CaseStudyMetaSpecs;
   metaBottom?: ReactNode;
+  metaClassName?: string;
   className?: string;
 }
 
@@ -31,6 +32,7 @@ export function CaseStudyHero({
   notice,
   meta,
   metaBottom,
+  metaClassName,
   className = "",
 }: CaseStudyHeroProps) {
   return (
@@ -53,7 +55,7 @@ export function CaseStudyHero({
           {notice ? (
             <p className={CASE_STUDY_TEXT_COLUMN}>
               <span
-                className="inline-block max-w-4xl rounded-full border border-sky-400/35 bg-sky-500/10 px-4 py-2 text-sm leading-snug text-sky-200/95"
+                className="inline-block max-w-4xl rounded-xl border border-sky-400/35 bg-sky-500/10 px-4 py-3 text-sm leading-relaxed text-sky-200/95"
                 role="note"
               >
                 {notice}
@@ -64,7 +66,9 @@ export function CaseStudyHero({
       </header>
 
       {meta ? (
-        <ProjectMetaSpecs {...meta}>{metaBottom}</ProjectMetaSpecs>
+        <ProjectMetaSpecs {...meta} className={metaClassName}>
+          {metaBottom}
+        </ProjectMetaSpecs>
       ) : null}
     </>
   );

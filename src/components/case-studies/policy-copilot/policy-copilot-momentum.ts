@@ -82,12 +82,18 @@ export const WORKSPACE_FRAME_GRID = WORKSPACE_FRAME_GRID_DESKTOP;
 export const WORKSPACE_FRAME_SHADOW =
   "0 1px 0 rgb(250 249 245 / 0.04) inset, 0 24px 48px rgb(0 0 0 / 0.25)";
 
-/** Max width at reference resolution; centres in dev and breaks out in case study. */
+/** Max width at reference resolution; centres in dev and case study embed. */
 export const WORKSPACE_HOST = "mx-auto w-full max-w-[1440px]";
 
-/** Break out of case study max-w-5xl prose column to full 1440px band. */
+/** Shared inset around the workspace frame — dev preview and case study embed. */
+export const WORKSPACE_HOST_PADDING = "p-3 md:p-4";
+
+/** Outer shell wrapping PolicyCopilotWorkspace (padding + max width + editorial isolation). */
+export const WORKSPACE_EMBED_SHELL = `${WORKSPACE_HOST_PADDING} ${WORKSPACE_HOST} policy-copilot-embed`;
+
+/** Break out of case study max-w-5xl prose column to viewport width (up to 1440px). */
 export const WORKSPACE_HOST_BREAKOUT =
-  "relative left-1/2 mx-auto w-[min(100vw,1440px)] max-w-none -translate-x-1/2";
+  "relative w-[min(100vw,1440px)] max-w-none [margin-left:calc(50%-min(50vw,720px))] [margin-right:calc(50%-min(50vw,720px))]";
 
 export function workspaceFrameClasses() {
   return {

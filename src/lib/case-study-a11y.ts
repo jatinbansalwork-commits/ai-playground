@@ -32,6 +32,53 @@ export function scrollCaseStudyRootToTop() {
   window.scrollTo({ top: 0, behavior });
 }
 
+function getNearestScrollParent(element: HTMLElement): HTMLElement | null {
+  let node = element.parentElement;
+
+  while (node) {
+    const { overflowY } = window.getComputedStyle(node);
+    if (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") {
+      return node;
+    }
+    node = node.parentElement;
+  }
+
+  return null;
+}
+
+/** Scroll inside the nearest overflow parent — avoids hijacking the case study page. */
+export function scrollIntoNearestScrollParent(
+  element: HTMLElement | null,
+  options?: { behavior?: ScrollBehavior; block?: "start" | "center" | "end" },
+) {
+  if (!element || typeof window === "undefined") return;
+
+  const behavior = options?.behavior ?? "auto";
+  const block = options?.block ?? "end";
+  const scrollParent = getNearestScrollParent(element);
+
+  if (!scrollParent || scrollParent.classList.contains("case-study-main")) {
+    element.scrollIntoView({ behavior, block: "nearest" });
+    return;
+  }
+
+  const parentRect = scrollParent.getBoundingClientRect();
+  const elementRect = element.getBoundingClientRect();
+  const elementTop = elementRect.top - parentRect.top + scrollParent.scrollTop;
+
+  let target = elementTop;
+  if (block === "end") {
+    target = elementTop - scrollParent.clientHeight + element.offsetHeight;
+  } else if (block === "center") {
+    target = elementTop - (scrollParent.clientHeight - element.offsetHeight) / 2;
+  }
+
+  scrollParent.scrollTo({
+    top: Math.max(0, target),
+    behavior,
+  });
+}
+
 /** Clears sticky nav when scrolling an in-article embed (e.g. Policy Copilot) into view. */
 const CASE_STUDY_EMBED_SCROLL_CLEARANCE_PX = 128;
 

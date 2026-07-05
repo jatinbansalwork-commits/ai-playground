@@ -129,18 +129,18 @@ export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
             viewBox="0 0 7 6"
             fill="none"
             aria-hidden
-            className="-ml-3 shrink-0 -rotate-90 drop-shadow-[0_0_4px_rgba(107,54,255,0.45)]"
+            className="-ml-3 shrink-0 -rotate-90 drop-shadow-[0_0_4px_rgba(163,217,255,0.45)]"
           >
             <path
               d="M3.54688 6L0.515786 0.75L6.57796 0.75L3.54688 6Z"
-              fill="#6B36FF"
+              fill="var(--brand-accent)"
             />
           </svg>
 
-          <div className="h-px min-h-px flex-1 bg-[#6B36FF]/80" />
+          <div className="h-px min-h-px flex-1 bg-brand-accent/80" />
 
           <span
-            className="absolute top-1/2 right-[332px] flex h-6 -translate-y-1/2 items-center rounded px-3 text-[11px] font-medium tracking-wide whitespace-nowrap text-white"
+            className="absolute top-1/2 right-[332px] flex h-6 -translate-y-1/2 items-center rounded px-3 text-[11px] font-medium tracking-wide whitespace-nowrap text-brand-accent-foreground"
             style={{ backgroundColor: BRAND_ACCENT }}
           >
             You are here

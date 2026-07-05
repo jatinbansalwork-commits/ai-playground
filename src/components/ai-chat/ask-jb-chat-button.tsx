@@ -69,7 +69,7 @@ export function AskJbChatButton({
       <button
         type="button"
         onClick={handleClick}
-        className={`mt-5 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-[#6B36FF]/35 bg-[#6B36FF]/10 px-4 py-2 text-sm font-medium text-[#e8dcff] transition-colors hover:border-[#6B36FF]/55 hover:bg-[#6B36FF]/20 hover:text-white ${FOCUS_RING} ${className}`.trim()}
+        className={`mt-5 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-brand-accent/35 bg-brand-accent/10 px-4 py-2 text-sm font-medium text-brand-accent-soft transition-colors hover:border-brand-accent/55 hover:bg-brand-accent/20 hover:text-white ${FOCUS_RING} ${className}`.trim()}
       >
         <span className="size-6 shrink-0 overflow-hidden rounded-full">
           <Image
@@ -91,7 +91,7 @@ export function AskJbChatButton({
       <button
         type="button"
         onClick={handleClick}
-        className={`${TARGET_HIT_AREA} h-11 w-full rounded-lg border border-[#6B36FF]/40 bg-[#6B36FF]/15 px-6 font-sans text-sm font-medium text-[#D4BBFF] transition-colors hover:border-[#6B36FF]/60 hover:bg-[#6B36FF]/25 hover:text-white touch-manipulation sm:w-auto ${FOCUS_RING} ${className}`.trim()}
+        className={`${TARGET_HIT_AREA} h-11 w-full rounded-lg border border-brand-accent/40 bg-brand-accent/15 px-6 font-sans text-sm font-medium text-brand-accent-soft transition-colors hover:border-brand-accent/60 hover:bg-brand-accent/25 hover:text-white touch-manipulation sm:w-auto ${FOCUS_RING} ${className}`.trim()}
       >
         {label}
       </button>

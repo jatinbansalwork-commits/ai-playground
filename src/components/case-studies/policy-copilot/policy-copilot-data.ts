@@ -130,6 +130,8 @@ export interface CopilotRecentItem {
   prompt: string;
   /** PRD story — author (specify intent), review (drift), document (legacy memory). */
   flowMode?: "author" | "review" | "document";
+  /** Short subtitle for dashboard recents — what this mode means. */
+  modeHint?: string;
 }
 
 export const COPILOT_INTERPRET_NAV_ITEMS = [
@@ -369,6 +371,7 @@ export const COPILOT_RECENT_POLICIES: { period: string; items: CopilotRecentItem
         label: "Compliance Framework Policy",
         prompt: "Restrict SQL Server to Finance subnet",
         flowMode: "document",
+        modeHint: "Capture legacy rule — no deploy until documented",
       },
     ],
   },
@@ -379,11 +382,13 @@ export const COPILOT_RECENT_POLICIES: { period: string; items: CopilotRecentItem
         label: "Team Collaboration Access",
         prompt: "Allow Marketing to LinkedIn during business hours",
         flowMode: "review",
+        modeHint: "Drift detected — compare live rule to original intent",
       },
       {
         label: "VPN Access Policy",
         prompt: "Allow external vendor VPN access to staging only",
         flowMode: "author",
+        modeHint: "Incomplete scope — expect validation to flag gaps",
       },
     ],
   },
@@ -1142,7 +1147,15 @@ export function resolveScenario(requestText: string): PolicyScenario {
   let core: ScenarioCore;
   if (lower.includes("finance") || lower.includes("sap") || lower.includes("sql") || lower.includes("financial report") || lower.includes("senior manager")) {
     core = SCENARIOS.find((s) => s.id === "finance-sap")!;
-  } else if (lower.includes("contractor") || lower.includes("production") || lower.includes("block")) {
+  } else if (
+    lower.includes("doctor") ||
+    lower.includes("nurse") ||
+    lower.includes("health") ||
+    lower.includes("ehr") ||
+    lower.includes("patient record")
+  ) {
+    core = SCENARIOS.find((s) => s.id === "ehr")!;
+  } else if (lower.includes("contractor") || lower.includes("production")) {
     core = SCENARIOS.find((s) => s.id === "contractors")!;
   } else if (lower.includes("payroll") || (lower.includes("hr") && lower.includes("access"))) {
     core = SCENARIOS.find((s) => s.id === "hr-payroll")!;
@@ -1194,8 +1207,6 @@ export function resolveScenario(requestText: string): PolicyScenario {
         },
       ],
     };
-  } else if (lower.includes("doctor") || lower.includes("health") || lower.includes("ehr")) {
-    core = SCENARIOS.find((s) => s.id === "ehr")!;
   } else {
     core = SCENARIOS[0];
   }

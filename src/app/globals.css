@@ -6,7 +6,9 @@
   --foreground: #000000;
   --frame-width: 1200px;
   --frame-height: 720px;
-  --brand-accent: #6b36ff;
+  --brand-accent: #a3d9ff;
+  --brand-accent-soft: #c8e8ff;
+  --brand-accent-foreground: #09090b;
   --site-cursor-size: 14px;
   --site-cursor-size-hover: 22px;
 }
@@ -14,6 +16,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-soft: var(--brand-accent-soft);
+  --color-brand-accent-foreground: var(--brand-accent-foreground);
   --font-sans: var(--font-ibm-plex-sans);
   --font-mono: var(--font-ibm-plex-sans);
 }
@@ -599,7 +604,7 @@ html:has(main[data-sheet="case-study"]) body {
   width: 0.1875rem;
   height: 2rem;
   border-radius: 9999px;
-  background: linear-gradient(180deg, #b794ff 0%, #6b36ff 55%, #3291ff 100%);
+  background: linear-gradient(180deg, var(--brand-accent-soft) 0%, var(--brand-accent) 55%, #3291ff 100%);
   transform-origin: center bottom;
   transition: transform 80ms linear;
   will-change: transform;
@@ -633,7 +638,7 @@ html:has(main[data-sheet="case-study"]) body {
   border-radius: 9999px;
   border: 1px solid rgb(107 54 255 / 0.45);
   background: rgb(107 54 255 / 0.16);
-  color: #e8dcff;
+  color: var(--brand-accent-soft);
   transition:
     background-color 180ms ease,
     border-color 180ms ease,
@@ -1972,14 +1977,23 @@ main[data-sheet="craft-article"]::-webkit-scrollbar-thumb {
   letter-spacing: -0.015em;
 }
 
-.case-study-editorial .case-study-prose-band h2,
-.case-study-editorial .case-study-prose-band h3,
+.case-study-editorial .case-study-prose-band h2:not(:where(.policy-copilot-embed *)),
+.case-study-editorial .case-study-prose-band h3:not(:where(.policy-copilot-embed *)),
 .case-study-editorial .craft-article-section-title {
   font-family: var(--editorial-display);
   font-weight: 600;
   font-size: clamp(1.5rem, 1.3rem + 0.75vw, 1.875rem);
   line-height: 1.3;
   letter-spacing: -0.01em;
+}
+
+/* Policy Copilot embed — product typography base; not case-study prose scale */
+.case-study-editorial .policy-copilot-embed {
+  font-family: var(--font-ibm-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: normal;
+  letter-spacing: normal;
+  color: rgb(250 249 245);
 }
 
 /* Section headings after a rule or pull quote — extra air above the title. */
@@ -2004,8 +2018,8 @@ main[data-sheet="craft-article"]::-webkit-scrollbar-thumb {
   }
 }
 
-.case-study-editorial .case-study-prose-band p,
-.case-study-editorial .case-study-prose-band li,
+.case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *)),
+.case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *)),
 .case-study-editorial .craft-article-prose p,
 .case-study-editorial .craft-article-prose li {
   font-family: var(--editorial-body);
@@ -2016,8 +2030,8 @@ main[data-sheet="craft-article"]::-webkit-scrollbar-thumb {
 }
 
 @media (min-width: 768px) {
-  .case-study-editorial .case-study-prose-band p,
-  .case-study-editorial .case-study-prose-band li,
+  .case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *)),
+  .case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *)),
   .case-study-editorial .craft-article-prose p,
   .case-study-editorial .craft-article-prose li {
     font-size: 1.0625rem;
@@ -2025,7 +2039,7 @@ main[data-sheet="craft-article"]::-webkit-scrollbar-thumb {
   }
 }
 
-.case-study-editorial .case-study-prose-band blockquote,
+.case-study-editorial .case-study-prose-band blockquote:not(:where(.policy-copilot-embed *)),
 .case-study-editorial .craft-article-prose blockquote {
   font-family: var(--editorial-display);
   font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);

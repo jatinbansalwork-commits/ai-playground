@@ -16,18 +16,38 @@ const CASE_STUDY_BUTTON_CLASS = [
 
 const CASE_STUDY_BUTTON_PRIMARY_CLASS = [
   TARGET_HIT_AREA,
-  "h-11 w-full rounded-lg border border-[#6B36FF]/40 bg-[#6B36FF]/15 px-6 sm:w-auto",
-  `${SITE_BACK_TYPEFACE} text-sm font-medium text-[#D4BBFF]`,
-  "transition-colors hover:border-[#6B36FF]/60 hover:bg-[#6B36FF]/25 hover:text-white",
+  "h-11 w-full rounded-lg border border-brand-accent/40 bg-brand-accent/15 px-6 sm:w-auto",
+  `${SITE_BACK_TYPEFACE} text-sm font-medium text-brand-accent-soft`,
+  "transition-colors hover:border-brand-accent/60 hover:bg-brand-accent/25 hover:text-white",
   "touch-manipulation",
   FOCUS_RING,
 ].join(" ");
 
 interface CaseStudyFooterActionsProps {
   backHref: string;
+  backDestination: string;
 }
 
-export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps) {
+function secondaryBackLink(backHref: string): { href: string; label: string } {
+  if (backHref === ROUTES.home) {
+    return { href: ROUTES.projects, label: "Back to projects" };
+  }
+
+  return { href: ROUTES.home, label: "Back to home" };
+}
+
+export function CaseStudyFooterActions({
+  backHref,
+  backDestination,
+}: CaseStudyFooterActionsProps) {
+  const secondary = secondaryBackLink(backHref);
+  const primaryLabel =
+    backDestination === "Home"
+      ? "Back to home"
+      : backDestination === "Projects"
+        ? "Back to projects"
+        : `Back to ${backDestination.toLowerCase()}`;
+
   return (
     <footer className="case-study-footer pt-12">
       <div className="flex min-h-11 items-center gap-4">
@@ -41,16 +61,16 @@ export function CaseStudyFooterActions({ backHref }: CaseStudyFooterActionsProps
             className={CASE_STUDY_BUTTON_PRIMARY_CLASS}
             style={SITE_BACK_LINK_STYLE}
           >
-            Back to projects
+            {primaryLabel}
           </ScrollResetLink>
 
           <ScrollResetLink
-            href={ROUTES.home}
+            href={secondary.href}
             scroll={true}
             className={CASE_STUDY_BUTTON_CLASS}
             style={SITE_BACK_LINK_STYLE}
           >
-            Back to home
+            {secondary.label}
           </ScrollResetLink>
         </nav>
 

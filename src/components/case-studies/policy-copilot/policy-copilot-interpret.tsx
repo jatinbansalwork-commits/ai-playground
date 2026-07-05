@@ -82,16 +82,16 @@ function WelcomeCard({ reduced }: { reduced: boolean }) {
       <div className="flex items-start gap-3">
         <CopilotMark size={36} glow />
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-medium uppercase tracking-[0.14em]" style={{ color: CLAUDE.textSoft }}>
+          <p className="text-[9px] font-medium uppercase tracking-[0.14em]" style={{ color: CLAUDE.textSoft }}>
             Policy Copilot
           </p>
           <h2
-            className="mt-1 text-[17px] font-normal leading-snug tracking-tight md:text-[18px]"
+            className="mt-1 text-[15px] font-normal leading-snug tracking-tight md:text-[16px]"
             style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
           >
             {COPILOT_GREETING_HEADLINE}
           </h2>
-          <p className="mt-2 text-[12px] leading-relaxed md:text-[13px]" style={{ color: CLAUDE.textSecondary }}>
+          <p className="mt-2 text-[11px] leading-relaxed md:text-[12px]" style={{ color: CLAUDE.textSecondary }}>
             {COPILOT_GREETING}
           </p>
         </div>
@@ -136,7 +136,7 @@ function ChatBubble({
       <div className="mb-2 flex items-center gap-2">
         {isUser ? (
           <div
-            className="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold"
+            className="flex h-5 w-5 items-center justify-center rounded-full text-[8px] font-bold"
             style={{ backgroundColor: CLAUDE.warning, color: "#1a1814" }}
           >
             J
@@ -144,16 +144,16 @@ function ChatBubble({
         ) : (
           <CopilotMark size={20} />
         )}
-        <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[9px] font-medium" style={{ color: CLAUDE.text }}>
           {isUser ? "You" : "Policy Copilot"}
         </p>
         {time ? (
-          <p className="ml-auto text-[9px] tabular-nums" style={{ color: CLAUDE.textSoft }}>
+          <p className="ml-auto text-[8px] tabular-nums" style={{ color: CLAUDE.textSoft }}>
             {time}
           </p>
         ) : null}
       </div>
-      <div className="text-[12px] leading-relaxed md:text-[13px]" style={{ color: CLAUDE.textSecondary }}>
+      <div className="text-[11px] leading-relaxed md:text-[12px]" style={{ color: CLAUDE.textSecondary }}>
         {children}
       </div>
     </motion.div>
@@ -208,16 +208,16 @@ function StarterCard({
         <StartingPointIcon id={id} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
           {title}
         </p>
-        <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-0.5 line-clamp-2 text-[10px] leading-snug" style={{ color: CLAUDE.textMuted }}>
           {example}
         </p>
       </div>
       <motion.span
         animate={{ opacity: selected ? 1 : 0, scale: selected ? 1 : 0.8 }}
-        className="mt-0.5 shrink-0 text-[10px]"
+        className="mt-0.5 shrink-0 text-[9px]"
         style={{ color: CLAUDE.primary }}
         aria-hidden={!selected}
       >
@@ -271,7 +271,7 @@ function AnalysisStepRow({
         ) : null}
       </motion.span>
       <p
-        className="text-[11px] leading-snug"
+        className="text-[10px] leading-snug"
         style={{ color: done || active ? CLAUDE.text : CLAUDE.textSoft }}
       >
         {label}
@@ -454,7 +454,7 @@ export function PolicyCopilotInterpret({
                 }}
                 rows={2}
                 placeholder="Who needs access? To what? Any restrictions?"
-                className="min-h-[3rem] w-full resize-none bg-transparent px-4 py-3.5 pr-14 text-[13px] leading-relaxed outline-none md:text-[14px] [&::placeholder]:text-[#8e8b82]"
+                className="min-h-[3rem] w-full resize-none bg-transparent px-4 py-3.5 pr-14 text-[12px] leading-relaxed outline-none md:text-[13px] [&::placeholder]:text-[#8e8b82]"
                 style={{ color: CLAUDE.text }}
                 aria-label="Describe your policy intent"
               />
@@ -490,7 +490,7 @@ export function PolicyCopilotInterpret({
                 ) : null}
               </AnimatePresence>
             </motion.div>
-            <p className="mt-2 text-center text-[10px]" style={{ color: CLAUDE.textSoft }}>
+            <p className="mt-2 text-center text-[9px]" style={{ color: CLAUDE.textSoft }}>
               Enter to send · Shift+Enter for new line
             </p>
           </motion.div>
@@ -502,7 +502,7 @@ export function PolicyCopilotInterpret({
             className="flex shrink-0 items-center justify-between gap-4 border-t px-4 py-3 md:px-6"
             style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surface }}
           >
-            <p className="text-[11px]" style={{ color: CLAUDE.textMuted }}>
+            <p className="text-[10px]" style={{ color: CLAUDE.textMuted }}>
               {phase === "analysing" ? "Mapping your request…" : "Ready to build"}
             </p>
             <PrimaryBtn onClick={handleProceed} disabled={phase !== "confirmed"}>
@@ -540,12 +540,12 @@ export function PolicyCopilotInterpret({
                 transition={{ duration: 0.3 }}
               >
                 <p
-                  className="text-[10px] font-medium uppercase tracking-[0.12em]"
+                  className="text-[9px] font-medium uppercase tracking-[0.12em]"
                   style={{ color: CLAUDE.textSoft }}
                 >
                   Quick starters
                 </p>
-                <p className="mt-1 text-[12px]" style={{ color: CLAUDE.textMuted }}>
+                <p className="mt-1 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                   Tap a pattern to fill the composer
                 </p>
                 <div className="mt-3 space-y-2">
@@ -573,12 +573,12 @@ export function PolicyCopilotInterpret({
               >
                 <div>
                   <p
-                    className="text-[15px] font-normal tracking-tight md:text-[16px]"
+                    className="text-[13px] font-normal tracking-tight md:text-[14px]"
                     style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
                   >
                     Analysing your request
                   </p>
-                  <p className="mt-1 text-[12px]" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-1 text-[11px]" style={{ color: CLAUDE.textMuted }}>
                     Matching names to real groups and apps…
                   </p>
                 </div>
@@ -625,13 +625,13 @@ export function PolicyCopilotInterpret({
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <p
-                      className="text-[14px] font-normal tracking-tight"
+                      className="text-[13px] font-normal tracking-tight"
                       style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
                     >
                       Proposed rules
                     </p>
                     <span
-                      className="rounded-full border px-2 py-0.5 text-[9px] font-medium"
+                      className="rounded-full border px-2 py-0.5 text-[8px] font-medium"
                       style={{
                         borderColor: CLAUDE.primaryBorder,
                         color: CLAUDE.primary,
@@ -658,11 +658,11 @@ export function PolicyCopilotInterpret({
                       backgroundColor: CLAUDE.validatedMuted,
                     }}
                   >
-                    <p className="text-[12px] leading-relaxed md:text-[13px]" style={{ color: CLAUDE.text }}>
+                    <p className="text-[11px] leading-relaxed md:text-[12px]" style={{ color: CLAUDE.text }}>
                       {submittedText}
                     </p>
                   </motion.div>
-                  <p className="mt-1.5 text-[10px]" style={{ color: CLAUDE.textSoft }}>
+                  <p className="mt-1.5 text-[9px]" style={{ color: CLAUDE.textSoft }}>
                     Saved exactly as you wrote it
                   </p>
                 </div>
@@ -674,10 +674,10 @@ export function PolicyCopilotInterpret({
                   className="rounded-xl border p-3"
                   style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised }}
                 >
-                  <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+                  <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
                     No extra assumptions
                   </p>
-                  <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-1 text-[10px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                     I only used what you wrote — nothing added from history or context.
                   </p>
                 </motion.div>

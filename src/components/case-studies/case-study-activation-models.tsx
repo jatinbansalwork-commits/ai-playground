@@ -28,7 +28,7 @@ interface CaseStudyActivationModelsProps {
 
 function ActivationModelQuote({ children }: { children: ReactNode }) {
   return (
-    <blockquote className="border-l-2 border-[#6B36FF] pl-4 text-sm font-medium leading-relaxed text-white md:text-base">
+    <blockquote className="border-l-2 border-brand-accent pl-4 text-sm font-medium leading-relaxed text-white md:text-base">
       {children}
     </blockquote>
   );
@@ -75,7 +75,7 @@ export function CaseStudyActivationModels({
           <div className="flex flex-1 flex-col space-y-4 p-5 md:p-6">
             <div className="space-y-2">
               <span
-                className="font-mono text-xs font-medium tabular-nums text-[#B794FF]"
+                className="font-mono text-xs font-medium tabular-nums text-brand-accent-soft"
                 aria-hidden
               >
                 {String(item.number).padStart(2, "0")}

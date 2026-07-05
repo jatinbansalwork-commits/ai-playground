@@ -92,3 +92,12 @@ export const HERO_PILL_PADDING_TEXT_Y_PX = 20;
 export const HERO_PILL_GAP_PX = 10;
 export const HERO_PILL_TEXT_COLOR = "#09090B";
 export const HERO_PILL_BORDER_COLOR = "#E4E4E7";
+
+/** Site primary accent — Moving rectangles / badge pills. */
+export const HERO_BRAND_BLUE = "#A3D9FF";
+
+/** Readable on solid brand fills */
+export const HERO_BRAND_BLUE_FOREGROUND = HERO_PILL_TEXT_COLOR;
+
+/** Soft tint for labels and chips on dark surfaces */
+export const HERO_BRAND_BLUE_SOFT = "#C8E8FF";

@@ -52,7 +52,7 @@ export function PromptForkInput({
     <div className={compact ? "w-full" : "flex w-full max-w-2xl flex-col items-center"}>
       <motion.div
         layoutId={layoutId}
-        className={`relative flex w-full items-end gap-2 rounded-2xl bg-[#262626] p-2 ring-1 ring-white/[0.06] transition-shadow focus-within:ring-2 focus-within:ring-[#6b36ff]/40 ${
+        className={`relative flex w-full items-end gap-2 rounded-2xl bg-[#262626] p-2 ring-1 ring-white/[0.06] transition-shadow focus-within:ring-2 focus-within:ring-[#FF894A]/40 ${
           compact ? "" : "shadow-lg shadow-black/20"
         }`}
       >
@@ -73,7 +73,7 @@ export function PromptForkInput({
             type="button"
             onClick={onSubmit}
             aria-label="Fork prompt across three models"
-            className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#6b36ff] px-3 text-sm font-medium text-white transition-colors hover:bg-[#7d4dff] ${FOCUS_RING}`}
+            className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-[#FF894A] px-3 text-sm font-medium text-white transition-colors hover:bg-[#FF9F66] ${FOCUS_RING}`}
           >
             <ForkBranchIcon className="size-4" />
             <span className="hidden sm:inline">Fork Prompt</span>

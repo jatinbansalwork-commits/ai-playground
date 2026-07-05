@@ -6,6 +6,7 @@ import { CASE_STUDY_EDITORIAL_CLASS } from "@/components/case-studies/case-study
 import type { CraftArticle, CraftSection } from "@/lib/craft-content";
 import { getAdjacentArticles, getArticleSectionBlocks } from "@/lib/craft-content";
 import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
+import type { SessionBackContext } from "@/lib/session-navigation";
 
 interface ArticleLayoutProps {
   section: CraftSection;
@@ -22,8 +23,10 @@ export function ArticleLayout({
     ? resolveAdjacentArticles(article.slug)
     : getAdjacentArticles(section.id, article.slug);
 
-  const backHref = section.backHref ?? section.href;
-  const backLabel = section.backLabel ?? section.title;
+  const backFallback: SessionBackContext = {
+    href: section.backHref ?? section.href,
+    destination: section.backLabel ?? section.title,
+  };
 
   return (
     <main
@@ -31,11 +34,7 @@ export function ArticleLayout({
       className="case-study-main craft-page fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
     >
       <CraftArticlePageAnalytics slug={article.slug} />
-      <ArticleBackLink
-        fallbackHref={backHref}
-        destination={backLabel}
-        className={NAV_BACK_LINK_CLASS}
-      />
+      <ArticleBackLink fallback={backFallback} className={NAV_BACK_LINK_CLASS} />
 
       <div className="case-study-body mx-auto w-full max-w-5xl px-4 pb-24 sm:px-8">
         <article className={`${CASE_STUDY_EDITORIAL_CLASS} min-w-0`}>

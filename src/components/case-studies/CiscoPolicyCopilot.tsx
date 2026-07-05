@@ -1,39 +1,43 @@
 "use client";
 
-import { useState } from "react";
-import { CopilotActivationInfographic } from "@/components/case-studies/copilot-activation-infographic";
+import { CaseStudyFaq } from "@/components/case-studies/case-study-faq";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
-import { CaseStudyRevealCountdown } from "@/components/case-studies/case-study-reveal-countdown";
 import {
-  CaseStudyImpactCards,
-} from "@/components/case-studies/case-study-impact-cards";
-import { PolicyCopilotWorkspace } from "@/components/case-studies/policy-copilot/policy-copilot-workspace";
-import { WORKSPACE_HOST_BREAKOUT } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+  PolicyCopilotAdministratorTwoWorlds,
+  PolicyCopilotConfigurationVsConversation,
+  PolicyCopilotConfidenceGrowth,
+  PolicyCopilotContinuousValidation,
+  PolicyCopilotFinalApproval,
+  PolicyCopilotLivingWorkspace,
+  PolicyCopilotLookingBack,
+  PolicyCopilotProblemReframe,
+  PolicyCopilotRecommendationCards,
+  PolicyCopilotTransparentAiExploration,
+  PolicyCopilotWorkBeforeFirewall,
+  PolicyCopilotWorkspace,
+} from "@/components/case-studies/policy-copilot/policy-copilot-showcase";
+import { POLICY_COPILOT_FAQ_ITEMS } from "@/components/case-studies/policy-copilot/policy-copilot-faq-data";
+import { WORKSPACE_EMBED_SHELL, WORKSPACE_HOST_BREAKOUT } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
-  CaseStudyChips,
   CaseStudyDivider,
   CaseStudyH1,
   CaseStudyH2,
-  CaseStudyLabel,
+  CaseStudyH3,
+  CaseStudyChips,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
-import { trackPolicyCopilotDemo } from "@/lib/analytics";
-import { CASE_STUDY_CDN_MEDIA } from "@/lib/asset-cdn";
 import { getJbIllustration } from "@/lib/jb-illustration-library";
 import { getCaseStudyContent } from "@/lib/project-content";
-import { useCaseStudyRevealCountdownForSlug } from "@/hooks/use-case-study-reveal-countdown";
 
 const SLUG = "cisco-policy-copilot";
 
 export default function CiscoPolicyCopilotContent() {
   const content = getCaseStudyContent(SLUG)!;
-  const [copilotKey, setCopilotKey] = useState(0);
-  const { isRevealed } = useCaseStudyRevealCountdownForSlug(SLUG);
 
   return (
     <>
@@ -42,615 +46,507 @@ export default function CiscoPolicyCopilotContent() {
         year={content.year}
         overview={content.overviewText}
         meta={content.meta}
+        metaClassName="!mb-4"
         notice="Designs are recreated from memory; original files are under Cisco IP."
-        metaBottom={<CaseStudyRevealCountdown slug={SLUG} />}
       />
 
-      <div
-        className={isRevealed ? "" : "pointer-events-none select-none blur-xl"}
-        aria-hidden={!isRevealed}
-      >
-      <CaseStudyProse>
-        <CaseStudyH1>
-          Turning business requests into secure firewall policies with AI
-        </CaseStudyH1>
-        <CaseStudyWide className="!mt-8 pb-2 md:!mt-10">
-          <div className={WORKSPACE_HOST_BREAKOUT}>
-            <PolicyCopilotWorkspace key={copilotKey} />
-          </div>
-        </CaseStudyWide>
-        <div className="flex justify-end pb-6">
-          <button
-            type="button"
-            onClick={() => {
-              trackPolicyCopilotDemo({ action: "reset" });
-              setCopilotKey((key) => key + 1);
-            }}
-            className="text-xs font-medium text-neutral-500 transition-colors hover:text-neutral-300"
-          >
-            Start Over
-          </button>
+      <CaseStudyWide className="pb-2">
+        <div className="mb-4 flex justify-center text-center md:mb-5">
+          <CaseStudyH1>
+            Every firewall policy starts with a conversation.
+          </CaseStudyH1>
         </div>
-        <CaseStudyH2>Every Firewall Policy Starts with a Conversation.</CaseStudyH2>
-        <CaseStudyParagraph>
-          For most people, a firewall is invisible. For a security administrator, every rule is a
-          decision that carries risk. A single mistake can expose critical systems or bring business
-          operations to a halt.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          While working on Cisco Hybrid Mesh Firewall, I realised that firewall policies rarely
-          begin inside the firewall. They begin with a conversation.
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Can we give doctors secure access to patient records?&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          It sounds simple. The work behind it isn&apos;t.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 !pb-10">
-          <CaseStudyMedia
-            aspect="natural"
-            src={getJbIllustration("policy-copilot-translation-bridge")}
-            alt="A hospital administrator requesting secure access. A security engineer stands between business teams and the network, surrounded by architecture diagrams, compliance documents, policy objects, and firewall rules. The illustration should communicate translation rather than technical complexity."
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph className="!pt-4">
-          That single request immediately raises questions. Who counts as a doctor? Should access
-          only work from managed devices? Does an existing policy already allow it? Will it satisfy
-          compliance requirements? Could this unintentionally expose another part of the network?
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Those answers don&apos;t exist in the original request, yet someone has to find them before
-          a single firewall rule can be written. As I spent more time with security teams, I noticed
-          something interesting. Nobody spoke in firewall terminology.
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Finance needs access to SAP.&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyQuote>
-          &ldquo;Contractors shouldn&apos;t reach production.&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyQuote>
-          &ldquo;Doctors should be able to access patient records.&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          People naturally described business intent. The firewall expected technical intent.
-          Administrators spent their time translating one into the other while juggling applications,
-          user groups, compliance rules, and potential risks. The product expected them to think like
-          the firewall before the firewall helped them.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4">
-          <CaseStudyMedia
-            aspect="natural"
-            src={getJbIllustration("policy-copilot-intent-translation")}
-            alt="A handwritten business request gradually transforms into structured policy objects before becoming a deployed firewall policy — emphasising translation, not automation"
-            label="From Business Request to Deployed Policy"
-            captionClassName="text-center"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph className="!pt-4">
-          At first, I thought AI could solve this by generating firewall policies faster. But after
-          more conversations with engineers and security experts, it became clear that generation
-          wasn&apos;t the hardest part. Understanding the request was. That insight completely changed
-          the direction of the project.
-        </CaseStudyParagraph>
-        <CaseStudyWide>
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-white/10">
-              <div className="space-y-4 p-6 md:p-8">
-                <CaseStudyLabel>Instead of asking</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-neutral-400 md:text-xl">
-                  &ldquo;How can AI generate firewall policies?&rdquo;
-                </p>
-              </div>
-              <div className="space-y-4 border-t border-white/10 bg-[#6B36FF]/[0.04] p-6 md:border-t-0 md:p-8">
-                <CaseStudyLabel>We started asking</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-white md:text-xl">
-                  &ldquo;How can AI help administrators feel understood before asking them to trust
-                  a generated policy?&rdquo;
-                </p>
-              </div>
-            </div>
+        <div className={WORKSPACE_HOST_BREAKOUT}>
+          <div className={WORKSPACE_EMBED_SHELL}>
+            <PolicyCopilotWorkspace />
           </div>
-        </CaseStudyWide>
-        <CaseStudyParagraph className="!pb-8">
-          That shift became the foundation of Policy Copilot. It wasn&apos;t about replacing expert
-          decisions. It was about removing the mental effort required to translate business intent
-          into secure, technical policies.
-        </CaseStudyParagraph>
-        <CaseStudyDivider />
-      </CaseStudyProse>
+          <div className="mx-auto mt-4 flex max-w-[1440px] justify-center px-3 md:mt-5 md:px-4">
+            <p
+              className="inline-flex items-center gap-2.5 rounded-full border border-sky-400/45 bg-sky-500/12 px-4 py-2 text-sm font-medium tracking-wide text-sky-100 shadow-[0_0_28px_-6px_rgba(56,189,248,0.45)] antialiased"
+              role="note"
+            >
+              <span className="relative flex h-2.5 w-2.5 shrink-0" aria-hidden>
+                <span className="absolute inline-flex h-full w-full rounded-full bg-sky-300/45 motion-safe:animate-ping" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-sky-300" />
+              </span>
+              <svg className="h-4 w-4 shrink-0 text-sky-200/90" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path
+                  d="M4.5 3.5 9 8l-4.5 4.5M9 3.5h2.5a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H9"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Interactive demo — explore the workspace
+            </p>
+          </div>
+        </div>
+      </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyH2 className="!pt-8">The Problem</CaseStudyH2>
-        <CaseStudyParagraph>
-          The first time I looked at a firewall policy, I thought I was looking at the hard part.
-          Rows of rules. Applications. Zones. Protocols. It looked like a complex spreadsheet. I was
-          wrong. The hardest work happened long before anyone clicked{" "}
-          <span className="font-semibold text-white">Create Policy</span>.
+        <CaseStudyH2>Every Firewall Policy Starts the Same Way.</CaseStudyH2>
+        <CaseStudyList
+          items={[
+            "Not with a firewall rule.",
+            "Not with a protocol.",
+            "Not with a configuration screen.",
+          ]}
+        />
+        <CaseStudyParagraph>It starts with someone saying,</CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;Can doctors securely access patient records from hospital-managed devices?&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph className="!pb-6">
+          It sounds like a simple request, but behind that sentence are dozens of security decisions.
+          Who should have access? Which application is involved? Should remote access be allowed? Does it
+          meet compliance requirements? Could one mistake expose the network? The request takes
+          seconds to describe, but making the right decision can take hours.
         </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
+        <CaseStudyWide className="!mt-4 !pb-8">
+          <PolicyCopilotAdministratorTwoWorlds />
+        </CaseStudyWide>
+        <CaseStudyParagraph className="!pt-6 !pb-6 !text-lg md:!text-xl !text-neutral-200">
+          When I joined the project, I thought we were redesigning firewall policy creation. After
+          spending time with security engineers, I realised the real challenge came much earlier. We
+          weren&rsquo;t redesigning firewall policies&mdash;we were redesigning how administrators
+          understand a business request before it becomes one.
+        </CaseStudyParagraph>
+        <CaseStudyH2 className="!pt-4 !pb-6">The Real Work Happens Before the Firewall</CaseStudyH2>
+        <CaseStudyWide className="!pb-6">
+          <PolicyCopilotWorkBeforeFirewall />
+        </CaseStudyWide>
+        <CaseStudyWide className="!mt-4 !pb-2">
           <CaseStudyMedia
             aspect="natural"
-            src={getJbIllustration("policy-copilot-invisible-complexity")}
-            alt="A security administrator surrounded by business requests, network diagrams, compliance checklists, existing policies, and infrastructure maps before a rule is created"
+            shellBackground="#0D1114"
+            src={getJbIllustration("policy-copilot-discovery-workshop")}
+            alt="Miro discovery workshop — current-state journey mapping, affinity clusters, pain points, and how-might-we opportunities for network policy creation"
           />
         </CaseStudyWide>
-        <CaseStudyParagraph>
-          Every policy starts with a business request, but those requests rarely contain the
-          information security teams actually need. They describe an outcome, not the technical path
-          to achieve it. Before writing a single rule, administrators gather context, identify users,
-          understand network paths, review existing policies, and validate compliance. Every answer
-          uncovers another question.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          The policy itself is often the easy part. Understanding the request is where experience
-          matters.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          One security engineer described his job as &ldquo;solving a puzzle where some of the pieces
-          are always missing.&rdquo; Sometimes nobody knew which application was actually being used.
-          Sometimes a similar policy already existed. Sometimes the safest decision was not to create
-          a new policy at all.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          The interface wasn&apos;t the hard part. Understanding the network was.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
+        <CaseStudyWide className="!mt-4 pb-2">
           <CaseStudyMedia
             aspect="natural"
-            src={getJbIllustration("policy-copilot-request-journey-map")}
-            alt="Journey map from business request through identify users, applications, network path, existing policies, compliance, risk, to create policy"
+            shellBackground="#0D1114"
+            src={getJbIllustration("policy-copilot-pain-points-concepts")}
+            alt="Miro workshop — pain point clusters and low-fi concept sketches from discovery, before the Policy Copilot direction was set"
           />
         </CaseStudyWide>
-        <CaseStudyDivider />
-        <CaseStudyParagraph>
-          I also noticed how fragmented the workflow had become. Administrators constantly switched
-          between architecture diagrams, documentation, compliance guides, ticketing systems, and
-          conversations with different teams. By the time they reached the firewall console, most of
-          the thinking had already happened somewhere else.
+        <CaseStudyParagraph className="!pt-6">
+          One security engineer said something I&rsquo;ll probably remember for the rest of my career.
         </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          The product became the final destination instead of the place where understanding
-          happened.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            src={getJbIllustration("policy-copilot-firewall-form-overload")}
-            alt="Zoomed-out firewall policy creation form with dozens of fields, emphasising cognitive load from information density"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          The interface assumed administrators already knew exactly what they needed. Dozens of
-          configuration fields required them to translate business intent into technical rules with
-          little guidance.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Validation came too late. Most issues—policy conflicts, compliance violations, or security
-          risks—were only discovered after the policy had been written. The product wasn&apos;t
-          preventing mistakes. It was helping users find them after the fact.
-        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;Writing the policy isn&rsquo;t the hard part. Understanding what people actually mean
+          is.&rdquo;
+        </CaseStudyQuote>
         <CaseStudyParagraph className="!pb-8">
-          That led to a simple realisation. The challenge wasn&apos;t creating firewall policies. It
-          was translating business intent into secure, compliant decisions. Instead of redesigning
-          the policy editor, we chose to redesign the conversation that happens before the first rule
-          is ever created.
+          That sentence changed how I looked at the product.
         </CaseStudyParagraph>
         <CaseStudyDivider className="!mb-8" />
-
-        <CaseStudyH2 className="!pt-8">The Opportunity</CaseStudyH2>
+        <CaseStudyH2 className="!pt-8">We Were Solving the Wrong Problem</CaseStudyH2>
         <CaseStudyParagraph>
-          As we stepped back from the workflow, we asked ourselves a simple question:
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          What are we actually trying to improve?
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          At first, the answer seemed obvious. Make policy creation faster. But the more we observed
-          administrators, the more we realised they weren&apos;t slow because they didn&apos;t know
-          where to click.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          They were slow because they were thinking. Every policy required judgment—who should have
-          access, what already existed, what could break, and whether the request met security and
-          compliance requirements. AI couldn&apos;t replace those decisions, but it could remove the
-          repetitive work of translating business intent into technical configuration.
-        </CaseStudyParagraph>
-
-        <CaseStudyWide className="!mt-2 pb-2">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={getJbIllustration("policy-copilot-administrator-two-worlds")}
-            alt="A security administrator standing between business teams discussing outcomes and a firewall filled with technical configuration, translating one language into the other"
-          />
-        </CaseStudyWide>
-
-        <CaseStudyParagraph>
-          One discussion changed the direction of the project. Someone pointed out that
-          administrators weren&apos;t trying to create firewall policies. They were trying to solve
-          business problems. The policy was simply the output. That shifted our thinking from:
-        </CaseStudyParagraph>
-        <CaseStudyWide>
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-white/10">
-              <div className="space-y-4 p-6 md:p-8">
-                <CaseStudyLabel>From</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-neutral-400 md:text-xl">
-                  &ldquo;How can AI generate firewall rules?&rdquo;
-                </p>
-              </div>
-              <div className="space-y-4 border-t border-white/10 bg-[#6B36FF]/[0.04] p-6 md:border-t-0 md:p-8">
-                <CaseStudyLabel>To</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-white md:text-xl">
-                  &ldquo;How can AI understand the business request first?&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          That small change influenced almost every design decision that followed.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-understand-first"]}
-            alt="Policy Copilot workflow that begins by understanding the request before generating policy configuration"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          Take our hospital example. Instead of asking administrators to immediately configure zones,
-          applications, and policies, we imagined a workflow that began by understanding the request.
-          Who are the users? Which application is being referenced? What assumptions are missing?
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Only after building that shared understanding would the product generate a policy.
-          Configuration became the outcome—not the starting point.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={CASE_STUDY_CDN_MEDIA["cisco-policy-copilot-design-sprint"]}
-            alt="Design sprint whiteboard mapping how AI should understand policy requests and gather missing context before generating firewall rules"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          That idea also changed how we designed AI. Most assistants begin by giving answers.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Policy Copilot began by asking better questions. Instead of hiding complexity, it organised
-          it—surfacing assumptions, explaining recommendations, highlighting uncertainty, and making
-          validation visible throughout the workflow.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph className="!pb-8">
-          By the end, Policy Copilot no longer felt like an AI feature. It felt like working alongside
-          an experienced security engineer. Not one that replaced human expertise. One that helped
-          people think more clearly.
-        </CaseStudyParagraph>
-        <CaseStudyDivider />
-
-        <CaseStudyH2 className="!pt-8">Designing Policy Copilot</CaseStudyH2>
-        <CaseStudyParagraph>
-          By the time we started designing Policy Copilot, one thing was clear. We weren&apos;t
-          building another AI chatbot.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Enterprise administrators already worked across dashboards, documentation, ticketing
-          systems, and collaboration tools. Asking them to leave their workflow to chat with AI
-          would only add more friction. If AI was going to help, it needed to live where the work
-          was already happening.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Not beside the workflow. Inside it.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia aspect="natural" shellBackground="#0D1114" />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          Embedding the Copilot directly into the policy workflow changed the interaction model.
-          Instead of starting with an empty chat, the AI already understood the task, existing
-          policies, and available network objects.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          We wanted it to feel less like talking to a chatbot and more like collaborating with an
-          experienced security engineer—one that asked the right questions before suggesting a
-          solution.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={getJbIllustration("policy-copilot-conversation-storyboard")}
-            alt="Storyboard of an administrator and Policy Copilot in short exchanges, with the policy preview updating alongside each response in real time"
-            label="Conversation Shapes the Policy"
-            captionClassName="text-center"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          Take our hospital example.
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Allow doctors to securely access Electronic Health Records from hospital-managed
-          devices.&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          Instead of immediately generating a policy, Policy Copilot first reflected its
-          understanding back to the administrator. It identified users, applications, devices, and
-          assumptions, then asked for confirmation before generating a draft.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!pb-8">
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-            <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-white/10">
-              <div className="space-y-4 p-6 md:p-8">
-                <CaseStudyLabel>From</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-neutral-400 md:text-xl">
-                  &ldquo;Here&rsquo;s the answer.&rdquo;
-                </p>
-              </div>
-              <div className="space-y-4 border-t border-white/10 bg-[#6B36FF]/[0.04] p-6 md:border-t-0 md:p-8">
-                <CaseStudyLabel>To</CaseStudyLabel>
-                <p className="text-lg font-medium leading-relaxed tracking-tight text-white md:text-xl">
-                  &ldquo;Here&rsquo;s what I think you mean.&rdquo;
-                </p>
-              </div>
-            </div>
-          </div>
-        </CaseStudyWide>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia aspect="natural" shellBackground="#0D1114" />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          Nothing happened behind a black box. Administrators could inspect every recommendation,
-          edit assumptions, and understand how business intent translated into firewall rules.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          In enterprise security, trust comes from transparency—not automation.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={getJbIllustration("policy-copilot-confidence-path")}
-            alt="Decision path from intent through a confidence check—high confidence proceeds to draft, low confidence or ambiguity triggers clarifying questions before continuing"
-            label="Understanding Drives the Workflow"
-            captionClassName="text-center"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          Rather than always producing an answer, Policy Copilot recognised uncertainty and asked
-          for clarification when needed. Every stage—from interpretation to validation—was designed
-          to reduce uncertainty before introducing the next decision.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>The workflow became simple:</CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Intent &rarr; Interpretation &rarr; Draft &rarr; Review &rarr; Validate &rarr; Approve
-        </CaseStudyParagraph>
-        <CaseStudyParagraph className="!pb-8">
-          Not a form to complete. A conversation that gradually built confidence.
-        </CaseStudyParagraph>
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={getJbIllustration("policy-copilot-workflow-lifecycle")}
-            alt="Horizontal policy lifecycle workflow — Intent, Interpret, Draft, Review, Validate, Approve, Deploy"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          We also made a deliberate choice to keep the AI concise. No unnecessary personality. No long
-          conversations. Every response was actionable, transparent, and respectful of the
-          administrator&apos;s expertise.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Looking back, the most important thing we designed wasn&apos;t the interface. It was the
-          relationship between the administrator and the AI. Every interaction answered one question:
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Can I trust this recommendation enough to move forward?&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph className="!pb-8">
-          That principle became the foundation for everything that followed, especially how we
-          approached validation and explainability.
-        </CaseStudyParagraph>
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2 className="!pt-8">Validation &amp; Explainability</CaseStudyH2>
-        <CaseStudyParagraph>
-          One question kept coming up throughout the project:
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;How do we know the AI got it right?&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          Not whether it could generate a firewall policy. Whether it generated the right one. For a
-          security product, &ldquo;trust me&rdquo; isn&apos;t enough. Every recommendation needs to be
-          transparent, explainable, and easy to verify.
-        </CaseStudyParagraph>
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            shellBackground="#0D1114"
-            src={getJbIllustration("policy-copilot-validation-layers")}
-            alt="A policy moving through multiple validation layers—security standards, compliance rules, existing policies, and risk analysis—before reaching deployment, rather than a linear approval flow"
-          />
-        </CaseStudyWide>
-        <CaseStudyParagraph>
-          That changed how we thought about validation. Instead of checking policies after they were
-          written, we brought validation into the creation process itself.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          As Policy Copilot drafted a policy, it continuously checked existing firewall rules,
-          compliance requirements, security standards, network boundaries, and potential blast
-          radius.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          The goal wasn&apos;t to catch mistakes later. It was to prevent them from happening in the
-          first place.
-        </CaseStudyParagraph>
-
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2 className="!mt-8">Triggering the Copilot</CaseStudyH2>
-        <CaseStudyParagraph>
-          A key design question was: when should AI appear? We explored three activation
-          models.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          If it appeared too often, it could interrupt experienced administrators. If it
-          appeared too late, it could miss important risk or compliance issues.
-        </CaseStudyParagraph>
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CopilotActivationInfographic />
-        </CaseStudyWide>
-
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2>Designing for Trust</CaseStudyH2>
-        <CaseStudyParagraph>
-          In cybersecurity, speed alone is not valuable. Administrators need to understand:
+          After several research sessions, our workshop wall was covered with sticky notes. We had
+          captured everything we heard:
         </CaseStudyParagraph>
         <CaseStudyChips
-          ariaLabel="What administrators need to understand"
+          ariaLabel="Themes captured during research workshops"
           items={[
-            "What the AI knows",
-            "What it recommends",
-            "Why it recommends it",
-            "What evidence supports it",
-            "What risks remain",
-            "What will happen if they approve it",
+            "Applications",
+            "Identity",
+            "Compliance",
+            "Existing Policies",
+            "Risk",
+            "Business Language",
+            "Trust",
           ]}
         />
-        <CaseStudyParagraph>One principle shaped the experience:</CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;Don&rsquo;t just tell me it&rsquo;s safe. Show me why.&rdquo;
-        </CaseStudyQuote>
         <CaseStudyParagraph>
-          Every recommendation was designed to include evidence, context, and a clear next
-          action. For example:
-        </CaseStudyParagraph>
-        <div className="w-full max-w-5xl space-y-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:space-y-6 md:p-6">
-          <div className="space-y-2">
-            <CaseStudyLabel>Recommendation</CaseStudyLabel>
-            <p className="text-base leading-relaxed text-neutral-200 md:text-lg">
-              Enable audit logging
-            </p>
-          </div>
-          <div className="space-y-2">
-            <CaseStudyLabel>Why</CaseStudyLabel>
-            <p className="text-base leading-relaxed text-neutral-300 md:text-lg">
-              This policy grants access to an external SaaS application.
-            </p>
-          </div>
-          <div className="space-y-2">
-            <CaseStudyLabel>Evidence</CaseStudyLabel>
-            <ul className="list-disc space-y-2 pl-5 text-base leading-relaxed text-neutral-300 md:text-lg">
-              <li>SEC-014 security standard</li>
-              <li>Existing policy comparison</li>
-              <li>Audit requirement for external access</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <CaseStudyLabel>Remaining risk</CaseStudyLabel>
-            <p className="text-base leading-relaxed text-neutral-300 md:text-lg">
-              Time range is not yet defined.
-            </p>
-          </div>
-        </div>
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — evidence and recommendation patterns"
-          />
-        </CaseStudyWide>
-
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2>Learning Loop</CaseStudyH2>
-        <CaseStudyParagraph>
-          To improve recommendations over time, I designed a lightweight feedback pattern.
-          After a recommendation, the Copilot could ask:
-        </CaseStudyParagraph>
-        <CaseStudyQuote>
-          &ldquo;How accurate were the AI Suggestions?&rdquo;
-        </CaseStudyQuote>
-        <CaseStudyParagraph>
-          Administrators could provide a quick 1–5 rating without leaving their workflow.
-          This created a low-friction learning loop while respecting the speed of security
-          operations.
-        </CaseStudyParagraph>
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — learning loop"
-          />
-        </CaseStudyWide>
-
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2 className="!mt-8">Designed for Measurable Impact</CaseStudyH2>
-        <CaseStudyParagraph>
-          Policy Copilot was designed to improve both execution speed and decision confidence.
-        </CaseStudyParagraph>
-
-        <CaseStudyImpactCards
-          items={[
-            {
-              title: "Reduced Configuration Effort",
-              description:
-                "Administrators can begin with natural language instead of manually configuring every policy attribute.",
-            },
-            {
-              title: "Faster Policy Decisions",
-              description:
-                "The system helps move from a business request to a reviewable draft without navigating disconnected workflows.",
-            },
-            {
-              title: "Improved Decision Confidence",
-              description:
-                "Recommendations include evidence, compliance checks, risk analysis, and clear next actions.",
-            },
-            {
-              title: "Lower Cognitive Load",
-              description:
-                "Administrators receive contextual guidance instead of remembering rules, dependencies, and security requirements across systems.",
-            },
-          ]}
-        />
-
-        <CaseStudyWide className="!mt-4 pb-6">
-          <CaseStudyMedia
-            aspect="natural"
-            alt="Cisco Policy Copilot — measurable impact"
-          />
-        </CaseStudyWide>
-
-        <CaseStudyDivider className="!mt-8" />
-
-        <CaseStudyH2 className="!mt-8">Reflection</CaseStudyH2>
-        <CaseStudyParagraph>
-          Designing Policy Copilot reinforced an important belief about AI products:
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          Designing for AI is not just about connecting APIs. It is about trust, context,
-          and control.
-        </CaseStudyParagraph>
-        <CaseStudyParagraph>
-          In high-stakes security workflows, AI earns adoption by making its reasoning visible
-          and keeping humans responsible for the final decision.
+          Individually, they felt like disconnected observations. Together, they revealed something
+          much bigger.
         </CaseStudyParagraph>
         <CaseStudyParagraph className="!pb-8">
-          The role of design is to make that relationship clear.
+          Administrators weren&rsquo;t struggling to create firewall policies. They were translating
+          business conversations into technical decisions.
         </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-8">
+          <PolicyCopilotProblemReframe />
+        </CaseStudyWide>
+        <CaseStudyDivider className="!mb-8" />
+        <CaseStudyH2>A Familiar Problem, Different Industry</CaseStudyH2>
+        <CaseStudyParagraph>
+          I often explain this challenge using Google Maps.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>Imagine typing,</CaseStudyParagraph>
+        <CaseStudyQuote>&ldquo;Take me to the airport.&rdquo;</CaseStudyQuote>
+        <CaseStudyParagraph>
+          Instead of showing directions, Maps asks for GPS coordinates, routing algorithms, and road
+          classifications.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Everything is technically correct. Nothing helps you reach the airport. Traditional firewall
+          products often worked the same way. They asked administrators to think about firewall objects
+          before helping them think about the business problem.
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          People don&rsquo;t think in ports, protocols, or policies. They think in outcomes.
+        </CaseStudyQuote>
+        <CaseStudyParagraph>Policy Copilot simply flipped that order.</CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-8">
+          Start with intent. Let configuration follow.
+        </CaseStudyParagraph>
+        <CaseStudyDivider className="!mb-8" />
+        <CaseStudyH2 className="!pt-4">Four Principles Shaped Everything</CaseStudyH2>
+        <CaseStudyParagraph className="!pb-2">
+          Once we understood the real problem, the design principles became surprisingly clear.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-8">
+          <CaseStudyMedia
+            aspect="natural"
+            shellBackground="#0D1114"
+            src={getJbIllustration("policy-copilot-design-principles")}
+            alt="Four design principles for Policy Copilot — start with intent, reflect before generating, explain every recommendation, and keep humans in control"
+          />
+        </CaseStudyWide>
+        <CaseStudyParagraph className="!pb-8">
+          By the end of discovery, we weren&rsquo;t designing a tool that generated firewall policies.
+          We were designing one that helped people make better security decisions. Everything that
+          followed&mdash;from the interaction model to the final workflow&mdash;was built around that
+          idea.
+        </CaseStudyParagraph>
+        <CaseStudyH3 className="!pt-4">Designing Understanding Before Automation</CaseStudyH3>
+        <CaseStudyParagraph>
+          The goal wasn&rsquo;t to generate a firewall policy. It was to help administrators understand
+          what they were about to approve.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          By the end of research, we realised every policy started as a business request but ended as
+          technical configuration. Somewhere between those two worlds sat the administrator,
+          translating outcomes into secure decisions.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-8">
+          Policy Copilot wasn&rsquo;t designed to replace that expertise. It was designed to make the
+          journey from business intent to trusted policy faster, clearer, and easier to understand.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-12">
+          <PolicyCopilotConfigurationVsConversation />
+        </CaseStudyWide>
+        <CaseStudyH3 className="!pt-4">Start With Intent, Not Configuration</CaseStudyH3>
+        <CaseStudyParagraph>
+          Traditional firewall products usually begin with configuration.
+        </CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="Traditional firewall configuration fields"
+          items={[
+            "Source",
+            "Destination",
+            "Application",
+            "Protocol",
+            "Ports",
+            "Logging",
+          ]}
+        />
+        <CaseStudyParagraph>
+          Every field assumes the administrator already knows the technical answer.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>Policy Copilot starts with a different question:</CaseStudyParagraph>
+        <CaseStudyQuote>&ldquo;What are you trying to achieve?&rdquo;</CaseStudyQuote>
+        <CaseStudyParagraph className="!pb-8">
+          Administrators no longer had to translate a business request before opening the product.
+          They could simply describe the outcome. The product handled the translation. People stayed
+          focused on the problem. The firewall received the configuration it needed.
+        </CaseStudyParagraph>
+        <CaseStudyH3 className="!pt-4">Understanding Before Generation</CaseStudyH3>
+        <CaseStudyParagraph>
+          Like many AI products, our first prototype generated a policy immediately. It worked&mdash;but
+          it answered before proving it had understood the request.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-2">
+          So we slowed the experience down. Before generating anything, Policy Copilot reflected its
+          understanding back to the administrator.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-12">
+          <div className={WORKSPACE_HOST_BREAKOUT}>
+            <div className={WORKSPACE_EMBED_SHELL}>
+              <PolicyCopilotWorkspace presentation="intent-summary" />
+            </div>
+          </div>
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">The First Draft Wasn&rsquo;t the Policy</CaseStudyH2>
+        <CaseStudyParagraph className="!pt-4">
+          During usability testing, one pattern appeared again and again. Administrators rarely edited
+          the generated policy first.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>They corrected the AI&rsquo;s interpretation instead:</CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="What administrators corrected during usability testing"
+          items={["User groups", "Applications", "Remote access", "Missing context"]}
+        />
+        <CaseStudyParagraph>That changed our thinking.</CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-2">
+          People preferred reviewing meaning before configuration. So we changed what &ldquo;first
+          draft&rdquo; meant. The interpretation became the first draft. The firewall policy became
+          the second.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-12">
+          <CaseStudyMedia
+            aspect="natural"
+            shellBackground="#0D1114"
+            src="https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/Cisco%20Miro/Screenshot%202026-07-06%20at%203.09.00%E2%80%AFAM.png"
+            alt="Miro workshop — interpretation as first draft, firewall policy as second; usability findings on correcting meaning before configuration"
+          />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-8">One Workspace, Not Five Screens</CaseStudyH2>
+        <CaseStudyParagraph>
+          Most enterprise products move people through a series of screens. We wanted the opposite. One
+          workspace where the conversation, the context, and the policy stayed together.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>As administrators confirmed details, the workspace gradually expanded:</CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="Workspace areas that expanded as administrators confirmed details"
+          items={["Users", "Applications", "Network zones", "Access conditions", "Compliance"]}
+        />
+        <CaseStudyParagraph>
+          Every new card was connected to the original request. Nothing appeared out of nowhere.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-8">
+          The policy wasn&rsquo;t generated in a single step. It was assembled one decision at a time.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-12">
+          <PolicyCopilotLivingWorkspace />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-8">Make AI Thinking Visible</CaseStudyH2>
+        <CaseStudyParagraph>
+          One design principle guided almost every interaction. Never make administrators wonder what
+          changed.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>Whenever the AI updated the workspace, it clearly explained:</CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="What the AI explained when the workspace updated"
+          items={[
+            "What changed",
+            "Why it changed",
+            "How confident it was",
+            "What still needed confirmation",
+          ]}
+        />
+        <CaseStudyParagraph>
+          Nothing appeared without context. Nothing felt like a black box.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-2">
+          The goal wasn&rsquo;t to make administrators trust the AI. It was to make its thinking easy
+          to understand.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pt-6 !pb-12">
+          <PolicyCopilotTransparentAiExploration />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">One Moment Changed Everything</CaseStudyH2>
+        <CaseStudyParagraph>
+          During one internal review, an engineer looked at the prototype for a few seconds and said,
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;This doesn&rsquo;t feel like writing firewall rules anymore.&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph>He paused. Then smiled.</CaseStudyParagraph>
+        <CaseStudyQuote>&ldquo;It feels like reviewing someone else&rsquo;s work.&rdquo;</CaseStudyQuote>
+        <CaseStudyParagraph className="!pb-2">
+          That was exactly the experience we were trying to create. The AI wasn&rsquo;t the author. It
+          was the first reviewer. The administrator remained the final one.
+        </CaseStudyParagraph>
+        <CaseStudyDivider className="!my-8" />
+        <CaseStudyH2 className="!pt-4">Designing Trust</CaseStudyH2>
+        <CaseStudyParagraph>
+          The hardest question wasn&rsquo;t &ldquo;Can AI generate a policy?&rdquo; It was &ldquo;Should I trust
+          it?&rdquo;
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Once Policy Copilot could understand a request and draft a policy, the challenge shifted. In
+          enterprise security, a policy is only valuable if someone is confident enough to approve it.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>One security architect captured it perfectly:</CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;I don&rsquo;t mind if AI writes the first draft. I mind if I can&rsquo;t explain why
+          I&rsquo;m approving it.&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph className="!pb-8">
+          That insight shaped the rest of the product. Trust wasn&rsquo;t something we added at the
+          end&mdash;it had to be designed into every interaction.
+        </CaseStudyParagraph>
+        <CaseStudyDivider className="!mb-8" />
+        <CaseStudyH2 className="!pt-8">Validation Became Part of the Conversation</CaseStudyH2>
+        <CaseStudyParagraph>
+          Our first idea was straightforward: Generate &rarr; Validate &rarr; Fix &rarr; Deploy.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          It looked logical, but it didn&rsquo;t reflect how administrators actually worked. Research
+          showed that experienced administrators validated continuously. Every decision raised another
+          question:
+        </CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="Questions administrators raised during continuous validation"
+          items={[
+            "Does a similar rule already exist?",
+            "Could this affect another application?",
+            "Does it meet company standards?",
+          ]}
+        />
+        <CaseStudyParagraph>
+          Validation wasn&rsquo;t a final step. It was part of the decision-making process. So instead
+          of adding another validation screen, we embedded validation into the workspace. As
+          administrators confirmed users, applications, and access conditions, Policy Copilot quietly
+          checked:
+        </CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="What Policy Copilot checked during the workflow"
+          items={[
+            "Existing policies",
+            "Compliance requirements",
+            "Security standards",
+            "Duplicate rules",
+            "Network segmentation",
+            "Potential blast radius",
+          ]}
+        />
+        <CaseStudyParagraph className="!pb-8">
+          Nothing interrupted the workflow. The product surfaced issues only when they mattered.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-8">
+          <PolicyCopilotContinuousValidation />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">Explain the Recommendation, Not Just the Result</CaseStudyH2>
+        <CaseStudyParagraph>
+          Usability testing revealed another important insight.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>Administrators rarely asked, &ldquo;What should I do?&rdquo;</CaseStudyParagraph>
+        <CaseStudyParagraph>They asked, &ldquo;Why are you recommending this?&rdquo;</CaseStudyParagraph>
+        <CaseStudyParagraph>
+          That changed how we designed recommendations. Instead of simple alerts, every suggestion
+          included the reasoning behind it.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          For example, if Policy Copilot recommended enabling audit logging, it explained why:
+        </CaseStudyParagraph>
+        <CaseStudyList
+          items={[
+            "The application handled sensitive healthcare records.",
+            "Similar policies already enabled logging.",
+            "Organisational standards required an audit trail.",
+          ]}
+        />
+        <CaseStudyParagraph className="!pb-8">
+          Instead of asking administrators to trust the recommendation, we gave them the context to
+          make their own decision.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-8">
+          <PolicyCopilotRecommendationCards />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">Let the AI Admit Uncertainty</CaseStudyH2>
+        <CaseStudyParagraph>
+          Another design decision was surprisingly simple. If the AI wasn&rsquo;t sure, it said so.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Instead of making assumptions, it asked for clarification:
+        </CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="Clarification questions when confidence was low"
+          items={[
+            "Should remote access be allowed?",
+            "Should contractors inherit these permissions?",
+            "Should access expire automatically?",
+          ]}
+        />
+        <CaseStudyParagraph className="!pb-8">
+          Rather than reducing trust, those moments increased it. In enterprise security, admitting
+          uncertainty is often safer than pretending certainty.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-8">
+          <PolicyCopilotConfidenceGrowth />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">Help People Review Impact, Not Configuration</CaseStudyH2>
+        <CaseStudyParagraph>
+          Before approving a policy, administrators wanted one answer:
+        </CaseStudyParagraph>
+        <CaseStudyQuote>&ldquo;What happens if I deploy this?&rdquo;</CaseStudyQuote>
+        <CaseStudyParagraph>
+          Instead of asking them to interpret firewall rules, Policy Copilot simulated the outcome:
+        </CaseStudyParagraph>
+        <CaseStudyList
+          items={[
+            "Who gains access",
+            "Which applications become reachable",
+            "How traffic paths change",
+            "The potential blast radius",
+          ]}
+        />
+        <CaseStudyParagraph>Administrators stopped reviewing configuration.</CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-6">They started reviewing impact.</CaseStudyParagraph>
+        <CaseStudyWide className="!pb-12">
+          <CaseStudyMedia
+            aspect="natural"
+            shellBackground="#0D1114"
+            src={getJbIllustration("policy-copilot-simulation-impact")}
+            alt="Simulation and impact analysis — who gains access, reachable applications, traffic paths, and blast radius instead of dense firewall configuration"
+          />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-12">Human Approval Was Never Optional</CaseStudyH2>
+        <CaseStudyParagraph>One principle never changed.</CaseStudyParagraph>
+        <CaseStudyParagraph>
+          No matter how confident the AI became, it could never deploy a policy. It could:
+        </CaseStudyParagraph>
+        <CaseStudyChips
+          ariaLabel="What Policy Copilot could do before human approval"
+          items={[
+            "Understand intent",
+            "Interpret requests",
+            "Recommend actions",
+            "Validate decisions",
+            "Simulate impact",
+            "Optimise policies",
+          ]}
+        />
+        <CaseStudyParagraph>The final approval always belonged to the administrator.</CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-4">
+          That wasn&rsquo;t a technical limitation&mdash;it was a product principle. Enterprise
+          security depends on accountability, so AI supports judgement, but people make the final
+          decision.
+        </CaseStudyParagraph>
+        <CaseStudyWide className="!pb-10">
+          <PolicyCopilotFinalApproval />
+        </CaseStudyWide>
+        <CaseStudyH2 className="!pt-4">The Real Product Was Confidence</CaseStudyH2>
+        <CaseStudyParagraph>
+          Looking back, I don&rsquo;t think the product we designed was a validation engine.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>It was confidence.</CaseStudyParagraph>
+        <CaseStudyParagraph>
+          Every interaction&mdash;from clarifying intent to explaining recommendations and simulating
+          impact&mdash;helped administrators answer one simple question:
+        </CaseStudyParagraph>
+        <CaseStudyQuote>
+          &ldquo;Do I understand this well enough to move forward?&rdquo;
+        </CaseStudyQuote>
+        <CaseStudyParagraph className="!pb-8">
+          Once they did, approving the policy became the easiest decision in the workflow.
+        </CaseStudyParagraph>
+        <CaseStudyH2 className="!pt-4 !pb-2">One Workspace. One Conversation.</CaseStudyH2>
+        <CaseStudyParagraph>
+          The most successful part of the experience wasn&rsquo;t any individual screen.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph>It was the continuity.</CaseStudyParagraph>
+        <CaseStudyParagraph>
+          The original request stayed visible, every decision built on the last, and the entire
+          workflow happened in one shared workspace.
+        </CaseStudyParagraph>
+        <CaseStudyParagraph className="!pb-8">
+          By the time the policy was approved, it no longer felt AI-generated. It felt like a decision
+          the administrator had made&mdash;with AI helping along the way.
+        </CaseStudyParagraph>
+        <CaseStudyDivider className="!mb-8" />
+        <CaseStudyH2 className="!pt-4 !pb-6">What Changed — and Where I&rsquo;d Take It Next</CaseStudyH2>
+        <CaseStudyWide className="!pb-8">
+          <PolicyCopilotLookingBack />
+        </CaseStudyWide>
+        <CaseStudyFaq className="!pt-8 !pb-12" items={POLICY_COPILOT_FAQ_ITEMS} />
       </CaseStudyProse>
-      </div>
     </>
   );
 }

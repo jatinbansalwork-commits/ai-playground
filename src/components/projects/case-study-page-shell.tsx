@@ -1,18 +1,20 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { CaseStudyFooterActions } from "@/components/case-studies/case-study-footer-actions";
 import { CaseStudySkipLink } from "@/components/case-studies/case-study-skip-link";
 import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-context";
 import { NavBackLink } from "@/components/navigation/nav-back-link";
 import { ScrollMinimapRuler } from "@/components/models/scroll-minimap-ruler";
 import { useCaseStudyPageAnalytics } from "@/hooks/use-case-study-page-analytics";
+import { useSessionBackNavigation } from "@/hooks/use-session-back-navigation";
 import { useCaseStudyHashFocus } from "@/hooks/use-case-study-hash-focus";
 import type { ProjectOpenSource } from "@/lib/analytics";
 import { CASE_STUDY_EDITORIAL_CLASS } from "@/components/case-studies/case-study-editorial-fonts";
 import {
   CASE_STUDY_BODY_ID,
   CASE_STUDY_TITLE_ID,
+  scrollCaseStudyRootToTop,
 } from "@/lib/case-study-a11y";
 
 interface CaseStudyPageShellProps {
@@ -41,6 +43,16 @@ export function CaseStudyPageShell({
   children,
 }: CaseStudyPageShellProps) {
   const scrollRootRef = useRef<HTMLElement>(null);
+  const back = useSessionBackNavigation({
+    href: backHref,
+    destination: backDestination,
+  });
+  const resolvedBackHref = back.href;
+  const resolvedBackDestination = back.destination;
+  const resolvedNavBackHref = navBackHref === backHref ? resolvedBackHref : navBackHref;
+  const resolvedNavBackDestination =
+    navBackDestination === backDestination ? resolvedBackDestination : navBackDestination;
+
   useCaseStudyHashFocus();
   useCaseStudyPageAnalytics({
     slug: analyticsSlug,
@@ -48,6 +60,13 @@ export function CaseStudyPageShell({
     source: analyticsSource,
     scrollRootRef,
   });
+
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    scrollCaseStudyRootToTop();
+  }, []);
 
   return (
     <CaseStudyTocProvider>
@@ -59,7 +78,7 @@ export function CaseStudyPageShell({
         tabIndex={-1}
       >
         <CaseStudySkipLink />
-        <NavBackLink href={navBackHref} destination={navBackDestination} />
+        <NavBackLink href={resolvedNavBackHref} destination={resolvedNavBackDestination} />
 
         <article
           id={CASE_STUDY_BODY_ID}
@@ -68,7 +87,10 @@ export function CaseStudyPageShell({
           className={`case-study-body ${CASE_STUDY_EDITORIAL_CLASS} mx-auto w-full max-w-5xl px-4 outline-none sm:px-8`}
         >
           <div className="case-study-editorial-flow">{children}</div>
-          <CaseStudyFooterActions backHref={backHref} />
+          <CaseStudyFooterActions
+            backHref={resolvedBackHref}
+            backDestination={resolvedBackDestination}
+          />
         </article>
       </main>
 

@@ -40,14 +40,14 @@ export function CanvasSection({
         <div className="mb-3">
           {title ? (
             <p
-              className="text-[13px] font-medium tracking-tight"
+              className="text-[12px] font-medium tracking-tight"
               style={{ color: CLAUDE.textSecondary, fontFamily: CLAUDE.fontDisplay }}
             >
               {title}
             </p>
           ) : null}
           {hint ? (
-            <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            <p className="mt-0.5 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
               {hint}
             </p>
           ) : null}
@@ -62,13 +62,13 @@ export function SectionLabel({ children, hint }: { children: ReactNode; hint?: s
   return (
     <div className="mb-3">
       <p
-        className="text-[15px] font-normal leading-snug tracking-tight"
+        className="text-[14px] font-normal leading-snug tracking-tight"
         style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}
       >
         {children}
       </p>
       {hint ? (
-        <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
           {hint}
         </p>
       ) : null}
@@ -88,7 +88,7 @@ export function StarterPromptChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3.5 py-1.5 text-[11px] leading-snug transition-all",
+        "rounded-full border px-3.5 py-1.5 text-[10px] leading-snug transition-all",
         "hover:border-[rgb(92_151_238/0.35)] hover:bg-[rgb(92_151_238/0.08)]",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C97EE]",
       )}
@@ -123,12 +123,12 @@ export function IntentLanding({
   return (
     <div className="mx-auto w-full max-w-xl px-2 text-center">
       <h3
-        className="text-[1.125rem] font-normal tracking-tight md:text-[1.25rem]"
+        className="text-[1rem] font-normal tracking-tight md:text-[1rem]"
         style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}
       >
         What security outcome do you need?
       </h3>
-      <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+      <p className="mt-2 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
         Plain language only — no firewall syntax required.
       </p>
 
@@ -151,14 +151,14 @@ export function IntentLanding({
           }}
           placeholder={placeholder}
           rows={3}
-          className="w-full resize-none bg-transparent px-2 py-2 text-center text-[14px] leading-relaxed outline-none transition-colors md:text-left [&::placeholder]:text-[#8e8b82]"
+          className="w-full resize-none bg-transparent px-2 py-2 text-center text-[13px] leading-relaxed outline-none transition-colors md:text-left [&::placeholder]:text-[#8e8b82]"
           style={{ color: CLAUDE.text }}
         />
         <div
           className="flex items-center justify-between gap-2 border-t px-1 pt-2"
           style={{ borderColor: CLAUDE.hairline }}
         >
-          <span className="text-[10px]" style={{ color: CLAUDE.textSoft }}>
+          <span className="text-[9px]" style={{ color: CLAUDE.textSoft }}>
             ⌘ Enter
           </span>
           <PrimaryBtn onClick={onSubmit}>Understand intent</PrimaryBtn>
@@ -206,7 +206,7 @@ export function PrimaryBtn({
       onClick={onClick}
       style={styleMap[variant]}
       className={cn(
-        "inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[13px] font-medium transition-all",
+        "inline-flex h-9 shrink-0 items-center justify-center rounded-full px-4 text-[12px] font-medium transition-all",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5C97EE]",
         "disabled:cursor-not-allowed disabled:opacity-40",
         styles[variant],
@@ -226,7 +226,7 @@ export function StatusBadge({ status }: { status: "success" | "warning" | "atten
   const s = map[status];
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium"
+      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-medium"
       style={{ color: s.c, backgroundColor: s.bg }}
     >
       <span className="h-1 w-1 rounded-full" style={{ backgroundColor: s.c }} aria-hidden />
@@ -251,7 +251,7 @@ export function ConfidenceMeter({ value, analysing = false }: { value: number; a
         />
       </div>
       <span
-        className="text-sm font-medium tabular-nums"
+        className="text-[13px] font-medium tabular-nums"
         style={{ color: CLAUDE.primary }}
       >
         {value}%
@@ -286,19 +286,19 @@ export function EntityChip({
         backgroundColor: CLAUDE.surface,
       }}
     >
-      <p className="text-[10px] font-medium" style={{ color: CLAUDE.textMuted }}>
+      <p className="text-[9px] font-medium" style={{ color: CLAUDE.textMuted }}>
         {label}
       </p>
       {editable && onChange ? (
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-0.5 w-full bg-transparent text-[12px] font-medium outline-none"
+          className="mt-0.5 w-full bg-transparent text-[11px] font-medium outline-none"
           style={{ color: CLAUDE.text }}
           aria-label={label}
         />
       ) : (
-        <p className="mt-0.5 truncate text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="mt-0.5 truncate text-[11px] font-medium" style={{ color: CLAUDE.text }}>
           {value}
         </p>
       )}
@@ -342,10 +342,10 @@ export function TopologyFlow({
             className="min-w-0 flex-1 rounded-lg px-1.5 py-1.5 text-center"
             style={{ backgroundColor: CLAUDE.surfaceRaised }}
           >
-            <p className="text-[9px] font-medium" style={{ color: CLAUDE.textMuted }}>
+            <p className="text-[8px] font-medium" style={{ color: CLAUDE.textMuted }}>
               {node.label}
             </p>
-            <p className="truncate text-[11px] font-medium" style={{ color: CLAUDE.text }}>
+            <p className="truncate text-[10px] font-medium" style={{ color: CLAUDE.text }}>
               {node.value}
             </p>
           </div>
@@ -374,16 +374,16 @@ export function CollapsedIntent({ text, onEdit }: { text: string; onEdit: () => 
       className="flex items-center gap-2.5 rounded-[10px] border px-3 py-2.5"
       style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surface }}
     >
-      <span className="text-[10px] font-medium" style={{ color: CLAUDE.textMuted }}>
+      <span className="text-[9px] font-medium" style={{ color: CLAUDE.textMuted }}>
         Intent
       </span>
-      <p className="min-w-0 flex-1 truncate text-[12px]" style={{ color: CLAUDE.textSecondary }}>
+      <p className="min-w-0 flex-1 truncate text-[11px]" style={{ color: CLAUDE.textSecondary }}>
         {text}
       </p>
       <button
         type="button"
         onClick={onEdit}
-        className="shrink-0 text-[12px] font-medium hover:underline"
+        className="shrink-0 text-[11px] font-medium hover:underline"
         style={{ color: CLAUDE.primary }}
       >
         Edit
@@ -411,7 +411,7 @@ export function ClarificationCard({
         backgroundColor: selected ? CLAUDE.primaryMuted : CLAUDE.surface,
       }}
     >
-      <p className="text-[12px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
+      <p className="text-[11px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
         {question}
       </p>
       <div className="mt-2.5 flex flex-wrap gap-1.5">
@@ -420,7 +420,7 @@ export function ClarificationCard({
             key={option}
             type="button"
             onClick={() => onSelect(option)}
-            className="rounded-full border px-2.5 py-1 text-[11px] transition-all"
+            className="rounded-full border px-2.5 py-1 text-[10px] transition-all"
             style={{
               borderColor: selected === option ? CLAUDE.primaryBorder : CLAUDE.border,
               backgroundColor: selected === option ? CLAUDE.primaryMuted : "transparent",
@@ -460,13 +460,13 @@ export function ValidationRow({
     >
       <StatusBadge status={status} />
       <div className="min-w-0 flex-1">
-        <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
           {title}
         </p>
-        <p className="mt-0.5 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-0.5 text-[10px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
           {explanation}
         </p>
-        <p className="mt-0.5 text-[10px]" style={{ color: CLAUDE.accentTeal }}>
+        <p className="mt-0.5 text-[9px]" style={{ color: CLAUDE.accentTeal }}>
           {action}
         </p>
       </div>
@@ -504,7 +504,7 @@ export function RecommendationCard({
       }}
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
           {rec.title}
         </p>
         {rec.applied ? <StatusBadge status="success" /> : null}
@@ -515,7 +515,7 @@ export function RecommendationCard({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-2.5 space-y-1 overflow-hidden text-[11px] leading-relaxed"
+            className="mt-2.5 space-y-1 overflow-hidden text-[10px] leading-relaxed"
             style={{ color: CLAUDE.textMuted }}
           >
             <p><span style={{ color: CLAUDE.textSecondary }}>Why:</span> {rec.reason}</p>
@@ -530,7 +530,7 @@ export function RecommendationCard({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-2.5 grid grid-cols-2 gap-2 overflow-hidden text-[11px]"
+            className="mt-2.5 grid grid-cols-2 gap-2 overflow-hidden text-[10px]"
           >
             <div className="rounded-lg border p-2" style={{ borderColor: CLAUDE.border }}>
               <p className="mb-1 font-medium" style={{ color: CLAUDE.textMuted }}>Without</p>
@@ -550,7 +550,7 @@ export function RecommendationCard({
         <button
           type="button"
           onClick={onApply}
-          className="rounded-full px-2.5 py-0.5 text-[10px] font-medium"
+          className="rounded-full px-2.5 py-0.5 text-[9px] font-medium"
           style={{ color: CLAUDE.primary }}
         >
           {rec.applied ? "Applied" : "Apply"}
@@ -558,7 +558,7 @@ export function RecommendationCard({
         <button
           type="button"
           onClick={onToggleCompare}
-          className="rounded-full px-2.5 py-0.5 text-[10px]"
+          className="rounded-full px-2.5 py-0.5 text-[9px]"
           style={{ color: CLAUDE.textSecondary }}
         >
           {compareExpanded ? "Hide compare" : "Compare"}
@@ -566,7 +566,7 @@ export function RecommendationCard({
         <button
           type="button"
           onClick={onToggleWhy}
-          className="rounded-full px-2.5 py-0.5 text-[10px]"
+          className="rounded-full px-2.5 py-0.5 text-[9px]"
           style={{ color: CLAUDE.textSecondary }}
         >
           Why?
@@ -574,7 +574,7 @@ export function RecommendationCard({
         <button
           type="button"
           onClick={onDismiss}
-          className="rounded-full px-2.5 py-0.5 text-[10px]"
+          className="rounded-full px-2.5 py-0.5 text-[9px]"
           style={{ color: CLAUDE.textSoft }}
         >
           Dismiss
@@ -599,7 +599,7 @@ export function ProgressBar({ value, max }: { value: number; max: number }) {
           transition={{ duration: 0.35 }}
         />
       </div>
-      <span className="text-[10px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
+      <span className="text-[9px] tabular-nums" style={{ color: CLAUDE.textMuted }}>
         {value}/{max}
       </span>
     </div>
@@ -620,7 +620,7 @@ export function PromptChip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-[10px] border px-3 py-2.5 text-left text-[11px] leading-relaxed transition-all",
+        "rounded-[10px] border px-3 py-2.5 text-left text-[10px] leading-relaxed transition-all",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1",
       )}
       style={{
@@ -653,16 +653,16 @@ export function MemoryTimeline({
             ) : null}
           </div>
           <div className="pb-2.5">
-            <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
+            <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
               {event.title}
             </p>
             <p
-              className="line-clamp-2 text-[10px] leading-relaxed"
+              className="line-clamp-2 text-[9px] leading-relaxed"
               style={{ color: CLAUDE.textMuted }}
             >
               {event.detail}
             </p>
-            <p className="text-[9px]" style={{ color: CLAUDE.primary }}>
+            <p className="text-[8px]" style={{ color: CLAUDE.primary }}>
               {event.time}
             </p>
           </div>

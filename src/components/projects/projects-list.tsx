@@ -7,6 +7,10 @@ import { useProjectsPageAnalytics } from "@/hooks/use-projects-page-analytics";
 import type { ProjectRowItem } from "@/lib/projects-list-data";
 import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
 import { trackProjectListClick } from "@/lib/analytics";
+import {
+  backContextForProjectsListNavigation,
+  saveSessionBackContext,
+} from "@/lib/session-navigation";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -25,13 +29,14 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
       href={getProjectCaseStudyHref(project.slug)}
       className={PROJECTS_ROW_LINK_CLASS}
       title={overview}
-      onClick={() =>
+      onClick={() => {
+        saveSessionBackContext(backContextForProjectsListNavigation());
         trackProjectListClick({
           slug: project.slug,
           title: project.title,
           year: project.year,
-        })
-      }
+        });
+      }}
       onMouseEnter={() => onHoverStart(project)}
       onMouseLeave={onHoverEnd}
       onFocus={() => onHoverStart(project)}

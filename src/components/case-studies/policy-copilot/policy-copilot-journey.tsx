@@ -71,7 +71,7 @@ function ChatBubble({
       <div className="mb-1.5 flex items-center gap-2">
         {isUser ? (
           <div
-            className="flex h-[18px] w-[18px] items-center justify-center rounded-full text-[8px] font-bold"
+            className="flex h-[18px] w-[18px] items-center justify-center rounded-full text-[7px] font-bold"
             style={{ backgroundColor: CLAUDE.warning, color: "#1a1814" }}
           >
             J
@@ -79,14 +79,14 @@ function ChatBubble({
         ) : (
           <CopilotMark size={18} />
         )}
-        <p className="text-[9px] font-medium" style={{ color: CLAUDE.text }}>
+        <p className="text-[8px] font-medium" style={{ color: CLAUDE.text }}>
           {isUser ? "You" : "Policy Copilot"}
         </p>
-        <p className="ml-auto text-[8px]" style={{ color: CLAUDE.textSoft }}>
+        <p className="ml-auto text-[7px]" style={{ color: CLAUDE.textSoft }}>
           {message.time}
         </p>
       </div>
-      <p className="text-[10px] leading-relaxed md:text-[11px]" style={{ color: CLAUDE.textSecondary }}>
+      <p className="text-[9px] leading-relaxed md:text-[10px]" style={{ color: CLAUDE.textSecondary }}>
         {message.body}
       </p>
       {message.actions?.length ? (
@@ -97,7 +97,7 @@ function ChatBubble({
               type="button"
               onClick={action.onClick}
               className={cn(
-                "rounded-full border px-2.5 py-1 text-[9px] font-medium transition-colors",
+                "rounded-full border px-2.5 py-1 text-[8px] font-medium transition-colors",
                 action.primary ? "hover:opacity-90" : "hover:bg-white/[0.04]",
               )}
               style={
@@ -122,13 +122,13 @@ function EhrTopologyDiagram() {
       style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surface }}
       aria-label="EHR access topology: doctors allowed, nurses denied"
     >
-      <p className="mb-3 text-[9px] font-medium" style={{ color: CLAUDE.textMuted }}>
+      <p className="mb-3 text-[8px] font-medium" style={{ color: CLAUDE.textMuted }}>
         Built from your confirmed request.
       </p>
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <div
-            className="flex h-8 w-20 shrink-0 items-center justify-center rounded-lg border text-[9px] font-medium"
+            className="flex h-8 w-20 shrink-0 items-center justify-center rounded-lg border text-[8px] font-medium"
             style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
           >
             Doctor
@@ -136,14 +136,14 @@ function EhrTopologyDiagram() {
           <div className="relative min-w-0 flex-1">
             <div className="h-px" style={{ backgroundColor: CLAUDE.validated }} />
             <span
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded px-1.5 py-0.5 text-[7px] font-medium"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded px-1.5 py-0.5 text-[6px] font-medium"
               style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
             >
               Allow
             </span>
           </div>
           <div
-            className="flex h-10 w-24 shrink-0 items-center justify-center rounded-lg border text-[9px] font-medium"
+            className="flex h-10 w-24 shrink-0 items-center justify-center rounded-lg border text-[8px] font-medium"
             style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
           >
             EHR System
@@ -151,7 +151,7 @@ function EhrTopologyDiagram() {
         </div>
         <div className="flex justify-center">
           <span
-            className="rounded-full border px-2 py-0.5 text-[7px]"
+            className="rounded-full border px-2 py-0.5 text-[6px]"
             style={{ borderColor: CLAUDE.primaryBorder, color: CLAUDE.primary, backgroundColor: CLAUDE.primaryMuted }}
           >
             Audit logging enabled
@@ -159,7 +159,7 @@ function EhrTopologyDiagram() {
         </div>
         <div className="flex items-center gap-2">
           <div
-            className="flex h-8 w-20 shrink-0 items-center justify-center rounded-lg border text-[9px] font-medium"
+            className="flex h-8 w-20 shrink-0 items-center justify-center rounded-lg border text-[8px] font-medium"
             style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
           >
             Nurses
@@ -167,7 +167,7 @@ function EhrTopologyDiagram() {
           <div className="relative min-w-0 flex-1">
             <div className="h-px border-t border-dashed" style={{ borderColor: CLAUDE.risk }} />
             <span
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded px-1.5 py-0.5 text-[7px] font-medium"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded px-1.5 py-0.5 text-[6px] font-medium"
               style={{ backgroundColor: CLAUDE.riskMuted, color: CLAUDE.risk }}
             >
               Deny
@@ -235,7 +235,7 @@ function CanvasPanel({
           label={meta.label}
         />
         {inProgress ? (
-          <p className="mt-1 text-[8px]" style={{ color: CLAUDE.textSoft }}>
+          <p className="mt-1 text-[7px]" style={{ color: CLAUDE.textSoft }}>
             In progress…
           </p>
         ) : null}
@@ -254,36 +254,36 @@ function CanvasPanel({
               </div>
               <div>
                 <PanelLabel>Policy details</PanelLabel>
-                <p className="mt-1 text-[10px]" style={{ color: CLAUDE.textSecondary }}>
+                <p className="mt-1 text-[9px]" style={{ color: CLAUDE.textSecondary }}>
                   Created by: {EHR_JOURNEY_DEFAULTS.authorName}
                 </p>
-                <p className="mt-1 text-[9px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                <p className="mt-1 text-[8px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
                   Who owns this rule, why it exists, and when to review it.
                 </p>
                 <label className="mb-2 mt-2 block">
-                  <span className="text-[9px]" style={{ color: CLAUDE.textSoft }}>Policy name</span>
+                  <span className="text-[8px]" style={{ color: CLAUDE.textSoft }}>Policy name</span>
                   <input
                     value={policyName}
                     onChange={(e) => onPolicyNameChange(e.target.value)}
-                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[10px] outline-none focus:border-[rgb(92_151_238/0.45)]"
+                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[9px] outline-none focus:border-[rgb(92_151_238/0.45)]"
                     style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
                   />
                 </label>
                 <label className="mb-2 block">
-                  <span className="text-[8px]" style={{ color: CLAUDE.textSoft }}>Business justification</span>
+                  <span className="text-[7px]" style={{ color: CLAUDE.textSoft }}>Business justification</span>
                   <input
                     value={justification}
                     onChange={(e) => onJustificationChange(e.target.value)}
-                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[10px] outline-none focus:border-[rgb(92_151_238/0.45)]"
+                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[9px] outline-none focus:border-[rgb(92_151_238/0.45)]"
                     style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[8px]" style={{ color: CLAUDE.textSoft }}>Review schedule</span>
+                  <span className="text-[7px]" style={{ color: CLAUDE.textSoft }}>Review schedule</span>
                   <select
                     value={reviewSchedule}
                     onChange={(e) => onReviewScheduleChange(e.target.value)}
-                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[10px] outline-none"
+                    className="mt-0.5 w-full rounded-lg border px-2 py-1.5 text-[9px] outline-none"
                     style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surfaceRaised, color: CLAUDE.text }}
                   >
                     <option value="Review every 90 days">Review every 90 days</option>
@@ -296,10 +296,10 @@ function CanvasPanel({
 
           {phase === "validate_ready" ? (
             <motion.div key="val-ready" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-              <p className="text-[13px] font-normal tracking-tight" style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}>
+              <p className="text-[12px] font-normal tracking-tight" style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}>
                 Pre-deploy checks
               </p>
-              <p className="text-[10px]" style={{ color: CLAUDE.textMuted }}>
+              <p className="text-[9px]" style={{ color: CLAUDE.textMuted }}>
                 See who is affected and whether anything breaks.
               </p>
               <UnitTestSummary />
@@ -315,7 +315,7 @@ function CanvasPanel({
               <PanelLabel>What to expect</PanelLabel>
               <ImpactForecastPanel />
               <div
-                className="rounded-lg border p-2 font-mono text-[8px] leading-relaxed"
+                className="rounded-lg border p-2 font-mono text-[7px] leading-relaxed"
                 style={{ borderColor: CLAUDE.border, backgroundColor: "#0d0c0b", color: CLAUDE.validated }}
               >
                 {simLines.map((line) => (
@@ -334,7 +334,7 @@ function CanvasPanel({
 
           {phase === "deploy_ready" ? (
             <motion.div key="dep-ready" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-              <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[9px] font-medium" style={{ color: CLAUDE.text }}>
                 Ready to deploy
               </p>
               <div className="rounded-xl border p-2.5" style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surface }}>
@@ -347,19 +347,19 @@ function CanvasPanel({
                   ["Rollback", "Auto-rollback if errors exceed 3% in the first 5 minutes"],
                 ].map(([k, v]) => (
                   <div key={k} className="mb-1.5 last:mb-0">
-                    <p className="text-[8px]" style={{ color: CLAUDE.textSoft }}>{k}</p>
-                    <p className="text-[9px]" style={{ color: CLAUDE.textSecondary }}>{v}</p>
+                    <p className="text-[7px]" style={{ color: CLAUDE.textSoft }}>{k}</p>
+                    <p className="text-[8px]" style={{ color: CLAUDE.textSecondary }}>{v}</p>
                   </div>
                 ))}
-                <p className="mt-2 text-[8px] font-medium" style={{ color: CLAUDE.validated }}>
+                <p className="mt-2 text-[7px] font-medium" style={{ color: CLAUDE.validated }}>
                   ✓ Pre-deploy checks passed
                 </p>
               </div>
-              <p className="text-[9px] font-medium" style={{ color: CLAUDE.textMuted }}>
+              <p className="text-[8px] font-medium" style={{ color: CLAUDE.textMuted }}>
                 Regional deployment status
               </p>
               {DEPLOY_REGIONS.map((region, i) => (
-                <div key={region.id} className="flex items-center justify-between text-[9px]">
+                <div key={region.id} className="flex items-center justify-between text-[8px]">
                   <span style={{ color: CLAUDE.textSecondary }}>{region.label}</span>
                   <span style={{ color: CLAUDE.textSoft }}>{regionStatus[i] === "synced" ? "Synced" : "Pending"}</span>
                 </div>
@@ -369,7 +369,7 @@ function CanvasPanel({
 
           {phase === "deploy_progress" ? (
             <motion.div key="dep-prog" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
-              <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[9px] font-medium" style={{ color: CLAUDE.text }}>
                 Deployment progress
               </p>
               {DEPLOY_PROGRESS_STEPS.map((step, stepIdx) => {
@@ -391,7 +391,7 @@ function CanvasPanel({
                           </svg>
                         ) : null}
                       </span>
-                      <p className="text-[9px] font-medium" style={{ color: done || active ? CLAUDE.text : CLAUDE.textSoft }}>
+                      <p className="text-[8px] font-medium" style={{ color: done || active ? CLAUDE.text : CLAUDE.textSoft }}>
                         {step.label}
                       </p>
                     </div>
@@ -400,7 +400,7 @@ function CanvasPanel({
                         {step.items.map((item, subIdx) => (
                           <li
                             key={item}
-                            className="text-[8px]"
+                            className="text-[7px]"
                             style={{
                               color:
                                 done || (active && subIdx <= deploySubStep)
@@ -437,18 +437,18 @@ function CanvasPanel({
                 className="rounded-xl border px-3 py-2.5 text-center"
                 style={{ borderColor: CLAUDE.validatedMuted, backgroundColor: CLAUDE.validatedMuted }}
               >
-                <p className="text-[11px] font-medium" style={{ color: CLAUDE.validated }}>
+                <p className="text-[10px] font-medium" style={{ color: CLAUDE.validated }}>
                   All done
                 </p>
-                <p className="mt-0.5 text-[10px]" style={{ color: CLAUDE.textSecondary }}>
+                <p className="mt-0.5 text-[9px]" style={{ color: CLAUDE.textSecondary }}>
                   Full record saved — versioned and ready for audit.
                 </p>
               </div>
               <PanelLabel>Lifecycle timeline</PanelLabel>
               <LifecycleTimeline />
               <div className="rounded-xl border p-2.5" style={{ borderColor: CLAUDE.border, backgroundColor: CLAUDE.surface }}>
-                <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>No changes after deploy</p>
-                <p className="mt-0.5 text-[9px]" style={{ color: CLAUDE.textMuted }}>
+                <p className="text-[9px] font-medium" style={{ color: CLAUDE.text }}>No changes after deploy</p>
+                <p className="mt-0.5 text-[8px]" style={{ color: CLAUDE.textMuted }}>
                   847 access events logged · nothing edited post-launch.
                 </p>
               </div>
@@ -723,7 +723,7 @@ export function PolicyCopilotJourney({
                 <button
                   key={pill}
                   type="button"
-                  className="rounded-full border px-2 py-0.5 text-[8px] transition-colors hover:bg-white/[0.03]"
+                  className="rounded-full border px-2 py-0.5 text-[7px] transition-colors hover:bg-white/[0.03]"
                   style={{ borderColor: CLAUDE.primaryBorder, color: CLAUDE.textMuted }}
                 >
                   {pill}
@@ -751,7 +751,7 @@ export function PolicyCopilotJourney({
                   disabled={composerDisabled}
                   rows={1}
                   placeholder={composerPlaceholder}
-                  className="min-h-[2.25rem] w-full resize-none bg-transparent px-3 py-2 pr-10 text-[10px] leading-relaxed outline-none md:text-[11px] [&::placeholder]:text-[#8e8b82]"
+                  className="min-h-[2.25rem] w-full resize-none bg-transparent px-3 py-2 pr-10 text-[9px] leading-relaxed outline-none md:text-[10px] [&::placeholder]:text-[#8e8b82]"
                   style={{ color: CLAUDE.text }}
                   aria-label="Policy chat composer"
                 />
@@ -769,7 +769,7 @@ export function PolicyCopilotJourney({
               </div>
               {footerCta}
             </div>
-            <p className="mt-1.5 text-center text-[8px]" style={{ color: CLAUDE.textSoft }}>
+            <p className="mt-1.5 text-center text-[7px]" style={{ color: CLAUDE.textSoft }}>
               Policy Copilot uses AI to help create firewall policies. Review before deployment.
             </p>
           </div>

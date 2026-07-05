@@ -706,7 +706,7 @@ export function AiChatBall() {
                       className={[
                         "max-w-[95%] text-sm",
                         message.role === "user"
-                          ? "ml-auto rounded-2xl bg-[#6B36FF] px-4 py-3 text-white ring-1 ring-inset ring-white/10"
+                          ? "ml-auto rounded-2xl bg-brand-accent px-4 py-3 text-brand-accent-foreground ring-1 ring-inset ring-black/10"
                           : `mr-auto px-4 py-3.5 ${EXPERIMENTS_CARD.shell}`,
                       ].join(" ")}
                     >
@@ -790,7 +790,7 @@ export function AiChatBall() {
                     !draft.trim()
                   }
                   aria-label="Send message"
-                  className={`${TARGET_HIT_AREA} flex shrink-0 items-center justify-center rounded-full bg-[#6B36FF] text-base text-white ring-1 ring-inset ring-white/10 transition-opacity disabled:cursor-not-allowed disabled:opacity-30 ${FOCUS_RING}`}
+                  className={`${TARGET_HIT_AREA} flex shrink-0 items-center justify-center rounded-full bg-brand-accent text-base text-brand-accent-foreground ring-1 ring-inset ring-black/10 transition-opacity disabled:cursor-not-allowed disabled:opacity-30 ${FOCUS_RING}`}
                 >
                   <span aria-hidden>→</span>
                 </button>

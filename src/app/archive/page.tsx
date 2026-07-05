@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { MePage } from "@/components/me/me-page";
 import { JsonLd } from "@/components/seo/json-ld";
-import { buildPageMetadata, HOME_SEO_DESCRIPTION, profilePageJsonLd } from "@/lib/seo";
+import { buildPageMetadata, HOME_SEO_DESCRIPTION, allProjectsSeoKeywords, profilePageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "About Jatin Bansal",
   description: HOME_SEO_DESCRIPTION,
   path: "/archive",
+  keywords: allProjectsSeoKeywords(),
 });
 
 export default function ArchivePage() {

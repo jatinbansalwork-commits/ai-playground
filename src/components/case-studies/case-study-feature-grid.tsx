@@ -16,7 +16,7 @@ interface CaseStudyFeatureGridProps {
 function FeatureIconShell({ children }: { children: ReactNode }) {
   return (
     <div
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#6B36FF]/30 bg-[#6B36FF]/10 text-[#6B36FF]"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#FF894A]/30 bg-[#FF894A]/10 text-[#FF894A]"
       aria-hidden
     >
       {children}

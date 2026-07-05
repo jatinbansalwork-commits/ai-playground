@@ -24,11 +24,11 @@ const SIDEBAR_X = "px-2.5";
 /** Fixed optical column so labels share one vertical edge. */
 const SIDEBAR_ICON_SLOT = "flex size-5 shrink-0 items-center justify-center";
 const SIDEBAR_ROW =
-  "flex w-full min-h-9 items-center gap-2.5 rounded-[10px] px-2.5 py-1.5 text-left text-[13px] leading-none";
+  "flex w-full min-h-9 items-center gap-2.5 rounded-[10px] px-2.5 py-1.5 text-left text-[12px] leading-none";
 const SIDEBAR_NAV_ROW =
-  "relative flex w-full min-h-10 items-center gap-2.5 rounded-[10px] px-2.5 py-2 text-left text-[13px] leading-snug";
+  "relative flex w-full min-h-10 items-center gap-2.5 rounded-[10px] px-2.5 py-2 text-left text-[12px] leading-snug";
 const SIDEBAR_RECENT_ROW =
-  "grid w-full min-h-9 grid-cols-[0.375rem_1.25rem_minmax(0,1fr)] items-center gap-x-2 rounded-[10px] px-2.5 py-1.5 text-left text-[13px] leading-none";
+  "flex w-full min-h-9 items-center gap-1.5 rounded-[10px] py-1.5 pl-1.5 pr-2.5 text-left text-[12px] leading-none";
 
 export function CopilotMark({ size = 40, glow = false }: { size?: number; glow?: boolean }) {
   return (
@@ -86,7 +86,7 @@ export function FlowProgress({
     <div className={compact ? "w-full" : ""}>
       <div className="flex items-center justify-between gap-2">
         <p
-          className={cn("font-medium", compact ? "text-sm" : "text-[13px]")}
+          className={cn("font-medium", compact ? "text-[13px]" : "text-[12px]")}
           style={{ color: CLAUDE.textMuted }}
         >
           {step > 0 ? `Step ${step}/${total}` : "Getting started"}
@@ -97,7 +97,7 @@ export function FlowProgress({
               key={status}
               initial={reduced ? false : { opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-xs"
+              className="text-[11px]"
               style={{ color: CLAUDE.textSoft }}
             >
               {status}
@@ -108,7 +108,7 @@ export function FlowProgress({
               key={progress}
               initial={reduced ? false : { opacity: 0.6, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className={cn("tabular-nums font-medium", compact ? "text-sm" : "text-[13px]")}
+              className={cn("tabular-nums font-medium", compact ? "text-[13px]" : "text-[12px]")}
               style={{ color: CLAUDE.primary }}
             >
               {progress}%
@@ -133,7 +133,7 @@ export function FlowProgress({
       </div>
       <motion.p
         layout
-        className={cn("mt-2 tracking-tight", compact ? "text-[12px]" : "text-[15px] md:text-[16px]")}
+        className={cn("mt-2 tracking-tight", compact ? "text-[10px]" : "text-[13px] md:text-[14px]")}
         style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
       >
         {label}
@@ -172,7 +172,7 @@ function RecentList({
 }) {
   if (groups.length === 0) {
     return (
-      <p className="py-2 text-sm" style={{ color: CLAUDE.textSoft }}>
+      <p className="py-2 text-[13px]" style={{ color: CLAUDE.textSoft }}>
         No policies match your search.
       </p>
     );
@@ -201,7 +201,6 @@ function RecentList({
                     onClick={() => onSelect(item)}
                     className={cn(
                       COPILOT_FOCUS,
-                      COPILOT_TARGET.chip,
                       SIDEBAR_RECENT_ROW,
                       "transition-colors hover:bg-white/[0.05]",
                       isActive && "bg-white/[0.07] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]",
@@ -211,15 +210,15 @@ function RecentList({
                     title={item.prompt}
                   >
                     <span
-                      className="mx-auto h-1.5 w-1.5 shrink-0 rounded-full"
+                      className="h-1.5 w-1.5 shrink-0 rounded-full"
                       style={{ backgroundColor: STATUS_DOT[status] }}
                       title={statusTip}
                       aria-label={statusTip ?? status}
                     />
                     <span className={SIDEBAR_ICON_SLOT} aria-hidden>
-                      <span className="text-[13px] leading-none">{icon}</span>
+                      <span className="text-[12px] leading-none">{icon}</span>
                     </span>
-                    <span className="block min-w-0 truncate">{item.label}</span>
+                    <span className="min-w-0 flex-1 truncate">{item.label}</span>
                   </button>
                 </li>
               );
@@ -259,7 +258,7 @@ export function PolicyCopilotSidebar({
   return (
     <aside
       className={cn(
-        "relative z-10 flex shrink-0 flex-col border-r",
+        "relative z-10 flex h-full min-h-0 shrink-0 flex-col overflow-hidden border-r",
         compact ? "w-[148px] md:w-[156px]" : "w-[172px] md:w-[192px]",
       )}
       style={{ backgroundColor: CLAUDE.surface, borderColor: CLAUDE.hairline }}
@@ -321,7 +320,7 @@ export function PolicyCopilotSidebar({
             placeholder="Search Policies..."
             className={cn(
               COPILOT_FOCUS,
-              "w-full rounded-[10px] border py-2.5 pl-9 pr-2.5 text-sm outline-none [&::placeholder]:text-[#a8a49c]",
+              "w-full rounded-[10px] border py-2.5 pl-9 pr-2.5 text-[13px] outline-none [&::placeholder]:text-[#a8a49c]",
             )}
             style={{
               backgroundColor: CLAUDE.surfaceRaised,
@@ -337,12 +336,6 @@ export function PolicyCopilotSidebar({
         style={{ borderColor: CLAUDE.hairline }}
         aria-label="Policy Copilot navigation"
       >
-        <p
-          className={cn("mb-2 font-medium tracking-wide", COPILOT_TYPE.eyebrow)}
-          style={{ color: CLAUDE.textMuted }}
-        >
-          Navigation
-        </p>
         <ul className="space-y-1.5">
           {COPILOT_NAV_ITEMS.map((item) => {
             const navId = item.id as CopilotNavId;
@@ -357,7 +350,7 @@ export function PolicyCopilotSidebar({
                     SIDEBAR_NAV_ROW,
                     "w-full font-medium transition-colors",
                     isActive
-                      ? "bg-white/[0.08] shadow-[inset_3px_0_0_0_#5C97EE,inset_0_0_0_1px_rgba(255,255,255,0.06)]"
+                      ? "bg-white/[0.08] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.06)]"
                       : "hover:bg-white/[0.04]",
                   )}
                   style={{ color: isActive ? CLAUDE.text : CLAUDE.textMuted }}
@@ -379,8 +372,11 @@ export function PolicyCopilotSidebar({
       </nav>
 
       <div
-        className={cn("no-scrollbar min-h-0 min-w-0 flex-1 overflow-y-auto border-t pt-3 pb-2", SIDEBAR_X)}
-        style={{ borderColor: CLAUDE.hairline }}
+        className={cn(
+          "no-scrollbar min-h-0 overflow-y-auto border-t pt-3 pb-2",
+          SIDEBAR_X,
+        )}
+        style={{ borderColor: CLAUDE.hairline, maxHeight: "calc(100% - 13.25rem)" }}
       >
         <RecentList
           groups={filteredRecent}

@@ -141,7 +141,7 @@ export function PromptForkResponse({
                 {content}
                 {isStreaming && !isBlockComplete && (
                   <span
-                    className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#6b36ff]"
+                    className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#FF894A]"
                     aria-hidden
                   />
                 )}
@@ -163,7 +163,7 @@ export function PromptForkResponse({
                 <p className="font-medium text-neutral-100">
                   {block.lead?.slice(0, visibleChars)}
                   <span
-                    className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#6b36ff]"
+                    className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#FF894A]"
                     aria-hidden
                   />
                 </p>
@@ -189,7 +189,7 @@ export function PromptForkResponse({
               </ul>
               {isStreaming && !isBlockComplete && (
                 <span
-                  className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#6b36ff]"
+                  className="ml-0.5 inline-block h-4 w-0.5 animate-pulse bg-[#FF894A]"
                   aria-hidden
                 />
               )}
@@ -215,7 +215,7 @@ export function PromptForkResponse({
                 <code>{displayCode}</code>
                 {isStreaming && !isBlockComplete && (
                   <span
-                    className="ml-0.5 inline-block h-3 w-0.5 animate-pulse bg-[#6b36ff]"
+                    className="ml-0.5 inline-block h-3 w-0.5 animate-pulse bg-[#FF894A]"
                     aria-hidden
                   />
                 )}

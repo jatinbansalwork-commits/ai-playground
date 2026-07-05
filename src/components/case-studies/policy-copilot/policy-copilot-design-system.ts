@@ -1,3 +1,4 @@
+import type { EntityTypeIconId } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
 import type { CopilotSkillId } from "@/components/case-studies/policy-copilot/policy-copilot-skills";
 import type { LivingPhase } from "@/components/case-studies/policy-copilot/policy-copilot-living";
 import { CLAUDE } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
@@ -31,6 +32,237 @@ export const INSIGHT_KIND_LABEL: Record<InsightKind, string> = {
   evidence: "Evidence",
 };
 
+export const INSIGHT_KIND_COLORS: Record<InsightKind, { color: string; muted: string }> = {
+  pattern: { color: "#a78bfa", muted: "rgb(167 139 250 / 0.14)" },
+  status: { color: CLAUDE.primary, muted: CLAUDE.primaryMuted },
+  evidence: { color: CLAUDE.accentTeal, muted: CLAUDE.accentTealMuted },
+};
+
+export const SKILL_STEP_TOOLTIPS: Record<CopilotSkillId, { active: string; next: string }> = {
+  intent: {
+    active: "Clarifying who needs access and to what — nothing deploys yet.",
+    next: "Author will map your words to real objects and draft rules.",
+  },
+  author: {
+    active: "Mapping inventory objects and drafting rules for your review.",
+    next: "Validate runs blast-radius and compliance checks.",
+  },
+  validate: {
+    active: "Running safety checks — each pass should reduce uncertainty.",
+    next: "Optimise optional improvements, then approve to deploy.",
+  },
+  deploy: {
+    active: "Approval gate — review scope, compliance, and blast radius.",
+    next: "Govern keeps the audit trail and memory after go-live.",
+  },
+  optimize: {
+    active: "Optional evidence-based tweaks — apply or skip before approve.",
+    next: "Deploy pushes to production regions with rollback armed.",
+  },
+  govern: {
+    active: "Live policy — full record, memory, and audit trail available.",
+    next: "Edit or retire from here; changes stay in draft until re-approved.",
+  },
+};
+
+export const ENTITY_TYPE_TOKENS: Record<
+  EntityTypeIconId,
+  { color: string; muted: string; label: string }
+> = {
+  identity: { color: "#60a5fa", muted: "rgb(96 165 250 / 0.14)", label: "Identity" },
+  application: { color: CLAUDE.accentTeal, muted: CLAUDE.accentTealMuted, label: "Application" },
+  saas: { color: "#f472b6", muted: "rgb(244 114 182 / 0.14)", label: "SaaS" },
+  database: { color: "#fbbf24", muted: "rgb(251 191 36 / 0.14)", label: "Database" },
+  zone: { color: "#a78bfa", muted: "rgb(167 139 250 / 0.14)", label: "Zone" },
+  device: { color: CLAUDE.validated, muted: CLAUDE.validatedMuted, label: "Device" },
+  audit: { color: CLAUDE.warning, muted: CLAUDE.warningMuted, label: "Audit" },
+  schedule: { color: CLAUDE.textSecondary, muted: CLAUDE.surfaceOverlay, label: "Schedule" },
+  default: { color: CLAUDE.primary, muted: CLAUDE.primaryMuted, label: "Object" },
+};
+
+export function entityTypeKey(type?: string): EntityTypeIconId {
+  if (!type) return "default";
+  const lower = type.toLowerCase();
+  const match = (Object.keys(ENTITY_TYPE_TOKENS) as EntityTypeIconId[]).find(
+    (k) => k !== "default" && lower.includes(k),
+  );
+  return match ?? "default";
+}
+
+export const SAFETY_CHECK_ICON_KIND: Record<string, "shield" | "crosshair" | "users" | "conflict"> = {
+  hipaa: "shield",
+  blast: "users",
+  risk: "crosshair",
+  conflict: "conflict",
+};
+
+export const CANVAS_SECTION_IDS = {
+  reflection: "canvas-reflection",
+  author: "canvas-author",
+  compliance: "canvas-compliance",
+  reasoning: "canvas-reasoning",
+  govern: "canvas-govern",
+  checks: "canvas-checks",
+} as const;
+
+export type CanvasSectionId = (typeof CANVAS_SECTION_IDS)[keyof typeof CANVAS_SECTION_IDS];
+
+export const CANVAS_SECTION_SKILL: Record<CanvasSectionId, CopilotSkillId> = {
+  [CANVAS_SECTION_IDS.reflection]: "intent",
+  [CANVAS_SECTION_IDS.author]: "author",
+  [CANVAS_SECTION_IDS.checks]: "validate",
+  [CANVAS_SECTION_IDS.reasoning]: "validate",
+  [CANVAS_SECTION_IDS.compliance]: "validate",
+  [CANVAS_SECTION_IDS.govern]: "govern",
+};
+
+export const CANVAS_PREVIEW_COPY: Record<
+  CanvasSectionId,
+  { title: string; hint: string }
+> = {
+  [CANVAS_SECTION_IDS.reflection]: {
+    title: "Understanding",
+    hint: "How Copilot interpreted your intent before drafting.",
+  },
+  [CANVAS_SECTION_IDS.author]: {
+    title: "Author",
+    hint: "Plain-language interpretation ↔ generated rules.",
+  },
+  [CANVAS_SECTION_IDS.checks]: {
+    title: "Safety checks",
+    hint: "Compliance, blast radius, and conflict validation.",
+  },
+  [CANVAS_SECTION_IDS.reasoning]: {
+    title: "Reasoning",
+    hint: "Evidence chain behind each proposed rule.",
+  },
+  [CANVAS_SECTION_IDS.compliance]: {
+    title: "Compliance",
+    hint: "Scope summary and framework alignment.",
+  },
+  [CANVAS_SECTION_IDS.govern]: {
+    title: "Govern",
+    hint: "Audit trail and institutional memory.",
+  },
+};
+
+type LivingFlowMode = "author" | "review" | "document";
+
+/** Canvas sections to try for AgentStatusBar “Why?” — first match in the DOM wins. */
+export function resolveWhyCanvasSections(
+  phase: LivingPhase,
+  {
+    flowMode,
+    allChecksPassed,
+    isGovernView,
+  }: {
+    flowMode: LivingFlowMode;
+    allChecksPassed: boolean;
+    isGovernView: boolean;
+  },
+): CanvasSectionId[] {
+  if (isGovernView) return [CANVAS_SECTION_IDS.govern];
+  if (flowMode === "document" && phase === "capture") {
+    return [CANVAS_SECTION_IDS.govern, CANVAS_SECTION_IDS.reflection];
+  }
+  if (flowMode === "review" && phase === "memory") {
+    return [CANVAS_SECTION_IDS.compliance, CANVAS_SECTION_IDS.govern];
+  }
+
+  switch (phase) {
+    case "understand":
+    case "clarify":
+      return [CANVAS_SECTION_IDS.reflection];
+    case "sense":
+      return [CANVAS_SECTION_IDS.author, CANVAS_SECTION_IDS.reflection];
+    case "draft":
+      return [CANVAS_SECTION_IDS.author, CANVAS_SECTION_IDS.reflection];
+    case "check":
+      return allChecksPassed
+        ? [CANVAS_SECTION_IDS.reasoning, CANVAS_SECTION_IDS.checks, CANVAS_SECTION_IDS.author]
+        : [CANVAS_SECTION_IDS.checks, CANVAS_SECTION_IDS.author];
+    case "refine":
+      return [CANVAS_SECTION_IDS.compliance, CANVAS_SECTION_IDS.reasoning, CANVAS_SECTION_IDS.checks];
+    case "memory":
+      return [CANVAS_SECTION_IDS.compliance, CANVAS_SECTION_IDS.govern];
+    case "capture":
+      return [CANVAS_SECTION_IDS.govern, CANVAS_SECTION_IDS.reflection];
+    case "approve":
+    case "ship":
+      return [CANVAS_SECTION_IDS.compliance, CANVAS_SECTION_IDS.author, CANVAS_SECTION_IDS.reasoning];
+    default:
+      return [CANVAS_SECTION_IDS.reflection, CANVAS_SECTION_IDS.author, CANVAS_SECTION_IDS.compliance];
+  }
+}
+
+/** One-line coaching copy shown when AgentStatusBar “Why?” scrolls to a section. */
+export function resolveWhyAnnotation(
+  phase: LivingPhase,
+  sectionId: CanvasSectionId,
+  {
+    flowMode,
+    allChecksPassed,
+  }: {
+    flowMode: LivingFlowMode;
+    allChecksPassed: boolean;
+  },
+): string {
+  const copy: Partial<Record<CanvasSectionId, string>> = {
+    [CANVAS_SECTION_IDS.reflection]:
+      phase === "understand"
+        ? "I'm parsing your wording here — nothing is written to policy yet."
+        : "This is my interpretation — correct anything inferred before I draft.",
+    [CANVAS_SECTION_IDS.author]:
+      phase === "sense"
+        ? "Each chip is a live inventory object — hover for AD path and owner."
+        : "Plain-language rules ↔ generated ACLs — still draft until you approve.",
+    [CANVAS_SECTION_IDS.checks]:
+      allChecksPassed
+        ? "Every check passed — optional optimisations are next, not required."
+        : "Checks run in sequence — each pass should reduce uncertainty.",
+    [CANVAS_SECTION_IDS.reasoning]:
+      "Evidence chain behind each rule — auditors can trace every decision.",
+    [CANVAS_SECTION_IDS.compliance]:
+      "Scope and framework alignment — who gains or loses access if you approve.",
+    [CANVAS_SECTION_IDS.govern]:
+      flowMode === "document"
+        ? "Capture institutional memory before changing or deleting this rule."
+        : "Full audit trail — every stage traceable after go-live.",
+  };
+  return copy[sectionId] ?? CANVAS_PREVIEW_COPY[sectionId].hint;
+}
+
+export const GOVERN_TAB_META: Record<
+  string,
+  { recordId: string; lastChanged: string; tip: string }
+> = {
+  overview: {
+    recordId: "gov-rec-overview",
+    lastChanged: "2 days ago",
+    tip: "Live posture, owner, and blast-radius summary.",
+  },
+  rules: {
+    recordId: "gov-rec-rules",
+    lastChanged: "2 days ago",
+    tip: "Interpretation lines and generated ACL rules.",
+  },
+  compliance: {
+    recordId: "gov-rec-compliance",
+    lastChanged: "5 days ago",
+    tip: "Framework mappings and last successful check.",
+  },
+  audit: {
+    recordId: "gov-rec-audit",
+    lastChanged: "Just now",
+    tip: "Immutable stage-by-stage evidence trail.",
+  },
+  memory: {
+    recordId: "gov-rec-memory",
+    lastChanged: "1 week ago",
+    tip: "Business justification and approval context.",
+  },
+};
+
 export function confidenceLabel(phase: LivingPhase, value: number): string {
   const phaseNames: Partial<Record<LivingPhase, string>> = {
     invite: "Waiting",
@@ -48,11 +280,39 @@ export function confidenceLabel(phase: LivingPhase, value: number): string {
 }
 
 export function confidenceTooltip(phase: LivingPhase, value: number): string {
+  const blocker = confidenceBlocker(phase, value);
+  if (blocker) return blocker;
   if (value < 30) return "Intent recognised — confirm understanding to raise confidence.";
   if (value < 60) return "Objects mapped — run safety checks to validate blast radius.";
   if (value < 85) return "Checks passed — review optional optimisations before deploy.";
   if (phase === "done") return "Policy live — full audit trail available in Govern.";
   return "Ready for approval — deploy will push to production regions.";
+}
+
+export function confidenceBlocker(
+  phase: LivingPhase,
+  value: number,
+  opts?: { checksPassed?: boolean; mappingDone?: boolean },
+): string | null {
+  if (phase === "clarify" && value < 30) {
+    return "Blocker: confirm understanding before I map objects.";
+  }
+  if ((phase === "draft" || phase === "sense") && !opts?.mappingDone && phase === "sense") {
+    return "Blocker: finish mapping inventory objects.";
+  }
+  if (phase === "draft" && value < 65) {
+    return "Blocker: run safety checks to validate blast radius.";
+  }
+  if (phase === "check" && !opts?.checksPassed) {
+    return "Blocker: safety checks still running — wait for all passes.";
+  }
+  if (phase === "refine" && value < 88) {
+    return "Blocker: review optional optimisations or proceed to approve.";
+  }
+  if (phase === "approve" && value < 94) {
+    return "Blocker: confirm blast radius and compliance on the canvas.";
+  }
+  return null;
 }
 
 export type EntityProvenance = {
@@ -128,13 +388,3 @@ export function inferPolicyStatus(prompt: string, flowMode?: string): PolicyStat
   return "live";
 }
 
-export const CANVAS_SECTION_IDS = {
-  reflection: "canvas-reflection",
-  author: "canvas-author",
-  compliance: "canvas-compliance",
-  reasoning: "canvas-reasoning",
-  govern: "canvas-govern",
-  checks: "canvas-checks",
-} as const;
-
-export type CanvasSectionId = (typeof CANVAS_SECTION_IDS)[keyof typeof CANVAS_SECTION_IDS];

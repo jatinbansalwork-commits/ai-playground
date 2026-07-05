@@ -4,16 +4,18 @@ import { PROJECTS_LIST } from "@/lib/projects-list-data";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import {
+  allProjectsSeoKeywords,
   buildCaseStudyMetaDescription,
   buildPageMetadata,
+  caseStudyPageTitle,
   projectsCollectionJsonLd,
-  stripCaseStudyStatusPrefix,
 } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: PROJECTS_PAGE.title,
   description: PROJECTS_PAGE.description,
   path: "/projects",
+  keywords: allProjectsSeoKeywords(),
 });
 
 export default function ProjectsLayout({
@@ -27,7 +29,7 @@ export default function ProjectsLayout({
       if (!content) return null;
 
       return {
-        name: stripCaseStudyStatusPrefix(content.title),
+        name: caseStudyPageTitle(project.slug, content.title),
         url: `/projects/${project.slug}`,
         description: buildCaseStudyMetaDescription(content),
       };

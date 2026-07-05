@@ -8,7 +8,7 @@ import {
   getExperimentArticleExcerpt,
   getExperimentsArticleSection,
 } from "@/lib/experiments-registry";
-import { buildPageMetadata } from "@/lib/seo";
+import { allProjectsSeoKeywords, buildPageMetadata } from "@/lib/seo";
 
 interface ArticlePageProps {
   sectionId: string;
@@ -55,6 +55,7 @@ export function articleMetadata(sectionId: string, slug: string): Metadata {
       description: getExperimentArticleExcerpt(slug),
       path: `/craft/${slug}`,
       openGraphType: "article",
+      keywords: allProjectsSeoKeywords(),
     });
   }
 

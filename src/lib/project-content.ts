@@ -1,7 +1,13 @@
 export interface CaseStudyMetaSpecs {
   services: string[];
+  /** Sidebar label for the services list — defaults to "Services". */
+  servicesLabel?: string;
   client: string;
+  /** Sidebar label for client — defaults to "Client". */
+  clientLabel?: string;
   location: string;
+  /** Sidebar label for location — defaults to "Location". */
+  locationLabel?: string;
   infoText: string;
   liveLinkUrl?: string;
   figmaUrl?: string;
@@ -32,21 +38,24 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "Cisco - AgentiOps Firewall Copilot",
+    "Cisco Policy Copilot — AgentiOps Firewall AI",
     "2026",
-    "Case study: designing Policy Copilot for Cisco Hybrid Mesh Firewall — an AI-native workspace that turns business intent into reviewable, deployable firewall policies. Includes an interactive living-canvas demo with intent understanding, inline clarifications, continuous validation, and deployment readiness.",
+    "Turning business requests into firewall policies administrators can trust.",
     {
+      servicesLabel: "Role",
       services: [
-        "UX / UI for desktop + mobile",
-        "Conceptualization",
-        "UX Research",
-        "Micro-interactions",
-        "Dev handoff",
+        "Lead Product Designer",
+        "UX Strategy",
+        "AI Interaction Design",
+        "Product Design",
+        "Visual Design",
+        "Prototyping",
       ],
       client: "Cisco",
-      location: "San Jose, CA",
+      location: "12 weeks",
+      locationLabel: "Timeline",
       infoText:
-        "Policy Copilot is an AI-assisted experience embedded in the firewall policy workflow. Administrators describe outcomes in plain language; Copilot builds understanding inline, surfaces clarifications as compact cards, drafts policy as editable smart objects, validates continuously, and keeps humans in control until deployment.",
+        "Policy Copilot explores AI-assisted firewall policy inside Cisco Hybrid Mesh Firewall. Administrators describe outcomes in natural language; Copilot reflects understanding, maps inventory objects, runs visible validation, and keeps every draft separate from production until a human approves.",
     },
   ),
   "freshprints-image-gen-ai": entry(
