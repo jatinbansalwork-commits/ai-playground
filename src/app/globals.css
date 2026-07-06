@@ -1168,6 +1168,13 @@ body {
   touch-action: none;
 }
 
+@media (max-width: 767px) {
+  .index-root {
+    /* Let vertical pans reach the ghost-spacer document scroll on touch. */
+    touch-action: pan-y;
+  }
+}
+
 /* Single font stack for all index slider copy — never swap families in wireframe. */
 main.index-root,
 main.index-root .index-slide-type {
@@ -1221,6 +1228,14 @@ main.index-root .index-slide-type {
 
   .index-slide-hero-size {
     font-size: 60px;
+  }
+
+  .index-slide-hero-line:not(.index-slide-hero-subline) {
+    font-size: 1.4em;
+  }
+
+  .index-slide-hero-subline {
+    font-size: 0.792em;
   }
 
   .index-slide-contact-size {

@@ -25,6 +25,8 @@ export interface SectionFrame {
   monogramImage?: string;
   /** Wireframe-mode variant — used instead of `monogramImage` when layout debug is on. */
   monogramWireframeImage?: string;
+  /** Shorter label for mobile footer nav — e.g. "Review" instead of "Design Review". */
+  mobileNavLabel?: string;
   /** Hide the small label above the slide panel. */
   hideSlideLabel?: boolean;
   /** Mask pan loop duration in seconds. */

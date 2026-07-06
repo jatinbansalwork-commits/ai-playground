@@ -16,6 +16,7 @@ import {
   SCALE_VIEWPORT_HEIGHT,
   SCALE_VIEWPORT_WIDTH,
   SCROLL_PER_FRAME,
+  SCROLL_PER_FRAME_TOUCH,
 } from "@/lib/constants";
 import { springScale, springScrollSnap } from "@/lib/spring";
 import {
@@ -47,17 +48,26 @@ function readDocumentScrollOffset() {
   );
 }
 
-/** Ghost-spacer document scroll is unreliable on touch and WebKit — mirror only on desktop hover. */
-function shouldMirrorDocumentScroll(): boolean {
+/** Touch / narrow viewports — native document scroll drives the slider (rauno.me pattern). */
+function usesNativeTouchScroll(): boolean {
   if (typeof window === "undefined") return false;
-  if (window.matchMedia("(hover: none)").matches) return false;
-  if (window.matchMedia("(pointer: coarse)").matches) return false;
-  return true;
+  if (window.matchMedia("(max-width: 767px)").matches) return true;
+  return (
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.matchMedia("(hover: none)").matches
+  );
+}
+
+function scrollPerFrameForViewport(): number {
+  return usesNativeTouchScroll() ? SCROLL_PER_FRAME_TOUCH : SCROLL_PER_FRAME;
+}
+
+/** Keep frame scale fixed while scrubbing on touch — no shrink-on-scroll. */
+function usesFixedScrubScale(): boolean {
+  return usesNativeTouchScroll();
 }
 
 function syncDocumentScrollOffset(value: number) {
-  if (!shouldMirrorDocumentScroll()) return;
-
   const scrollingElement = document.scrollingElement;
   if (scrollingElement) {
     if (scrollingElement.scrollLeft !== value || scrollingElement.scrollTop !== value) {
@@ -101,7 +111,7 @@ function computeBaseScale() {
 }
 
 function computeScaleFromScroll(scrollOffset: number, baseScale: number) {
-  if (scrollOffset <= 0) return baseScale;
+  if (usesFixedScrubScale() || scrollOffset <= 0) return baseScale;
   return clamp(
     baseScale - scrollOffset * SCALE_SCROLL_FACTOR,
     SCALE_MIN,
@@ -227,7 +237,8 @@ export function useScrollSlider() {
   const scrollRangeRef = useRef(0);
   const baseScaleRef = useRef(1);
   const snapFrameRef = useRef<number | null>(null);
-  /** Authoritative slider offset — never read ghost-spacer scroll as source of truth. */
+  const scrollPerFrameRef = useRef(SCROLL_PER_FRAME);
+  /** Authoritative slider offset on desktop; mirrored from document scroll on touch. */
   const sliderScrollOffsetRef = useRef(0);
   const isPointerDraggingRef = useRef(false);
 
@@ -317,7 +328,8 @@ export function useScrollSlider() {
     (index: number, method: IndexNavigateMethod = "scroll") => {
       navigateMethodRef.current = method;
       const clampedIndex = clamp(index, 0, frameCount - 1);
-      const targetScroll = clampedIndex * SCROLL_PER_FRAME;
+      const stride = scrollPerFrameRef.current;
+      const targetScroll = clampedIndex * stride;
       const start = getScrollOffset();
 
       cancelSnapAnimation();
@@ -364,7 +376,8 @@ export function useScrollSlider() {
   );
 
   useLayoutEffect(() => {
-    const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
+    scrollPerFrameRef.current = scrollPerFrameForViewport();
+    const scrollRange = (frameCount - 1) * scrollPerFrameRef.current;
     scrollRangeRef.current = scrollRange;
 
     if ("scrollRestoration" in history) {
@@ -372,7 +385,7 @@ export function useScrollSlider() {
     }
 
     const initialIndex = getRestoredFrameIndex(frameCount);
-    const initialScroll = initialIndex * SCROLL_PER_FRAME;
+    const initialScroll = initialIndex * scrollPerFrameRef.current;
     const initialProgress =
       scrollRange > 0 ? initialScroll / scrollRange : 0;
     const initialOffset = initialProgress * maxOffset;
@@ -395,10 +408,13 @@ export function useScrollSlider() {
   }, [frameCount, maxOffset, minimapX, scale, springScaleValue, springTrackX, trackX]);
 
   useEffect(() => {
-    const scrollRange = (frameCount - 1) * SCROLL_PER_FRAME;
+    scrollPerFrameRef.current = scrollPerFrameForViewport();
+    const scrollRange = (frameCount - 1) * scrollPerFrameRef.current;
     scrollRangeRef.current = scrollRange;
 
     const syncBaseScale = () => {
+      scrollPerFrameRef.current = scrollPerFrameForViewport();
+      scrollRangeRef.current = (frameCount - 1) * scrollPerFrameRef.current;
       baseScaleRef.current = computeBaseScale();
       scale.jump(
         computeScaleFromScroll(
@@ -409,7 +425,7 @@ export function useScrollSlider() {
     };
 
     const initialIndex = getRestoredFrameIndex(frameCount);
-    const initialScroll = initialIndex * SCROLL_PER_FRAME;
+    const initialScroll = initialIndex * scrollPerFrameRef.current;
 
     syncScrollPosition(initialScroll);
     syncBaseScale();
@@ -419,9 +435,45 @@ export function useScrollSlider() {
       isReadyRef.current = true;
     }, 50);
 
-    /** Realign document scroll to our offset — never adopt ghost-spacer drift (iOS, Android, WebKit). */
+    let snapTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const snapAfterIdle = () => {
+      const stride = scrollPerFrameRef.current;
+      if (reducedMotion) {
+        if (snapTimer) clearTimeout(snapTimer);
+        const index = clamp(
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
+          0,
+          frameCount - 1,
+        );
+        snapToIndex(index);
+        return;
+      }
+
+      if (snapTimer) clearTimeout(snapTimer);
+      snapTimer = setTimeout(() => {
+        if (isSnappingRef.current) return;
+        const index = clamp(
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
+          0,
+          frameCount - 1,
+        );
+        snapToIndex(index);
+      }, 120);
+    };
+
     const onScroll = () => {
       if (!isReadyRef.current || isSnappingRef.current || isPointerDraggingRef.current) {
+        return;
+      }
+
+      if (usesNativeTouchScroll()) {
+        const documentOffset = readDocumentScrollOffset();
+        const clamped = clampScrollOffset(documentOffset);
+        if (Math.abs(clamped - getScrollOffset()) <= 0.5) return;
+        sliderScrollOffsetRef.current = clamped;
+        updateFromScroll(clamped);
+        snapAfterIdle();
         return;
       }
 
@@ -447,6 +499,7 @@ export function useScrollSlider() {
       window.removeEventListener("resize", syncBaseScale);
       viewport?.removeEventListener("resize", syncBaseScale);
       viewport?.removeEventListener("scroll", syncBaseScale);
+      if (snapTimer) clearTimeout(snapTimer);
     };
   }, [
     cancelSnapAnimation,
@@ -463,10 +516,11 @@ export function useScrollSlider() {
     let wheelFrameLock = false;
 
     const snapAfterIdle = () => {
+      const stride = scrollPerFrameRef.current;
       if (reducedMotion) {
         if (snapTimer) clearTimeout(snapTimer);
         const index = clamp(
-          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
           0,
           frameCount - 1,
         );
@@ -478,7 +532,7 @@ export function useScrollSlider() {
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
         const index = clamp(
-          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
           0,
           frameCount - 1,
         );
@@ -538,6 +592,8 @@ export function useScrollSlider() {
   ]);
 
   useEffect(() => {
+    if (usesNativeTouchScroll()) return;
+
     let snapTimer: ReturnType<typeof setTimeout> | null = null;
     let activePointerId: number | null = null;
     let startX = 0;
@@ -547,10 +603,11 @@ export function useScrollSlider() {
     let suppressClick = false;
 
     const snapAfterIdle = () => {
+      const stride = scrollPerFrameRef.current;
       if (reducedMotion) {
         if (snapTimer) clearTimeout(snapTimer);
         const index = clamp(
-          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
           0,
           frameCount - 1,
         );
@@ -562,7 +619,7 @@ export function useScrollSlider() {
       snapTimer = setTimeout(() => {
         if (isSnappingRef.current) return;
         const index = clamp(
-          Math.round(clampScrollOffset(getScrollOffset()) / SCROLL_PER_FRAME),
+          Math.round(clampScrollOffset(getScrollOffset()) / stride),
           0,
           frameCount - 1,
         );
@@ -730,7 +787,7 @@ export function useScrollSlider() {
     activeFrameIndex,
     snapToIndex,
     playClick,
-    scrollRange: (frameCount - 1) * SCROLL_PER_FRAME,
+    scrollRange: (frameCount - 1) * scrollPerFrameForViewport(),
     frameCount,
   };
 }

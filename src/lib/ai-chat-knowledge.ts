@@ -151,7 +151,7 @@ export function buildAiChatKnowledge(): string {
 ## About JB
 ${HERO_COPY}
 
-JB designs AI products, prototypes them in code, and raises the bar for craft in teams he's part of at Cisco. Strengths: product design, design systems, fintech B2C, AI/conversational UX, motion, and dev handoff.
+JB designs AI products, prototypes them in code, and raises the bar for design craft at Cisco. Strengths: product design, design systems, fintech B2C, AI/conversational UX, motion, and dev handoff.
 
 ## Site sections
 - **Index** — scroll-driven slide experience at ${ROUTES.home}

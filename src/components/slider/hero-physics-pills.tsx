@@ -22,12 +22,17 @@ import {
 
 const PHYSICS = {
   gravity: 1,
+  mobileGravity: 0.9,
   friction: 0.85,
   frictionAir: 0.028,
+  mobileFrictionAir: 0.04,
   density: 0.002,
   restitution: 0.35,
   dragStrength: 0.32,
   throwStrength: 0.16,
+  /** Stagger between pill drops on load (ms). */
+  spawnStaggerMs: 120,
+  spawnJitterMs: 70,
   startY: 20,
   /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
   sizeScale: 1.44,
@@ -36,7 +41,7 @@ const PHYSICS = {
   compactScaleBreakpoint: 640,
 } as const;
 
-/** Viewports below iPad width — static pills, no Matter.js. */
+/** Viewports below iPad width — lighter Matter.js (still draggable). */
 const MOBILE_LAYOUT_MEDIA = "(max-width: 767px)";
 
 /** Static pile along the bottom edge of the hero sheet (mobile + reduced motion). */
@@ -114,22 +119,27 @@ function getZoneLayoutScale(pillZoneHeight: number, baseScale: number): number {
   return baseScale * zoneScale;
 }
 
-/** Spawn near the top so pills fall with gravity and settle along the bottom. */
 function getSpawnPosition(
   index: number,
+  total: number,
   width: number,
-  height: number,
   bodyW: number,
+  bodyH: number,
 ): { x: number; y: number } {
-  const minX = bodyW / 2 + 20;
-  const maxX = Math.max(width - bodyW / 2 - 20, minX);
-  const dropBand = Math.max(height * 0.2, 56);
-  const stagger = (index % 4) * 10;
+  const minX = bodyW / 2 + 16;
+  const maxX = Math.max(width - bodyW / 2 - 16, minX);
+  const lane = total <= 1 ? 0.5 : index / (total - 1);
+  const x = minX + lane * (maxX - minX) + (Math.random() - 0.5) * 36;
 
-  return {
-    x: minX + Math.random() * (maxX - minX),
-    y: PHYSICS.startY + stagger + Math.random() * dropBand,
-  };
+  const column = index % 5;
+  const row = Math.floor(index / 5);
+  const y =
+    8 +
+    column * (bodyH * 0.42 + 12) +
+    row * (bodyH + 26) +
+    Math.random() * 20;
+
+  return { x: clamp(x, minX, maxX), y };
 }
 
 function HeroPillSurface({
@@ -162,7 +172,7 @@ function HeroPillSurface({
       ref={bodyRef}
       className={[
         "hero-physics-pill absolute left-0 top-0 select-none",
-        isStatic ? "pointer-events-none touch-auto" : "hero-physics-pill-draggable cursor-grab touch-none",
+        isStatic ? "pointer-events-none touch-auto" : "hero-physics-pill-draggable invisible cursor-grab touch-none",
       ].join(" ")}
       style={
         isStatic && layout
@@ -230,7 +240,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
     return () => media.removeEventListener("change", updateMobile);
   }, []);
 
-  const useStaticPills = reducedMotion || isMobileLayout;
+  const useStaticPills = reducedMotion;
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -274,7 +284,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
   }, []);
 
   useEffect(() => {
-    if (reducedMotion || isMobileLayout) return;
+    if (reducedMotion) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -304,6 +314,8 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       const { width, height } = getContainerLayoutSize(container);
       if (width <= 0 || height <= 0) return;
 
+      const mobileLayout = window.matchMedia(MOBILE_LAYOUT_MEDIA).matches;
+
       const pillsReady = pills.every(
         (_, index) => (pillRefs.current[index]?.offsetWidth ?? 0) > 0,
       );
@@ -315,7 +327,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       const { Engine, Runner, Bodies, Body, Composite, Constraint, Sleeping } = Matter;
 
       const engine = Engine.create();
-      engine.gravity.y = PHYSICS.gravity;
+      engine.gravity.y = mobileLayout ? PHYSICS.mobileGravity : PHYSICS.gravity;
 
       const runner = Runner.create();
       const thickness = 80;
@@ -335,30 +347,51 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       ];
 
       const bodies: Matter.Body[] = [];
+      const spawnTimers: number[] = [];
+
       pills.forEach((pill, index) => {
         const el = pillRefs.current[index];
         const w = Math.max(el?.offsetWidth || pill.width, 24);
         const h = Math.max(el?.offsetHeight || HERO_PILL_HEIGHT_PX, 24);
+        const spawn = getSpawnPosition(index, pills.length, width, w, h);
 
-        const spawn = getSpawnPosition(index, width, height, w);
+        const addBody = () => {
+          if (disposed) return;
 
-        const body = Bodies.rectangle(spawn.x, spawn.y, w, h, {
-          restitution: PHYSICS.restitution,
-          friction: PHYSICS.friction,
-          frictionAir: PHYSICS.frictionAir,
-          density: PHYSICS.density,
-          angle: (Math.random() - 0.5) * 0.6,
-        });
+          const body = Bodies.rectangle(spawn.x, spawn.y, w, h, {
+            restitution: PHYSICS.restitution,
+            friction: PHYSICS.friction,
+            frictionAir: mobileLayout ? PHYSICS.mobileFrictionAir : PHYSICS.frictionAir,
+            density: PHYSICS.density,
+            angle: (Math.random() - 0.5) * 0.5,
+          });
 
-        bodies.push(body);
-        if (el) {
-          domToBody.set(body, el);
-          bodySizes.set(body, { width: w, height: h });
-          el.dataset.bodyIndex = String(index);
+          Body.setVelocity(body, {
+            x: (Math.random() - 0.5) * 1.2,
+            y: 1.8 + Math.random() * 1.4,
+          });
+
+          bodies.push(body);
+          Composite.add(engine.world, body);
+
+          if (el) {
+            domToBody.set(body, el);
+            bodySizes.set(body, { width: w, height: h });
+            el.dataset.bodyIndex = String(index);
+            el.classList.remove("invisible");
+          }
+        };
+
+        const delay =
+          index * PHYSICS.spawnStaggerMs + Math.random() * PHYSICS.spawnJitterMs;
+        if (delay < 16) {
+          addBody();
+        } else {
+          spawnTimers.push(window.setTimeout(addBody, delay));
         }
       });
 
-      Composite.add(engine.world, [...walls, ...bodies]);
+      Composite.add(engine.world, walls);
 
       const pointerToLocal = (event: PointerEvent) =>
         pointerToContainerLocal(container, event);
@@ -468,6 +501,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       rafId = requestAnimationFrame(syncDom);
 
       cleanup = () => {
+        spawnTimers.forEach((timer) => window.clearTimeout(timer));
         container.removeEventListener("pointerdown", onPointerDown);
         window.removeEventListener("pointermove", onPointerMove);
         window.removeEventListener("pointerup", onPointerUp);
@@ -488,6 +522,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
           element.style.width = "";
           element.style.height = "";
           element.style.cursor = "";
+          element.classList.add("invisible");
           delete element.dataset.bodyIndex;
         });
       };
@@ -524,7 +559,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
   }, [isMobileLayout, pills, reducedMotion]);
 
   useLayoutEffect(() => {
-    if (reducedMotion || isMobileLayout) return;
+    if (reducedMotion) return;
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => scheduleSetupRef.current?.());
     });
@@ -535,8 +570,9 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
     <div
       ref={containerRef}
       className={[
-        "hero-physics-pills overflow-hidden",
-        useStaticPills ? "pointer-events-none" : "pointer-events-auto",
+        "hero-physics-pills",
+        useStaticPills ? "pointer-events-none overflow-hidden" : "pointer-events-auto overflow-hidden",
+        useStaticPills ? "absolute inset-0" : "absolute inset-x-0 -top-36 bottom-0",
         className,
       ]
         .filter(Boolean)

@@ -23,18 +23,26 @@ interface PixelParticle {
 }
 
 const VIEWPORT_SEED = 0x6d5a3c21;
+const WIREFRAME_PIXEL_COLOR = "#ffffff";
+
+function particleColor(rand: () => number, wireframe: boolean): string {
+  if (wireframe) return WIREFRAME_PIXEL_COLOR;
+  return (
+    INDEX_FLOATING_PIXEL_COLORS[
+      Math.floor(rand() * INDEX_FLOATING_PIXEL_COLORS.length)
+    ] ?? INDEX_FLOATING_PIXEL_COLORS[0]
+  );
+}
 
 function spawnParticle(
   width: number,
   height: number,
   rand: () => number,
+  wireframe: boolean,
   fromCenter = false,
 ): PixelParticle {
   const speed = INDEX_FLOATING_PIXEL_SPEED;
-  const color =
-    INDEX_FLOATING_PIXEL_COLORS[
-      Math.floor(rand() * INDEX_FLOATING_PIXEL_COLORS.length)
-    ] ?? INDEX_FLOATING_PIXEL_COLORS[0];
+  const color = particleColor(rand, wireframe);
   const size = INDEX_FLOATING_PIXEL_BASE_SIZE + rand() * 2;
 
   if (fromCenter) {
@@ -85,8 +93,6 @@ export function IndexFloatingPixels() {
   const { wireframe } = useWireframe();
 
   useEffect(() => {
-    if (wireframe) return;
-
     const container = containerRef.current;
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
@@ -113,7 +119,7 @@ export function IndexFloatingPixels() {
     const resetParticles = (width: number, height: number) => {
       const count = getViewportPixelCount(width, height);
       particlesRef.current = Array.from({ length: count }, () =>
-        spawnParticle(width, height, rand, true),
+        spawnParticle(width, height, rand, wireframe, true),
       );
     };
 
@@ -194,7 +200,7 @@ export function IndexFloatingPixels() {
           next.y < -100 ||
           next.y > height + 100
         ) {
-          next = spawnParticle(width, height, rand);
+          next = spawnParticle(width, height, rand, wireframe);
         }
 
         context.fillStyle = next.color;
@@ -229,8 +235,6 @@ export function IndexFloatingPixels() {
       window.removeEventListener("pointerleave", onPointerLeave);
     };
   }, [reducedMotion, wireframe]);
-
-  if (wireframe) return null;
 
   return (
     <div

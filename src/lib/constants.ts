@@ -52,6 +52,7 @@ export const FRAMES = [
     type: "section" as const,
     variant: "slide" as const,
     label: "Design Review",
+    mobileNavLabel: "Review",
     monogramImage: "/assets/index/article-cursor-hand.png",
     monogramWireframeImage: "/assets/index/article-cursor-hand-wireframe.png",
     href: `${ROUTES.craft}/design-review-checklist`,
@@ -93,7 +94,10 @@ export const SLIDE_COUNT = FRAMES.length;
 export const FRAME_WIDTH = 1200;
 export const FRAME_HEIGHT = 720;
 export const FRAME_STRIDE = 1240;
-export const SCROLL_PER_FRAME = 744;
+/** Desktop / fine-pointer scroll distance between slides. */
+export const SCROLL_PER_FRAME = 560;
+/** Shorter travel on touch — closer to rauno.me mobile scrub length. */
+export const SCROLL_PER_FRAME_TOUCH = 400;
 
 /** Scroll distance from first to last slide. */
 export const SCROLL_RANGE = (SLIDE_COUNT - 1) * SCROLL_PER_FRAME;
@@ -136,7 +140,7 @@ export const SCALE_VIEWPORT_HEIGHT = 1020;
 
 export const HERO_LINES = [
   "Howdy, I'm JB.",
-  "I design AI products, prototype them in code, and raise the bar for craft in teams I'm part of at Cisco.",
+  "Designing AI products, prototyping them in code, and raising the bar for design craft at Cisco.",
 ] as const;
 
 export const HERO_COPY = HERO_LINES.join(" ");

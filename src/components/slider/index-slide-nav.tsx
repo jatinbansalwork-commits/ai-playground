@@ -62,6 +62,10 @@ export function IndexSlideNav({
 }: IndexSlideNavProps) {
   const activeFrame = FRAMES[activeIndex];
   const activeLabel = activeFrame?.label ?? `Slide ${activeIndex + 1}`;
+  const mobileNavLabel =
+    activeFrame && "mobileNavLabel" in activeFrame && activeFrame.mobileNavLabel
+      ? activeFrame.mobileNavLabel
+      : activeLabel;
 
   return (
     <nav
@@ -78,11 +82,16 @@ export function IndexSlideNav({
         onActivate={() => onSelect(activeIndex - 1)}
       />
 
-      <p className="min-w-[7.5rem] text-center text-neutral-300 sm:min-w-[9rem]" aria-live="polite">
+      <p className="min-w-[6.5rem] text-center text-neutral-300 sm:min-w-[9rem]" aria-live="polite">
         <span className="sr-only">Current slide: </span>
-        {activeLabel}{" "}
-        <span className="text-neutral-400">
-          ({activeIndex + 1} / {frameCount})
+        <span className="md:hidden">
+          {mobileNavLabel} ({activeIndex + 1}/{frameCount})
+        </span>
+        <span className="hidden md:inline">
+          {activeLabel}{" "}
+          <span className="text-neutral-400">
+            ({activeIndex + 1} / {frameCount})
+          </span>
         </span>
       </p>
 

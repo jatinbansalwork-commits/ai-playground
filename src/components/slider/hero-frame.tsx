@@ -31,10 +31,10 @@ export function HeroFramePanel({
         initial={mounted && !reducedMotion ? { scale: 0 } : false}
         animate={{ scale: 1 }}
         transition={reducedMotion ? { duration: 0 } : springContainer}
-        className="relative h-full w-full text-black"
+        className="relative h-full w-full overflow-hidden text-black"
       >
         <HeroPhysicsPills
-          className="absolute inset-0 z-[1]"
+          className="z-[1]"
           onInteract={onInteract}
         />
 
