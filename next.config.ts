@@ -18,18 +18,13 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/recent",
-        destination: "/projects/cisco-policy-copilot",
-        permanent: false,
-      },
-      {
         source: "/recent-work",
-        destination: "/projects/cisco-policy-copilot",
+        destination: "/recent",
         permanent: false,
       },
       {
         source: "/Recentwork",
-        destination: "/projects/cisco-policy-copilot",
+        destination: "/recent",
         permanent: false,
       },
       {

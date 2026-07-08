@@ -2,6 +2,8 @@ import { ROUTES } from "@/lib/constants";
 
 const STORAGE_KEY = "session-back-context";
 
+const listeners = new Set<() => void>();
+
 export interface SessionBackContext {
   href: string;
   destination: string;
@@ -19,7 +21,7 @@ export const BACK_PROJECTS: SessionBackContext = {
 
 export const BACK_CRAFT: SessionBackContext = {
   href: ROUTES.craft,
-  destination: "Illustration",
+  destination: "Craft",
 };
 
 export const BACK_IDEAS: SessionBackContext = {
@@ -27,11 +29,17 @@ export const BACK_IDEAS: SessionBackContext = {
   destination: "AI Labs",
 };
 
+export function subscribeSessionBackContext(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
 export function saveSessionBackContext(context: SessionBackContext): void {
   if (typeof window === "undefined") return;
 
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(context));
+    listeners.forEach((listener) => listener());
   } catch {
     // Private mode / blocked storage — ignore.
   }
@@ -72,4 +80,13 @@ export function backContextForProjectsListNavigation(): SessionBackContext {
 /** Back target when opening a craft article from the craft index. */
 export function backContextForCraftNavigation(): SessionBackContext {
   return BACK_CRAFT;
+}
+
+/** Back target for top-level pages when entered via in-app navigation. */
+export function backContextForPageEntry(href: string): SessionBackContext | null {
+  if (href === ROUTES.home || href === "/") return BACK_HOME;
+  if (href === ROUTES.projects) return BACK_HOME;
+  if (href === ROUTES.craft) return BACK_HOME;
+  if (href === ROUTES.ideas) return BACK_HOME;
+  return null;
 }

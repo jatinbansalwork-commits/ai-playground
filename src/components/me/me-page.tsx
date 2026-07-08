@@ -1,6 +1,7 @@
 "use client";
 
 import { SessionNavBackLink } from "@/components/navigation/session-nav-back-link";
+import { SessionBackContextOnMount } from "@/components/navigation/session-back-context-on-mount";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { useArchivePageAnalytics } from "@/hooks/use-archive-page-analytics";
 import { BACK_HOME } from "@/lib/session-navigation";
@@ -16,6 +17,7 @@ export function MePage() {
     >
       <h1 className="sr-only">Me</h1>
 
+      <SessionBackContextOnMount context={BACK_HOME} />
       <SessionNavBackLink fallback={BACK_HOME} />
 
       <MeIntroVideo variant="page" />

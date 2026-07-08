@@ -17,6 +17,10 @@ import { getExperimentMedia } from "@/lib/experiment-media";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { ROUTES } from "@/lib/constants";
 import {
+  backContextForCraftNavigation,
+  saveSessionBackContext,
+} from "@/lib/session-navigation";
+import {
   trackAiExperimentDetailView,
   trackAiExperimentItemClick,
   trackCraftItemClick,
@@ -95,6 +99,10 @@ export function ExperimentsBentoCard({
         category: resolvedCategory,
         external: false,
       });
+
+      if (hasArticle) {
+        saveSessionBackContext(backContextForCraftNavigation());
+      }
     }
 
     if (resolvedCategory === "ai-experiment" && isIdeasGallery) {

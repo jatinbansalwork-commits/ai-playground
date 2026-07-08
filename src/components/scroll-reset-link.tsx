@@ -6,6 +6,10 @@ import type { ComponentProps } from "react";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
 import { ROUTES } from "@/lib/constants";
 import { FOCUS_RING } from "@/lib/a11y";
+import {
+  backContextForPageEntry,
+  saveSessionBackContext,
+} from "@/lib/session-navigation";
 
 type ScrollResetLinkProps = ComponentProps<typeof Link>;
 
@@ -34,6 +38,11 @@ export function ScrollResetLink({
         .filter(Boolean)
         .join(" ")}
       onClick={(event) => {
+        const entryContext = hrefStr ? backContextForPageEntry(hrefStr) : null;
+        if (entryContext) {
+          saveSessionBackContext(entryContext);
+        }
+
         if (!returnsToIndex && !leavesIndex) {
           resetDocumentScroll();
         }

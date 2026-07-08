@@ -694,8 +694,8 @@ export function getExperimentsArticleSection(): CraftSection {
     id: "experiments",
     title: EXPERIMENTS_PAGE.title,
     href: EXPERIMENTS_PAGE.href,
-    backHref: ROUTES.home,
-    backLabel: "Home",
+    backHref: ROUTES.craft,
+    backLabel: "Craft",
     description: EXPERIMENTS_PAGE.description,
     items: getExperimentGalleryItems().map((item) => ({
       ...item,

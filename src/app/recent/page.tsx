@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
 import { BACK_HOME, saveSessionBackContext } from "@/lib/session-navigation";
@@ -9,7 +9,7 @@ import { BACK_HOME, saveSessionBackContext } from "@/lib/session-navigation";
 export default function RecentPage() {
   const router = useRouter();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     saveSessionBackContext(BACK_HOME);
     router.replace(getProjectCaseStudyHref("cisco-policy-copilot"));
   }, [router]);

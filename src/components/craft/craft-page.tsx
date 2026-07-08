@@ -1,6 +1,7 @@
 "use client";
 
 import { SessionNavBackLink } from "@/components/navigation/session-nav-back-link";
+import { SessionBackContextOnMount } from "@/components/navigation/session-back-context-on-mount";
 import { CraftGrid } from "@/components/craft/craft-grid";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { useCraftPageAnalytics } from "@/hooks/use-craft-page-analytics";
@@ -23,6 +24,7 @@ export function CraftPage({ items }: CraftPageProps) {
       tabIndex={-1}
       className="craft-page ideas-page no-scrollbar fixed inset-0 z-10 overflow-y-auto overflow-x-hidden bg-background text-white"
     >
+      <SessionBackContextOnMount context={BACK_HOME} />
       <SessionNavBackLink fallback={BACK_HOME} />
 
       <div className="craft-page__shell ideas-page__shell">
