@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   type SessionBackContext,
   readSessionBackContext,
@@ -10,9 +10,12 @@ import {
 export function useSessionBackNavigation(
   fallback: SessionBackContext,
 ): SessionBackContext {
-  const [back, setBack] = useState(fallback);
+  const [back, setBack] = useState<SessionBackContext>(() => {
+    if (typeof window === "undefined") return fallback;
+    return readSessionBackContext() ?? fallback;
+  });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const sync = () => setBack(readSessionBackContext() ?? fallback);
     sync();
     return subscribeSessionBackContext(sync);

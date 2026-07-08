@@ -99,6 +99,8 @@ html:has(main[data-sheet="case-study"]) body {
   left: max(1.25rem, env(safe-area-inset-left));
   -webkit-tap-highlight-color: transparent;
   isolation: isolate;
+  position: fixed;
+  z-index: 100;
 }
 
 /* Back navigation copy — matches index slide typeface. */

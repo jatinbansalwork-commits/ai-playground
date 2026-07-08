@@ -2,7 +2,7 @@
 
 import { ScrollResetLink } from "@/components/scroll-reset-link";
 import { NavBackLinkLabel } from "@/components/navigation/nav-back-link-label";
-import { NAV_BACK_LINK_CLASS, backNavigationLabel } from "@/lib/a11y";
+import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
 import { SITE_BACK_LINK_STYLE } from "@/lib/fonts";
 
 interface NavBackLinkProps {
@@ -25,7 +25,6 @@ export function NavBackLink({
       scroll={true}
       className={className}
       style={SITE_BACK_LINK_STYLE}
-      aria-label={backNavigationLabel(destination)}
     >
       <NavBackLinkLabel destination={destination} showBackPrefix={showBackPrefix} />
     </ScrollResetLink>
