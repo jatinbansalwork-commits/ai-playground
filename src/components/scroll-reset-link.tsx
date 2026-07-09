@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { ComponentProps } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import type { ComponentProps, MouseEvent } from "react";
 import { resetDocumentScroll } from "@/hooks/use-index-scroll-reset";
 import { ROUTES } from "@/lib/constants";
 import { FOCUS_RING } from "@/lib/a11y";
@@ -13,6 +13,16 @@ import {
 
 type ScrollResetLinkProps = ComponentProps<typeof Link>;
 
+function isModifiedClick(event: MouseEvent<HTMLAnchorElement>): boolean {
+  return (
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey ||
+    event.button !== 0
+  );
+}
+
 export function ScrollResetLink({
   onClick,
   scroll = true,
@@ -21,6 +31,7 @@ export function ScrollResetLink({
   ...props
 }: ScrollResetLinkProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const hrefStr = typeof href === "string" ? href : "";
   const returnsToIndex = hrefStr === ROUTES.home || hrefStr === "/";
   const leavesIndex = pathname === ROUTES.home && !returnsToIndex;
@@ -43,7 +54,16 @@ export function ScrollResetLink({
           saveSessionBackContext(entryContext);
         }
 
-        if (!returnsToIndex && !leavesIndex) {
+        if (returnsToIndex) {
+          if (!isModifiedClick(event)) {
+            event.preventDefault();
+            router.push(ROUTES.home);
+          }
+          onClick?.(event);
+          return;
+        }
+
+        if (!leavesIndex) {
           resetDocumentScroll();
         }
         onClick?.(event);
