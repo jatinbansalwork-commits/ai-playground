@@ -9,12 +9,12 @@ const fontPath = path.join(root, "public/assets/fonts/JustAnotherHand-Regular.tt
 const outPath = path.join(root, "src/lib/field-notes-handwriting-paths.ts");
 
 const TEXT = "JB's Field Notes";
-const FONT_SIZE = 160;
-const LETTER_SPACING = 14;
+const FONT_SIZE = 480;
+const LETTER_SPACING = 42;
 const BASELINE_Y = Math.round(FONT_SIZE * 0.85);
-const PADDING_X = 30;
+const PADDING_X = 90;
 /** Round caps extend past path ends — pad viewBox so strokes are not clipped. */
-const STROKE_PAD = 36;
+const STROKE_PAD = 108;
 
 function splitSubpaths(pathData) {
   const parts = pathData
