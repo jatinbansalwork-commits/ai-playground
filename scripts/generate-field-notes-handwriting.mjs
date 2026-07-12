@@ -5,16 +5,16 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const fontPath = path.join(root, "public/assets/fonts/Kalam-Bold.ttf");
+const fontPath = path.join(root, "public/assets/fonts/Huge Smile.otf");
 const outPath = path.join(root, "src/lib/field-notes-handwriting-paths.ts");
 
 const TEXT = "JB's Field Notes";
-const FONT_SIZE = 192;
-const LETTER_SPACING = 24;
-const BASELINE_Y = 160;
-const PADDING_X = 40;
+const FONT_SIZE = 140;
+const LETTER_SPACING = 18;
+const BASELINE_Y = Math.round(FONT_SIZE * 0.83);
+const PADDING_X = 30;
 /** Round caps extend past path ends — pad viewBox so strokes are not clipped. */
-const STROKE_PAD = 48;
+const STROKE_PAD = 36;
 
 function splitSubpaths(pathData) {
   const parts = pathData
