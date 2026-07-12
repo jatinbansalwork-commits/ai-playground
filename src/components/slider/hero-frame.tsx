@@ -1,7 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
+import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { HERO_COPY, HERO_LINES } from "@/lib/constants";
 import { INDEX_SLIDE_HERO } from "@/lib/index-typography";
+import { springContainer } from "@/lib/spring";
 import { ClipReveal } from "@/components/slider/clip-reveal";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { HeroPhysicsPills } from "@/components/slider/hero-physics-pills";
@@ -18,9 +22,17 @@ export function HeroFramePanel({
   index,
   onInteract,
 }: HeroFramePanelProps) {
+  const mounted = useIsMounted();
+  const reducedMotion = useReducedMotion();
+
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
-      <div className="relative h-full w-full overflow-hidden text-black">
+      <motion.div
+        initial={mounted && !reducedMotion ? { scale: 0 } : false}
+        animate={{ scale: 1 }}
+        transition={reducedMotion ? { duration: 0 } : springContainer}
+        className="relative h-full w-full overflow-hidden text-black"
+      >
         <HeroPhysicsPills
           className="z-[1]"
           onInteract={onInteract}
@@ -41,7 +53,7 @@ export function HeroFramePanel({
           </h1>
           <h2 className="sr-only">{HERO_COPY}</h2>
         </div>
-      </div>
+      </motion.div>
     </FrameShell>
   );
 }

@@ -31,8 +31,8 @@ const PHYSICS = {
   dragStrength: 0.32,
   throwStrength: 0.16,
   /** Stagger between pill drops on load (ms). */
-  spawnStaggerMs: 30,
-  spawnJitterMs: 18,
+  spawnStaggerMs: 120,
+  spawnJitterMs: 70,
   startY: 20,
   /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
   sizeScale: 1.44,
@@ -147,14 +147,12 @@ function HeroPillSurface({
   isStatic,
   layout,
   layoutScale,
-  pendingPosition,
   bodyRef,
 }: {
   pill: HeroPillDefinition;
   isStatic: boolean;
   layout?: { left: string; top: string; rotate: string };
   layoutScale: number;
-  pendingPosition?: { x: number; y: number };
   bodyRef: (element: HTMLDivElement | null) => void;
 }) {
   const height = HERO_PILL_HEIGHT_PX * layoutScale * PHYSICS.sizeScale;
@@ -174,9 +172,7 @@ function HeroPillSurface({
       ref={bodyRef}
       className={[
         "hero-physics-pill absolute left-0 top-0 select-none",
-        isStatic
-          ? "pointer-events-none touch-auto"
-          : "hero-physics-pill-draggable cursor-grab touch-none",
+        isStatic ? "pointer-events-none touch-auto" : "hero-physics-pill-draggable invisible cursor-grab touch-none",
       ].join(" ")}
       style={
         isStatic && layout
@@ -185,12 +181,7 @@ function HeroPillSurface({
               top: layout.top,
               transform: `rotate(${layout.rotate})`,
             }
-          : pendingPosition
-            ? {
-                transform: `translate3d(${pendingPosition.x - width / 2}px, ${pendingPosition.y - height / 2}px, 0)`,
-                willChange: "transform",
-              }
-            : { willChange: "transform" }
+          : { willChange: "transform" }
       }
     >
       <div
@@ -228,13 +219,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
   const reducedMotion = useReducedMotion();
   const [layoutScale, setLayoutScale] = useState(1);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
-  const [pendingSpawns, setPendingSpawns] = useState<{ x: number; y: number }[] | null>(
-    null,
-  );
-  const [physicsStarted, setPhysicsStarted] = useState(false);
   const layoutScaleRef = useRef(1);
-  const lastMeasuredWidthRef = useRef(0);
-  const spawnPositionsRef = useRef<{ x: number; y: number }[]>([]);
   const scheduleSetupRef = useRef<(() => void) | null>(null);
 
   useLayoutEffect(() => {
@@ -268,18 +253,13 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (width <= 0 || height <= 0) return;
 
       const mobile = window.matchMedia(MOBILE_LAYOUT_MEDIA).matches;
-      const widthChanged = Math.abs(width - lastMeasuredWidthRef.current) > 8;
-      lastMeasuredWidthRef.current = width;
-
       if (mobile) {
         const nextScale = getPillLayoutScale(width, true);
-        if (widthChanged && Math.abs(nextScale - layoutScaleRef.current) > 0.02) {
+        if (Math.abs(nextScale - layoutScaleRef.current) > 0.02) {
           setLayoutScale(nextScale);
         }
         return;
       }
-
-      if (!widthChanged && layoutScaleRef.current !== 1) return;
 
       const pillZoneMinY = measurePillZoneMinY(container, height);
       const zoneHeight = height - pillZoneMinY - 24;
@@ -290,32 +270,10 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       }
     };
 
-    const updatePendingSpawns = () => {
-      const { width } = getContainerLayoutSize(container);
-      if (width <= 0) return;
-
-      const nextSpawns = pills.map((pill, index) => {
-        const scale = layoutScaleRef.current;
-        const bodyW = Math.max(
-          (pill.iconOnly ? HERO_PILL_HEIGHT_PX : pill.width) * scale * PHYSICS.sizeScale,
-          24,
-        );
-        const bodyH = Math.max(HERO_PILL_HEIGHT_PX * scale * PHYSICS.sizeScale, 24);
-        return getSpawnPosition(index, pills.length, width, bodyW, bodyH);
-      });
-      spawnPositionsRef.current = nextSpawns;
-      setPendingSpawns(nextSpawns);
-    };
-
-    const syncLayout = () => {
-      measure();
-      updatePendingSpawns();
-    };
-
-    syncLayout();
+    measure();
     const observer = new ResizeObserver(() => {
       if (resizeTimer) clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(syncLayout, 120);
+      resizeTimer = setTimeout(measure, 160);
     });
     observer.observe(container);
 
@@ -323,7 +281,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (resizeTimer) clearTimeout(resizeTimer);
       observer.disconnect();
     };
-  }, [layoutScale, pills]);
+  }, []);
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -334,17 +292,12 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
     let disposed = false;
     let cleanup: (() => void) | undefined;
     let resizeTimer: ReturnType<typeof setTimeout> | null = null;
-    let initialSetupScheduled = false;
 
-    const scheduleSetup = (immediate = false) => {
+    const scheduleSetup = () => {
       if (resizeTimer) clearTimeout(resizeTimer);
-      const run = () => requestAnimationFrame(() => scheduleSetupRef.current?.());
-      if (immediate || !initialSetupScheduled) {
-        initialSetupScheduled = true;
-        run();
-        return;
-      }
-      resizeTimer = setTimeout(run, 45);
+      resizeTimer = setTimeout(() => {
+        requestAnimationFrame(() => scheduleSetupRef.current?.());
+      }, 180);
     };
 
     const setup = () => {
@@ -400,9 +353,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
         const el = pillRefs.current[index];
         const w = Math.max(el?.offsetWidth || pill.width, 24);
         const h = Math.max(el?.offsetHeight || HERO_PILL_HEIGHT_PX, 24);
-        const spawn =
-          spawnPositionsRef.current[index] ??
-          getSpawnPosition(index, pills.length, width, w, h);
+        const spawn = getSpawnPosition(index, pills.length, width, w, h);
 
         const addBody = () => {
           if (disposed) return;
@@ -427,6 +378,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
             domToBody.set(body, el);
             bodySizes.set(body, { width: w, height: h });
             el.dataset.bodyIndex = String(index);
+            el.classList.remove("invisible");
           }
         };
 
@@ -547,10 +499,8 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
 
       Runner.run(runner, engine);
       rafId = requestAnimationFrame(syncDom);
-      setPhysicsStarted(true);
 
       cleanup = () => {
-        setPhysicsStarted(false);
         spawnTimers.forEach((timer) => window.clearTimeout(timer));
         container.removeEventListener("pointerdown", onPointerDown);
         window.removeEventListener("pointermove", onPointerMove);
@@ -572,6 +522,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
           element.style.width = "";
           element.style.height = "";
           element.style.cursor = "";
+          element.classList.add("invisible");
           delete element.dataset.bodyIndex;
         });
       };
@@ -579,20 +530,41 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
 
     scheduleSetupRef.current = setup;
 
-    scheduleSetup(true);
+    scheduleSetup();
 
-    const observer = new ResizeObserver(() => scheduleSetup());
+    const observer = new ResizeObserver(scheduleSetup);
     observer.observe(container);
+
+    const headlineEl = container.parentElement?.querySelector(
+      ".index-slide-hero-copy h1",
+    );
+    const fontObserver =
+      headlineEl && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(scheduleSetup)
+        : null;
+    if (headlineEl && fontObserver) fontObserver.observe(headlineEl);
+
+    void document.fonts.ready.then(() => {
+      if (!disposed) scheduleSetup();
+    });
 
     return () => {
       disposed = true;
-      setPhysicsStarted(false);
       scheduleSetupRef.current = null;
       if (resizeTimer) clearTimeout(resizeTimer);
       observer.disconnect();
+      fontObserver?.disconnect();
       cleanup?.();
     };
   }, [isMobileLayout, pills, reducedMotion]);
+
+  useLayoutEffect(() => {
+    if (reducedMotion) return;
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => scheduleSetupRef.current?.());
+    });
+    return () => cancelAnimationFrame(id);
+  }, [isMobileLayout, layoutScale, reducedMotion]);
 
   return (
     <div
@@ -615,9 +587,6 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
           isStatic={useStaticPills}
           layout={useStaticPills ? BOTTOM_SHEET_LAYOUT[index] : undefined}
           layoutScale={layoutScale}
-          pendingPosition={
-            !physicsStarted && !useStaticPills ? pendingSpawns?.[index] : undefined
-          }
           bodyRef={(element) => {
             pillRefs.current[index] = element;
           }}
