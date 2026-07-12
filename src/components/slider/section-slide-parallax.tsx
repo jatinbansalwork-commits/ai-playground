@@ -24,6 +24,9 @@ function scrollPerFrameForViewport(): number {
   return touch ? SCROLL_PER_FRAME_TOUCH : SCROLL_PER_FRAME;
 }
 
+/** Ignore sub-pixel drift so snapped slides stay centred. */
+const PARALLAX_SNAP_EPSILON = 4;
+
 function parallaxOffsetForFrame(
   scrollOffset: number,
   frameIndex: number,
@@ -31,7 +34,12 @@ function parallaxOffsetForFrame(
 ): number {
   const slideStart = scrollPerFrameForViewport() * frameIndex;
   const localOffset = Math.max(0, scrollOffset - slideStart);
-  return -Math.min(localOffset, maxParallax);
+
+  if (localOffset <= PARALLAX_SNAP_EPSILON) {
+    return 0;
+  }
+
+  return -Math.min(localOffset - PARALLAX_SNAP_EPSILON, maxParallax);
 }
 
 interface SectionSlideParallaxProps {

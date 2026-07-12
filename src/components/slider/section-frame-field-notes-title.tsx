@@ -46,6 +46,7 @@ export function SectionFrameFieldNotesTitle({
           key={playKey}
           viewBox={viewBox}
           fill="none"
+          overflow="visible"
           xmlns="http://www.w3.org/2000/svg"
           className="field-notes-handwriting__svg"
         >

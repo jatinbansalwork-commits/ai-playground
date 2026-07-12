@@ -1185,8 +1185,10 @@ body {
 }
 
 .field-notes-handwriting__svg {
-  width: min(90%, 560px);
+  display: block;
+  width: min(82%, 500px);
   height: auto;
+  overflow: visible;
 }
 
 .field-notes-handwriting__path {
