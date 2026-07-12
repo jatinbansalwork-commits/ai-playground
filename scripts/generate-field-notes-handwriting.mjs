@@ -9,12 +9,12 @@ const fontPath = path.join(root, "public/assets/fonts/Kalam-Bold.ttf");
 const outPath = path.join(root, "src/lib/field-notes-handwriting-paths.ts");
 
 const TEXT = "JB's Field Notes";
-const FONT_SIZE = 48;
-const LETTER_SPACING = 6;
-const BASELINE_Y = 40;
-const PADDING_X = 10;
+const FONT_SIZE = 192;
+const LETTER_SPACING = 24;
+const BASELINE_Y = 160;
+const PADDING_X = 40;
 /** Round caps extend past path ends — pad viewBox so strokes are not clipped. */
-const STROKE_PAD = 12;
+const STROKE_PAD = 48;
 
 function splitSubpaths(pathData) {
   const parts = pathData

@@ -1178,7 +1178,7 @@ body {
 /* Field Notes slide — Rauno-style handwriting draw animation */
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
-  --field-notes-stroke-width: 5;
+  --field-notes-stroke-width: 20;
   --duration: 1s;
   display: inline-block;
   line-height: 0;
@@ -1186,7 +1186,7 @@ body {
 
 .field-notes-handwriting__svg {
   display: block;
-  width: min(82%, 500px);
+  width: min(92%, 1120px);
   height: auto;
   overflow: visible;
 }

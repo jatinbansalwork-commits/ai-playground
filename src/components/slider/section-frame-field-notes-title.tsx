@@ -54,7 +54,7 @@ export function SectionFrameFieldNotesTitle({
             fontWeight={600}
             fontSize={fontSize}
             fill="transparent"
-            y={40}
+            y={fontSize * (40 / 48)}
             letterSpacing={`${letterSpacing}px`}
           >
             {text}
