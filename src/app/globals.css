@@ -1179,6 +1179,7 @@ body {
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
   --field-notes-stroke-width: 3;
+  --field-notes-display-scale: 3;
   --duration: 1s;
   display: inline-block;
   line-height: 0;
@@ -1190,6 +1191,8 @@ body {
   width: min(92%, 1120px);
   height: auto;
   overflow: visible;
+  transform: scale(var(--field-notes-display-scale));
+  transform-origin: center center;
 }
 
 .field-notes-handwriting__path {
@@ -1199,6 +1202,8 @@ body {
   stroke-linecap: round;
   stroke-dasharray: 1 1.02;
   stroke-dashoffset: 1.01;
+  /* Keep stroke at 3px on screen when the SVG is scaled up. */
+  vector-effect: non-scaling-stroke;
 }
 
 .field-notes-handwriting__path--draw {
