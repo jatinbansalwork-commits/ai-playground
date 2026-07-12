@@ -1178,7 +1178,7 @@ body {
 /* Field Notes slide — Huge Smile handwriting draw animation */
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
-  --field-notes-stroke-width: 14;
+  --field-notes-stroke-width: 3;
   --duration: 1s;
   display: inline-block;
   line-height: 0;
