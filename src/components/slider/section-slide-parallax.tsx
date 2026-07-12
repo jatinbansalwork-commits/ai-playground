@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useLayoutEffect, useMotionValueEvent, useSpring } from "framer-motion";
+import { motion, useMotionValueEvent, useSpring } from "framer-motion";
+import { useLayoutEffect } from "react";
 import { useSliderContext } from "@/context/slider-context";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
