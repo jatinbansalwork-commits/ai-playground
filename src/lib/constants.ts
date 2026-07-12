@@ -30,6 +30,14 @@ export const FRAMES = [
     href: ROUTES.ciscoPolicyCopilot,
   },
   {
+    id: "archive",
+    type: "section" as const,
+    variant: "slide" as const,
+    label: "Field Notes",
+    videoThumbnail: true,
+    href: ROUTES.archive,
+  },
+  {
     id: "ideas",
     type: "section" as const,
     variant: "slide" as const,
@@ -65,14 +73,6 @@ export const FRAMES = [
     monogramImage: "/assets/index/craft-monogram.png",
     monogramWireframeImage: "/assets/index/craft-monogram-wireframe.png",
     href: ROUTES.craft,
-  },
-  {
-    id: "archive",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "Field Notes",
-    videoThumbnail: true,
-    href: ROUTES.archive,
   },
   {
     id: "contact",
