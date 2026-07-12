@@ -1182,6 +1182,8 @@ body {
   --duration: 1s;
   display: inline-block;
   line-height: 0;
+  transform: scale(3);
+  transform-origin: center center;
 }
 
 .field-notes-handwriting__svg {

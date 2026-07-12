@@ -30,7 +30,7 @@ export function SectionFrameFieldNotesTitle({
     : "field-notes-handwriting__path field-notes-handwriting__path--draw";
 
   return (
-    <div className="flex h-full w-full items-center justify-center px-8">
+    <div className="flex h-full w-full items-center justify-center overflow-visible px-2">
       <p className="sr-only">{text}</p>
       <div
         aria-hidden
