@@ -1265,35 +1265,11 @@ main.index-root[data-debug="true"] .field-notes-handwriting__path {
   overscroll-behavior-y: contain;
 }
 
-.field-notes-page__back.nav-back-link {
-  color: #737373;
-}
-
-.field-notes-page__back.nav-back-link:hover,
-.field-notes-page__back.nav-back-link:focus-visible {
-  color: #171717;
-}
-
-.field-notes-page__back.nav-back-link::before {
-  background: rgb(255 255 255 / 0.72);
-  box-shadow:
-    inset 0 1px 0 rgb(0 0 0 / 0.04),
-    0 6px 24px rgb(0 0 0 / 0.08);
-}
-
-.field-notes-page__back.nav-back-link:hover::before,
-.field-notes-page__back.nav-back-link:focus-visible::before {
-  background: rgb(255 255 255 / 0.92);
-  box-shadow:
-    inset 0 1px 0 rgb(0 0 0 / 0.06),
-    0 8px 28px rgb(0 0 0 / 0.12);
-}
-
 .field-notes-page__article {
   margin: 0 auto;
   width: min(100%, 42rem);
   padding:
-    max(6.5rem, calc(env(safe-area-inset-top) + 5rem))
+    max(4rem, calc(env(safe-area-inset-top) + 3rem))
     max(1.5rem, env(safe-area-inset-right))
     max(4rem, env(safe-area-inset-bottom))
     max(1.5rem, env(safe-area-inset-left));
