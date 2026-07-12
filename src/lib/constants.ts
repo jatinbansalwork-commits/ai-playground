@@ -38,14 +38,6 @@ export const FRAMES = [
     href: ROUTES.archive,
   },
   {
-    id: "ideas",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "AI Labs",
-    monogramImage: "/assets/index/ideas-monogram.png",
-    href: ROUTES.ideas,
-  },
-  {
     id: "projects",
     type: "section" as const,
     variant: "slide" as const,
@@ -54,6 +46,14 @@ export const FRAMES = [
     monogramPan: true,
     monogramPanDuration: 14,
     href: ROUTES.projects,
+  },
+  {
+    id: "ideas",
+    type: "section" as const,
+    variant: "slide" as const,
+    label: "AI Labs",
+    monogramImage: "/assets/index/ideas-monogram.png",
+    href: ROUTES.ideas,
   },
   {
     id: "design-review-checklist",
