@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/archive",
+        destination: "/notes",
+        permanent: true,
+      },
+      {
         source: "/recent-work",
         destination: "/recent",
         permanent: false,

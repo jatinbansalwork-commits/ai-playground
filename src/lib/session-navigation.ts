@@ -29,6 +29,11 @@ export const BACK_IDEAS: SessionBackContext = {
   destination: "AI Labs",
 };
 
+export const BACK_NOTES: SessionBackContext = {
+  href: ROUTES.notes,
+  destination: "Field Notes",
+};
+
 export function subscribeSessionBackContext(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
@@ -77,6 +82,11 @@ export function backContextForProjectsListNavigation(): SessionBackContext {
   return BACK_PROJECTS;
 }
 
+/** Back target when opening a field note from the notes index. */
+export function backContextForNotesNavigation(): SessionBackContext {
+  return BACK_NOTES;
+}
+
 /** Back target when opening a craft article from the craft index. */
 export function backContextForCraftNavigation(): SessionBackContext {
   return BACK_CRAFT;
@@ -88,5 +98,6 @@ export function backContextForPageEntry(href: string): SessionBackContext | null
   if (href === ROUTES.projects) return BACK_HOME;
   if (href === ROUTES.craft) return BACK_HOME;
   if (href === ROUTES.ideas) return BACK_HOME;
+  if (href === ROUTES.notes) return BACK_HOME;
   return null;
 }

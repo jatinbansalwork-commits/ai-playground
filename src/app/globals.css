@@ -86,7 +86,8 @@ html:has(main[data-sheet="case-study"]) body {
   height: 100%;
 }
 
-.projects-page {
+.projects-page,
+.field-notes-page {
   font-family: var(--font-ibm-plex-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1360,10 +1361,13 @@ main.index-root[data-debug="true"] .ideas-robot__float {
 .no-scrollbar,
 .ai-chat-log,
 .projects-page,
+.field-notes-page,
 .craft-page,
 main[data-sheet="experiments"],
 main[data-sheet="ideas"],
 main[data-sheet="projects"],
+main[data-sheet="field-notes"],
+main[data-sheet="field-note"],
 main[data-sheet="recent"],
 main[data-sheet="craft-article"] {
   scrollbar-width: none;
@@ -1375,10 +1379,13 @@ main[data-sheet="craft-article"] {
 .no-scrollbar::-webkit-scrollbar,
 .ai-chat-log::-webkit-scrollbar,
 .projects-page::-webkit-scrollbar,
+.field-notes-page::-webkit-scrollbar,
 .craft-page::-webkit-scrollbar,
 main[data-sheet="experiments"]::-webkit-scrollbar,
 main[data-sheet="ideas"]::-webkit-scrollbar,
 main[data-sheet="projects"]::-webkit-scrollbar,
+main[data-sheet="field-notes"]::-webkit-scrollbar,
+main[data-sheet="field-note"]::-webkit-scrollbar,
 main[data-sheet="recent"]::-webkit-scrollbar {
   display: none;
 }

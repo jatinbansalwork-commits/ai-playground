@@ -1,20 +1,7 @@
-import type { Metadata } from "next";
-import { MePage } from "@/components/me/me-page";
-import { JsonLd } from "@/components/seo/json-ld";
-import { buildPageMetadata, HOME_SEO_DESCRIPTION, allProjectsSeoKeywords, profilePageJsonLd } from "@/lib/seo";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/constants";
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "About Jatin Bansal",
-  description: HOME_SEO_DESCRIPTION,
-  path: "/archive",
-  keywords: allProjectsSeoKeywords(),
-});
-
+/** Legacy `/archive` (Me) — redirects to Field Notes. */
 export default function ArchivePage() {
-  return (
-    <>
-      <JsonLd data={profilePageJsonLd()} />
-      <MePage />
-    </>
-  );
+  redirect(ROUTES.notes);
 }

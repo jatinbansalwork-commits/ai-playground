@@ -9,7 +9,9 @@ export const ROUTES = {
   projects: "/projects",
   ciscoPolicyCopilot: "/projects/cisco-policy-copilot",
   ideas: "/ideas",
-  archive: "/archive",
+  notes: "/notes",
+  /** @deprecated Use `ROUTES.notes` — `/archive` redirects here. */
+  archive: "/notes",
 } as const;
 
 export const FRAMES = [
@@ -67,12 +69,15 @@ export const FRAMES = [
     href: ROUTES.craft,
   },
   {
-    id: "archive",
+    id: "field-notes",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Me",
-    videoThumbnail: true,
-    href: ROUTES.archive,
+    label: "Field Notes",
+    mobileNavLabel: "Notes",
+    monogram: "Field Notes",
+    monogramPan: true,
+    monogramPanDuration: 16,
+    href: ROUTES.notes,
   },
   {
     id: "contact",

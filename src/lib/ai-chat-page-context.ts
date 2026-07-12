@@ -1,9 +1,10 @@
+import { ROUTES } from "@/lib/constants";
 import { getCaseStudyContent } from "@/lib/project-content";
 
 /** Injects page-aware hints into the JB_AI system prompt. */
 export function buildPageContext(pagePath?: string): string {
   if (!pagePath || pagePath === "/") {
-    return "The user is on the index slider — mention Projects, Ideas, Craft, or Contact if relevant.";
+    return "The user is on the index slider — mention Projects, Ideas, Craft, Field Notes, or Contact if relevant.";
   }
 
   if (pagePath.startsWith("/projects/")) {
@@ -37,8 +38,8 @@ Overview (for other questions only): ${study.overviewText}`;
     return "The user is browsing Ideas — external AI demos and side experiments. Point them to Try Now links when relevant.";
   }
 
-  if (pagePath === "/archive") {
-    return "The user is on the Me / archive slide context — keep answers personal and portfolio-focused.";
+  if (pagePath === ROUTES.notes || pagePath.startsWith(`${ROUTES.notes}/`)) {
+    return "The user is reading Field Notes — process logs on interaction design and how this portfolio is built.";
   }
 
   return `The user is on ${pagePath}. Keep answers relevant to JB's portfolio and this section when possible.`;

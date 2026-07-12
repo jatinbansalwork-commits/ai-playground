@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { ROUTES } from "@/lib/constants";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { getExperimentArticleSlugs } from "@/lib/experiments-registry";
+import { FIELD_NOTE_SLUGS } from "@/lib/field-notes-content";
 import { getIndexableCaseStudySlugs } from "@/lib/projects-list-data";
 import { absoluteUrl } from "@/lib/seo";
 
@@ -29,10 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: absoluteUrl(ROUTES.archive),
+      url: absoluteUrl(ROUTES.notes),
       lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.6,
+      changeFrequency: "monthly",
+      priority: 0.65,
     },
   ];
 
@@ -59,5 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...staticRoutes, ...projectRoutes, ...craftArticleRoutes];
+  const fieldNoteRoutes: MetadataRoute.Sitemap = FIELD_NOTE_SLUGS.map((slug) => ({
+    url: absoluteUrl(`${ROUTES.notes}/${slug}`),
+    lastModified: now,
+    changeFrequency: "yearly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...projectRoutes, ...craftArticleRoutes, ...fieldNoteRoutes];
 }
