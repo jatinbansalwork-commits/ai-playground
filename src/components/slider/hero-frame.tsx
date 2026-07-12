@@ -2,7 +2,9 @@
 
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { HERO_COPY, HERO_LINES } from "@/lib/constants";
+import { HERO_CLIP_BASE_DELAY_S, HERO_CLIP_LINE_STAGGER_S } from "@/lib/hero-entrance";
 import { INDEX_SLIDE_HERO } from "@/lib/index-typography";
+import { ClipReveal } from "@/components/slider/clip-reveal";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { HeroPhysicsPills } from "@/components/slider/hero-physics-pills";
 import type { HeroFrame } from "@/types";
@@ -38,7 +40,12 @@ export function HeroFramePanel({
                   lineIndex > 0 ? " index-slide-hero-subline" : ""
                 }`}
               >
-                {line}
+                <ClipReveal
+                  baseDelay={HERO_CLIP_BASE_DELAY_S}
+                  delay={lineIndex * HERO_CLIP_LINE_STAGGER_S}
+                >
+                  {line}
+                </ClipReveal>
               </span>
             ))}
           </h1>
