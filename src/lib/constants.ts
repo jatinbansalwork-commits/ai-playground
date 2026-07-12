@@ -33,8 +33,8 @@ export const FRAMES = [
     id: "archive",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Field Notes",
-    fieldNotesTitle: "JB's field notes",
+    label: "Field Note",
+    fieldNotesTitle: "Jb's Field Note",
     href: ROUTES.archive,
   },
   {
