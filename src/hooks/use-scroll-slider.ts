@@ -5,6 +5,8 @@ import {
   useMotionValueEvent,
   useSpring,
   useTransform,
+  animate,
+  type AnimationPlaybackControls,
 } from "framer-motion";
 import {
   FRAME_STRIDE,
@@ -24,8 +26,6 @@ import {
   trackIndexFrameView,
   type IndexNavigateMethod,
 } from "@/lib/analytics";
-
-const SNAP_DURATION_MS = 720;
 import { useClickSound } from "@/hooks/use-click-sound";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
@@ -222,7 +222,7 @@ function getRestoredFrameIndex(frameCount: number): number {
 }
 
 export function useScrollSlider() {
-  const { trackX, minimapX, scale } = useSliderContext();
+  const { trackX, minimapX, scale, scrollOffset } = useSliderContext();
   const frameCount = FRAMES.length;
   const maxOffset = (frameCount - 1) * FRAME_STRIDE;
 
@@ -236,7 +236,7 @@ export function useScrollSlider() {
   const isReadyRef = useRef(false);
   const scrollRangeRef = useRef(0);
   const baseScaleRef = useRef(1);
-  const snapFrameRef = useRef<number | null>(null);
+  const snapControlRef = useRef<AnimationPlaybackControls | null>(null);
   const scrollPerFrameRef = useRef(SCROLL_PER_FRAME);
   /** Authoritative slider offset on desktop; mirrored from document scroll on touch. */
   const sliderScrollOffsetRef = useRef(0);
@@ -313,15 +313,14 @@ export function useScrollSlider() {
   const syncScrollPosition = useCallback((value: number) => {
     const clamped = clampScrollOffset(value);
     sliderScrollOffsetRef.current = clamped;
+    scrollOffset.set(clamped);
     syncDocumentScrollOffset(clamped);
     return clamped;
-  }, [clampScrollOffset]);
+  }, [clampScrollOffset, scrollOffset]);
 
   const cancelSnapAnimation = useCallback(() => {
-    if (snapFrameRef.current !== null) {
-      cancelAnimationFrame(snapFrameRef.current);
-      snapFrameRef.current = null;
-    }
+    snapControlRef.current?.stop();
+    snapControlRef.current = null;
   }, []);
 
   const snapToIndex = useCallback(
@@ -342,28 +341,19 @@ export function useScrollSlider() {
         return;
       }
 
-      const delta = targetScroll - start;
-      const startTime = performance.now();
-
-      const tick = (now: number) => {
-        const progress = Math.min((now - startTime) / SNAP_DURATION_MS, 1);
-        const eased = 1 - (1 - progress) ** 3;
-        const value = start + delta * eased;
-        const synced = syncScrollPosition(value);
-        updateFromScroll(synced);
-
-        if (progress < 1) {
-          snapFrameRef.current = requestAnimationFrame(tick);
-          return;
-        }
-
-        syncScrollPosition(targetScroll);
-        updateFromScroll(targetScroll);
-        isSnappingRef.current = false;
-        snapFrameRef.current = null;
-      };
-
-      snapFrameRef.current = requestAnimationFrame(tick);
+      snapControlRef.current = animate(start, targetScroll, {
+        ...springScrollSnap,
+        onUpdate: (value) => {
+          const synced = syncScrollPosition(value);
+          updateFromScroll(synced);
+        },
+        onComplete: () => {
+          const synced = syncScrollPosition(targetScroll);
+          updateFromScroll(synced);
+          isSnappingRef.current = false;
+          snapControlRef.current = null;
+        },
+      });
     },
     [
       cancelSnapAnimation,
@@ -392,6 +382,7 @@ export function useScrollSlider() {
 
     window.scrollTo(0, initialScroll);
     sliderScrollOffsetRef.current = initialScroll;
+    scrollOffset.jump(initialScroll);
     syncDocumentScrollOffset(initialScroll);
 
     baseScaleRef.current = computeBaseScale();
@@ -405,7 +396,7 @@ export function useScrollSlider() {
     frameIndexRef.current = initialIndex;
     setActiveFrameIndex(initialIndex);
     resumeIndexActiveFramePersistence();
-  }, [frameCount, maxOffset, minimapX, scale, springScaleValue, springTrackX, trackX]);
+  }, [frameCount, maxOffset, minimapX, scale, scrollOffset, springScaleValue, springTrackX, trackX]);
 
   useEffect(() => {
     scrollPerFrameRef.current = scrollPerFrameForViewport();
@@ -472,6 +463,7 @@ export function useScrollSlider() {
         const clamped = clampScrollOffset(documentOffset);
         if (Math.abs(clamped - getScrollOffset()) <= 0.5) return;
         sliderScrollOffsetRef.current = clamped;
+        scrollOffset.set(clamped);
         updateFromScroll(clamped);
         snapAfterIdle();
         return;
@@ -507,6 +499,7 @@ export function useScrollSlider() {
     frameCount,
     getScrollOffset,
     scale,
+    scrollOffset,
     syncScrollPosition,
     updateFromScroll,
   ]);

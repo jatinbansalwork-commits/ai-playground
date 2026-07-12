@@ -55,6 +55,12 @@ export const springLabel = {
   damping: 32,
 };
 
+export const springParallax = {
+  type: "spring" as const,
+  stiffness: 500,
+  damping: 40,
+};
+
 export const springBentoHover = {
   type: "spring" as const,
   stiffness: 300,

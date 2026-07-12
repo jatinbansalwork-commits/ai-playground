@@ -12,6 +12,8 @@ interface SliderContextValue {
   trackX: MotionValue<number>;
   minimapX: MotionValue<number>;
   scale: MotionValue<number>;
+  /** Document scroll offset driving the slider (px). */
+  scrollOffset: MotionValue<number>;
 }
 
 const SliderContext = createContext<SliderContextValue | null>(null);
@@ -20,10 +22,11 @@ export function SliderProvider({ children }: { children: ReactNode }) {
   const trackX = useMotionValue(0);
   const minimapX = useMotionValue(0);
   const scale = useMotionValue(1);
+  const scrollOffset = useMotionValue(0);
 
   const value = useMemo(
-    () => ({ trackX, minimapX, scale }),
-    [trackX, minimapX, scale],
+    () => ({ trackX, minimapX, scale, scrollOffset }),
+    [trackX, minimapX, scale, scrollOffset],
   );
 
   return (

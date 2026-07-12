@@ -94,8 +94,8 @@ export const SLIDE_COUNT = FRAMES.length;
 export const FRAME_WIDTH = 1200;
 export const FRAME_HEIGHT = 720;
 export const FRAME_STRIDE = 1240;
-/** Desktop / fine-pointer scroll distance between slides. */
-export const SCROLL_PER_FRAME = 560;
+/** Desktop / fine-pointer scroll distance between slides — matches rauno.me. */
+export const SCROLL_PER_FRAME = 744;
 /** Shorter travel on touch — closer to rauno.me mobile scrub length. */
 export const SCROLL_PER_FRAME_TOUCH = 400;
 
@@ -104,6 +104,11 @@ export const SCROLL_RANGE = (SLIDE_COUNT - 1) * SCROLL_PER_FRAME;
 
 /** Full horizontal track width for all frames. */
 export const TRACK_WIDTH = FRAME_WIDTH + (SLIDE_COUNT - 1) * FRAME_STRIDE;
+
+/** Intra-slide parallax — Rauno-style content lag inside slide panels. */
+export const PARALLAX_STEP_DIVISOR_DESKTOP = 3;
+export const PARALLAX_STEP_DIVISOR_TOUCH = 5;
+export const PARALLAX_MAX_DEFAULT = Math.round(FRAME_STRIDE * 0.65);
 
 export const MINIMAP_LINE_WIDTH = 1;
 export const MINIMAP_LINE_GAP = 9;

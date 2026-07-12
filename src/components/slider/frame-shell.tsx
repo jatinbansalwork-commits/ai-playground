@@ -14,6 +14,7 @@ import {
   FRAME_WIDTH,
 } from "@/lib/constants";
 import { ClipReveal } from "@/components/slider/clip-reveal";
+import { SectionSlideParallax } from "@/components/slider/section-slide-parallax";
 import { INDEX_SLIDE_LABEL } from "@/lib/index-typography";
 import type { Frame, SectionFrame } from "@/types";
 
@@ -93,9 +94,9 @@ export function FrameShell({
         onMouseDown={onInteract}
       >
         {isSlide ? (
-          <div className="flex h-full w-full items-center justify-center overflow-hidden">
+          <SectionSlideParallax frameIndex={index}>
             {children}
-          </div>
+          </SectionSlideParallax>
         ) : (
           children
         )}
