@@ -1178,7 +1178,7 @@ body {
 /* Field Notes slide — Just Another Hand handwriting draw animation */
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
-  --field-notes-stroke-width: 3;
+  --field-notes-stroke-width: 1.8;
   --field-notes-display-scale: 3;
   --duration: 1s;
   display: inline-block;
@@ -1202,7 +1202,7 @@ body {
   stroke-linecap: round;
   stroke-dasharray: 1 1.02;
   stroke-dashoffset: 1.01;
-  /* Keep stroke at 3px on screen when the SVG is scaled up. */
+  /* Keep stroke at 1.8px on screen when the SVG is scaled up. */
   vector-effect: non-scaling-stroke;
 }
 
