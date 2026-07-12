@@ -38,7 +38,11 @@ Overview (for other questions only): ${study.overviewText}`;
   }
 
   if (pagePath === "/archive") {
-    return "The user is on the Field Notes / archive slide context — keep answers personal and portfolio-focused.";
+    return "The user is on the archive / about page — keep answers personal and portfolio-focused.";
+  }
+
+  if (pagePath.startsWith("/notes/")) {
+    return "The user is reading a Field Notes article — keep answers personal, observational, and portfolio-focused.";
   }
 
   return `The user is on ${pagePath}. Keep answers relevant to JB's portfolio and this section when possible.`;

@@ -50,6 +50,15 @@ html:has(main[data-sheet="ideas"]) {
   color-scheme: dark;
 }
 
+html:has(main[data-sheet="field-notes"]) {
+  color-scheme: light;
+}
+
+html:has(main[data-sheet="field-notes"]) body {
+  background: #ffffff;
+  color: #171717;
+}
+
 html:has(main[data-sheet="experiments"]) body {
   background: #09090b;
   color: #ffffff;
@@ -81,7 +90,9 @@ html:has(main[data-sheet="experiments"]) body,
 html:has(main[data-sheet="ideas"]),
 html:has(main[data-sheet="ideas"]) body,
 html:has(main[data-sheet="case-study"]),
-html:has(main[data-sheet="case-study"]) body {
+html:has(main[data-sheet="case-study"]) body,
+html:has(main[data-sheet="field-notes"]),
+html:has(main[data-sheet="field-notes"]) body {
   overflow: hidden;
   height: 100%;
 }
@@ -1236,6 +1247,77 @@ main.index-root[data-debug="true"] .field-notes-handwriting__path {
     animation: none;
     stroke-dashoffset: 0;
   }
+}
+
+.field-notes-handwriting--page {
+  --field-notes-display-scale: 1;
+}
+
+.field-notes-handwriting--page .field-notes-handwriting__svg {
+  width: min(88vw, 720px);
+}
+
+.field-notes-page {
+  font-family: var(--font-ibm-plex-sans), "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+
+.field-notes-page__back.nav-back-link {
+  color: #737373;
+}
+
+.field-notes-page__back.nav-back-link:hover,
+.field-notes-page__back.nav-back-link:focus-visible {
+  color: #171717;
+}
+
+.field-notes-page__back.nav-back-link::before {
+  background: rgb(255 255 255 / 0.72);
+  box-shadow:
+    inset 0 1px 0 rgb(0 0 0 / 0.04),
+    0 6px 24px rgb(0 0 0 / 0.08);
+}
+
+.field-notes-page__back.nav-back-link:hover::before,
+.field-notes-page__back.nav-back-link:focus-visible::before {
+  background: rgb(255 255 255 / 0.92);
+  box-shadow:
+    inset 0 1px 0 rgb(0 0 0 / 0.06),
+    0 8px 28px rgb(0 0 0 / 0.12);
+}
+
+.field-notes-page__article {
+  margin: 0 auto;
+  width: min(100%, 42rem);
+  padding:
+    max(6.5rem, calc(env(safe-area-inset-top) + 5rem))
+    max(1.5rem, env(safe-area-inset-right))
+    max(4rem, env(safe-area-inset-bottom))
+    max(1.5rem, env(safe-area-inset-left));
+}
+
+.field-notes-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.field-notes-page__number {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1;
+  font-weight: 500;
+  color: #a3a3a3;
+}
+
+.field-notes-page__body {
+  min-height: 12rem;
+  margin-top: 3rem;
 }
 
 /* Single font stack for all index slider copy — never swap families in wireframe. */

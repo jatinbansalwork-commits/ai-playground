@@ -10,6 +10,7 @@ export const ROUTES = {
   ciscoPolicyCopilot: "/projects/cisco-policy-copilot",
   ideas: "/ideas",
   archive: "/archive",
+  fieldNotesOne: "/notes/1",
 } as const;
 
 export const FRAMES = [
@@ -35,7 +36,7 @@ export const FRAMES = [
     variant: "slide" as const,
     label: "Field Notes",
     fieldNotesTitle: "JB's Field Notes",
-    href: ROUTES.archive,
+    href: ROUTES.fieldNotesOne,
   },
   {
     id: "ideas",
