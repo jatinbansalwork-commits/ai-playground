@@ -1,6 +1,6 @@
 /**
  * Claude-inspired design tokens for Policy Copilot.
- * Warm dark product surfaces, blue accent, editorial serif + humanist sans.
+ * Warm dark product surfaces, blue accent, IBM Plex Mono throughout.
  */
 import { SITE_FONT_STACK } from "@/lib/fonts";
 
@@ -31,10 +31,9 @@ export const CLAUDE = {
   riskMuted: "rgb(198 69 69 / 0.14)",
   accentTeal: "#5db8a6",
   accentTealMuted: "rgb(93 184 166 / 0.14)",
-  fontDisplay:
-    '"Copernicus", "Tiempos Headline", Georgia, "Times New Roman", serif',
+  fontDisplay: SITE_FONT_STACK,
   fontBody: SITE_FONT_STACK,
-  fontMono: '"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+  fontMono: SITE_FONT_STACK,
   radius: "0.625rem",
   radiusLg: "0.875rem",
 } as const;

@@ -47,7 +47,7 @@ export const TARGET_HIT_AREA =
 /** @deprecated Use `TARGET_HIT_AREA`. */
 export const ICON_BUTTON_HIT_AREA = TARGET_HIT_AREA;
 
-/** IBM Plex Sans — back navigation labels site-wide (pairs with `.site-back-type` in globals.css). */
+/** IBM Plex Mono — back navigation labels site-wide (pairs with `.site-back-type` in globals.css). */
 export const SITE_BACK_TYPEFACE = "site-back-type";
 
 /** Large icon back control (`←`) — fun, archive, minimap exits. */

@@ -19,7 +19,7 @@ export default function OpenGraphImage() {
           background: "#09090b",
           color: "#ffffff",
           padding: "72px",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: '"IBM Plex Mono", ui-monospace, monospace',
         }}
       >
         <div style={{ fontSize: 28, letterSpacing: "0.2em", opacity: 0.7 }}>

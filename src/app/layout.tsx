@@ -11,7 +11,7 @@ import { SkipToContentLink } from "@/components/skip-to-content-link";
 import { JsonLd } from "@/components/seo/json-ld";
 import { WireframeProvider } from "@/context/wireframe-context";
 import { BLOB_CDN_ORIGIN } from "@/lib/asset-cdn";
-import { ibmPlexSans } from "@/lib/fonts";
+import { ibmPlexMono } from "@/lib/fonts";
 import { personJsonLd, ROOT_METADATA, webSiteJsonLd } from "@/lib/seo";
 import "./globals.css";
 
@@ -29,12 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${ibmPlexSans.variable} bg-background`}>
+    <html lang="en" className={`${ibmPlexMono.variable} bg-background`}>
       <head>
         <link rel="preconnect" href={BLOB_CDN_ORIGIN} crossOrigin="anonymous" />
         <JsonLd data={[personJsonLd(), webSiteJsonLd()]} />
       </head>
-      <body className={`${ibmPlexSans.className} relative min-h-screen bg-background text-white antialiased`}>
+      <body className={`${ibmPlexMono.className} relative min-h-screen bg-background text-white antialiased`}>
         <WireframeFilters />
         <SkipToContentLink />
         <CacheManager />

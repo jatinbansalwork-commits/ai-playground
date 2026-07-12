@@ -1,7 +1,7 @@
-import { ibmPlexSans } from "@/lib/fonts";
+import { ibmPlexMono } from "@/lib/fonts";
 
 /** Font variable classes + editorial scope hook for long-form pages. */
 export const CASE_STUDY_EDITORIAL_CLASS = [
-  ibmPlexSans.variable,
+  ibmPlexMono.variable,
   "case-study-editorial",
 ].join(" ");
