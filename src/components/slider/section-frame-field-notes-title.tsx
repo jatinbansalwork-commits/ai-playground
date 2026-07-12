@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useScrollSlider } from "@/hooks/use-scroll-slider";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { FIELD_NOTES_HANDWRITING } from "@/lib/field-notes-handwriting-paths";
 
@@ -10,16 +9,14 @@ const FIELD_NOTES_INK = "#f4635a";
 
 interface SectionFrameFieldNotesTitleProps {
   text: string;
-  frameIndex: number;
+  isActive: boolean;
 }
 
 export function SectionFrameFieldNotesTitle({
   text,
-  frameIndex,
+  isActive,
 }: SectionFrameFieldNotesTitleProps) {
-  const { activeFrameIndex } = useScrollSlider();
   const reducedMotion = useReducedMotion();
-  const isActive = activeFrameIndex === frameIndex;
   const [playKey, setPlayKey] = useState(0);
 
   useEffect(() => {

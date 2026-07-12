@@ -21,12 +21,14 @@ import type { SectionFrame } from "@/types";
 interface SectionFramePanelProps {
   frame: SectionFrame;
   index: number;
+  activeFrameIndex: number;
   onInteract: () => void;
 }
 
 export function SectionFramePanel({
   frame,
   index,
+  activeFrameIndex,
   onInteract,
 }: SectionFramePanelProps) {
   const monogram = frame.monogram ?? "";
@@ -40,7 +42,7 @@ export function SectionFramePanel({
       {frame.fieldNotesTitle ? (
         <SectionFrameFieldNotesTitle
           text={frame.fieldNotesTitle}
-          frameIndex={index}
+          isActive={activeFrameIndex === index}
         />
       ) : frame.videoThumbnail ? (
         <MeIntroVideo variant="frame" />
