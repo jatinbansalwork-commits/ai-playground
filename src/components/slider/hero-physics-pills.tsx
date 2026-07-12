@@ -31,8 +31,8 @@ const PHYSICS = {
   dragStrength: 0.32,
   throwStrength: 0.16,
   /** Stagger between pill drops on load (ms). */
-  spawnStaggerMs: 60,
-  spawnJitterMs: 35,
+  spawnStaggerMs: 30,
+  spawnJitterMs: 18,
   startY: 20,
   /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
   sizeScale: 1.44,
@@ -219,6 +219,9 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
   const reducedMotion = useReducedMotion();
   const [layoutScale, setLayoutScale] = useState(1);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
+  const [fontsReady, setFontsReady] = useState(
+    () => typeof document !== "undefined" && document.fonts.status === "loaded",
+  );
   const layoutScaleRef = useRef(1);
   const scheduleSetupRef = useRef<(() => void) | null>(null);
 
@@ -229,6 +232,11 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
   useLayoutEffect(() => {
     onInteractRef.current = onInteract;
   }, [onInteract]);
+
+  useLayoutEffect(() => {
+    if (fontsReady) return;
+    void document.fonts.ready.then(() => setFontsReady(true));
+  }, [fontsReady]);
 
   const pills = useMemo(() => HERO_PILLS, []);
 
@@ -253,6 +261,8 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (width <= 0 || height <= 0) return;
 
       const mobile = window.matchMedia(MOBILE_LAYOUT_MEDIA).matches;
+      if (!mobile && !fontsReady) return;
+
       if (mobile) {
         const nextScale = getPillLayoutScale(width, true);
         if (Math.abs(nextScale - layoutScaleRef.current) > 0.02) {
@@ -281,10 +291,10 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (resizeTimer) clearTimeout(resizeTimer);
       observer.disconnect();
     };
-  }, []);
+  }, [fontsReady]);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !fontsReady) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -297,7 +307,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (resizeTimer) clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         requestAnimationFrame(() => scheduleSetupRef.current?.());
-      }, 90);
+      }, 45);
     };
 
     const setup = () => {
@@ -535,36 +545,14 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
     const observer = new ResizeObserver(scheduleSetup);
     observer.observe(container);
 
-    const headlineEl = container.parentElement?.querySelector(
-      ".index-slide-hero-copy h1",
-    );
-    const fontObserver =
-      headlineEl && typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(scheduleSetup)
-        : null;
-    if (headlineEl && fontObserver) fontObserver.observe(headlineEl);
-
-    void document.fonts.ready.then(() => {
-      if (!disposed) scheduleSetup();
-    });
-
     return () => {
       disposed = true;
       scheduleSetupRef.current = null;
       if (resizeTimer) clearTimeout(resizeTimer);
       observer.disconnect();
-      fontObserver?.disconnect();
       cleanup?.();
     };
-  }, [isMobileLayout, pills, reducedMotion]);
-
-  useLayoutEffect(() => {
-    if (reducedMotion) return;
-    const id = requestAnimationFrame(() => {
-      requestAnimationFrame(() => scheduleSetupRef.current?.());
-    });
-    return () => cancelAnimationFrame(id);
-  }, [isMobileLayout, layoutScale, reducedMotion]);
+  }, [fontsReady, isMobileLayout, layoutScale, pills, reducedMotion]);
 
   return (
     <div
