@@ -31,8 +31,8 @@ const PHYSICS = {
   dragStrength: 0.32,
   throwStrength: 0.16,
   /** Stagger between pill drops on load (ms). */
-  spawnStaggerMs: 120,
-  spawnJitterMs: 70,
+  spawnStaggerMs: 0,
+  spawnJitterMs: 0,
   startY: 20,
   /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
   sizeScale: 1.44,
@@ -297,7 +297,7 @@ export function HeroPhysicsPills({ className, onInteract }: HeroPhysicsPillsProp
       if (resizeTimer) clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         requestAnimationFrame(() => scheduleSetupRef.current?.());
-      }, 180);
+      }, 0);
     };
 
     const setup = () => {
