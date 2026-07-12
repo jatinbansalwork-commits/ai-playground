@@ -38,7 +38,10 @@ export function SectionFramePanel({
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
       {frame.fieldNotesTitle ? (
-        <SectionFrameFieldNotesTitle text={frame.fieldNotesTitle} />
+        <SectionFrameFieldNotesTitle
+          text={frame.fieldNotesTitle}
+          frameIndex={index}
+        />
       ) : frame.videoThumbnail ? (
         <MeIntroVideo variant="frame" />
       ) : frame.lottie ? (

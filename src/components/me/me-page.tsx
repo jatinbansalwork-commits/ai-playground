@@ -14,7 +14,7 @@ export function MePage() {
       data-sheet="me"
       className="relative flex min-h-screen items-center justify-start bg-background px-8 pt-24 pb-16 text-white"
     >
-      <h1 className="sr-only">Field Note</h1>
+      <h1 className="sr-only">JB&apos;s Field Notes</h1>
 
       <SessionNavBackLink fallback={BACK_HOME} />
 

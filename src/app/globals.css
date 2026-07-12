@@ -1175,6 +1175,61 @@ body {
   }
 }
 
+/* Field Notes slide — Rauno-style handwriting draw animation */
+.field-notes-handwriting {
+  --field-notes-ink: #f4635a;
+  --field-notes-stroke-width: 5;
+  --duration: 1s;
+  display: inline-block;
+  line-height: 0;
+}
+
+.field-notes-handwriting__svg {
+  width: min(90%, 560px);
+  height: auto;
+}
+
+.field-notes-handwriting__path {
+  fill: none;
+  stroke: var(--field-notes-ink);
+  stroke-width: var(--field-notes-stroke-width);
+  stroke-linecap: round;
+  stroke-dasharray: 1 1.02;
+  stroke-dashoffset: 1.01;
+}
+
+.field-notes-handwriting__path--draw {
+  --base-delay: 200ms;
+  animation: field-notes-handwriting-draw var(--duration) ease forwards;
+  animation-delay: calc(var(--stroke-order) * 0.045s + var(--base-delay));
+}
+
+.field-notes-handwriting__path--static {
+  stroke-dashoffset: 0;
+}
+
+@keyframes field-notes-handwriting-draw {
+  from {
+    stroke-dashoffset: 1.01;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.wireframe-mode .field-notes-handwriting__path,
+main.index-root[data-debug="true"] .field-notes-handwriting__path {
+  stroke: var(--wireframe-stroke) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-notes-handwriting__path--draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Single font stack for all index slider copy — never swap families in wireframe. */
 main.index-root,
 main.index-root .index-slide-type {

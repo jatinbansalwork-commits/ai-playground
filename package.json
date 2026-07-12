@@ -29,6 +29,7 @@
     "cspell": "^10.0.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.7",
+    "opentype.js": "^2.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
