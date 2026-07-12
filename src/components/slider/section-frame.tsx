@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SectionFrameFieldNotesTitle } from "@/components/slider/section-frame-field-notes-title";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { springSlider } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
@@ -21,14 +20,12 @@ import type { SectionFrame } from "@/types";
 interface SectionFramePanelProps {
   frame: SectionFrame;
   index: number;
-  activeFrameIndex: number;
   onInteract: () => void;
 }
 
 export function SectionFramePanel({
   frame,
   index,
-  activeFrameIndex,
   onInteract,
 }: SectionFramePanelProps) {
   const monogram = frame.monogram ?? "";
@@ -39,12 +36,7 @@ export function SectionFramePanel({
 
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
-      {frame.fieldNotesTitle ? (
-        <SectionFrameFieldNotesTitle
-          text={frame.fieldNotesTitle}
-          isActive={activeFrameIndex === index}
-        />
-      ) : frame.videoThumbnail ? (
+      {frame.videoThumbnail ? (
         <MeIntroVideo variant="frame" />
       ) : frame.lottie ? (
         <SectionFrameLottie

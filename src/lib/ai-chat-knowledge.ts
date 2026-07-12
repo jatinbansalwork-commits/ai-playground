@@ -159,7 +159,6 @@ JB designs AI products, prototypes them in code, and raises the bar for design c
 - **${EXPERIMENTS_PAGE.title}** — ${EXPERIMENTS_PAGE.description} (${ROUTES.craft})
 - **Ideas** — side projects and AI experiments (${ROUTES.ideas})
 - **Design Review essay** — process and quality framework at ${ROUTES.craft}/design-review-checklist
-- **Field Notes** — design field notes (${ROUTES.fieldNotesOne})
 - **Contact** — LinkedIn, email, resume, and JB Manual on the index Contact slide
 
 ## Case studies (public on Projects)

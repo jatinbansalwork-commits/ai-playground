@@ -34,12 +34,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.6,
     },
-    {
-      url: absoluteUrl(ROUTES.fieldNotesOne),
-      lastModified: now,
-      changeFrequency: "yearly",
-      priority: 0.65,
-    },
   ];
 
   const projectRoutes: MetadataRoute.Sitemap = getIndexableCaseStudySlugs().map(

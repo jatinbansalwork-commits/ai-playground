@@ -10,7 +10,6 @@ export const ROUTES = {
   ciscoPolicyCopilot: "/projects/cisco-policy-copilot",
   ideas: "/ideas",
   archive: "/archive",
-  fieldNotesOne: "/notes/1",
 } as const;
 
 export const FRAMES = [
@@ -29,14 +28,6 @@ export const FRAMES = [
     monogramPan: true,
     monogramPanDuration: 14,
     href: ROUTES.ciscoPolicyCopilot,
-  },
-  {
-    id: "archive",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "Field Notes",
-    fieldNotesTitle: "JB's Field Notes",
-    href: ROUTES.fieldNotesOne,
   },
   {
     id: "ideas",

@@ -68,7 +68,6 @@ import {
   INDEX_FLOATING_BOTTOM,
   ROUTES,
 } from "@/lib/constants";
-import { isFieldNotesPathname } from "@/lib/long-read-routes";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useAiChatSounds } from "@/hooks/use-ai-chat-sounds";
@@ -116,7 +115,6 @@ function waitForMinimumThinking(
 
 export function AiChatBall() {
   const pathname = usePathname();
-  const hideOnFieldNotes = isFieldNotesPathname(pathname);
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
   const { playOpenPop, playSendWhoosh } = useAiChatSounds();
@@ -579,10 +577,6 @@ export function AiChatBall() {
     isMobile && pathname === ROUTES.home
       ? AI_CHAT_FAB_MOBILE_INDEX_BOTTOM
       : INDEX_FLOATING_BOTTOM;
-
-  if (hideOnFieldNotes) {
-    return null;
-  }
 
   return (
     <div

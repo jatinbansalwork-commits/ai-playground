@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Parent ~/package-lock.json otherwise becomes Turbopack's root and routes 404.
+  turbopack: {
+    root: path.join(__dirname),
+  },
   experimental: {
     optimizePackageImports: ["framer-motion", "lottie-react"],
   },
