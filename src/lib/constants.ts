@@ -142,6 +142,8 @@ export const SCALE_BASE_MIN = 0.2;
 export const SCALE_SCROLL_FACTOR = 0.0001;
 export const SCALE_VIEWPORT_WIDTH = 1300;
 export const SCALE_VIEWPORT_HEIGHT = 1020;
+/** Hero slide rests 5% larger; fades to 1× over the first scroll segment. */
+export const INDEX_HERO_STAGE_SCALE = 1.05;
 
 export const HERO_LINES = [
   "Howdy, I'm JB.",

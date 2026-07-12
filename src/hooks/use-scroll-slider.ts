@@ -17,6 +17,7 @@ import {
   SCALE_SCROLL_FACTOR,
   SCALE_VIEWPORT_HEIGHT,
   SCALE_VIEWPORT_WIDTH,
+  INDEX_HERO_STAGE_SCALE,
   SCROLL_PER_FRAME,
   SCROLL_PER_FRAME_TOUCH,
 } from "@/lib/constants";
@@ -110,13 +111,26 @@ function computeBaseScale() {
   );
 }
 
+function heroStageScaleMultiplier(scrollOffset: number): number {
+  const scrollPerFrame = scrollPerFrameForViewport();
+  if (scrollPerFrame <= 0) return 1;
+
+  const heroBlend = clamp(1 - scrollOffset / scrollPerFrame, 0, 1);
+  return 1 + (INDEX_HERO_STAGE_SCALE - 1) * heroBlend;
+}
+
 function computeScaleFromScroll(scrollOffset: number, baseScale: number) {
-  if (usesFixedScrubScale() || scrollOffset <= 0) return baseScale;
-  return clamp(
-    baseScale - scrollOffset * SCALE_SCROLL_FACTOR,
-    SCALE_MIN,
-    baseScale,
-  );
+  let scaleValue = baseScale;
+
+  if (!usesFixedScrubScale() && scrollOffset > 0) {
+    scaleValue = clamp(
+      baseScale - scrollOffset * SCALE_SCROLL_FACTOR,
+      SCALE_MIN,
+      baseScale,
+    );
+  }
+
+  return scaleValue * heroStageScaleMultiplier(scrollOffset);
 }
 
 function resetScrollPosition() {
