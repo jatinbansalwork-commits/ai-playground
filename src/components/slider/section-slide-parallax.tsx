@@ -1,19 +1,18 @@
 "use client";
 
-import { motion, useMotionValueEvent, useSpring } from "framer-motion";
+import { motion, useLayoutEffect, useMotionValueEvent, useSpring } from "framer-motion";
 import { useSliderContext } from "@/context/slider-context";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import {
-  FRAME_STRIDE,
   PARALLAX_MAX_DEFAULT,
-  PARALLAX_STEP_DIVISOR_DESKTOP,
-  PARALLAX_STEP_DIVISOR_TOUCH,
+  SCROLL_PER_FRAME,
+  SCROLL_PER_FRAME_TOUCH,
 } from "@/lib/constants";
 import { springParallax } from "@/lib/spring";
 
-function parallaxStepForViewport(): number {
+function scrollPerFrameForViewport(): number {
   if (typeof window === "undefined") {
-    return FRAME_STRIDE / PARALLAX_STEP_DIVISOR_DESKTOP;
+    return SCROLL_PER_FRAME;
   }
 
   const touch =
@@ -21,10 +20,17 @@ function parallaxStepForViewport(): number {
     window.matchMedia("(pointer: coarse)").matches ||
     window.matchMedia("(hover: none)").matches;
 
-  return (
-    FRAME_STRIDE /
-    (touch ? PARALLAX_STEP_DIVISOR_TOUCH : PARALLAX_STEP_DIVISOR_DESKTOP)
-  );
+  return touch ? SCROLL_PER_FRAME_TOUCH : SCROLL_PER_FRAME;
+}
+
+function parallaxOffsetForFrame(
+  scrollOffset: number,
+  frameIndex: number,
+  maxParallax: number,
+): number {
+  const slideStart = scrollPerFrameForViewport() * frameIndex;
+  const localOffset = Math.max(0, scrollOffset - slideStart);
+  return -Math.min(localOffset, maxParallax);
 }
 
 interface SectionSlideParallaxProps {
@@ -42,22 +48,20 @@ export function SectionSlideParallax({
   const reducedMotion = useReducedMotion();
   const contentX = useSpring(0, springParallax);
 
-  useMotionValueEvent(scrollOffset, "change", (offset) => {
+  const syncParallax = (offset: number) => {
     if (reducedMotion) {
       contentX.jump(0);
       return;
     }
 
-    const boundary = parallaxStepForViewport() * frameIndex;
+    contentX.set(parallaxOffsetForFrame(offset, frameIndex, maxParallax));
+  };
 
-    if (offset <= boundary) {
-      contentX.set(0);
-      return;
-    }
+  useLayoutEffect(() => {
+    syncParallax(scrollOffset.get());
+  }, [frameIndex, maxParallax, reducedMotion, scrollOffset, contentX]);
 
-    const excess = Math.min(offset - boundary, maxParallax);
-    contentX.set(-excess);
-  });
+  useMotionValueEvent(scrollOffset, "change", syncParallax);
 
   if (reducedMotion) {
     return (
