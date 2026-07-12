@@ -49,6 +49,14 @@ export const springClipReveal = {
   mass: 0.1,
 };
 
+/** Hero headline — snappier so the slide does not read empty on first paint. */
+export const springHeroClipReveal = {
+  type: "spring" as const,
+  stiffness: 420,
+  damping: 36,
+  mass: 0.08,
+};
+
 export const springLabel = {
   type: "spring" as const,
   stiffness: 280,

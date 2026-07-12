@@ -4,6 +4,7 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { HERO_COPY, HERO_LINES } from "@/lib/constants";
 import { HERO_CLIP_BASE_DELAY_S, HERO_CLIP_LINE_STAGGER_S } from "@/lib/hero-entrance";
 import { INDEX_SLIDE_HERO } from "@/lib/index-typography";
+import { springHeroClipReveal } from "@/lib/spring";
 import { ClipReveal } from "@/components/slider/clip-reveal";
 import { FrameShell } from "@/components/slider/frame-shell";
 import { HeroPhysicsPills } from "@/components/slider/hero-physics-pills";
@@ -43,6 +44,8 @@ export function HeroFramePanel({
                 <ClipReveal
                   baseDelay={HERO_CLIP_BASE_DELAY_S}
                   delay={lineIndex * HERO_CLIP_LINE_STAGGER_S}
+                  spring={springHeroClipReveal}
+                  revealOffset="72%"
                 >
                   {line}
                 </ClipReveal>
