@@ -1178,7 +1178,6 @@ body {
 /* Field Notes slide — Just Another Hand handwriting draw animation */
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
-  --field-notes-stroke-width: 3;
   --field-notes-display-scale: 3;
   --duration: 1s;
   display: inline-block;
@@ -1196,45 +1195,40 @@ body {
 }
 
 .field-notes-handwriting__path {
-  fill: none;
-  stroke: var(--field-notes-ink);
-  stroke-width: var(--field-notes-stroke-width);
-  stroke-linecap: round;
-  stroke-dasharray: 1 1.02;
-  stroke-dashoffset: 1.01;
-  /* Keep stroke at 3px on screen when the SVG is scaled up. */
-  vector-effect: non-scaling-stroke;
+  fill: var(--field-notes-ink);
+  stroke: none;
 }
 
 .field-notes-handwriting__path--draw {
   --base-delay: 200ms;
-  animation: field-notes-handwriting-draw var(--duration) ease forwards;
+  fill-opacity: 0;
+  animation: field-notes-handwriting-fill-in var(--duration) ease forwards;
   animation-delay: calc(var(--stroke-order) * 0.045s + var(--base-delay));
 }
 
 .field-notes-handwriting__path--static {
-  stroke-dashoffset: 0;
+  fill-opacity: 1;
 }
 
-@keyframes field-notes-handwriting-draw {
+@keyframes field-notes-handwriting-fill-in {
   from {
-    stroke-dashoffset: 1.01;
+    fill-opacity: 0;
   }
 
   to {
-    stroke-dashoffset: 0;
+    fill-opacity: 1;
   }
 }
 
 .wireframe-mode .field-notes-handwriting__path,
 main.index-root[data-debug="true"] .field-notes-handwriting__path {
-  stroke: var(--wireframe-stroke) !important;
+  fill: var(--wireframe-stroke) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .field-notes-handwriting__path--draw {
     animation: none;
-    stroke-dashoffset: 0;
+    fill-opacity: 1;
   }
 }
 
