@@ -14,7 +14,6 @@ import {
   FRAME_WIDTH,
 } from "@/lib/constants";
 import { ClipReveal } from "@/components/slider/clip-reveal";
-import { SectionSlideParallax } from "@/components/slider/section-slide-parallax";
 import { INDEX_SLIDE_LABEL } from "@/lib/index-typography";
 import type { Frame, SectionFrame } from "@/types";
 
@@ -65,8 +64,6 @@ export function FrameShell({
   onInteract,
 }: FrameShellProps) {
   const isSlide = frame.variant === "slide";
-  const slideParallaxEnabled =
-    isSlide && !(frame.type === "section" && frame.monogramPan);
 
   return (
     <motion.article
@@ -96,9 +93,9 @@ export function FrameShell({
         onMouseDown={onInteract}
       >
         {isSlide ? (
-          <SectionSlideParallax frameIndex={index} enabled={slideParallaxEnabled}>
+          <div className="flex h-full w-full items-center justify-center overflow-hidden">
             {children}
-          </SectionSlideParallax>
+          </div>
         ) : (
           children
         )}
