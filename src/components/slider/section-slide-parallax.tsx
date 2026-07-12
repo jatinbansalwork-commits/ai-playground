@@ -45,12 +45,15 @@ function parallaxOffsetForFrame(
 interface SectionSlideParallaxProps {
   frameIndex: number;
   maxParallax?: number;
+  /** Pan monograms manage their own horizontal motion — parallax clips them. */
+  enabled?: boolean;
   children: React.ReactNode;
 }
 
 export function SectionSlideParallax({
   frameIndex,
   maxParallax = PARALLAX_MAX_DEFAULT,
+  enabled = true,
   children,
 }: SectionSlideParallaxProps) {
   const { scrollOffset } = useSliderContext();
@@ -58,7 +61,7 @@ export function SectionSlideParallax({
   const contentX = useSpring(0, springParallax);
 
   const syncParallax = (offset: number) => {
-    if (reducedMotion) {
+    if (!enabled || reducedMotion) {
       contentX.jump(0);
       return;
     }
@@ -68,11 +71,11 @@ export function SectionSlideParallax({
 
   useLayoutEffect(() => {
     syncParallax(scrollOffset.get());
-  }, [frameIndex, maxParallax, reducedMotion, scrollOffset, contentX]);
+  }, [enabled, frameIndex, maxParallax, reducedMotion, scrollOffset, contentX]);
 
   useMotionValueEvent(scrollOffset, "change", syncParallax);
 
-  if (reducedMotion) {
+  if (!enabled || reducedMotion) {
     return (
       <div className="flex h-full w-full items-center justify-center overflow-hidden">
         {children}

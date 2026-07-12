@@ -65,6 +65,8 @@ export function FrameShell({
   onInteract,
 }: FrameShellProps) {
   const isSlide = frame.variant === "slide";
+  const slideParallaxEnabled =
+    isSlide && !(frame.type === "section" && frame.monogramPan);
 
   return (
     <motion.article
@@ -94,7 +96,7 @@ export function FrameShell({
         onMouseDown={onInteract}
       >
         {isSlide ? (
-          <SectionSlideParallax frameIndex={index}>
+          <SectionSlideParallax frameIndex={index} enabled={slideParallaxEnabled}>
             {children}
           </SectionSlideParallax>
         ) : (
