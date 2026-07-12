@@ -1283,8 +1283,75 @@ main.index-root[data-debug="true"] .field-notes-handwriting__path {
 }
 
 .field-notes-page__body {
-  min-height: 12rem;
   margin-top: 3rem;
+}
+
+.field-notes-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field-notes-prose__heading {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 500;
+  color: #171717;
+}
+
+.field-notes-prose__paragraph {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+  font-weight: 400;
+  color: #171717;
+}
+
+.field-notes-prose__divider {
+  margin: 0.5rem 0;
+  border: 0;
+}
+
+.field-notes-media {
+  margin: 0.5rem 0 1rem;
+}
+
+.field-notes-media--bleed {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: 100vw;
+  transform: translateX(-50%);
+}
+
+.field-notes-media__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.field-notes-video-slot {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: #f4f4f5;
+  color: #52525b;
+  cursor: default;
+}
+
+.field-notes-video-slot__play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.92);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
 }
 
 /* Single font stack for all index slider copy — never swap families in wireframe. */

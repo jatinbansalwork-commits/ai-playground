@@ -1,5 +1,6 @@
 "use client";
 
+import { FieldNotesArticleBody } from "@/components/field-notes/field-notes-article-body";
 import { FieldNotesHandwriting } from "@/components/field-notes/field-notes-handwriting";
 import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 
@@ -23,7 +24,7 @@ export function FieldNotesArticlePage({ title }: FieldNotesArticlePageProps) {
         </header>
 
         <div className="field-notes-page__body" aria-label="Field note content">
-          {/* Content will be added later. */}
+          <FieldNotesArticleBody />
         </div>
       </article>
     </main>
