@@ -70,7 +70,7 @@ export const FRAMES = [
     id: "archive",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Me",
+    label: "Field Notes",
     videoThumbnail: true,
     href: ROUTES.archive,
   },
