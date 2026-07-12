@@ -34,6 +34,8 @@ export interface SectionFrame {
   lottie?: string;
   /** Remap near-black Lottie fills (e.g. bouncing ball) to this hex colour. */
   lottieFillAccent?: string;
+  /** Handwritten Field Notes title instead of monogram or video. */
+  fieldNotesTitle?: string;
   /** Bento 3:4 video thumbnail instead of monogram text. */
   videoThumbnail?: boolean;
   /** When omitted, the slide is display-only (no navigation overlay). */

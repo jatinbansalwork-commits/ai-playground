@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { SectionFrameFieldNotesTitle } from "@/components/slider/section-frame-field-notes-title";
 import { MeIntroVideo } from "@/components/me/me-intro-video";
 import { springSlider } from "@/lib/spring";
 import { FrameShell } from "@/components/slider/frame-shell";
@@ -36,7 +37,9 @@ export function SectionFramePanel({
 
   return (
     <FrameShell frame={frame} index={index} onInteract={onInteract}>
-      {frame.videoThumbnail ? (
+      {frame.fieldNotesTitle ? (
+        <SectionFrameFieldNotesTitle text={frame.fieldNotesTitle} />
+      ) : frame.videoThumbnail ? (
         <MeIntroVideo variant="frame" />
       ) : frame.lottie ? (
         <SectionFrameLottie

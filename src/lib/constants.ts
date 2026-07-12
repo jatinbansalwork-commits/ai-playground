@@ -34,7 +34,7 @@ export const FRAMES = [
     type: "section" as const,
     variant: "slide" as const,
     label: "Field Notes",
-    videoThumbnail: true,
+    fieldNotesTitle: "JB's field notes",
     href: ROUTES.archive,
   },
   {
