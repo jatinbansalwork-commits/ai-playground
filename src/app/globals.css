@@ -1175,13 +1175,14 @@ body {
   }
 }
 
-/* Field Notes slide — Huge Smile handwriting draw animation */
+/* Field Notes slide — Just Another Hand handwriting draw animation */
 .field-notes-handwriting {
   --field-notes-ink: #f4635a;
   --field-notes-stroke-width: 3;
   --duration: 1s;
   display: inline-block;
   line-height: 0;
+  font-family: var(--font-just-another-hand), "Just Another Hand", cursive;
 }
 
 .field-notes-handwriting__svg {

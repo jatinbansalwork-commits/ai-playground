@@ -5,13 +5,13 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, "..");
-const fontPath = path.join(root, "public/assets/fonts/Huge Smile.otf");
+const fontPath = path.join(root, "public/assets/fonts/JustAnotherHand-Regular.ttf");
 const outPath = path.join(root, "src/lib/field-notes-handwriting-paths.ts");
 
 const TEXT = "JB's Field Notes";
-const FONT_SIZE = 140;
-const LETTER_SPACING = 18;
-const BASELINE_Y = Math.round(FONT_SIZE * 0.83);
+const FONT_SIZE = 160;
+const LETTER_SPACING = 14;
+const BASELINE_Y = Math.round(FONT_SIZE * 0.85);
 const PADDING_X = 30;
 /** Round caps extend past path ends — pad viewBox so strokes are not clipped. */
 const STROKE_PAD = 36;
