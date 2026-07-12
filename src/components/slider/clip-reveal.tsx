@@ -8,7 +8,7 @@ interface ClipRevealProps {
   children: React.ReactNode;
   /** Extra stagger after the shared entrance beat (seconds). */
   delay?: number;
-  /** Delay before this reveal starts — hero uses 0 so copy lands with pills. */
+  /** Delay before this reveal starts — slide labels use 0.2s; hero copy uses `HERO_CLIP_BASE_DELAY_S`. */
   baseDelay?: number;
 }
 

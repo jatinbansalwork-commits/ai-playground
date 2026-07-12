@@ -7,6 +7,7 @@ import {
   type HeroPillIconId,
 } from "@/components/slider/hero-pill-icons";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { HERO_PILL_DROP_DELAY_MS } from "@/lib/hero-entrance";
 import {
   HERO_PILL_BORDER_COLOR,
   HERO_PILL_GAP_PX,
@@ -30,9 +31,11 @@ const PHYSICS = {
   restitution: 0.35,
   dragStrength: 0.32,
   throwStrength: 0.16,
-  /** All pills release together — copy and pile move as one beat. */
-  spawnStaggerMs: 0,
-  spawnJitterMs: 0,
+  /** Wait for headline clip-reveal before the first pill spawns. */
+  pillDropDelayMs: HERO_PILL_DROP_DELAY_MS,
+  /** Stagger between pill drops once the pile starts. */
+  spawnStaggerMs: 48,
+  spawnJitterMs: 20,
   /** Global pill size vs design tokens (1.44 = 20% above the 1.2 display scale). */
   sizeScale: 1.44,
   /** Scale pills when the physics container is narrow (tablet / laptop). */
@@ -233,7 +236,7 @@ function HeroPillSurface({
         "hero-physics-pill absolute left-0 top-0 select-none",
         isStatic
           ? "pointer-events-none touch-auto"
-          : "hero-physics-pill-draggable cursor-grab touch-none",
+          : "hero-physics-pill-draggable invisible cursor-grab touch-none",
       ].join(" ")}
       style={
         isStatic && layout
@@ -284,6 +287,7 @@ export function HeroPhysicsPills({
   const reducedMotion = useReducedMotion();
   const [layoutScale, setLayoutScale] = useState(1);
   const [isMobileLayout, setIsMobileLayout] = useState(false);
+  const [pillsDropped, setPillsDropped] = useState(false);
   const layoutScaleRef = useRef(1);
   const scheduleSetupRef = useRef<(() => void) | null>(null);
   const activeLayoutKeyRef = useRef<string | null>(null);
@@ -307,6 +311,20 @@ export function HeroPhysicsPills({
   }, []);
 
   const useStaticPills = reducedMotion || !entranceEnabled;
+
+  useEffect(() => {
+    if (useStaticPills) {
+      setPillsDropped(true);
+      return;
+    }
+
+    setPillsDropped(false);
+    const timer = window.setTimeout(() => {
+      setPillsDropped(true);
+    }, PHYSICS.pillDropDelayMs);
+
+    return () => window.clearTimeout(timer);
+  }, [useStaticPills]);
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -350,16 +368,16 @@ export function HeroPhysicsPills({
   }, []);
 
   useLayoutEffect(() => {
-    if (useStaticPills) return;
+    if (useStaticPills || !pillsDropped) return;
 
     const container = containerRef.current;
     if (!container) return;
 
     applyPreviewTransforms(container, pills, pillRefs, layoutScale);
-  }, [layoutScale, pills, useStaticPills]);
+  }, [layoutScale, pills, pillsDropped, useStaticPills]);
 
   useEffect(() => {
-    if (useStaticPills) return;
+    if (useStaticPills || !pillsDropped) return;
 
     const container = containerRef.current;
     if (!container) return;
@@ -465,6 +483,7 @@ export function HeroPhysicsPills({
             domToBody.set(body, element);
             bodySizes.set(body, { width: bodyW, height: bodyH });
             element.dataset.bodyIndex = String(index);
+            element.classList.remove("invisible");
             element.style.cursor = "grab";
           }
         };
@@ -605,10 +624,10 @@ export function HeroPhysicsPills({
 
         pillRefs.current.forEach((element) => {
           if (!element) return;
+          element.style.cursor = "";
           delete element.dataset.bodyIndex;
+          element.classList.add("invisible");
         });
-
-        applyPreviewTransforms(container, pills, pillRefs, layoutScaleRef.current);
       };
     };
 
@@ -616,7 +635,6 @@ export function HeroPhysicsPills({
       if (disposed) return;
       matterApi = module;
       scheduleSetupRef.current = setup;
-      applyPreviewTransforms(container, pills, pillRefs, layoutScaleRef.current);
       scheduleSetup(true);
     });
 
@@ -645,10 +663,10 @@ export function HeroPhysicsPills({
       fontObserver?.disconnect();
       cleanup?.();
     };
-  }, [entranceEnabled, isMobileLayout, pills, useStaticPills]);
+  }, [entranceEnabled, isMobileLayout, pills, pillsDropped, useStaticPills]);
 
   useLayoutEffect(() => {
-    if (useStaticPills) return;
+    if (useStaticPills || !pillsDropped) return;
     const id = requestAnimationFrame(() => {
       const container = containerRef.current;
       if (!container) return;
@@ -656,7 +674,7 @@ export function HeroPhysicsPills({
       scheduleSetupRef.current?.();
     });
     return () => cancelAnimationFrame(id);
-  }, [isMobileLayout, layoutScale, pills, useStaticPills]);
+  }, [isMobileLayout, layoutScale, pills, pillsDropped, useStaticPills]);
 
   return (
     <div
