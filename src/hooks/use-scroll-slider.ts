@@ -18,6 +18,7 @@ import {
   SCALE_VIEWPORT_HEIGHT,
   SCALE_VIEWPORT_WIDTH,
   INDEX_HERO_STAGE_SCALE,
+  INDEX_MANIFEST_STAGE_SCALE,
   SCROLL_PER_FRAME,
   SCROLL_PER_FRAME_TOUCH,
 } from "@/lib/constants";
@@ -119,6 +120,20 @@ function heroStageScaleMultiplier(scrollOffset: number): number {
   return 1 + (INDEX_HERO_STAGE_SCALE - 1) * heroBlend;
 }
 
+function manifestStageScaleMultiplier(scrollOffset: number): number {
+  const scrollPerFrame = scrollPerFrameForViewport();
+  const scrollRange = (FRAMES.length - 1) * scrollPerFrame;
+  if (scrollPerFrame <= 0 || scrollRange <= 0) return 1;
+
+  const distanceFromEnd = scrollRange - scrollOffset;
+  const manifestBlend = clamp(1 - distanceFromEnd / scrollPerFrame, 0, 1);
+  return 1 + (INDEX_MANIFEST_STAGE_SCALE - 1) * manifestBlend;
+}
+
+function stageScaleMultiplier(scrollOffset: number): number {
+  return heroStageScaleMultiplier(scrollOffset) * manifestStageScaleMultiplier(scrollOffset);
+}
+
 function computeScaleFromScroll(scrollOffset: number, baseScale: number) {
   let scaleValue = baseScale;
 
@@ -130,7 +145,7 @@ function computeScaleFromScroll(scrollOffset: number, baseScale: number) {
     );
   }
 
-  return scaleValue * heroStageScaleMultiplier(scrollOffset);
+  return scaleValue * stageScaleMultiplier(scrollOffset);
 }
 
 function resetScrollPosition() {
