@@ -6,11 +6,10 @@ import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { BACK_HOME } from "@/lib/session-navigation";
 
 interface FieldNotesArticlePageProps {
-  noteNumber: number;
   title: string;
 }
 
-export function FieldNotesArticlePage({ noteNumber, title }: FieldNotesArticlePageProps) {
+export function FieldNotesArticlePage({ title }: FieldNotesArticlePageProps) {
   useSubpageScrollReset();
 
   return (
@@ -24,9 +23,6 @@ export function FieldNotesArticlePage({ noteNumber, title }: FieldNotesArticlePa
 
       <article className="field-notes-page__article">
         <header className="field-notes-page__header">
-          <p className="field-notes-page__number" aria-hidden>
-            {noteNumber}
-          </p>
           <FieldNotesHandwriting variant="page" text={title} animate />
         </header>
 

@@ -1304,15 +1304,6 @@ main.index-root[data-debug="true"] .field-notes-handwriting__path {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.25rem;
-}
-
-.field-notes-page__number {
-  margin: 0;
-  font-size: 1.125rem;
-  line-height: 1;
-  font-weight: 500;
-  color: #a3a3a3;
 }
 
 .field-notes-page__body {

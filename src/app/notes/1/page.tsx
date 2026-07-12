@@ -10,5 +10,5 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function FieldNotesOnePage() {
-  return <FieldNotesArticlePage noteNumber={1} title="JB's Field Notes #1" />;
+  return <FieldNotesArticlePage title="JB's Field Notes #1" />;
 }
