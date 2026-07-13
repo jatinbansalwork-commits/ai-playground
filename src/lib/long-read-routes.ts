@@ -1,5 +1,9 @@
 /** Routes where system cursor and scroll affordances are preferred over index chrome. */
 export function isLongReadPathname(pathname: string): boolean {
+  if (pathname.startsWith("/notes/")) {
+    return true;
+  }
+
   if (pathname.startsWith("/projects/") && pathname.length > "/projects/".length) {
     return true;
   }
@@ -9,4 +13,9 @@ export function isLongReadPathname(pathname: string): boolean {
   }
 
   return false;
+}
+
+/** Notes by JB articles — no floating index chrome (chat, slide nav, etc.). */
+export function isFieldNotesPathname(pathname: string): boolean {
+  return pathname.startsWith("/notes/");
 }

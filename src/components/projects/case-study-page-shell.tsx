@@ -4,7 +4,6 @@ import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { CaseStudyFooterActions } from "@/components/case-studies/case-study-footer-actions";
 import { CaseStudySkipLink } from "@/components/case-studies/case-study-skip-link";
 import { CaseStudyTocProvider } from "@/components/case-studies/case-study-toc-context";
-import { NavBackLink } from "@/components/navigation/nav-back-link";
 import { ScrollMinimapRuler } from "@/components/models/scroll-minimap-ruler";
 import { useCaseStudyPageAnalytics } from "@/hooks/use-case-study-page-analytics";
 import { useSessionBackNavigation } from "@/hooks/use-session-back-navigation";
@@ -20,8 +19,9 @@ import {
 interface CaseStudyPageShellProps {
   backHref: string;
   backDestination: string;
-  /** Top-left back control — defaults to `backHref` / `backDestination`. */
+  /** @deprecated Top-left back control removed — kept for call-site compatibility. */
   navBackHref?: string;
+  /** @deprecated Top-left back control removed — kept for call-site compatibility. */
   navBackDestination?: string;
   dataSheet?: "case-study";
   /** Case study slug for analytics (`project_open`, scroll depth). */
@@ -34,8 +34,6 @@ interface CaseStudyPageShellProps {
 export function CaseStudyPageShell({
   backHref,
   backDestination,
-  navBackHref = backHref,
-  navBackDestination = backDestination,
   dataSheet = "case-study",
   analyticsSlug,
   analyticsTitle,
@@ -49,9 +47,6 @@ export function CaseStudyPageShell({
   });
   const resolvedBackHref = back.href;
   const resolvedBackDestination = back.destination;
-  const resolvedNavBackHref = navBackHref === backHref ? resolvedBackHref : navBackHref;
-  const resolvedNavBackDestination =
-    navBackDestination === backDestination ? resolvedBackDestination : navBackDestination;
 
   useCaseStudyHashFocus();
   useCaseStudyPageAnalytics({
@@ -78,7 +73,6 @@ export function CaseStudyPageShell({
         tabIndex={-1}
       >
         <CaseStudySkipLink />
-        <NavBackLink href={resolvedNavBackHref} destination={resolvedNavBackDestination} />
 
         <article
           id={CASE_STUDY_BODY_ID}

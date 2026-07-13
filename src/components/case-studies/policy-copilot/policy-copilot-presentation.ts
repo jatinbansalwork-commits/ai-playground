@@ -136,7 +136,19 @@ export function createLivingWorkspacePresentationState(): LivingWorkspacePresent
       {
         id: "living-workspace-copilot-draft",
         role: "copilot",
-        text: "Mapped your environment and drafted rules — review each card before checks run.",
+        text: "Mapped your environment and drafted rules — review each card on the right before checks run.",
+        time: "Now",
+      },
+      {
+        id: "living-workspace-user-follow-up",
+        role: "user",
+        text: "Also exclude contractors from EHR, and log every allow path",
+        time: "Now",
+      },
+      {
+        id: "living-workspace-copilot-follow-up",
+        role: "copilot",
+        text: "Updated the draft on the right — contractors denied, logging on. No new wall of text.",
         time: "Now",
       },
     ],

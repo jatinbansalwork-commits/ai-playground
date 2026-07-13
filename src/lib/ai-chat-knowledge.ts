@@ -159,7 +159,15 @@ JB designs AI products, prototypes them in code, and raises the bar for design c
 - **${EXPERIMENTS_PAGE.title}** — ${EXPERIMENTS_PAGE.description} (${ROUTES.craft})
 - **Ideas** — side projects and AI experiments (${ROUTES.ideas})
 - **Design Review essay** — process and quality framework at ${ROUTES.craft}/design-review-checklist
+- **Notes** — working design notes (${ROUTES.fieldNotesOne})
 - **Contact** — LinkedIn, email, resume, and JB Manual on the index Contact slide
+
+## Notes by JB
+- **Notes by JB #1** (${ROUTES.fieldNotesOne}): JB's note on Cisco Policy Copilot — a one-line business ask vs a structured firewall policy.
+- **Problem:** Chat is a bad container for something you review, edit, and approve.
+- **Solution №1 (rejected):** Drop the draft policy into the thread as a card — works for a first look, then follow-ups bury Edit/Approve.
+- **Solution №2 (chosen direction):** Keep chat and policy side by side — intent trail on the left, living draft on the right; understand first, then rules; Approve stays separate from chatting.
+- Full interactive case study: [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot})
 
 ## Case studies (public on Projects)
 ${caseStudyLines || "Case studies are being updated."}

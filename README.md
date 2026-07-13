@@ -215,6 +215,7 @@ In the Vercel dashboard: **Project → Analytics → Production**
 | Policy Copilot demo funnel | Events → `policy_copilot_demo` (filter `action`, `scenario_id`) |
 | Craft / Ideas gallery views | Events → `craft_view`, `ai_experiment_view` |
 | Craft / Ideas item clicks | Events → `craft_item_click`, `ai_experiment_item_click` |
+| Notes by JB article views | Events → `field_notes_view` (filter `note_id`) |
 | External demo opens | Events → `external_demo_open` |
 | JBAI chat funnel | Events → `ai_chat_open`, `ai_chat_message`, `ai_chat_intent`, `ai_chat_close` |
 | Contact / resume | Events → `contact_click`, `resume_download` |

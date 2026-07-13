@@ -37,6 +37,11 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "Tell me more about Saltbot AI",
     "How do I contact JB?",
   ],
+  project_cisco: [
+    "Tell me about Cisco Policy Copilot",
+    "Which case study should I start with?",
+    "How do I contact JB?",
+  ],
   project_piggy: [
     "How did Piggy reduce support tickets?",
     "Tell me about Piggy",
@@ -86,6 +91,11 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
     "Tell me more about Saltbot AI",
     "How do I contact JB?",
   ],
+  "/projects/cisco-policy-copilot": [
+    "Tell me about Notes by JB #1",
+    "What problem did Policy Copilot solve?",
+    "How do I contact JB?",
+  ],
   "/projects/freshprints-design-system": [
     "What was the design system scope?",
     "Tell me about the FreshPrints design system",
@@ -115,6 +125,11 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
   "/projects": [
     "Which case study should I start with?",
     "I'd love to hire JB",
+  ],
+  "/notes/1": [
+    "Tell me about Cisco Policy Copilot",
+    "Which case study should I start with?",
+    "How do I contact JB?",
   ],
 };
 
@@ -193,6 +208,18 @@ export function resolveFollowUpPrompt(label: string): string {
   }
   if (label === "Tell me more about Saltbot AI") {
     return "Tell me more about Saltbot AI";
+  }
+  if (label === "Tell me about Cisco Policy Copilot") {
+    return "Tell me about Cisco Policy Copilot";
+  }
+  if (label === "Tell me about Notes by JB #1") {
+    return "Tell me about Notes by JB #1";
+  }
+  if (label === "Tell me about Field Notes #1") {
+    return "Tell me about Notes by JB #1";
+  }
+  if (label === "What problem did Policy Copilot solve?") {
+    return "What problem did Policy Copilot solve?";
   }
   if (label === "What did the Image Gen AI tool do?") {
     return `What did the FreshPrints Image Gen AI tool do?`;

@@ -49,7 +49,7 @@ function readDocumentScrollOffset() {
   );
 }
 
-/** Touch / narrow viewports — native document scroll drives the slider (rauno.me pattern). */
+/** Touch / narrow viewports — native document scroll drives the slider. */
 function usesNativeTouchScroll(): boolean {
   if (typeof window === "undefined") return false;
   if (window.matchMedia("(max-width: 767px)").matches) return true;

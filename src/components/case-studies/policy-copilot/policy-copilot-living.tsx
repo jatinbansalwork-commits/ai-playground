@@ -1434,7 +1434,9 @@ export function PolicyCopilotLiving({
     phase === "refine" ||
     phase === "check" ||
     phase === "approve" ||
-    isIntentSummaryPresentation;
+    isIntentSummaryPresentation ||
+    // All showcase embeds (Cisco case study + Notes by JB) — fill the wide frame, no max-w-2xl gutter.
+    isPresentation;
   const showRefineBlastRadius =
     phase === "refine" && flowMode === "author" && !approvalReviewReady;
   const collapseSafetyChecks = false;

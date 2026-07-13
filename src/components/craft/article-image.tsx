@@ -21,7 +21,7 @@ export function ArticleImage({
     return (
       <div
         className={[
-          "flex w-full items-center justify-center border border-dashed border-neutral-700 bg-neutral-900/60",
+          "flex w-full items-center justify-center border border-dashed border-neutral-300 bg-neutral-100",
           aspect === "video" ? "aspect-video" : "min-h-[12rem]",
           roundedClass,
           className,
@@ -41,7 +41,7 @@ export function ArticleImage({
         src={src}
         alt={alt}
         className={[
-          "w-full border border-neutral-800 object-cover aspect-video",
+          "w-full object-cover aspect-video",
           roundedClass,
           className,
         ]
@@ -56,7 +56,7 @@ export function ArticleImage({
       src={src}
       alt={alt}
       className={[
-        "block h-auto w-full border border-neutral-800/80 object-contain",
+        "block h-auto w-full object-contain",
         roundedClass,
         className,
       ]

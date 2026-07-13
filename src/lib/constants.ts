@@ -10,6 +10,7 @@ export const ROUTES = {
   ciscoPolicyCopilot: "/projects/cisco-policy-copilot",
   ideas: "/ideas",
   archive: "/archive",
+  fieldNotesOne: "/notes/1",
 } as const;
 
 export const FRAMES = [
@@ -28,6 +29,14 @@ export const FRAMES = [
     monogramPan: true,
     monogramPanDuration: 14,
     href: ROUTES.ciscoPolicyCopilot,
+  },
+  {
+    id: "archive",
+    type: "section" as const,
+    variant: "slide" as const,
+    label: "Notes",
+    fieldNotesTitle: "Notes by JB",
+    href: ROUTES.fieldNotesOne,
   },
   {
     id: "ideas",
@@ -86,9 +95,9 @@ export const SLIDE_COUNT = FRAMES.length;
 export const FRAME_WIDTH = 1200;
 export const FRAME_HEIGHT = 720;
 export const FRAME_STRIDE = 1240;
-/** Desktop / fine-pointer scroll distance between slides — matches rauno.me. */
+/** Desktop / fine-pointer scroll distance between index slides. */
 export const SCROLL_PER_FRAME = 744;
-/** Shorter travel on touch — closer to rauno.me mobile scrub length. */
+/** Shorter travel on touch — lighter scrub length on mobile. */
 export const SCROLL_PER_FRAME_TOUCH = 400;
 
 /** Scroll distance from first to last slide. */
@@ -97,7 +106,7 @@ export const SCROLL_RANGE = (SLIDE_COUNT - 1) * SCROLL_PER_FRAME;
 /** Full horizontal track width for all frames. */
 export const TRACK_WIDTH = FRAME_WIDTH + (SLIDE_COUNT - 1) * FRAME_STRIDE;
 
-/** Intra-slide parallax — Rauno-style content lag inside slide panels. */
+/** Intra-slide parallax — content lag inside slide panels. */
 export const PARALLAX_STEP_DIVISOR_DESKTOP = 3;
 export const PARALLAX_STEP_DIVISOR_TOUCH = 5;
 export const PARALLAX_MAX_DEFAULT = Math.round(FRAME_STRIDE * 0.65);

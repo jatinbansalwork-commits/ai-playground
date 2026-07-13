@@ -1,10 +1,18 @@
-import { IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Sans, Just_Another_Hand } from "next/font/google";
 
 /** Sitewide typeface — loaded once in the root layout. */
 export const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+/** Notes by JB index slide — Google Fonts handwriting face. */
+export const justAnotherHand = Just_Another_Hand({
+  variable: "--font-just-another-hand",
+  weight: "400",
+  subsets: ["latin"],
   display: "swap",
 });
 

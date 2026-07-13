@@ -18,6 +18,7 @@ export type QuestionIntentId =
   | "mentorship"
   | "career_interview"
   | "project_saltbot"
+  | "project_cisco"
   | "project_piggy"
   | "project_freshprints"
   | "project_kalash"
@@ -123,6 +124,21 @@ const INTENT_RULES: readonly IntentRule[] = [
     goal: "They asked about Saltbot / conversational AI work — link that case study.",
     curated: true,
     matches: (text) => includesAny(text, ["saltbot", "saltmine", "conversational analytics"]),
+  },
+  {
+    id: "project_cisco",
+    goal: "They asked about Cisco Policy Copilot / Notes by JB on chat vs policy draft.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, [
+        "cisco",
+        "policy copilot",
+        "field notes",
+        "notes by jb",
+        "jb notes",
+        "firewall policy",
+        "agentiops",
+      ]),
   },
   {
     id: "project_piggy",
@@ -259,6 +275,9 @@ Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
     case "project_saltbot":
       return `You're asking about Saltbot — conversational analytics for Saltmine. Reports in seconds, not spreadsheets. [Read the case study](${ROUTES.projects}/saltbot-ai-saltmine).`;
 
+    case "project_cisco":
+      return `You're asking about Policy Copilot — AI-assisted firewall policy at Cisco. Short read: [Notes by JB #1](${ROUTES.fieldNotesOne}). Full case study: [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}).`;
+
     case "project_piggy":
       return `You're asking about Piggy — UX research that cut mutual fund support tickets by 19%. [Read the case study](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets).`;
 
@@ -280,6 +299,7 @@ Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
 
     case "case_study_pick":
       return `You want a place to start — pick your lane:
+- Firewall / AI policy UX → [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}) or [Notes by JB #1](${ROUTES.fieldNotesOne})
 - AI UX → [Saltbot AI](${ROUTES.projects}/saltbot-ai-saltmine)
 - Design systems → [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system)
 - Fintech → [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)`;

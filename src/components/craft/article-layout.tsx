@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { ArticleBackLink } from "@/components/craft/article-back-link";
 import { CraftArticlePageAnalytics } from "@/components/craft/craft-article-page-analytics";
 import { ArticleSectionContent } from "@/components/craft/article-section-content";
 import { CASE_STUDY_EDITORIAL_CLASS } from "@/components/case-studies/case-study-editorial-fonts";
 import type { CraftArticle, CraftSection } from "@/lib/craft-content";
 import { getAdjacentArticles, getArticleSectionBlocks } from "@/lib/craft-content";
-import { NAV_BACK_LINK_CLASS } from "@/lib/a11y";
-import type { SessionBackContext } from "@/lib/session-navigation";
 
 interface ArticleLayoutProps {
   section: CraftSection;
@@ -23,24 +20,18 @@ export function ArticleLayout({
     ? resolveAdjacentArticles(article.slug)
     : getAdjacentArticles(section.id, article.slug);
 
-  const backFallback: SessionBackContext = {
-    href: section.backHref ?? section.href,
-    destination: section.backLabel ?? section.title,
-  };
-
   return (
     <main
       data-sheet="craft-article"
-      className="case-study-main craft-page fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-background text-white"
+      className="case-study-main craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-white text-neutral-900"
     >
       <CraftArticlePageAnalytics slug={article.slug} />
-      <ArticleBackLink fallback={backFallback} className={NAV_BACK_LINK_CLASS} />
 
       <div className="case-study-body mx-auto w-full max-w-5xl px-4 pb-24 sm:px-8">
         <article className={`${CASE_STUDY_EDITORIAL_CLASS} min-w-0`}>
           <div className="case-study-editorial-flow">
             <header className="case-study-editorial-intro">
-              <h1 className="craft-article-title pt-[200px] text-4xl md:text-5xl">
+              <h1 className="craft-article-title pt-[200px] text-4xl text-neutral-900 md:text-5xl">
                 {article.title}
               </h1>
               {article.date ? (
@@ -56,7 +47,7 @@ export function ArticleLayout({
                 id={entry.id}
                 className="craft-article-section scroll-mt-16"
               >
-                <h2 className="craft-article-section-title mb-6 text-white">
+                <h2 className="craft-article-section-title mb-6 text-neutral-900">
                   {entry.title}
                 </h2>
                 <ArticleSectionContent blocks={getArticleSectionBlocks(entry)} />
@@ -64,11 +55,11 @@ export function ArticleLayout({
             ))}
           </div>
 
-          <footer className="mt-16 flex items-center justify-between pt-8 font-sans text-sm">
+          <footer className="mt-16 flex items-center justify-between border-t border-neutral-200 pt-8 font-sans text-sm">
             {prev ? (
               <Link
                 href={`${section.href}/${prev}`}
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-neutral-500 transition-colors hover:text-neutral-900"
               >
                 ← Previous
               </Link>
@@ -78,7 +69,7 @@ export function ArticleLayout({
             {next ? (
               <Link
                 href={`${section.href}/${next}`}
-                className="text-neutral-400 transition-colors hover:text-white"
+                className="text-neutral-500 transition-colors hover:text-neutral-900"
               >
                 Next →
               </Link>

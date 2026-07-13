@@ -112,6 +112,7 @@ function IndexCanvas() {
                       key={frame.id}
                       frame={frame}
                       index={index}
+                      activeFrameIndex={activeFrameIndex}
                       onInteract={playClick}
                     />
                   );

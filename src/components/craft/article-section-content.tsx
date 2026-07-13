@@ -21,7 +21,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <blockquote
               key={`quote-${index}`}
-              className="border-l-2 border-brand-accent pl-6 font-medium leading-relaxed tracking-tight text-white"
+              className="border-l-2 border-blue-600 pl-6 font-medium leading-relaxed tracking-tight text-neutral-900"
             >
               {block.text}
             </blockquote>
@@ -32,7 +32,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <h3
               key={`heading-${index}`}
-              className="craft-article-section-title text-lg text-white md:text-xl"
+              className="craft-article-section-title text-lg text-neutral-900 md:text-xl"
             >
               {block.text}
             </h3>
@@ -43,7 +43,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
           return (
             <hr
               key={`divider-${index}`}
-              className="!my-6 border-0"
+              className="!my-8 border-0"
               aria-hidden
             />
           );
@@ -87,7 +87,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
                 {block.items.map((item) => (
                   <li
                     key={item}
-                    className="rounded-full border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm leading-snug text-brand-accent-soft"
+                    className="rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-sm leading-snug text-blue-700"
                   >
                     {item}
                   </li>

@@ -72,6 +72,17 @@ export function trackArchiveView(): void {
   track("archive_view");
 }
 
+/** Notes by JB article page load (`/notes/1`). */
+export function trackFieldNotesView(properties: {
+  note_id: string;
+  title: string;
+}): void {
+  track("field_notes_view", {
+    note_id: properties.note_id,
+    title: properties.title,
+  });
+}
+
 /** AI Experiment detail modal opened from the gallery grid. */
 export function trackAiExperimentDetailView(slug: string): void {
   track("ai_experiment_detail_view", { slug });
