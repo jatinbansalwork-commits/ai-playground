@@ -11,8 +11,21 @@ export interface ProjectRowItem {
   slug: string;
   title: string;
   year: string;
+  /** Right-hand label on the projects index; falls back to `year` when omitted. */
+  listAside?: string;
   hoverThumbnail: string;
 }
+
+/** Per-slug product info shown instead of the year on the projects index. */
+export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
+  "cisco-policy-copilot": "Reduce Policy Generation Time by 40%",
+  "saltbot-ai-saltmine": "Reimagining Analytics with AI",
+  "freshprints-image-gen-ai": "Image Gen AI",
+  "freshprints-design-system":
+    "Stopped UI debates and helped 4 product teams ship faster",
+  "kalash-rewards": "Getting India to save in gold digitally",
+  "piggy-reduced-mutual-fund-support-tickets": "Reduced Support Tickets",
+};
 
 /**
  * Per-slug hover thumbnail overrides (CDN or `/public` paths).
@@ -78,5 +91,6 @@ export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
     slug: study.slug,
     title: study.title,
     year: study.year,
+    listAside: LIST_ASIDE_OVERRIDES[study.slug],
     hoverThumbnail: hoverThumbnailForSlug(study.slug),
   }));

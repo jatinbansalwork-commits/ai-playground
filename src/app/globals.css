@@ -893,6 +893,13 @@ html:has(main[data-sheet="craft-article"]) body {
   transition: color 150ms ease;
 }
 
+.projects-row-aside {
+  max-width: min(18rem, 46%);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  font-variant-numeric: normal;
+}
+
 .projects-row:hover .projects-row-title,
 .projects-row:focus-visible .projects-row-title {
   color: #ffffff;

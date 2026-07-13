@@ -38,9 +38,9 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "Cisco Policy Copilot — Reduce Policy Generation Time by 40%",
+    "Cisco Policy Copilot",
     "2026",
-    "Turning business requests into firewall policies administrators can trust.",
+    "How Policy Copilot cut firewall policy generation time by 40%",
     {
       servicesLabel: "Role",
       services: [
@@ -60,7 +60,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "saltbot-ai-saltmine": entry(
     "saltbot-ai-saltmine",
-    "Saltbot — Reimagining Analytics with AI",
+    "Saltbot",
     "2026",
     "Saltbot AI conversational assistant for Saltmine — report analytics, automation guardrails, and desktop + mobile UX for workplace insights.",
     {
@@ -81,7 +81,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-image-gen-ai": entry(
     "freshprints-image-gen-ai",
-    "FreshPrints — Image Gen AI",
+    "FreshPrints",
     "2025",
     "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
     {
@@ -103,7 +103,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-design-system": entry(
     "freshprints-design-system",
-    "FreshPrints — Stopped UI debates and helped teams ship faster",
+    "FreshPrints",
     "2025",
     "A design system that stopped UI debates and helped 4 product teams ship faster.",
     {
@@ -142,7 +142,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "kalash-rewards": entry(
     "kalash-rewards",
-    "Kalash — Your New Gold",
+    "Kalash",
     "2024",
     "Helping 1M+ users from their wealth with Digital gold",
     {
@@ -186,7 +186,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-reduced-mutual-fund-support-tickets": entry(
     "piggy-reduced-mutual-fund-support-tickets",
-    "Piggy — Reduced Support Tickets",
+    "Piggy",
     "2023",
     "How we reduced mutual fund support tickets by 19% at Piggy",
     {

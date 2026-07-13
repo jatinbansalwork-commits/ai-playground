@@ -54,9 +54,15 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
         <span className="projects-row-title">{project.title}</span>
       </span>
       <span className="projects-row-spacer" aria-hidden />
-      <time className="projects-row-year" dateTime={project.year}>
-        {project.year}
-      </time>
+      {project.listAside ? (
+        <span className="projects-row-year projects-row-aside">
+          {project.listAside}
+        </span>
+      ) : (
+        <time className="projects-row-year" dateTime={project.year}>
+          {project.year}
+        </time>
+      )}
     </Link>
   );
 }
