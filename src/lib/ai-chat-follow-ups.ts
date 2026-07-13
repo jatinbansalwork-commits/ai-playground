@@ -92,7 +92,7 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
     "How do I contact JB?",
   ],
   "/projects/cisco-policy-copilot": [
-    "Tell me about Notes by JB #1",
+    "Tell me about JB's Field Notes #1",
     "What problem did Policy Copilot solve?",
     "How do I contact JB?",
   ],
@@ -212,11 +212,11 @@ export function resolveFollowUpPrompt(label: string): string {
   if (label === "Tell me about Cisco Policy Copilot") {
     return "Tell me about Cisco Policy Copilot";
   }
-  if (label === "Tell me about Notes by JB #1") {
-    return "Tell me about Notes by JB #1";
+  if (label === "Tell me about JB's Field Notes #1") {
+    return "Tell me about JB's Field Notes #1";
   }
   if (label === "Tell me about Field Notes #1") {
-    return "Tell me about Notes by JB #1";
+    return "Tell me about JB's Field Notes #1";
   }
   if (label === "What problem did Policy Copilot solve?") {
     return "What problem did Policy Copilot solve?";

@@ -1,4 +1,4 @@
-/** Notes by JB #1 — Policy Copilot: chat vs policy draft. */
+/** JB's Field Notes #1 — Policy Copilot: chat vs policy draft. */
 
 export type FieldNotesPolicyDemoId =
   | "in-thread-policy"
@@ -43,7 +43,7 @@ export const FIELD_NOTES_1_BLOCKS: FieldNotesBlock[] = [
   },
   {
     type: "paragraph",
-    text: "A business request lands in chat as one sentence. The secure answer is a policy—users, apps, zones, conditions—and I'm stuck trying to hold both in the same thread.",
+    text: "A business request lands in chat as one sentence. The secure answer is a firewall policy with users, applications, zones, conditions, and compliance checks—and I'm stuck trying to hold both in the same thread.",
   },
   {
     type: "heading",

@@ -216,7 +216,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `external_demo_open` | `slug`, `url`, `surface` | External demo link |
 | `design_review_view` | `slug` | Craft essay page load |
 | `archive_view` | — | `/archive` page load |
-| `field_notes_view` | `note_id`, `title` | Notes by JB article page load (`/notes/1`) |
+| `field_notes_view` | `note_id`, `title` | JB's Field Notes article page load (`/notes/1`) |
 | `media_play` | `surface`, `media_id`, `slug?` | Video or motion autoplay / play |
 | `contact_click` | `method` | LinkedIn, email, or manual contact |
 | `resume_download` | — | Resume PDF download |

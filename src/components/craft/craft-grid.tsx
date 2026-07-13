@@ -12,6 +12,7 @@ import {
   buildInitialCraftAspectMap,
   shouldUpdateCraftAspect,
 } from "@/lib/craft-gallery-aspects";
+import { randomShuffleSeed, shuffleWithSeed } from "@/lib/shuffle-seed";
 
 interface CraftGridProps {
   items: ExperimentGalleryItem[];
@@ -20,10 +21,21 @@ interface CraftGridProps {
 const PRIORITY_CARD_COUNT = 6;
 
 export function CraftGrid({ items }: CraftGridProps) {
+  const [shuffleSeed, setShuffleSeed] = useState(0);
   const columnCount = useCraftMasonryColumnCount();
+
+  useEffect(() => {
+    setShuffleSeed(randomShuffleSeed());
+  }, []);
+
+  const orderedItems = useMemo(() => {
+    if (shuffleSeed === 0) return items;
+    return shuffleWithSeed(items, shuffleSeed ^ items.length);
+  }, [items, shuffleSeed]);
+
   const initialAspects = useMemo(
-    () => buildInitialCraftAspectMap(items),
-    [items],
+    () => buildInitialCraftAspectMap(orderedItems),
+    [orderedItems],
   );
   const [measuredAspects, setMeasuredAspects] =
     useState<Record<string, number>>(initialAspects);
@@ -33,7 +45,7 @@ export function CraftGrid({ items }: CraftGridProps) {
   }, [initialAspects]);
 
   const masonryColumns = useCraftMasonryLayout(
-    items,
+    orderedItems,
     columnCount,
     measuredAspects,
   );
@@ -46,7 +58,7 @@ export function CraftGrid({ items }: CraftGridProps) {
     return new Set(slugs);
   }, [masonryColumns]);
 
-  useCraftGalleryPreload(items);
+  useCraftGalleryPreload(orderedItems);
 
   const handleMediaMeasure = useCallback(
     (slug: string, width: number, height: number) => {

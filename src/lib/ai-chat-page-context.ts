@@ -42,8 +42,8 @@ Overview (for other questions only): ${study.overviewText}`;
   }
 
   if (pagePath.startsWith("/notes/")) {
-    return `The user is reading Notes by JB at ${pagePath}.
-Notes by JB #1 is JB's working note on Cisco Policy Copilot: why dumping a policy draft into chat fails, and why a side-by-side workspace (intent on the left, draft on the right) works better.
+    return `The user is reading JB's Field Notes at ${pagePath}.
+JB's Field Notes #1 is JB's working note on Cisco Policy Copilot: why dumping a policy draft into chat fails, and why a side-by-side workspace (intent on the left, draft on the right) works better.
 Keep answers personal and observational. Link the full case study at /projects/cisco-policy-copilot when they want depth. Do not tell them to open this note — they are already on it.`;
   }
 

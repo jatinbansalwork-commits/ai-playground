@@ -72,7 +72,7 @@ export function trackArchiveView(): void {
   track("archive_view");
 }
 
-/** Notes by JB article page load (`/notes/1`). */
+/** JB's Field Notes article page load (`/notes/1`). */
 export function trackFieldNotesView(properties: {
   note_id: string;
   title: string;

@@ -38,7 +38,7 @@ function entry(
 export const projectDataRegistry: Record<string, CaseStudyContent> = {
   "cisco-policy-copilot": entry(
     "cisco-policy-copilot",
-    "Cisco Policy Copilot — AgentiOps Firewall AI",
+    "Cisco Policy Copilot — Reduce Policy Generation Time by 40%",
     "2026",
     "Turning business requests into firewall policies administrators can trust.",
     {
@@ -58,9 +58,30 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Policy Copilot explores AI-assisted firewall policy inside Cisco Hybrid Mesh Firewall. Administrators describe outcomes in natural language; Copilot reflects understanding, maps inventory objects, runs visible validation, and keeps every draft separate from production until a human approves.",
     },
   ),
+  "saltbot-ai-saltmine": entry(
+    "saltbot-ai-saltmine",
+    "Saltbot — Reimagining Analytics with AI",
+    "2026",
+    "Saltbot AI conversational assistant for Saltmine — report analytics, automation guardrails, and desktop + mobile UX for workplace insights.",
+    {
+      services: [
+        "Micro-interactions",
+        "Dev handoff",
+        "Discovery",
+        "Early tech exploration",
+        "UX / UI for desktop + mobile",
+        "Conceptualization",
+        "Proof of concept",
+      ],
+      client: "Saltmine",
+      location: "Bengaluru",
+      infoText:
+        "Our first AI-powered Report Analytics Tool at Saltmine. Saltbot makes it easy to generate detailed reports on employee headcount—no more tedious data pulling or complicated navigation. With just a few clicks, you can create and visualise exactly the data you need, all in 5 seconds or less. Say goodbye to cluttered spreadsheets and hello to clear, actionable insights!",
+    },
+  ),
   "freshprints-image-gen-ai": entry(
     "freshprints-image-gen-ai",
-    "FreshPrints - Image Gen AI",
+    "FreshPrints — Image Gen AI",
     "2025",
     "Generative image tooling for FreshPrints — prompt flows, asset review interfaces, and shipped MVP UX for desktop and mobile creators.",
     {
@@ -82,7 +103,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "freshprints-design-system": entry(
     "freshprints-design-system",
-    "FreshPrints - Design System",
+    "FreshPrints — Stopped UI debates and helped teams ship faster",
     "2025",
     "A design system that stopped UI debates and helped 4 product teams ship faster.",
     {
@@ -106,26 +127,6 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "Designed canvas editor workflows that balance structure and spontaneity — enabling parallel attention across layers, assets, and live collaboration without overwhelming the editing surface.",
     },
   ),
-  "saltbot-ai-saltmine": entry(
-    "saltbot-ai-saltmine",
-    "Saltbot AI (Saltmine)",
-    "2024",
-    "Saltbot AI conversational assistant for Saltmine — report analytics, automation guardrails, and desktop + mobile UX for workplace insights.",
-    {
-      services: [
-        "Micro-interactions",
-        "Dev handoff",
-        "Discovery",
-        "Early tech exploration",
-        "UX / UI for desktop + mobile",
-        "Conceptualization",
-      ],
-      client: "Saltmine",
-      location: "Bengaluru",
-      infoText:
-        "Our first AI-powered Report Analytics Tool at Saltmine. Saltbot makes it easy to generate detailed reports on employee headcount—no more tedious data pulling or complicated navigation. With just a few clicks, you can create and visualise exactly the data you need, all in 5 seconds or less. Say goodbye to cluttered spreadsheets and hello to clear, actionable insights!",
-    },
-  ),
   "saltmine-sync": entry(
     "saltmine-sync",
     "Saltmine - Sync",
@@ -141,7 +142,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "kalash-rewards": entry(
     "kalash-rewards",
-    "Kalash - Your New Gold",
+    "Kalash — Your New Gold",
     "2024",
     "Helping 1M+ users from their wealth with Digital gold",
     {
@@ -185,7 +186,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
   ),
   "piggy-reduced-mutual-fund-support-tickets": entry(
     "piggy-reduced-mutual-fund-support-tickets",
-    "Piggy - Reduced Support Tickets",
+    "Piggy — Reduced Support Tickets",
     "2023",
     "How we reduced mutual fund support tickets by 19% at Piggy",
     {

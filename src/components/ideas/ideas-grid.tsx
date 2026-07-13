@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ExperimentGalleryItem } from "@/lib/experiments-registry";
 import { IdeasCard } from "@/components/ideas/ideas-card";
 import { IdeasDetailModal } from "@/components/ideas/ideas-detail-modal";
@@ -16,6 +16,7 @@ import {
   getIdeasCardMeta,
 } from "@/lib/ideas-page-data";
 import { IDEAS_MASONRY_GAP_PX } from "@/lib/ideas-masonry";
+import { randomShuffleSeed, shuffleWithSeed } from "@/lib/shuffle-seed";
 
 interface IdeasGridProps {
   items: ExperimentGalleryItem[];
@@ -32,10 +33,21 @@ export function IdeasGrid({ items }: IdeasGridProps) {
   const [selectedItem, setSelectedItem] =
     useState<ExperimentGalleryItem | null>(null);
   const [placeholderOpen, setPlaceholderOpen] = useState(false);
+  const [shuffleSeed, setShuffleSeed] = useState(0);
   const detailTriggerRef = useRef<HTMLElement | null>(null);
   const placeholderTriggerRef = useRef<HTMLElement | null>(null);
   const columnCount = useIdeasMasonryColumnCount();
-  const masonryColumns = useIdeasMasonryLayout(items, columnCount);
+
+  useEffect(() => {
+    setShuffleSeed(randomShuffleSeed());
+  }, []);
+
+  const orderedItems = useMemo(() => {
+    if (shuffleSeed === 0) return items;
+    return shuffleWithSeed(items, shuffleSeed ^ items.length);
+  }, [items, shuffleSeed]);
+
+  const masonryColumns = useIdeasMasonryLayout(orderedItems, columnCount);
 
   const placeholderColumnIndex = useMemo(() => {
     if (IDEAS_GRID_PLACEHOLDER_COUNT <= 0 || columnCount <= 0) return -1;

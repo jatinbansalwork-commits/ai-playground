@@ -15,7 +15,7 @@ export function isLongReadPathname(pathname: string): boolean {
   return false;
 }
 
-/** Notes by JB articles — no floating index chrome (chat, slide nav, etc.). */
+/** JB's Field Notes articles — no floating index chrome (chat, slide nav, etc.). */
 export function isFieldNotesPathname(pathname: string): boolean {
   return pathname.startsWith("/notes/");
 }
