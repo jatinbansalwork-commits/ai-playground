@@ -44,7 +44,7 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
     {
       servicesLabel: "Role",
       services: [
-        "Lead Product Designer",
+        "Sr. Product Designer",
         "UX Strategy",
         "AI Interaction Design",
         "Product Design",
