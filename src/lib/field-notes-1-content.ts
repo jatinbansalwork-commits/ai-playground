@@ -43,7 +43,7 @@ export const FIELD_NOTES_1_BLOCKS: FieldNotesBlock[] = [
   },
   {
     type: "paragraph",
-    text: "A business request lands in chat as one sentence. The secure answer is a firewall policy with users, applications, zones, conditions, and compliance checks—and I'm stuck trying to hold both in the same thread.",
+    text: "A business request lands in chat as one sentence. The secure answer is a firewall policy with users, applications, zones, conditions, and compliance checks. During user testing, we found that administrators struggled to keep both the business request and the technical implementation in the same thread.",
   },
   {
     type: "heading",
