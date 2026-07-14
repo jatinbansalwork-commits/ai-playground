@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const REQUEST =
@@ -72,7 +72,7 @@ function TimelineRow({
               : isActive
                 ? CLAUDE.primaryMuted
                 : CLAUDE.surfaceOverlay,
-            color: isConfirmed ? CLAUDE.validated : isActive ? CLAUDE.primary : CLAUDE.textSoft,
+            color: isConfirmed ? CLAUDE.validated : isActive ? CLAUDE.primaryActive : CLAUDE.textMuted,
             boxShadow: isActive
               ? `inset 0 0 0 1px ${CLAUDE.primaryBorder}, 0 0 0 4px ${CLAUDE.primaryMuted}`
               : `inset 0 0 0 1px ${CLAUDE.hairline}`,
@@ -105,23 +105,25 @@ function TimelineRow({
             ? { y: { duration: 1.8, repeat: Infinity, ease: "easeInOut" } }
             : { duration: 0.35 }
         }
-        className="mb-3 min-w-0 flex-1 rounded-xl px-3.5 py-3 md:px-4 md:py-3.5"
+        className="mb-3 min-w-0 flex-1 rounded-xl border px-3.5 py-3 md:px-4 md:py-3.5"
         style={{
           backgroundColor: isConfirmed
             ? CLAUDE.validatedMuted
             : isActive
               ? CLAUDE.primaryMuted
-              : CLAUDE.surfaceOverlay,
-          boxShadow: `inset 0 0 0 1px ${
-            isConfirmed ? `${CLAUDE.validated}44` : isActive ? CLAUDE.primaryBorder : CLAUDE.hairline
-          }`,
+              : "#FFFFFF",
+          borderColor: isConfirmed
+            ? "rgb(21 128 61 / 0.28)"
+            : isActive
+              ? CLAUDE.primaryBorder
+              : CLAUDE.border,
         }}
       >
         {state === "pending" ? (
           <div className="space-y-2">
-            <div className="h-2 w-16 rounded-full bg-white/[0.06]" />
-            <div className="h-3 w-3/4 max-w-[14rem] rounded-full bg-white/[0.08]" />
-            <div className="h-2 w-1/2 max-w-[10rem] rounded-full bg-white/[0.04]" />
+            <div className="h-2 w-16 rounded-full bg-neutral-200" />
+            <div className="h-3 w-3/4 max-w-[14rem] rounded-full bg-neutral-200" />
+            <div className="h-2 w-1/2 max-w-[10rem] rounded-full bg-neutral-100" />
           </div>
         ) : (
           <motion.div
@@ -138,9 +140,7 @@ function TimelineRow({
             <p className="mt-1 text-[13px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
               {card.value}
             </p>
-            <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-              {card.detail}
-            </p>
+            <p className="mt-1 text-[11px] leading-relaxed text-neutral-600">{card.detail}</p>
           </motion.div>
         )}
       </motion.div>
@@ -199,8 +199,8 @@ export function PolicyCopilotIntentBecomesStructure() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
@@ -215,22 +215,22 @@ export function PolicyCopilotIntentBecomesStructure() {
             >
               Intent Becomes Structure
             </p>
-            <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">
               A short animation showing information cards appearing one by one as the AI recognises
               users, applications, devices, and access conditions. Confidence gradually increases as
               more information is confirmed.
             </p>
           </div>
-          <div className="min-w-[8.5rem] rounded-xl px-3 py-2.5 text-right">
+          <div className="min-w-[8.5rem] rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-right">
             <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
               Confidence
             </p>
-            <p className="mt-1 text-[24px] font-medium tabular-nums leading-none" style={{ color: CLAUDE.text }}>
+            <p className="mt-1 text-[24px] font-semibold tabular-nums leading-none text-neutral-900">
               {confidence}%
             </p>
           </div>
         </div>
-        <div className="mt-4 h-1.5 overflow-hidden rounded-full" style={{ backgroundColor: CLAUDE.surfaceOverlay }}>
+        <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-neutral-200">
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: confidence >= 80 ? CLAUDE.validated : CLAUDE.primary }}
@@ -241,23 +241,15 @@ export function PolicyCopilotIntentBecomesStructure() {
       </div>
 
       <div className="grid gap-0 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-        <div
-          className="border-b p-4 md:border-b-0 md:border-r md:p-5"
-          style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surfaceRaised }}
-        >
-          <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textSoft }}>
+        <div className="border-b border-neutral-200 bg-neutral-50 p-4 md:border-b-0 md:border-r md:p-5">
+          <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
             Business intent
           </p>
-          <p className="mt-2 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+          <p className="mt-2 text-[13px] leading-relaxed text-neutral-700">
             &ldquo;{REQUEST}&rdquo;
           </p>
-          <div
-            className="mt-4 rounded-xl px-3 py-2.5"
-            style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-          >
-            <p className="text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-              {status}
-            </p>
+          <div className="mt-4 rounded-xl border border-neutral-200 bg-white px-3 py-2.5">
+            <p className="text-[11px] leading-relaxed text-neutral-600">{status}</p>
           </div>
         </div>
 

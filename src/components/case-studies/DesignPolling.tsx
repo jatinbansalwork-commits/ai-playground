@@ -3,6 +3,7 @@
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyDivider,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -52,6 +53,7 @@ export default function DesignPollingContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudySubheading>Closing the Loop Between Vote and Revision</CaseStudySubheading>
         <CaseStudyList
           items={[

@@ -1,8 +1,4 @@
-import {
-  AI_CHAT_LIMIT_MESSAGE,
-  AI_CHAT_PROMPT_LIMIT,
-  isOpenAiChatEnabled,
-} from "@/lib/ai-chat-config";
+import { isOpenAiChatEnabled } from "@/lib/ai-chat-config";
 import { generateFallbackReply } from "@/lib/ai-chat-fallback.server";
 import {
   buildIntentReply,
@@ -17,7 +13,6 @@ import {
   type AiChatIntentId,
 } from "@/lib/ai-chat-intents";
 import {
-  getChatPromptCount,
   getOpenAiBudgetState,
   incrementChatPromptCount,
   incrementOpenAiCallCount,
@@ -170,39 +165,10 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const usedGifIds = sanitiseUsedGifIds(body.usedGifIds);
-  const promptCount = await getChatPromptCount();
   const pagePath = body.pagePath?.trim() || undefined;
   const intentId = resolveChipIntentId(messages, body.intentId);
   const userMessage = lastUserMessage(messages);
   const visitorIntent = detectQuestionIntent(userMessage, pagePath);
-
-  if (promptCount >= AI_CHAT_PROMPT_LIMIT) {
-    return createChatStreamResponse(async (emit) => {
-      const openAiBudget = await getOpenAiBudgetState();
-      const gifPromise = fetchChatReactionGif(
-        lastUserMessage(messages),
-        undefined,
-        usedGifIds,
-        AI_CHAT_LIMIT_MESSAGE,
-      );
-      const result = await streamPreparedReply(emit, {
-        reply: AI_CHAT_LIMIT_MESSAGE,
-        followUps: ["How do I contact JB?"],
-        source: "fallback",
-        remainingPrompts: 0,
-        remainingOpenAi: openAiBudget.remainingOpenAi,
-      });
-      logChatQuestionTurn(request, messages, {
-        question: userMessage,
-        reply: AI_CHAT_LIMIT_MESSAGE,
-        pagePath,
-        chipIntentId: intentId,
-        visitorIntent,
-        replySource: "fallback",
-      });
-      return attachReactionGif(result, gifPromise);
-    });
-  }
 
   const openAiBudget = await getOpenAiBudgetState();
   const showOpenAiNotice = !openAiBudget.canUseOpenAi;

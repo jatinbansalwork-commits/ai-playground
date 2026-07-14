@@ -6,8 +6,9 @@ import {
 import type { ChatReplySource } from "@/lib/ai-chat-types";
 
 const GENERIC_FOLLOW_UPS = [
-  "Which case study should I start with?",
-  "How do I contact JB?",
+  "What's his design process?",
+  "Where has he worked?",
+  "How do I reach him?",
 ] as const;
 
 /** Follow-ups keyed to what the visitor just asked — not the first chip in the session. */
@@ -16,120 +17,164 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
   readonly string[]
 > = {
   greeting: [
-    "I'd love to hire JB",
-    "Which case study should I start with?",
-    "How do I contact JB?",
+    "What's JB's strongest project?",
+    "Tell me about Cisco Policy Copilot",
+    "How do I reach him?",
   ],
   wireframe: [
     "How did JB build this portfolio?",
     "What is on the Craft page?",
   ],
-  resume: ["I'd love to hire JB", "How do I contact JB?"],
-  hiring: ["Where is JB's resume?", "Tell me about Saltbot AI"],
-  contact: ["I'd love to hire JB", "I'm interested in mentorship"],
-  mentorship: ["What is in the JB Manual?", "How do I contact JB?"],
+  resume: ["I'd love to hire JB", "How do I reach him?"],
+  hiring: ["Where is JB's resume?", "What's JB's strongest project?"],
+  contact: [
+    "I'd love to hire JB",
+    "Which case study should I start with?",
+    "What's his design process?",
+  ],
+  mentorship: ["What is in the JB Manual?", "How do I reach him?"],
   career_interview: [
     "Tell me about a zero-to-one product you launched",
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
+  ],
+  work_history: [
+    "What's JB's strongest project?",
+    "What's his design process?",
+    "How do I reach him?",
+  ],
+  jb_manual: [
+    "I'm interested in mentorship",
+    "How do I reach him?",
+    "I'd love to hire JB",
+  ],
+  strongest_project: [
+    "How does intent-before-rules work?",
+    "What did user testing uncover?",
+    "What problem did Saltbot solve?",
+  ],
+  design_process: [
+    "Tell me about the FreshPrints design system",
+    "How did Piggy reduce support tickets?",
+    "Where has he worked?",
   ],
   project_saltbot: [
     "What problem did Saltbot solve?",
-    "Tell me more about Saltbot AI",
-    "How do I contact JB?",
+    "How fast are the analytics answers?",
+    "What's his design process?",
   ],
   project_cisco: [
-    "Tell me about Cisco Policy Copilot",
-    "Which case study should I start with?",
-    "How do I contact JB?",
+    "How does intent-before-rules work?",
+    "What did user testing uncover?",
+    "Tell me about JB's Case Notes #1",
   ],
   project_piggy: [
     "How did Piggy reduce support tickets?",
-    "Tell me about Piggy",
-    "How do I contact JB?",
+    "What research drove the 19%?",
+    "What's his design process?",
   ],
   project_freshprints: [
-    "Tell me about the FreshPrints design system",
+    "What was the design system scope?",
+    "How did it help teams ship faster?",
     "What did the Image Gen AI tool do?",
-    "How do I contact JB?",
   ],
   project_kalash: [
-    "Tell me about Kalash",
+    "How does digital gold savings work?",
     "What is the Kalash year-end recap?",
-    "How do I contact JB?",
+    "How do I reach him?",
   ],
   portfolio_site: [
     "What is on the Craft page?",
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
   ],
   craft: [
     "How did JB build this portfolio?",
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
   ],
   case_study_pick: [
+    "Tell me about Cisco Policy Copilot",
     "Tell me about Saltbot AI",
-    "Tell me about Piggy",
     "I'd love to hire JB",
   ],
   case_study_fun_fact: [
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
     "I'd love to hire JB",
-    "How do I contact JB?",
+    "How do I reach him?",
   ],
   explore: [...GENERIC_FOLLOW_UPS],
 };
 
 const FOLLOW_UPS_BY_CHIP_INTENT: Record<AiChatIntentId, readonly string[]> = {
-  mentorship: ["What is in the JB Manual?", "How do I contact JB?"],
-  hiring: ["Where is JB's resume?", "Tell me about Saltbot AI"],
-  portfolio: ["What is on the Craft page?", "Which case study should I start with?"],
-  "case-study": ["Tell me about Saltbot AI", "Tell me about Piggy"],
+  "strongest-project": [
+    "How does intent-before-rules work?",
+    "What did user testing uncover?",
+    "What problem did Saltbot solve?",
+  ],
+  cisco: [
+    "How does intent-before-rules work?",
+    "What did user testing uncover?",
+    "Tell me about JB's Case Notes #1",
+  ],
+  process: [
+    "Tell me about the FreshPrints design system",
+    "How did Piggy reduce support tickets?",
+    "Where has he worked?",
+  ],
+  reach: [
+    "I'd love to hire JB",
+    "What's JB's strongest project?",
+    "What's his design process?",
+  ],
 };
 
 const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
   "/projects/saltbot-ai-saltmine": [
     "What problem did Saltbot solve?",
-    "Tell me more about Saltbot AI",
-    "How do I contact JB?",
+    "How fast are the analytics answers?",
+    "What's his design process?",
   ],
   "/projects/cisco-policy-copilot": [
-    "Tell me about JB's Field Notes #1",
-    "What problem did Policy Copilot solve?",
-    "How do I contact JB?",
+    "How does intent-before-rules work?",
+    "What did user testing uncover?",
+    "Tell me about JB's Case Notes #1",
   ],
   "/projects/freshprints-design-system": [
     "What was the design system scope?",
-    "Tell me about the FreshPrints design system",
-    "How do I contact JB?",
+    "How did it help teams ship faster?",
+    "What's his design process?",
   ],
   "/projects/freshprints-image-gen-ai": [
     "What did the Image Gen AI tool do?",
-    "How do I contact JB?",
+    "How was review handled?",
+    "How do I reach him?",
   ],
   "/projects/piggy-reduced-mutual-fund-support-tickets": [
     "How did Piggy reduce support tickets?",
-    "Tell me about Piggy",
-    "How do I contact JB?",
+    "What research drove the 19%?",
+    "What's his design process?",
   ],
   "/projects/kalash-rewards": [
-    "Tell me about Kalash",
-    "How do I contact JB?",
+    "How does digital gold savings work?",
+    "What is the Kalash year-end recap?",
+    "How do I reach him?",
   ],
   "/projects/kalash-year-end-recap": [
     "What is the Kalash year-end recap?",
-    "How do I contact JB?",
+    "How does digital gold savings work?",
+    "How do I reach him?",
   ],
   "/craft": [
     "How did JB build this portfolio?",
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
   ],
   "/projects": [
-    "Which case study should I start with?",
+    "What's JB's strongest project?",
+    "Tell me about Cisco Policy Copilot",
     "I'd love to hire JB",
   ],
   "/notes/1": [
     "Tell me about Cisco Policy Copilot",
-    "Which case study should I start with?",
-    "How do I contact JB?",
+    "How does intent-before-rules work?",
+    "How do I reach him?",
   ],
 };
 
@@ -158,7 +203,8 @@ function followUpsForPage(pagePath?: string): readonly string[] {
   if (pagePath.startsWith("/projects/")) {
     return [
       "What is the outcome of this project?",
-      "How do I contact JB?",
+      "What's his design process?",
+      "How do I reach him?",
     ];
   }
 
@@ -180,7 +226,7 @@ export function buildFollowUpSuggestions(options: {
 
   if (options.source === "static" && options.intentId) {
     const fromChip = FOLLOW_UPS_BY_CHIP_INTENT[options.intentId] ?? [];
-    return uniqueSuggestions([...fromQuestion, ...fromChip]);
+    return uniqueSuggestions([...fromChip, ...fromQuestion]);
   }
 
   if (questionIntent.id !== "explore") {
@@ -209,20 +255,53 @@ export function resolveFollowUpPrompt(label: string): string {
   if (label === "Tell me more about Saltbot AI") {
     return "Tell me more about Saltbot AI";
   }
+  if (label === "How fast are the analytics answers?") {
+    return "How fast are Saltbot analytics answers?";
+  }
   if (label === "Tell me about Cisco Policy Copilot") {
     return "Tell me about Cisco Policy Copilot";
   }
-  if (label === "Tell me about JB's Field Notes #1") {
-    return "Tell me about JB's Field Notes #1";
+  if (label === "Tell me about JB's Case Notes #1") {
+    return "Tell me about JB's Case Notes #1";
   }
-  if (label === "Tell me about Field Notes #1") {
-    return "Tell me about JB's Field Notes #1";
+  if (label === "Tell me about Case Notes #1") {
+    return "Tell me about JB's Case Notes #1";
   }
   if (label === "What problem did Policy Copilot solve?") {
     return "What problem did Policy Copilot solve?";
   }
+  if (label === "How does intent-before-rules work?") {
+    return "How does Policy Copilot use intent before generating firewall rules?";
+  }
+  if (label === "What did user testing uncover?") {
+    return "What did user testing uncover for Policy Copilot?";
+  }
   if (label === "What did the Image Gen AI tool do?") {
-    return `What did the FreshPrints Image Gen AI tool do?`;
+    return "What did the FreshPrints Image Gen AI tool do?";
+  }
+  if (label === "How was review handled?") {
+    return "How was asset review handled in FreshPrints Image Gen AI?";
+  }
+  if (label === "How did it help teams ship faster?") {
+    return "How did the FreshPrints design system help teams ship faster?";
+  }
+  if (label === "What research drove the 19%?") {
+    return "What research drove Piggy's 19% support ticket reduction?";
+  }
+  if (label === "How does digital gold savings work?") {
+    return "How does Kalash digital gold savings work?";
+  }
+  if (label === "Where has he worked?") {
+    return "Where has JB worked?";
+  }
+  if (label === "How do I reach him?") {
+    return "How do I reach him?";
+  }
+  if (label === "What's his design process?") {
+    return "What's his design process?";
+  }
+  if (label === "What's JB's strongest project?") {
+    return "What's JB's strongest project?";
   }
   return label;
 }

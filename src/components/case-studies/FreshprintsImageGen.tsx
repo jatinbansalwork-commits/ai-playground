@@ -3,8 +3,8 @@
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
-  CaseStudyH2,
   CaseStudyDivider,
+  CaseStudyH2,
   CaseStudyParagraph,
   CaseStudyProse,
   CaseStudyQuote,
@@ -51,7 +51,6 @@ export default function FreshprintsImageGenContent() {
           that fits, the excitement fades. That initial spark disappears—and many users
           simply don&apos;t return.
         </CaseStudyParagraph>
-        <CaseStudyDivider />
         <CaseStudyH2>Collaboration with</CaseStudyH2>
         <CaseStudyTightStack>
           <CaseStudyParagraph tight>
@@ -109,6 +108,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>Strategic Question</CaseStudyH2>
         <CaseStudyParagraph dense>
           How might we reduce the effort required to go from intent → usable design?
@@ -144,6 +144,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>The Process</CaseStudyH2>
         <CaseStudyParagraph dense>
           As AI image generation rapidly developed in quality, we hypothesised that it
@@ -213,6 +214,7 @@ export default function FreshprintsImageGenContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>The Launch</CaseStudyH2>
         <CaseStudyParagraph dense>
           Text to Image launched on April 4th 2025, with a quarter of a million images

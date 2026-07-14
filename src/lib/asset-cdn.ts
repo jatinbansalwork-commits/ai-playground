@@ -11,6 +11,7 @@ const LOCAL_PUBLIC_ASSET_PREFIXES = [
   "/assets/illustrations/cisco/",
   "/assets/index/",
   "/assets/ai-chat/",
+  "/assets/craft/",
 ] as const;
 
 function isLocalPublicAsset(path: string): boolean {

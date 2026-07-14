@@ -12,6 +12,8 @@ import {
 } from "@/components/case-studies/case-study-findings";
 import { CaseStudyImpactStats } from "@/components/case-studies/case-study-impact-stats";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
+import { PiggyTicketBreakdownChart } from "@/components/case-studies/piggy-ticket-breakdown-chart";
+import { PiggyResearchSynthesisMap } from "@/components/case-studies/piggy-research-synthesis-map";
 import {
   CaseStudyDivider,
   CaseStudyH2,
@@ -22,7 +24,6 @@ import {
   CaseStudyQuote,
   CaseStudyProse,
   CaseStudySection,
-  CaseStudySubsection,
   CaseStudyTightStack,
   CaseStudyWide,
 } from "@/components/case-studies/case-study-prose";
@@ -42,9 +43,10 @@ export default function NewProjectContent() {
         overview={content.overviewText}
         meta={content.meta}
         metaBottom={
-          <div className="space-y-6">
+          <div className="case-study-stack">
             <CaseStudyMedia
               aspect="natural"
+              borderless
               src={CASE_STUDY_CDN_MEDIA["piggy-support-tickets-hero"]}
               alt="Piggy reduced mutual fund support tickets overview"
             />
@@ -100,13 +102,8 @@ export default function NewProjectContent() {
         </CaseStudySection>
       </CaseStudyProse>
 
-      <CaseStudyWide className="pb-12">
-        <CaseStudyMedia
-          aspect="square"
-          borderless
-          src={CASE_STUDY_CDN_MEDIA["piggy-support-tickets-breakdown"]}
-          alt="Piggy support ticket breakdown"
-        />
+      <CaseStudyWide>
+        <PiggyTicketBreakdownChart />
       </CaseStudyWide>
 
       <CaseStudyProse>
@@ -167,7 +164,6 @@ export default function NewProjectContent() {
         </CaseStudySection>
 
         <CaseStudyDivider />
-
         <CaseStudyH2>Findings:</CaseStudyH2>
         <CaseStudyFindings
           tags={[
@@ -178,13 +174,7 @@ export default function NewProjectContent() {
             "Unit allotment timelines and delays were not adequately explained",
           ]}
         >
-          <CaseStudyMedia
-            aspect="natural"
-            borderless
-            src={CASE_STUDY_CDN_MEDIA["piggy-support-tickets-findings"]}
-            alt="Piggy support ticket findings"
-            label="Research synthesis map"
-          />
+          <PiggyResearchSynthesisMap />
         </CaseStudyFindings>
 
         <CaseStudyH2>Product Limitation</CaseStudyH2>
@@ -211,92 +201,94 @@ export default function NewProjectContent() {
           label="Existing end-to-end purchase flow"
         />
 
-        <CaseStudySection variant="major" className="!space-y-10">
-          <CaseStudyH2>Time for Testing</CaseStudyH2>
+        <CaseStudySection variant="major">
+          <CaseStudyH2>Testing the Redesign</CaseStudyH2>
+          <CaseStudyParagraph>
+            Before we scaled anything, we needed proof on two fronts: could first-time
+            mutual fund investors understand the new journey without industry jargon, and
+            would the change hold up against the live funnel? We validated in the lab
+            first, then in market.
+          </CaseStudyParagraph>
 
-          <CaseStudySubsection>
-            <CaseStudyH3>Usability Testing &amp; Validation</CaseStudyH3>
-            <CaseStudyParagraph>
-              To validate the redesigned experience, we conducted usability testing with users
-              who had little to no prior experience investing in mutual funds. The goal was
-              to ensure the flow communicated the right expectations without requiring users
-              to understand industry-specific concepts such as unit allotment.
+          <CaseStudyLabel>01 — In the Lab</CaseStudyLabel>
+          <CaseStudyH3>Usability Testing &amp; Validation</CaseStudyH3>
+          <CaseStudyParagraph>
+            We ran usability sessions with people who had little to no prior experience
+            investing in mutual funds. The bar was simple: the flow had to set the right
+            expectations without teaching unit allotment as a concept.
+          </CaseStudyParagraph>
+          <CaseStudyParagraph>
+            Even when participants did not fully understand what happened behind the
+            scenes, they could say what had just happened, what came next, and when to
+            expect their units.
+          </CaseStudyParagraph>
+
+          <CaseStudyH3>Key Validation Outcomes</CaseStudyH3>
+          <CaseStudyParagraph>
+            Four signals told us the redesign was doing its job before anyone opened a
+            support ticket:
+          </CaseStudyParagraph>
+          <CaseStudyList
+            items={[
+              "Users clearly understood that their investment transaction was successful.",
+              "Users did not express confusion or anxiety after completing the purchase.",
+              "Users could recall or infer the expected unit allotment timeline.",
+              "Expectations were set early enough that uncertainty never had room to grow.",
+            ]}
+          />
+
+          <CaseStudyH3>What Users Told Us</CaseStudyH3>
+          <CaseStudyParagraph>
+            Two probe questions carried most of the signal in session:
+          </CaseStudyParagraph>
+          <CaseStudyTightStack>
+            <CaseStudyQuote>
+              When asked: &ldquo;What just happened?&rdquo;
+            </CaseStudyQuote>
+            <CaseStudyParagraph tight>
+              Most participants confidently said their investment had gone through
+              successfully.
             </CaseStudyParagraph>
-            <CaseStudyParagraph>
-              The results were encouraging. Even when participants did not fully understand
-              how mutual fund allotment worked behind the scenes, they clearly understood
-              what was happening, what to expect next, and when they could expect their units
-              to be allotted.
+          </CaseStudyTightStack>
+          <CaseStudyTightStack>
+            <CaseStudyQuote>
+              When asked: &ldquo;When do you expect to receive your units?&rdquo;
+            </CaseStudyQuote>
+            <CaseStudyParagraph tight>
+              They either recalled the timeline shown in the experience or inferred it
+              from the post-purchase communication.
             </CaseStudyParagraph>
-          </CaseStudySubsection>
+          </CaseStudyTightStack>
+          <CaseStudyTags
+            label="Session themes"
+            tags={[
+              "Clearer communication",
+              "Better post-purchase closure",
+              "Reduced user anxiety",
+              "Increased confidence and trust",
+              "Expectations successfully set upfront",
+            ]}
+          />
 
-          <CaseStudyDivider />
+          <CaseStudyLabel>02 — In Market</CaseStudyLabel>
+          <CaseStudyH3>A/B Testing &amp; Rollout Strategy</CaseStudyH3>
+          <CaseStudyParagraph>
+            To minimise risk, the redesigned journey launched as an A/B test before a
+            full-scale rollout. We compared it against the existing experience on both
+            user understanding and business outcomes — so confidence in the lab had to
+            survive contact with real traffic.
+          </CaseStudyParagraph>
 
-          <CaseStudySubsection>
-            <CaseStudyH3>Key Validation Outcomes</CaseStudyH3>
-            <CaseStudyList
-              items={[
-                "Users clearly understood that their investment transaction was successful.",
-                "Users did not express confusion or anxiety after completing the purchase.",
-                "Users were able to recall or infer the expected unit allotment timeline.",
-                "The redesigned flow successfully set expectations before uncertainty could occur.",
-              ]}
-            />
-          </CaseStudySubsection>
-
-          <CaseStudyDivider />
-
-          <CaseStudySubsection className="space-y-6">
-            <CaseStudyH3>What Users Told Us</CaseStudyH3>
-            <CaseStudyTightStack>
-              <CaseStudyQuote>
-                When asked: &ldquo;What just happened?&rdquo;
-              </CaseStudyQuote>
-              <CaseStudyParagraph tight>
-                Most participants confidently responded that their investment had been
-                completed successfully.
-              </CaseStudyParagraph>
-            </CaseStudyTightStack>
-            <CaseStudyTightStack>
-              <CaseStudyQuote>
-                When asked: &ldquo;When do you expect to receive your units?&rdquo;
-              </CaseStudyQuote>
-              <CaseStudyParagraph tight>
-                Participants either recalled the estimated allotment timeline shown in the
-                experience or accurately inferred it from the post-purchase communication.
-              </CaseStudyParagraph>
-            </CaseStudyTightStack>
-            <CaseStudyTags
-              tags={[
-                "Clearer communication",
-                "Better post-purchase closure",
-                "Reduced user anxiety",
-                "Increased confidence and trust",
-                "Expectations successfully set upfront",
-              ]}
-            />
-          </CaseStudySubsection>
+          <CaseStudyH3>Results</CaseStudyH3>
+          <CaseStudyList
+            items={[
+              "The new experience performed on par with the existing flow across key conversion metrics.",
+              "No negative impact was observed on the investment funnel.",
+              "Early indicators showed fewer support tickets about unit allotment and transaction status.",
+              "Users demonstrated clearer understanding of timelines and next steps.",
+            ]}
+          />
         </CaseStudySection>
-
-        <CaseStudyH2>A/B Testing &amp; Rollout Strategy</CaseStudyH2>
-        <CaseStudyParagraph>
-          To minimise risk and validate impact, the redesigned experience was launched
-          through an A/B test before a full-scale rollout. The experiment compared the
-          redesigned journey against the existing experience and focused on both user
-          experience and business outcomes.
-        </CaseStudyParagraph>
-
-        <CaseStudyH2>Results</CaseStudyH2>
-        <CaseStudyList
-          items={[
-            "The new experience performed on par with the existing flow across key conversion metrics.",
-            "No negative impact was observed on the investment funnel.",
-            "Early indicators showed a reduction in support tickets related to unit allotment and transaction status confusion.",
-            "Users demonstrated better understanding of transaction timelines and next steps.",
-          ]}
-        />
-
-        <CaseStudyDivider />
 
         <CaseStudySection variant="major">
           <CaseStudyH2>The Solution</CaseStudyH2>
@@ -343,8 +335,6 @@ export default function NewProjectContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
-        <CaseStudyDivider />
-
         <CaseStudyParagraph>
           During our competitive analysis, we observed that most investment platforms only
           communicated market cut-off timings until 2:00 PM. Since Piggy allowed investments

@@ -20,7 +20,6 @@ import { AiChatThinkingLoader } from "@/components/ai-chat/ai-chat-thinking-load
 import {
   AI_CHAT_GREETING,
   AI_CHAT_INPUT_PLACEHOLDER,
-  AI_CHAT_LIMIT_MESSAGE,
   AI_CHAT_MIN_THINKING_MS,
   AI_CHAT_STREAM_CHUNK_MS,
   AI_CHAT_NAME,
@@ -307,33 +306,6 @@ export function AiChatBall() {
         goal: visitorIntent.goal,
       });
 
-      if (remainingPrompts <= 0) {
-        ensureChatOpen();
-        setFollowUps([]);
-        const last = messages[messages.length - 1];
-        const alreadyShowingLimit =
-          last?.role === "assistant" && last.content === AI_CHAT_LIMIT_MESSAGE;
-
-        if (!alreadyShowingLimit) {
-          queueClientChatLog({
-            question: content,
-            reply: AI_CHAT_LIMIT_MESSAGE,
-            pagePath: pathname,
-            intentId: routedIntentId,
-            questionIntentId: visitorIntent.id,
-            replySource: "fallback",
-            turn: messages.filter((message) => message.role === "user").length + 1,
-          });
-
-          setMessages((current) => [
-            ...current,
-            { role: "user", content },
-            { role: "assistant", content: AI_CHAT_LIMIT_MESSAGE },
-          ]);
-        }
-        return;
-      }
-
       const nextMessages: ChatMessage[] = [...messages, { role: "user", content }];
       const startedAt = Date.now();
 
@@ -503,7 +475,6 @@ export function AiChatBall() {
       playSendWhoosh,
       reducedMotion,
       refreshRemaining,
-      remainingPrompts,
       setWireframe,
       wireframe,
     ],
@@ -554,8 +525,7 @@ export function AiChatBall() {
     [sendMessage],
   );
 
-  const suggestionsDisabled =
-    isLoading || isStreaming || remainingPrompts <= 0;
+  const suggestionsDisabled = isLoading || isStreaming;
 
   const panelStyle =
     isMobile && viewportHeight
@@ -659,16 +629,8 @@ export function AiChatBall() {
                 <p id={descriptionId} className="mt-0.5 text-xs text-neutral-400">
                   {AI_CHAT_TAGLINE}
                 </p>
-                {remainingPrompts > 0 && remainingPrompts <= 3 ? (
-                  <p className="mt-1 text-[11px] text-amber-200/75">
-                    {remainingPrompts} message{remainingPrompts === 1 ? "" : "s"}{" "}
-                    left this session
-                  </p>
-                ) : null}
                 <p className="sr-only" aria-live="polite">
-                  {remainingPrompts <= 0
-                    ? "Chat limit reached."
-                    : `${remainingPrompts} messages remaining in this session. ${remainingOpenAi} AI-powered replies remaining.`}
+                  {remainingOpenAi} AI-powered replies remaining.
                 </p>
               </div>
               <button
@@ -776,13 +738,11 @@ export function AiChatBall() {
                   value={draft}
                   onChange={(event) => setDraft(event.target.value)}
                   placeholder={
-                    remainingPrompts <= 0
-                      ? "Chat limit reached"
-                      : messages.length === 0
-                        ? AI_CHAT_INPUT_PLACEHOLDER
-                        : AI_CHAT_REPLY_PLACEHOLDER
+                    messages.length === 0
+                      ? AI_CHAT_INPUT_PLACEHOLDER
+                      : AI_CHAT_REPLY_PLACEHOLDER
                   }
-                  disabled={isLoading || isStreaming || remainingPrompts <= 0}
+                  disabled={isLoading || isStreaming}
                   autoComplete="off"
                   enterKeyHint="send"
                   className={`min-h-11 flex-1 bg-transparent text-base text-white outline-none placeholder:text-neutral-500 ${FOCUS_RING}`}
@@ -790,10 +750,7 @@ export function AiChatBall() {
                 <button
                   type="submit"
                   disabled={
-                    isLoading ||
-                    isStreaming ||
-                    remainingPrompts <= 0 ||
-                    !draft.trim()
+                    isLoading || isStreaming || !draft.trim()
                   }
                   aria-label="Send message"
                   className={`${TARGET_HIT_AREA} flex shrink-0 items-center justify-center rounded-full bg-brand-accent text-base text-brand-accent-foreground ring-1 ring-inset ring-black/10 transition-opacity disabled:cursor-not-allowed disabled:opacity-30 ${FOCUS_RING}`}

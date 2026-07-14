@@ -9,6 +9,7 @@ import {
   CASE_STUDY_CHAPTER,
   CASE_STUDY_H2,
   CASE_STUDY_H3,
+  CASE_STUDY_H4,
   CASE_STUDY_INFO,
   CASE_STUDY_LABEL,
   CASE_STUDY_LIST,
@@ -64,7 +65,7 @@ export function CaseStudyProse({
   const innerClass = dense ? CASE_STUDY_PROSE_INNER_DENSE : CASE_STUDY_PROSE_INNER;
 
   return (
-    <div className={CASE_STUDY_PAGE_GRID}>
+    <div className={`case-study-block ${CASE_STUDY_PAGE_GRID}`}>
       <div className={`case-study-prose-band ${innerClass} ${className}`.trim()}>
         {children}
       </div>
@@ -251,6 +252,30 @@ export function CaseStudyH3({
   );
 }
 
+interface CaseStudyH4Props {
+  children: ReactNode;
+  className?: string;
+}
+
+/** Minor band label — not registered in the TOC. */
+export function CaseStudyH4({ children, className = "" }: CaseStudyH4Props) {
+  const title = headingText(children);
+  const id = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return (
+    <h4
+      id={id || undefined}
+      tabIndex={-1}
+      className={`${CASE_STUDY_TEXT_COLUMN} ${CASE_STUDY_H4} ${CASE_STUDY_HEADING_SCROLL_MARGIN} ${className}`.trim()}
+    >
+      {children}
+    </h4>
+  );
+}
+
 interface CaseStudyYearProps {
   children: ReactNode;
 }
@@ -340,7 +365,7 @@ export function CaseStudyList({
           <li key={item}>
             {lead ? (
               <>
-                <span className="font-medium text-white">{lead}</span> {body}
+                <span className="font-medium text-neutral-900">{lead}</span> {body}
               </>
             ) : (
               item
@@ -372,7 +397,7 @@ export function CaseStudyChips({
       {items.map((item) => (
         <li
           key={item}
-          className="rounded-full border border-brand-accent/50 bg-brand-accent/10 px-4 py-2 text-sm leading-snug text-brand-accent-soft md:text-base"
+          className="rounded-full border border-sky-300 bg-sky-50 px-4 py-2 text-sm leading-snug text-sky-900 md:text-base"
         >
           {item}
         </li>
@@ -401,10 +426,10 @@ export function CaseStudyQuestionStack({
       {items.map((item, index) => (
         <li
           key={item}
-          className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-base leading-relaxed text-neutral-200"
+          className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-base leading-relaxed text-neutral-800"
         >
           <span
-            className="shrink-0 font-mono text-xs font-medium tabular-nums text-brand-accent-soft"
+            className="shrink-0 font-mono text-xs font-medium tabular-nums text-sky-700"
             aria-hidden
           >
             {String(index + 1).padStart(2, "0")}
@@ -442,17 +467,17 @@ export function CaseStudyTable({
 }: CaseStudyTableProps) {
   return (
     <div
-      className={`w-full max-w-5xl overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] ${className}`.trim()}
+      className={`w-full max-w-5xl overflow-x-auto rounded-2xl border border-neutral-200 bg-neutral-50 ${className}`.trim()}
     >
       <table className="w-full min-w-[640px] border-collapse text-left text-sm leading-relaxed md:text-base">
         <caption className="sr-only">{caption}</caption>
         <thead>
-          <tr className="border-b border-white/10">
+          <tr className="border-b border-neutral-200">
             {headers.map((header) => (
               <th
                 key={header}
                 scope="col"
-                className="px-5 py-4 font-semibold tracking-tight text-white md:px-6"
+                className="px-5 py-4 font-semibold tracking-tight text-neutral-900 md:px-6"
               >
                 {header}
               </th>
@@ -463,7 +488,7 @@ export function CaseStudyTable({
           {rows.map((row, rowIndex) => (
             <tr
               key={row.join("-")}
-              className="border-b border-white/10 last:border-b-0"
+              className="border-b border-neutral-200 last:border-b-0"
             >
               {row.map((cell, cellIndex) => {
                 if (cellIndex === 0) {
@@ -471,7 +496,7 @@ export function CaseStudyTable({
                     <th
                       key={`${rowIndex}-${cellIndex}`}
                       scope="row"
-                      className="px-5 py-4 font-medium text-white md:px-6"
+                      className="px-5 py-4 font-medium text-neutral-900 md:px-6"
                     >
                       {cell}
                     </th>
@@ -481,7 +506,7 @@ export function CaseStudyTable({
                 return (
                   <td
                     key={`${rowIndex}-${cellIndex}`}
-                    className="px-5 py-4 text-neutral-300 md:px-6"
+                    className="px-5 py-4 text-neutral-600 md:px-6"
                   >
                     {cell}
                   </td>

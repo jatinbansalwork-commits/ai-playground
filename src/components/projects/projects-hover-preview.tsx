@@ -4,14 +4,13 @@ import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { resolveAssetUrl } from "@/lib/asset-cdn";
-import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import type { ProjectRowItem } from "@/lib/projects-list-data";
 import { springBentoHover } from "@/lib/spring";
 
 const CURSOR_GAP_PX = 24;
 const VIEWPORT_PAD_PX = 16;
 const LERP = 0.14;
-const SHELL_PAD_PX = 2;
+const SHELL_PAD_PX = 0;
 
 type PreviewSide = "left" | "right";
 
@@ -178,7 +177,7 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
       aria-hidden
     >
       <motion.div
-        className={`projects-hover-preview-bento h-full w-full overflow-hidden p-0.5 ${EXPERIMENTS_CARD.shell} border-white/[0.08]`}
+        className="projects-hover-preview-bento h-full w-full overflow-hidden rounded-2xl"
         initial={false}
         animate={{
           scale: scaledIn ? 1 : 0.9,
@@ -186,9 +185,7 @@ export function ProjectsHoverPreview({ project }: ProjectsHoverPreviewProps) {
         }}
         transition={enterTransition}
       >
-        <div
-          className={`relative isolate aspect-square w-full overflow-hidden ${EXPERIMENTS_CARD.preview}`}
-        >
+        <div className="relative isolate aspect-square w-full overflow-hidden rounded-2xl">
           {isDataUri ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

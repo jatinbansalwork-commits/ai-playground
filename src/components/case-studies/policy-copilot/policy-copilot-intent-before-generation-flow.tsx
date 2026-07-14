@@ -12,7 +12,7 @@ const STEPS = [
 ] as const;
 
 function StepIcon({ index }: { index: number }) {
-  const className = "h-5 w-5 text-white/75";
+  const className = "h-5 w-5 text-neutral-600";
   switch (index) {
     case 0:
       return (
@@ -100,7 +100,7 @@ function FlowArrow({ index, reducedMotion }: { index: number; reducedMotion: boo
       className="relative mt-5 flex w-5 shrink-0 items-center justify-center self-start md:mt-5 md:w-7"
       aria-hidden
     >
-      <svg className="h-2.5 w-full text-white/20" viewBox="0 0 28 10" fill="none">
+      <svg className="h-2.5 w-full text-neutral-300" viewBox="0 0 28 10" fill="none">
         <path
           d="M1 5h20M18 2l5 3-5 3"
           stroke="currentColor"
@@ -134,16 +134,16 @@ export function PolicyCopilotIntentBeforeGenerationFlow() {
   return (
     <figure className="space-y-3">
       <div
-        className="relative w-full overflow-x-hidden rounded-lg border border-white/10 px-3 py-5 sm:px-5 md:py-6"
-        style={{ backgroundColor: "#0D1114" }}
+        className="relative w-full overflow-x-hidden rounded-lg border border-neutral-200 px-3 py-5 sm:px-5 md:py-6 case-study-light-panel"
+        style={{ backgroundColor: "#FFFFFF" }}
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         <header className="mx-auto max-w-lg text-center">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">
+          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-neutral-500">
             Intent Before Generation
           </p>
-          <p className="mt-1.5 text-sm leading-snug text-white/55">
+          <p className="mt-1.5 text-sm leading-snug text-neutral-600">
             A business request becomes structured understanding before any policy is generated.
           </p>
         </header>
@@ -168,27 +168,27 @@ export function PolicyCopilotIntentBeforeGenerationFlow() {
                   >
                     <div className="relative overflow-visible px-1 pt-1">
                       <div
-                        className={`relative flex h-10 w-10 items-center justify-center rounded-xl border bg-white/[0.03] md:h-11 md:w-11 ${
+                        className={`relative flex h-10 w-10 items-center justify-center rounded-xl border bg-white md:h-11 md:w-11 ${
                           isGate
-                            ? "border-[#f97316]/45 shadow-[0_0_0_1px_rgba(249,115,22,0.15)]"
+                            ? "border-orange-300 shadow-[0_0_0_1px_rgba(249,115,22,0.12)]"
                             : isOutput
-                              ? "border-emerald-400/35"
-                              : "border-white/15"
+                              ? "border-emerald-300"
+                              : "border-neutral-200"
                         }`}
                       >
                         <StepIcon index={index} />
                       </div>
-                      <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full border border-white/10 bg-[#161b22] text-[8px] font-semibold text-white/55">
+                      <span className="absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-200 bg-white text-[8px] font-semibold text-neutral-600">
                         {index + 1}
                       </span>
                     </div>
                     <p
-                      className="hidden text-center text-[10px] leading-snug text-white/70 md:block"
+                      className="hidden text-center text-[10px] font-medium leading-snug text-neutral-700 md:block"
                       title={step.label}
                     >
                       {step.label}
                     </p>
-                    <p className="text-center text-[9px] leading-snug text-white/70 md:hidden">
+                    <p className="text-center text-[9px] font-medium leading-snug text-neutral-700 md:hidden">
                       {step.shortLabel}
                     </p>
                   </motion.div>

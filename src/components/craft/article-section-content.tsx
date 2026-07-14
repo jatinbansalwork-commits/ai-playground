@@ -11,7 +11,7 @@ interface ArticleSectionContentProps {
 
 export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
   return (
-    <div className="craft-article-prose space-y-3">
+    <div className="craft-article-prose">
       {blocks.map((block, index) => {
         if (block.type === "paragraph") {
           return <p key={`paragraph-${index}`}>{block.text}</p>;
@@ -40,13 +40,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
         }
 
         if (block.type === "divider") {
-          return (
-            <hr
-              key={`divider-${index}`}
-              className="!my-8 border-0"
-              aria-hidden
-            />
-          );
+          return <hr key={`divider-${index}`} role="separator" />;
         }
 
         if (block.type === "checklist-table") {
@@ -118,7 +112,7 @@ export function ArticleSectionContent({ blocks }: ArticleSectionContentProps) {
         const resolvedSrc = block.src ? resolveAssetUrl(block.src) : undefined;
 
         return (
-          <figure key={`image-${index}`} className="my-6">
+          <figure key={`image-${index}`}>
             <ArticleImage
               src={resolvedSrc}
               alt={block.alt ?? ""}

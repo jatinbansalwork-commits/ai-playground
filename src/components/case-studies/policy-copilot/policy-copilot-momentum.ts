@@ -39,6 +39,49 @@ export const CLAUDE = {
   radiusLg: "0.875rem",
 } as const;
 
+/**
+ * Light editorial explainers on the case study page.
+ * Product demo / workspace chrome stays on `CLAUDE` (dark).
+ */
+export const EDITORIAL = {
+  bg: "#FFFFFF",
+  surface: "#FAFAFA",
+  surfaceRaised: "#F5F5F5",
+  surfaceOverlay: "#F0F0F0",
+  primary: "#3B82F6",
+  primaryActive: "#2563EB",
+  primaryMuted: "rgb(59 130 246 / 0.1)",
+  primaryBorder: "rgb(59 130 246 / 0.28)",
+  text: "#171717",
+  textSecondary: "#404040",
+  /** Labels / meta — keep ≥ 4.5:1 on white */
+  textMuted: "#525252",
+  textSoft: "#737373",
+  border: "#E5E5E5",
+  borderStrong: "#D4D4D4",
+  hairline: "#E5E5E5",
+  validated: "#15803D",
+  validatedMuted: "rgb(22 163 74 / 0.12)",
+  warning: "#B45309",
+  warningMuted: "rgb(217 119 6 / 0.12)",
+  risk: "#B91C1C",
+  riskMuted: "rgb(220 38 38 / 0.1)",
+  accentTeal: "#0F766E",
+  accentTealMuted: "rgb(13 148 136 / 0.12)",
+  fontDisplay: CLAUDE.fontDisplay,
+  fontBody: CLAUDE.fontBody,
+  fontMono: CLAUDE.fontMono,
+  radius: CLAUDE.radius,
+  radiusLg: CLAUDE.radiusLg,
+} as const;
+
+/** Shared outer shell for light explainers (not product demos). */
+export const EDITORIAL_PANEL =
+  "overflow-hidden rounded-lg border border-neutral-200 bg-white case-study-light-panel";
+
+export const EDITORIAL_PANEL_XL =
+  "overflow-hidden rounded-xl border border-neutral-200 bg-white case-study-light-panel";
+
 /** Shared motion curves — warm, deliberate, never bouncy. */
 export const CLAUDE_MOTION = {
   spring: { type: "spring" as const, stiffness: 380, damping: 32 },

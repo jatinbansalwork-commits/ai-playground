@@ -13,7 +13,7 @@ interface CaseStudyRevealCountdownProps {
 function CountdownUnit({ value, unit }: { value: string; unit: string }) {
   return (
     <div className="flex min-w-[4.5rem] flex-col items-center gap-1">
-      <span className="font-mono text-3xl font-medium tabular-nums tracking-tight text-white md:text-4xl">
+      <span className="font-mono text-3xl font-medium tabular-nums tracking-tight text-neutral-900 md:text-4xl">
         {value}
       </span>
       <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500">
@@ -33,7 +33,7 @@ export function CaseStudyRevealCountdown({
   if (!ready) {
     return (
       <div className="px-5 py-5 text-center" aria-hidden>
-        <div className="mx-auto h-16 max-w-sm animate-pulse rounded-lg bg-white/5" />
+        <div className="mx-auto h-16 max-w-sm animate-pulse rounded-lg bg-neutral-100" />
       </div>
     );
   }
@@ -42,7 +42,7 @@ export function CaseStudyRevealCountdown({
     return (
       <div className="px-5 py-5 text-center">
         <p className={CASE_STUDY_META_LABEL}>Case study</p>
-        <p className="mt-2 text-sm text-brand-accent-soft">Now available to read.</p>
+        <p className="mt-2 text-sm text-sky-700">Now available to read.</p>
       </div>
     );
   }

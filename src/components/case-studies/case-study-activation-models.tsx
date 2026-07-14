@@ -28,7 +28,7 @@ interface CaseStudyActivationModelsProps {
 
 function ActivationModelQuote({ children }: { children: ReactNode }) {
   return (
-    <blockquote className="border-l-2 border-brand-accent pl-4 text-sm font-medium leading-relaxed text-white md:text-base">
+    <blockquote className="border-l-2 border-sky-500 pl-4 text-sm font-medium leading-relaxed text-neutral-900 md:text-base">
       {children}
     </blockquote>
   );
@@ -53,8 +53,8 @@ export function CaseStudyActivationModels({
             <div
               className={
                 imagePosition === "top"
-                  ? "border-b border-white/10"
-                  : "border-t border-white/10"
+                  ? "border-b border-neutral-200"
+                  : "border-t border-neutral-200"
               }
             >
               <CaseStudyMedia
@@ -69,26 +69,26 @@ export function CaseStudyActivationModels({
         return (
         <article
           key={item.name}
-          className="flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]"
+          className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50"
         >
           {imagePosition === "top" ? imageBlock : null}
           <div className="flex flex-1 flex-col space-y-4 p-5 md:p-6">
             <div className="space-y-2">
               <span
-                className="font-mono text-xs font-medium tabular-nums text-brand-accent-soft"
+                className="font-mono text-xs font-medium tabular-nums text-sky-700"
                 aria-hidden
               >
                 {String(item.number).padStart(2, "0")}
               </span>
-              <h3 className="text-lg font-semibold leading-snug tracking-tight text-white">
+              <h3 className="text-lg font-semibold leading-snug tracking-tight text-neutral-900">
                 {item.name}
                 {item.subtitle ? (
-                  <span className="font-normal text-neutral-400"> — {item.subtitle}</span>
+                  <span className="font-normal text-neutral-500"> — {item.subtitle}</span>
                 ) : null}
               </h3>
             </div>
 
-            <p className="text-sm leading-relaxed text-neutral-300 md:text-base">
+            <p className="text-sm leading-relaxed text-neutral-600 md:text-base">
               {item.description}
             </p>
 
@@ -96,12 +96,12 @@ export function CaseStudyActivationModels({
               {item.showExampleLabel !== false ? (
                 <p className={CASE_STUDY_LABEL}>Example</p>
               ) : null}
-              <div className="space-y-3 text-sm leading-relaxed text-neutral-300 md:text-base">
+              <div className="space-y-3 text-sm leading-relaxed text-neutral-600 md:text-base">
                 {item.example}
               </div>
             </div>
 
-            <p className="mt-auto text-sm leading-relaxed text-neutral-200 md:text-base">
+            <p className="mt-auto text-sm leading-relaxed text-neutral-800 md:text-base">
               {item.takeaway}
             </p>
           </div>

@@ -51,7 +51,6 @@ export default function ProjectTwoContent() {
         </CaseStudyParagraph>
 
         <CaseStudyDivider />
-
         <CaseStudyH2>Clarity at First Glance</CaseStudyH2>
         <CaseStudyParagraph>
           Investors were often overwhelmed by the number of fund options available within
@@ -87,6 +86,7 @@ export default function ProjectTwoContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>Breaking Down Each Fund</CaseStudyH2>
         <CaseStudyParagraph>
           A strong rank alone isn&apos;t enough to build conviction. To help investors
@@ -114,6 +114,7 @@ export default function ProjectTwoContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>Recommendations That Feel Personal</CaseStudyH2>
         <CaseStudyParagraph>
           Rather than presenting a generic list of funds, we tailored recommendations to
@@ -151,6 +152,7 @@ export default function ProjectTwoContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>My Learnings</CaseStudyH2>
         <CaseStudyParagraph>
           This project taught me that designing financial products is fundamentally about

@@ -69,7 +69,7 @@ export default function FreshprintsDesignSystemContent() {
           />
         </header>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyWide className="case-study-editorial-gallery">
             <CaseStudyBento
               columns={2}
@@ -130,7 +130,7 @@ export default function FreshprintsDesignSystemContent() {
         </CaseStudySection>
 
         <CaseStudyProse>
-          <CaseStudySection>
+          <CaseStudySection variant="major">
             <CaseStudyLabel>Setting the Scene</CaseStudyLabel>
             <CaseStudyH2>
               The product looked fine. Until you tried to build anything in it.
@@ -167,7 +167,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudySection>
         </CaseStudyProse>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyLabel>Constraints</CaseStudyLabel>
             <CaseStudyH2>
@@ -211,7 +211,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyLabel>The Foundations</CaseStudyLabel>
             <CaseStudyH2>Setting up a solid token structure.</CaseStudyH2>
@@ -249,7 +249,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyH2>Iconography</CaseStudyH2>
             <CaseStudyParagraph>Icons were a huge topic for us.</CaseStudyParagraph>
@@ -299,7 +299,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudySubsection>
               <CaseStudyLabel>Systemic fixes</CaseStudyLabel>
@@ -333,7 +333,7 @@ export default function FreshprintsDesignSystemContent() {
             />
           </CaseStudyWide>
 
-          <CaseStudyWide className="!mt-3">
+          <CaseStudyWide>
             <CaseStudyBento
               columns={2}
               className="md:gap-12"
@@ -362,7 +362,7 @@ export default function FreshprintsDesignSystemContent() {
                 The rest of the UX improvements were covered by individual components and strict
                 patterns.
               </CaseStudyParagraph>
-              <CaseStudyLabel className="!mt-10">Design patterns</CaseStudyLabel>
+              <CaseStudyLabel>Design patterns</CaseStudyLabel>
               <CaseStudyH2>Reducing design guesswork by defining clear patterns.</CaseStudyH2>
               <CaseStudyParagraph>
                 Once we had a solid base of components, I focused on patterns. I audited other
@@ -396,7 +396,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyLabel>Full workflow</CaseStudyLabel>
             <CaseStudyH2>From Figma to production</CaseStudyH2>
@@ -430,7 +430,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyLabel>Documentation and enforcement</CaseStudyLabel>
             <CaseStudyParagraph>
@@ -462,7 +462,7 @@ export default function FreshprintsDesignSystemContent() {
           </CaseStudyWide>
         </CaseStudySection>
 
-        <CaseStudySection className="case-study-editorial-chapter !mt-0 !border-t-0 !pt-0">
+        <CaseStudySection variant="major">
           <CaseStudyProse>
             <CaseStudyLabel>Results</CaseStudyLabel>
             <CaseStudyH2>Things shipped faster, and with less friction</CaseStudyH2>
@@ -487,21 +487,21 @@ export default function FreshprintsDesignSystemContent() {
                 {
                   label: "FreshPrints design system results — slot 1",
                   aspect: "square",
-                  borderless: true,
+                  shellBackground: "#ffffff",
                   src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-results-average"],
                   alt: "FreshPrints design system — average rating for speed and efficiency",
                 },
                 {
                   label: "FreshPrints design system results — slot 2",
                   aspect: "square",
-                  borderless: true,
+                  shellBackground: "#ffffff",
                   src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-results-alignment"],
                   alt: "FreshPrints design system — alignment and QA effort",
                 },
                 {
                   label: "FreshPrints design system results — slot 3",
                   aspect: "square",
-                  borderless: true,
+                  shellBackground: "#ffffff",
                   src: CASE_STUDY_CDN_MEDIA["freshprints-design-system-results-systemic"],
                   alt: "FreshPrints design system — systemic UX improvements",
                 },
@@ -511,7 +511,7 @@ export default function FreshprintsDesignSystemContent() {
         </CaseStudySection>
 
         <CaseStudyProse>
-          <CaseStudySection>
+          <CaseStudySection variant="major">
             <CaseStudyLabel>Learnings</CaseStudyLabel>
             <CaseStudyParagraph>
               Most design problems aren&apos;t actually design problems but alignment problems.

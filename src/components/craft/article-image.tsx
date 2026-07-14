@@ -56,7 +56,7 @@ export function ArticleImage({
       src={src}
       alt={alt}
       className={[
-        "block h-auto w-full object-contain",
+        "block h-auto w-full object-contain border-0 shadow-none",
         roundedClass,
         className,
       ]

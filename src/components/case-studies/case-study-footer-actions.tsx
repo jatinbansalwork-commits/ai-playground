@@ -7,18 +7,18 @@ import { ROUTES } from "@/lib/constants";
 
 const CASE_STUDY_BUTTON_CLASS = [
   TARGET_HIT_AREA,
-  "h-11 w-full rounded-lg border border-white/15 bg-white/5 px-6 sm:w-auto",
-  `${SITE_BACK_TYPEFACE} text-sm font-medium text-neutral-300`,
-  "transition-colors hover:border-white/25 hover:bg-white/10 hover:text-white",
+  "h-11 w-full rounded-lg border border-neutral-300 bg-neutral-50 px-6 sm:w-auto",
+  `${SITE_BACK_TYPEFACE} text-sm font-medium text-neutral-700`,
+  "transition-colors hover:border-neutral-400 hover:bg-neutral-100 hover:text-neutral-900",
   "touch-manipulation",
   FOCUS_RING,
 ].join(" ");
 
 const CASE_STUDY_BUTTON_PRIMARY_CLASS = [
   TARGET_HIT_AREA,
-  "h-11 w-full rounded-lg border border-brand-accent/40 bg-brand-accent/15 px-6 sm:w-auto",
-  `${SITE_BACK_TYPEFACE} text-sm font-medium text-brand-accent-soft`,
-  "transition-colors hover:border-brand-accent/60 hover:bg-brand-accent/25 hover:text-white",
+  "h-11 w-full rounded-lg border border-sky-300 bg-sky-100 px-6 sm:w-auto",
+  `${SITE_BACK_TYPEFACE} text-sm font-medium text-sky-900`,
+  "transition-colors hover:border-sky-400 hover:bg-sky-200 hover:text-sky-950",
   "touch-manipulation",
   FOCUS_RING,
 ].join(" ");

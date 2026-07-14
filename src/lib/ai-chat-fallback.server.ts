@@ -19,7 +19,7 @@ export function generateFallbackReply(
 
   let body =
     curated ??
-    "How YOU doin'? I'm not great at the advice, but I *am* great at this portfolio — case studies, Craft, hiring, mentorship. Try asking about hiring, a case study, or how to contact JB.";
+    "How YOU doin'? I'm not great at the advice, but I *am* great at this portfolio — projects, process, and how to reach JB. Try asking about his strongest project, Policy Copilot, or how to contact him.";
 
   if (showOpenAiNotice) {
     body = `${AI_CHAT_OPENAI_LIMIT_MESSAGE}\n\n${body}`;

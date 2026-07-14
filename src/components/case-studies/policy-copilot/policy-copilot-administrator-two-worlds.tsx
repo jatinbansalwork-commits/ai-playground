@@ -10,19 +10,19 @@ const LEGEND = [
   {
     label: "Business outcomes",
     detail: "Stakeholders speak in plain language",
-    tone: "text-[#fb923c]",
+    tone: "text-orange-600",
     border: "border-[#fb923c]/25",
   },
   {
     label: "Translation",
     detail: "Administrator bridges both sides",
-    tone: "text-[#93c5fd]",
-    border: "border-white/10",
+    tone: "text-sky-600",
+    border: "border-neutral-200",
   },
   {
     label: "Firewall expects",
     detail: "Identities, zones, protocols, policies",
-    tone: "text-[#93c5fd]",
+    tone: "text-sky-600",
     border: "border-[#60a5fa]/25",
   },
 ] as const;
@@ -37,10 +37,10 @@ export function PolicyCopilotAdministratorTwoWorlds() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.35 }}
         transition={{ duration: 0.45 }}
-        className="overflow-hidden rounded-lg border border-white/10"
-        style={{ backgroundColor: "#0D1114" }}
+        className="overflow-hidden rounded-lg border border-neutral-200 case-study-light-panel"
+        style={{ backgroundColor: "#FFFFFF" }}
       >
-        <div className="relative bg-[#0a0e11]">
+        <div className="relative bg-white">
           <img
             src={getJbIllustration("policy-copilot-administrator-two-worlds")}
             alt={ILLUSTRATION_ARIA_LABEL}
@@ -50,14 +50,14 @@ export function PolicyCopilotAdministratorTwoWorlds() {
           />
         </div>
 
-        <div className="grid border-t border-white/10 sm:grid-cols-3 sm:divide-x sm:divide-white/10">
+        <div className="grid border-t border-neutral-200 sm:grid-cols-3 sm:divide-x sm:divide-neutral-200">
           {LEGEND.map((item) => (
             <div
               key={item.label}
-              className={`border-b px-4 py-3.5 last:border-b-0 sm:border-b-0 sm:px-5 ${item.border}`}
+              className={`border-b border-neutral-200 px-4 py-3.5 last:border-b-0 sm:border-b-0 sm:px-5 ${item.border}`}
             >
-              <p className={`text-[11px] font-medium tracking-wide ${item.tone}`}>{item.label}</p>
-              <p className="mt-1 text-[11px] leading-snug text-white/50">{item.detail}</p>
+              <p className={`text-[11px] font-semibold tracking-wide ${item.tone}`}>{item.label}</p>
+              <p className="mt-1 text-[12px] leading-snug text-neutral-600">{item.detail}</p>
             </div>
           ))}
         </div>

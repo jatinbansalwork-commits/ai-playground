@@ -79,7 +79,7 @@ function StepBody({ body }: { body: CraftArticleProcessStepBlock[] }) {
 
 export function ArticleProcessSteps({ steps }: ArticleProcessStepsProps) {
   return (
-    <ol className="my-6 space-y-0" aria-label="Review process steps">
+    <ol className="space-y-0" aria-label="Review process steps">
       {steps.map((step, index) => (
         <li
           key={step.title}

@@ -49,7 +49,7 @@ export function ProjectMetaSpecs({
 }: ProjectMetaSpecsProps) {
   return (
     <section className={`${CASE_STUDY_META_GRID} ${className}`.trim()} aria-label="Project details">
-      <dl className="flex flex-col space-y-8 md:col-span-1 max-md:rounded-xl max-md:border max-md:border-white/10 max-md:bg-white/[0.03] max-md:p-4">
+      <dl className="flex flex-col space-y-8 md:col-span-1 max-md:rounded-xl max-md:border max-md:border-neutral-200 max-md:bg-neutral-50 max-md:p-4">
         {services.length > 0 ? (
           <div className="space-y-2">
             <dt className={CASE_STUDY_META_LABEL}>{servicesLabel}</dt>
@@ -85,7 +85,7 @@ export function ProjectMetaSpecs({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={externalLinkLabel("View in Figma")}
-                className={`inline-flex items-center rounded-lg border border-white/15 bg-white/5 px-4 font-sans text-sm font-medium text-neutral-300 transition-colors hover:border-white/25 hover:bg-white/10 hover:text-white ${TARGET_HIT_AREA} ${FOCUS_RING}`}
+                className={`inline-flex items-center rounded-lg border border-neutral-300 bg-neutral-50 px-4 font-sans text-sm font-medium text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 ${TARGET_HIT_AREA} ${FOCUS_RING}`}
               >
                 View in Figma
               </a>

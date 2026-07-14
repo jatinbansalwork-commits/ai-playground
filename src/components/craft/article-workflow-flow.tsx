@@ -4,7 +4,7 @@ interface ArticleWorkflowFlowProps {
 
 export function ArticleWorkflowFlow({ steps }: ArticleWorkflowFlowProps) {
   return (
-    <div className="my-6" aria-label="Review workflow">
+    <div aria-label="Review workflow">
       <ol className="flex max-w-md flex-col">
         {steps.map((step, index) => (
           <li key={step} className="flex w-full flex-col">

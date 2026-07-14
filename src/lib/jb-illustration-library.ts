@@ -17,6 +17,8 @@ export const JB_ILLUSTRATIONS = {
     "/assets/illustrations/jb_illustrations/policy-copilot-google-maps-inspiration-en.png",
   "policy-copilot-administrator-two-worlds":
     "/assets/illustrations/jb_illustrations/policy-copilot-administrator-two-worlds-en.png",
+  "policy-copilot-administrator-two-worlds-dark":
+    "/assets/illustrations/jb_illustrations/policy-copilot-administrator-two-worlds-dark-en.png",
   "policy-copilot-confidence-path":
     "/assets/illustrations/jb_illustrations/policy-copilot-confidence-path-en.png",
   "policy-copilot-confidence-before-deployment":
@@ -79,8 +81,12 @@ export const JB_ILLUSTRATIONS = {
     "/assets/illustrations/jb_illustrations/policy-copilot-firewall-form-overload-en.png",
   "policy-copilot-projects-hover":
     "/assets/illustrations/jb_illustrations/policy-copilot-projects-hover-en.png",
+  "policy-copilot-projects-hover-dark":
+    "/assets/illustrations/jb_illustrations/policy-copilot-projects-hover-dark-en.png",
   "policy-copilot-simulation-impact":
     "/assets/illustrations/jb_illustrations/policy-copilot-simulation-impact-en.png",
+  "policy-copilot-simulation-impact-dark":
+    "/assets/illustrations/jb_illustrations/policy-copilot-simulation-impact-dark-en.png",
   "policy-copilot-intent-before-generation":
     "/assets/illustrations/jb_illustrations/policy-copilot-intent-before-generation-en.png",
 } as const;
@@ -90,19 +96,19 @@ export type JbIllustrationId = keyof typeof JB_ILLUSTRATIONS;
 /** Cropped JB character sprites from full editorial illustrations (1536×1024 source). */
 export const JB_ILLUSTRATION_CHARACTERS = {
   "two-worlds-stakeholder": {
-    source: "policy-copilot-administrator-two-worlds",
+    source: "policy-copilot-administrator-two-worlds-dark",
     width: "360%",
     left: "2%",
     top: "-78%",
   },
   "two-worlds-sec-admin": {
-    source: "policy-copilot-administrator-two-worlds",
+    source: "policy-copilot-administrator-two-worlds-dark",
     width: "390%",
     left: "-108%",
     top: "-74%",
   },
   "two-worlds-firewall": {
-    source: "policy-copilot-administrator-two-worlds",
+    source: "policy-copilot-administrator-two-worlds-dark",
     width: "440%",
     left: "-198%",
     top: "-62%",

@@ -106,7 +106,7 @@ export function CaseStudyMedia({
 
   const shellBase = borderless
     ? `relative w-full overflow-hidden ${rounded}`
-    : `relative w-full overflow-hidden ${rounded} border border-white/10`;
+    : `relative w-full overflow-hidden ${rounded} border border-neutral-200`;
   const shellBackgroundColor = borderless
     ? undefined
     : (shellBackground ?? "#1a1a1a");

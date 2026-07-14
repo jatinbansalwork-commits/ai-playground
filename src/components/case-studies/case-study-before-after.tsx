@@ -87,7 +87,7 @@ export function CaseStudyBeforeAfter({
     <figure className={`space-y-3 ${className}`.trim()}>
       <div
         ref={containerRef}
-        className={`case-study-before-after relative w-full overflow-hidden ${rounded} border border-white/10 bg-[#1a1a1a] ${ASPECT_CLASS[aspect]} touch-none select-none`}
+        className={`case-study-before-after relative w-full overflow-hidden ${rounded} border border-neutral-200 bg-neutral-100 ${ASPECT_CLASS[aspect]} touch-none select-none`}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}

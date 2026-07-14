@@ -59,6 +59,7 @@ export default function PiggyMutualFundContent() {
             Engineering: Development Team
           </CaseStudyParagraph>
         </CaseStudyTightStack>
+        <CaseStudyDivider />
         <CaseStudyH2>A Year Worth Looking Back On</CaseStudyH2>
         <CaseStudyParagraph>
           Led the end-to-end design process—from concept exploration and storytelling
@@ -99,9 +100,6 @@ export default function PiggyMutualFundContent() {
         />
       </CaseStudyWide>
 
-      <CaseStudyProse>
-        <CaseStudyDivider />
-      </CaseStudyProse>
 
       <CaseStudyWide>
         <CaseStudyBento

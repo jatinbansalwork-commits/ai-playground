@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const STEPS = [
@@ -69,7 +69,7 @@ function StepCard({
         : CLAUDE.primaryMuted
       : state === "active"
         ? CLAUDE.primaryMuted
-        : CLAUDE.surfaceOverlay;
+        : "#FFFFFF";
 
   return (
     <motion.div
@@ -86,31 +86,30 @@ function StepCard({
             : undefined
         }
         transition={{ duration: 1.6, repeat: state === "active" && !reduced ? Infinity : 0 }}
-        className="rounded-xl px-2 py-3 md:px-2.5 md:py-3.5"
+        className="rounded-xl border px-2 py-3 md:px-2.5 md:py-3.5"
         style={{
           backgroundColor,
-          boxShadow: `inset 0 0 0 1px ${borderColor}`,
+          borderColor,
         }}
       >
-        <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px] md:text-[9px]")} style={{ color: CLAUDE.textSoft }}>
+        <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px] md:text-[9px]")} style={{ color: CLAUDE.textMuted }}>
           Step {index + 1}
         </p>
         <p
-          className="mt-1 hidden text-[11px] font-medium leading-snug md:block"
-          style={{ color: CLAUDE.text }}
+          className="mt-1 hidden text-[11px] font-semibold leading-snug text-neutral-900 md:block"
         >
           {step.label}
         </p>
-        <p className="mt-1 text-[10px] font-medium leading-snug md:hidden" style={{ color: CLAUDE.text }}>
+        <p className="mt-1 text-[10px] font-semibold leading-snug text-neutral-900 md:hidden">
           {step.shortLabel}
         </p>
         <p
-          className="mt-2 text-lg font-medium tabular-nums leading-none md:text-xl"
+          className="mt-2 text-lg font-semibold tabular-nums leading-none md:text-xl"
           style={{ color: state === "upcoming" ? CLAUDE.textMuted : CLAUDE.text }}
         >
           {step.confidence}%
         </p>
-        <div className="mt-2 h-1 overflow-hidden rounded-full" style={{ backgroundColor: CLAUDE.surfaceRaised }}>
+        <div className="mt-2 h-1 overflow-hidden rounded-full bg-neutral-200">
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: isLast && state !== "upcoming" ? CLAUDE.validated : CLAUDE.primary }}
@@ -120,7 +119,7 @@ function StepCard({
           />
         </div>
       </motion.div>
-      <p className="mt-2 hidden text-center text-[9px] leading-snug md:block" style={{ color: CLAUDE.textSoft }}>
+      <p className="mt-2 hidden text-center text-[9px] leading-snug text-neutral-500 md:block">
         {step.label}
       </p>
     </motion.div>
@@ -164,8 +163,8 @@ export function PolicyCopilotConfidenceGrowth() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
@@ -175,7 +174,7 @@ export function PolicyCopilotConfidenceGrowth() {
         >
           Confidence Growth
         </p>
-        <p className="mt-1 max-w-2xl text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-neutral-600">
           Confidence rises as ambiguity falls — each step adds evidence before anyone approves deployment.
         </p>
       </div>
@@ -193,13 +192,10 @@ export function PolicyCopilotConfidenceGrowth() {
         </ol>
       </div>
 
-      <div
-        className="mx-4 mb-4 rounded-xl px-3 py-2.5 md:mx-5 md:mb-5"
-        style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-      >
+      <div className="mx-4 mb-4 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 md:mx-5 md:mb-5">
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
-          <span style={{ color: CLAUDE.textMuted }}>Ambiguity decreases →</span>
-          <span className="font-medium tabular-nums" style={{ color: CLAUDE.validated }}>
+          <span className="text-neutral-600">Ambiguity decreases →</span>
+          <span className="font-semibold tabular-nums" style={{ color: CLAUDE.validated }}>
             {STEPS[activeStep].confidence}% confidence at {STEPS[activeStep].shortLabel.toLowerCase()}
           </span>
         </div>
