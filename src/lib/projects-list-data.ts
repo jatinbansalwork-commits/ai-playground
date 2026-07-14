@@ -57,6 +57,7 @@ function hoverThumbnailForSlug(slug: string): string {
 const HIDDEN_PROJECT_SLUGS = new Set([
   "freshprints-heal-tool",
   "kalash-year-end-recap",
+  "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
   "saltmine-sync",
 ]);
