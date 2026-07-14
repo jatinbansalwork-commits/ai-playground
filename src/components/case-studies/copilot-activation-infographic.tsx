@@ -146,7 +146,7 @@ export function CopilotActivationInfographic({
         {ACTIVATION_MODELS.map((model) => (
           <article
             key={model.id}
-            className={`group relative flex min-h-[22rem] flex-col overflow-hidden rounded-2xl border bg-gradient-to-b ${model.accent.glow} to-transparent p-5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_12px_40px_-20px_rgba(0,0,0,0.65)] md:p-6 ${model.accent.border} bg-[#0D1114]/80`}
+            className={`group relative flex min-h-[22rem] flex-col overflow-hidden rounded-2xl border bg-gradient-to-b ${model.accent.glow} to-transparent p-5 shadow-[0_1px_0_0_rgba(255,255,255,0.04)_inset,0_12px_40px_-20px_rgba(0,0,0,0.65)] md:p-6 ${model.accent.border} case-study-dark-panel bg-[#0D1114]/80`}
           >
             <div className="mb-5 flex items-center gap-3">
               <span

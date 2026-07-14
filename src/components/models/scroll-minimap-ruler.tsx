@@ -113,7 +113,7 @@ export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
                 key={idx}
                 className={`h-px origin-left transition-colors duration-150 ${
                   isMajor ? "w-10" : "w-6"
-                } ${isActive ? "bg-neutral-200" : "bg-neutral-600/40"}`}
+                } ${isActive ? "bg-neutral-800" : "bg-neutral-300"}`}
               />
             );
           })}

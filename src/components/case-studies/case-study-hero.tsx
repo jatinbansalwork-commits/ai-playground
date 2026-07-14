@@ -42,7 +42,7 @@ export function CaseStudyHero({
           <CaseStudyYear>{year}</CaseStudyYear>
           <h1
             id={CASE_STUDY_TITLE_ID}
-            className="text-balance text-4xl font-semibold tracking-normal text-white md:text-5xl"
+            className="text-balance text-4xl font-semibold tracking-normal text-neutral-900 md:text-5xl"
           >
             {title}
           </h1>
@@ -55,7 +55,7 @@ export function CaseStudyHero({
           {notice ? (
             <p className={CASE_STUDY_TEXT_COLUMN}>
               <span
-                className="inline-block max-w-4xl rounded-xl border border-sky-400/35 bg-sky-500/10 px-4 py-3 text-sm leading-relaxed text-sky-200/95"
+                className="inline-block max-w-4xl rounded-xl border border-sky-300 bg-sky-50 px-4 py-3 text-sm leading-relaxed text-sky-900"
                 role="note"
               >
                 {notice}

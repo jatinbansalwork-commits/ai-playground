@@ -76,15 +76,31 @@ html:has(main[data-sheet="ideas"]) body {
   color: #ffffff;
 }
 
-html:has(main[data-sheet="projects"]),
+html:has(main[data-sheet="projects"]) {
+  color-scheme: light;
+}
+
+html:has(main[data-sheet="projects"]) body {
+  background: #ffffff;
+  color: #171717;
+}
+
 html:has(main[data-sheet="recent"]) {
   color-scheme: dark;
 }
 
-html:has(main[data-sheet="projects"]) body,
 html:has(main[data-sheet="recent"]) body {
   background: #09090b;
   color: #ededed;
+}
+
+html:has(main[data-sheet="case-study"]) {
+  color-scheme: light;
+}
+
+html:has(main[data-sheet="case-study"]) body {
+  background: #ffffff;
+  color: #171717;
 }
 
 /* Isolate subpage scroll inside viewport-locked shells — never inherit index ghost scroll. */
@@ -847,9 +863,9 @@ html:has(main[data-sheet="craft-article"]) body {
   height: 2.5rem;
   flex-shrink: 0;
   border-radius: 0.375rem;
-  border: 1px solid rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(23 23 23 / 0.1);
   object-fit: cover;
-  background-color: #0a0a0a;
+  background-color: #f5f5f5;
 }
 
 @media (min-width: 1024px) {
@@ -863,7 +879,7 @@ html:has(main[data-sheet="craft-article"]) body {
   text-align: left;
   font-weight: 500;
   letter-spacing: -0.01em;
-  color: #ededed;
+  color: #171717;
   transition: color 150ms ease;
 }
 
@@ -874,13 +890,13 @@ html:has(main[data-sheet="craft-article"]) body {
   height: 1px;
   margin-inline: 12px;
   align-self: center;
-  background-color: hsla(0 0% 100% / 0.28);
+  background-color: rgb(23 23 23 / 0.14);
   transition: background-color 150ms ease;
 }
 
 .projects-row:hover .projects-row-spacer,
 .projects-row:focus-visible .projects-row-spacer {
-  background-color: hsla(0 0% 100% / 0.42);
+  background-color: rgb(23 23 23 / 0.28);
 }
 
 .projects-row-year {
@@ -888,7 +904,7 @@ html:has(main[data-sheet="craft-article"]) body {
   text-align: right;
   font-weight: 400;
   letter-spacing: -0.01em;
-  color: #a3a3a3;
+  color: #525252;
   font-variant-numeric: tabular-nums;
   transition: color 150ms ease;
 }
@@ -902,12 +918,12 @@ html:has(main[data-sheet="craft-article"]) body {
 
 .projects-row:hover .projects-row-title,
 .projects-row:focus-visible .projects-row-title {
-  color: #ffffff;
+  color: #0a0a0a;
 }
 
 .projects-row:hover .projects-row-year,
 .projects-row:focus-visible .projects-row-year {
-  color: #ededed;
+  color: #171717;
 }
 
 .projects-row:focus-visible {
@@ -2043,7 +2059,7 @@ main[data-sheet="recent"]::-webkit-scrollbar {
 .case-study-main {
   scroll-padding-top: 8rem;
   scrollbar-width: thin;
-  scrollbar-color: rgb(255 255 255 / 0.22) transparent;
+  scrollbar-color: rgb(23 23 23 / 0.22) transparent;
   -ms-overflow-style: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
@@ -2065,7 +2081,7 @@ main[data-sheet="recent"]::-webkit-scrollbar {
 
 .case-study-main::-webkit-scrollbar-thumb {
   border-radius: 9999px;
-  background: rgb(255 255 255 / 0.22);
+  background: rgb(23 23 23 / 0.22);
 }
 
 .case-study-main::-webkit-scrollbar-track {
@@ -2074,7 +2090,10 @@ main[data-sheet="recent"]::-webkit-scrollbar {
 
 main[data-sheet="case-study"] {
   scrollbar-width: thin;
+  scrollbar-color: rgb(23 23 23 / 0.22) transparent;
   -ms-overflow-style: auto;
+  background: #ffffff;
+  color: #171717;
 }
 
 main[data-sheet="case-study"]::-webkit-scrollbar {
@@ -2083,7 +2102,7 @@ main[data-sheet="case-study"]::-webkit-scrollbar {
 
 main[data-sheet="case-study"]::-webkit-scrollbar-thumb {
   border-radius: 9999px;
-  background: rgb(255 255 255 / 0.22);
+  background: rgb(23 23 23 / 0.22);
 }
 
 main[data-sheet="craft-article"] {
@@ -2126,12 +2145,12 @@ main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose li {
 }
 
 main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose p:has(+ hr) {
-  padding-bottom: 1.5rem;
+  padding-bottom: 0;
 }
 
 main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose hr + .craft-article-section-title,
 main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose hr + h3 {
-  padding-top: 1.5rem;
+  padding-top: 0;
 }
 
 main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose blockquote {
@@ -2140,20 +2159,18 @@ main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose bloc
 }
 
 main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose hr {
-  background: #e4e4e7;
-  height: 1px;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  /* Vertical rhythm comes from `.craft-article-prose > hr` pair rules. */
+  margin: 0;
 }
 
 @media (min-width: 768px) {
   main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose p:has(+ hr) {
-    padding-bottom: 2rem;
+    padding-bottom: 0;
   }
 
   main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose hr + .craft-article-section-title,
   main[data-sheet="craft-article"] .case-study-editorial .craft-article-prose hr + h3 {
-    padding-top: 2rem;
+    padding-top: 0;
   }
 }
 
@@ -2214,9 +2231,9 @@ main[data-sheet="craft-article"] time {
   margin: 0;
   padding: 1.25rem 1.125rem;
   border-radius: 1rem;
-  border: 1px solid rgb(255 255 255 / 0.08);
-  background: rgb(255 255 255 / 0.035);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
+  border: 1px solid rgb(23 23 23 / 0.08);
+  background: rgb(23 23 23 / 0.025);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.9);
   text-align: center;
 }
 
@@ -2226,14 +2243,14 @@ main[data-sheet="craft-article"] time {
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.05em;
-  color: rgb(201 176 255 / 0.95);
+  color: rgb(91 33 182 / 0.85);
 }
 
 .case-study-rules__text {
   margin: 0.625rem 0 0;
   font-size: 1rem;
   line-height: 1.55;
-  color: rgb(245 245 245 / 0.94);
+  color: #404040;
   text-align: center;
 }
 
@@ -2245,7 +2262,7 @@ main[data-sheet="craft-article"] time {
 
 .case-study-rules__lead {
   font-weight: 600;
-  color: #fff;
+  color: #171717;
 }
 
 @media (min-width: 768px) {
@@ -2305,15 +2322,15 @@ main[data-sheet="craft-article"] time {
   overflow: hidden;
   isolation: isolate;
   border-radius: 1.75rem;
-  border: 1px solid rgb(255 255 255 / 0.55);
+  border: 1px solid rgb(23 23 23 / 0.1);
   background: linear-gradient(165deg, #edf2f8 0%, #e3eaf4 48%, #d9e2ee 100%);
   padding: 1.375rem 1.25rem 1.5rem;
   color: #2b2f36;
   box-shadow:
     inset 0 3px 0 0 var(--summary-accent, #9aa8bc),
     inset 0 1px 0 rgb(255 255 255 / 0.85),
-    0 1px 2px rgb(8 12 20 / 0.08),
-    0 18px 42px rgb(0 0 0 / 0.22);
+    0 1px 2px rgb(8 12 20 / 0.06),
+    0 14px 32px rgb(0 0 0 / 0.08);
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -2332,12 +2349,12 @@ main[data-sheet="craft-article"] time {
 
 .case-study-summary-card:focus-within .case-study-summary-card__surface,
 .case-study-summary-card:hover .case-study-summary-card__surface {
-  border-color: rgb(255 255 255 / 0.78);
+  border-color: rgb(23 23 23 / 0.12);
   box-shadow:
     inset 0 3px 0 0 var(--summary-accent, #9aa8bc),
     inset 0 1px 0 rgb(255 255 255 / 0.92),
-    0 2px 6px rgb(8 12 20 / 0.1),
-    0 24px 48px rgb(0 0 0 / 0.28);
+    0 2px 6px rgb(8 12 20 / 0.08),
+    0 18px 36px rgb(0 0 0 / 0.1);
   transform: translateY(-3px);
 }
 
@@ -2483,15 +2500,15 @@ main[data-sheet="craft-article"] time {
   overflow: hidden;
   isolation: isolate;
   border-radius: 1.75rem;
-  border: 1px solid rgb(255 255 255 / 0.55);
+  border: 1px solid rgb(23 23 23 / 0.1);
   background: linear-gradient(165deg, #edf2f8 0%, #e3eaf4 48%, #d9e2ee 100%);
   padding: 1.375rem 1.25rem 1.5rem;
   color: #2b2f36;
   box-shadow:
     inset 0 3px 0 0 var(--summary-accent, #72c9a8),
     inset 0 1px 0 rgb(255 255 255 / 0.85),
-    0 1px 2px rgb(8 12 20 / 0.08),
-    0 18px 42px rgb(0 0 0 / 0.22);
+    0 1px 2px rgb(8 12 20 / 0.06),
+    0 14px 32px rgb(0 0 0 / 0.08);
   transition:
     transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -2510,12 +2527,12 @@ main[data-sheet="craft-article"] time {
 
 .case-study-results-card:focus-within .case-study-results-card__surface,
 .case-study-results-card:hover .case-study-results-card__surface {
-  border-color: rgb(255 255 255 / 0.78);
+  border-color: rgb(23 23 23 / 0.12);
   box-shadow:
     inset 0 3px 0 0 var(--summary-accent, #72c9a8),
     inset 0 1px 0 rgb(255 255 255 / 0.92),
-    0 2px 6px rgb(8 12 20 / 0.1),
-    0 24px 48px rgb(0 0 0 / 0.28);
+    0 2px 6px rgb(8 12 20 / 0.08),
+    0 18px 36px rgb(0 0 0 / 0.1);
   transform: translateY(-3px);
 }
 
@@ -2673,10 +2690,49 @@ main[data-sheet="craft-article"] time {
   --editorial-ui: var(--font-ibm-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
 }
 
+/*
+ * Medium-like vertical rhythm — case studies + craft/design essays only.
+ * Field Notes (`data-sheet="field-notes"`) is intentionally excluded.
+ */
+main[data-sheet="case-study"] .case-study-editorial,
+main[data-sheet="craft-article"] .case-study-editorial {
+  --cs-gap-label: 1rem; /* label → title */
+  --cs-gap-title: 0.875rem; /* title → first body */
+  --cs-gap-body: 1.25rem; /* paragraph → paragraph */
+  --cs-gap-block: 2rem; /* before heading / after quote */
+  --cs-gap-media: 2.25rem; /* around figures & wide media */
+  --cs-gap-chapter: 2.75rem; /* major chapter / flow band jumps */
+}
+
+main[data-sheet="case-study"] .case-study-editorial-flow,
+main[data-sheet="craft-article"] .case-study-editorial-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+main[data-sheet="case-study"] .case-study-editorial-flow > * + *,
+main[data-sheet="craft-article"] .case-study-editorial-flow > * + * {
+  margin-top: var(--cs-gap-chapter);
+}
+
+main[data-sheet="case-study"] .case-study-editorial-flow > .case-study-block--media + *,
+main[data-sheet="case-study"] .case-study-editorial-flow > * + .case-study-block--media,
+main[data-sheet="craft-article"] .case-study-editorial-flow > .case-study-block--media + *,
+main[data-sheet="craft-article"] .case-study-editorial-flow > * + .case-study-block--media {
+  margin-top: var(--cs-gap-media);
+}
+
+/* Fallback for pages that still use the old flow gap vars outside Medium sheets */
 .case-study-editorial-flow {
   display: flex;
   flex-direction: column;
-  gap: clamp(4rem, 7vw, 6.5rem);
+  gap: clamp(3.5rem, 6vw, 5.5rem);
+}
+
+main[data-sheet="case-study"] .case-study-editorial-flow,
+main[data-sheet="craft-article"] .case-study-editorial-flow {
+  gap: 0;
 }
 
 .case-study-editorial-intro {
@@ -2703,6 +2759,7 @@ main[data-sheet="craft-article"] time {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
+  color: #171717;
 }
 
 .case-study-editorial .case-study-hero-tagline {
@@ -2710,7 +2767,7 @@ main[data-sheet="craft-article"] time {
   font-size: 0.9375rem;
   line-height: 1.55;
   letter-spacing: normal;
-  color: rgb(163 163 163);
+  color: #737373;
 }
 
 @media (min-width: 768px) {
@@ -2727,8 +2784,8 @@ main[data-sheet="craft-article"] time {
   letter-spacing: -0.015em;
 }
 
-.case-study-editorial .case-study-prose-band h2:not(:where(.policy-copilot-embed *)),
-.case-study-editorial .case-study-prose-band h3:not(:where(.policy-copilot-embed *)),
+.case-study-editorial .case-study-prose-band h2:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
+.case-study-editorial .case-study-prose-band h3:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
 .case-study-editorial .craft-article-section-title {
   font-family: var(--editorial-display);
   font-weight: 600;
@@ -2737,8 +2794,9 @@ main[data-sheet="craft-article"] time {
   letter-spacing: -0.01em;
 }
 
-/* Policy Copilot embed — product typography base; not case-study prose scale */
-.case-study-editorial .policy-copilot-embed {
+/* Policy Copilot embed + dark product panels — isolate from light editorial type. */
+.case-study-editorial .policy-copilot-embed,
+.case-study-editorial .case-study-dark-panel {
   font-family: var(--font-ibm-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
   font-size: 16px;
   line-height: normal;
@@ -2746,42 +2804,216 @@ main[data-sheet="craft-article"] time {
   color: rgb(250 249 245);
 }
 
-/* Section headings after a rule or pull quote — extra air above the title. */
-.case-study-editorial .case-study-prose-band [role="separator"] + h2,
-.case-study-editorial .case-study-prose-band blockquote + h2 {
-  padding-top: 1.5rem;
+/* Light explainer panels — keep dark product embeds unchanged. */
+.case-study-editorial .case-study-light-panel {
+  font-family: var(--font-ibm-plex-sans), "IBM Plex Sans", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #171717;
 }
 
-/* Body copy before a section rule — extra air below the paragraph. */
-.case-study-editorial .case-study-prose-band p:has(+ [role="separator"]) {
-  padding-bottom: 1.5rem;
+/*
+ * Medium-style pair spacing for stacked blocks.
+ * Scoped to case studies + craft essays — not Field Notes.
+ * Prefer heading air over hairline rules; dividers are rare chapter beats only.
+ */
+main[data-sheet="case-study"] .case-study-stack,
+main[data-sheet="craft-article"] .case-study-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-@media (min-width: 768px) {
-  .case-study-editorial .case-study-prose-band [role="separator"] + h2,
-  .case-study-editorial .case-study-prose-band blockquote + h2 {
-    padding-top: 2rem;
-  }
-
-  .case-study-editorial .case-study-prose-band p:has(+ [role="separator"]) {
-    padding-bottom: 2rem;
-  }
+main[data-sheet="case-study"] .case-study-stack > * + *,
+main[data-sheet="craft-article"] .case-study-stack > * + * {
+  margin-top: var(--cs-gap-body);
 }
 
-.case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *)),
-.case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *)),
+/* Title → body: sit close, like Medium */
+main[data-sheet="case-study"] .case-study-stack > :is(h1, h2, h3, h4) + *,
+main[data-sheet="craft-article"] .case-study-stack > :is(h1, h2, h3, h4) + * {
+  margin-top: var(--cs-gap-title);
+}
+
+/* Title → grids / embeds / sections: more air than body copy */
+main[data-sheet="case-study"] .case-study-stack > :is(h1, h2, h3, h4) + :is(div, section, figure),
+main[data-sheet="craft-article"] .case-study-stack > :is(h1, h2, h3, h4) + :is(div, section, figure) {
+  margin-top: var(--cs-gap-block);
+}
+
+/* Body / media → title: open a section */
+main[data-sheet="case-study"] .case-study-stack > * + :is(h1, h2, h3, h4),
+main[data-sheet="craft-article"] .case-study-stack > * + :is(h1, h2, h3, h4) {
+  margin-top: var(--cs-gap-block);
+}
+
+/* Body → uppercase kicker: open a labelled beat */
+main[data-sheet="case-study"] .case-study-stack > * + p.uppercase,
+main[data-sheet="craft-article"] .case-study-stack > * + p.uppercase {
+  margin-top: var(--cs-gap-block);
+}
+
+/* Kicker → title / stats: readable gap (was 0.5rem — felt glued) */
+main[data-sheet="case-study"] .case-study-stack > p.uppercase + *,
+main[data-sheet="craft-article"] .case-study-stack > p.uppercase + *,
+main[data-sheet="case-study"] .case-study-stack > p.uppercase + :is(h1, h2, h3, h4),
+main[data-sheet="craft-article"] .case-study-stack > p.uppercase + :is(h1, h2, h3, h4) {
+  margin-top: var(--cs-gap-label);
+}
+
+/* Dense bands still give kickers a touch of air before titles */
+main[data-sheet="case-study"] .case-study-stack--dense > p.uppercase + *,
+main[data-sheet="craft-article"] .case-study-stack--dense > p.uppercase + * {
+  margin-top: 0.75rem;
+}
+
+/* Around media / figures / interactive embeds inside the stack */
+main[data-sheet="case-study"] .case-study-stack > * + :is(figure, .case-study-block--media),
+main[data-sheet="case-study"] .case-study-stack > :is(figure, .case-study-block--media) + *,
+main[data-sheet="craft-article"] .case-study-stack > * + :is(figure, .case-study-block--media),
+main[data-sheet="craft-article"] .case-study-stack > :is(figure, .case-study-block--media) + * {
+  margin-top: var(--cs-gap-media);
+}
+
+/* Rare hairline chapter break (Medium / Notion beat) */
+main[data-sheet="case-study"] .case-study-stack > .case-study-chapter-divider,
+main[data-sheet="craft-article"] .case-study-stack > .case-study-chapter-divider,
+main[data-sheet="case-study"] .case-study-stack > [role="separator"],
+main[data-sheet="craft-article"] .case-study-stack > [role="separator"] {
+  margin-top: var(--cs-gap-chapter);
+  margin-bottom: 0;
+  padding: 0;
+  height: 0;
+  border-top-width: 1px;
+}
+
+main[data-sheet="case-study"] .case-study-stack > .case-study-chapter-divider + *,
+main[data-sheet="craft-article"] .case-study-stack > .case-study-chapter-divider + *,
+main[data-sheet="case-study"] .case-study-stack > [role="separator"] + *,
+main[data-sheet="craft-article"] .case-study-stack > [role="separator"] + * {
+  margin-top: var(--cs-gap-chapter);
+}
+
+/* Divider as a direct editorial-flow child (between prose bands) */
+main[data-sheet="case-study"] .case-study-editorial-flow > .case-study-chapter-divider,
+main[data-sheet="craft-article"] .case-study-editorial-flow > .case-study-chapter-divider,
+main[data-sheet="case-study"] .case-study-editorial-flow > [role="separator"],
+main[data-sheet="craft-article"] .case-study-editorial-flow > [role="separator"] {
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+  margin-left: 0;
+  margin-right: auto;
+  margin-top: 0;
+  height: 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Quote → following block */
+main[data-sheet="case-study"] .case-study-stack > blockquote + *,
+main[data-sheet="craft-article"] .case-study-stack > blockquote + * {
+  margin-top: var(--cs-gap-block);
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > * + *,
+main[data-sheet="craft-article"] .case-study-stack--dense > * + * {
+  margin-top: 0.75rem;
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > :is(h1, h2, h3, h4) + *,
+main[data-sheet="craft-article"] .case-study-stack--dense > :is(h1, h2, h3, h4) + * {
+  margin-top: var(--cs-gap-title);
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > :is(h1, h2, h3, h4) + :is(div, section, figure),
+main[data-sheet="craft-article"] .case-study-stack--dense > :is(h1, h2, h3, h4) + :is(div, section, figure) {
+  margin-top: var(--cs-gap-block);
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > * + :is(h1, h2, h3, h4),
+main[data-sheet="craft-article"] .case-study-stack--dense > * + :is(h1, h2, h3, h4) {
+  margin-top: var(--cs-gap-block);
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > .case-study-chapter-divider,
+main[data-sheet="craft-article"] .case-study-stack--dense > .case-study-chapter-divider,
+main[data-sheet="case-study"] .case-study-stack--dense > [role="separator"],
+main[data-sheet="craft-article"] .case-study-stack--dense > [role="separator"] {
+  margin-top: var(--cs-gap-chapter);
+}
+
+main[data-sheet="case-study"] .case-study-stack--dense > .case-study-chapter-divider + *,
+main[data-sheet="craft-article"] .case-study-stack--dense > .case-study-chapter-divider + *,
+main[data-sheet="case-study"] .case-study-stack--dense > [role="separator"] + *,
+main[data-sheet="craft-article"] .case-study-stack--dense > [role="separator"] + * {
+  margin-top: var(--cs-gap-chapter);
+}
+
+/* Craft article section bodies share the same stack rhythm */
+main[data-sheet="craft-article"] .craft-article-section,
+main[data-sheet="craft-article"] .craft-article-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+main[data-sheet="craft-article"] .craft-article-prose > * + * {
+  margin-top: var(--cs-gap-body);
+}
+
+main[data-sheet="craft-article"] .craft-article-prose > :is(h1, h2, h3) + *,
+main[data-sheet="craft-article"] .craft-article-prose > .craft-article-section-title + * {
+  margin-top: var(--cs-gap-title);
+}
+
+main[data-sheet="craft-article"] .craft-article-prose > * + :is(h1, h2, h3),
+main[data-sheet="craft-article"] .craft-article-prose > * + .craft-article-section-title {
+  margin-top: var(--cs-gap-block);
+}
+
+main[data-sheet="craft-article"] .craft-article-prose > * + :is(figure, hr),
+main[data-sheet="craft-article"] .craft-article-prose > :is(figure, hr) + * {
+  margin-top: var(--cs-gap-media);
+}
+
+main[data-sheet="craft-article"] .craft-article-prose > hr {
+  border: 0;
+  border-top: 1px solid #e5e5e5;
+}
+
+main[data-sheet="craft-article"] .craft-article-section + .craft-article-section {
+  margin-top: var(--cs-gap-chapter);
+}
+
+main[data-sheet="craft-article"] .craft-article-section > .craft-article-section-title {
+  margin-bottom: 0;
+}
+
+main[data-sheet="craft-article"] .craft-article-section > .craft-article-section-title + * {
+  margin-top: var(--cs-gap-title);
+}
+
+/* Case study prose — metrics only; colour comes from Tailwind tokens so dark panels keep contrast. */
+.case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
+.case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)) {
+  font-family: var(--editorial-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: normal;
+}
+
 .case-study-editorial .craft-article-prose p,
 .case-study-editorial .craft-article-prose li {
   font-family: var(--editorial-body);
   font-size: 1rem;
   line-height: 1.7;
   letter-spacing: normal;
-  color: rgb(212 212 212);
+  color: #171717;
 }
 
 @media (min-width: 768px) {
-  .case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *)),
-  .case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *)),
+  .case-study-editorial .case-study-prose-band p:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
+  .case-study-editorial .case-study-prose-band li:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
   .case-study-editorial .craft-article-prose p,
   .case-study-editorial .craft-article-prose li {
     font-size: 1.0625rem;
@@ -2789,7 +3021,7 @@ main[data-sheet="craft-article"] time {
   }
 }
 
-.case-study-editorial .case-study-prose-band blockquote:not(:where(.policy-copilot-embed *)),
+.case-study-editorial .case-study-prose-band blockquote:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)),
 .case-study-editorial .craft-article-prose blockquote {
   font-family: var(--editorial-display);
   font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
@@ -2807,13 +3039,15 @@ main[data-sheet="craft-article"] time {
   line-height: 1.65;
 }
 
-.case-study-editorial .case-study-prose-band p.uppercase {
+.case-study-editorial
+  .case-study-prose-band
+  p.uppercase:not(:where(.policy-copilot-embed *, .case-study-dark-panel *, .case-study-light-panel *)) {
   font-family: var(--editorial-ui);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgb(163 163 163);
+  color: #737373;
 }
 
 .case-study-editorial .case-study-results-card__title {

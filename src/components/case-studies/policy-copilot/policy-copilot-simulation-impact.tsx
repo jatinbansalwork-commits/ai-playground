@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { BlastRadiusIcon, EntityTypeIcon, UsersImpactIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
-import { CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const IMPACT_LAYERS = [
@@ -79,8 +79,8 @@ function NetworkNode({
         width={104}
         height={44}
         rx={10}
-        fill={active ? muted : CLAUDE.surfaceOverlay}
-        stroke={active ? accent : CLAUDE.hairline}
+        fill={active ? muted : "#FFFFFF"}
+        stroke={active ? accent : CLAUDE.borderStrong}
         strokeWidth={active ? 1.5 : 1}
       />
       <text
@@ -125,12 +125,13 @@ function ImpactLayerCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors",
-        !selected && "hover:bg-white/[0.02]",
+        "grid w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors",
+        !selected && "border-neutral-200 bg-white hover:bg-neutral-50",
+        selected && "border-transparent",
       )}
       style={{
-        backgroundColor: selected ? muted : CLAUDE.surfaceOverlay,
-        boxShadow: selected ? `inset 0 0 0 1px ${accent}55` : `inset 0 0 0 1px ${CLAUDE.hairline}`,
+        backgroundColor: selected ? muted : undefined,
+        boxShadow: selected ? `inset 0 0 0 1px ${accent}55` : undefined,
       }}
       aria-pressed={selected}
     >
@@ -189,8 +190,8 @@ export function PolicyCopilotSimulationImpact() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
@@ -203,7 +204,7 @@ export function PolicyCopilotSimulationImpact() {
         >
           Simulation &amp; Impact Analysis
         </p>
-        <p className="mt-1 max-w-3xl text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-1 max-w-3xl text-[13px] leading-relaxed text-neutral-600">
           A modern network visualisation highlighting affected users, applications, traffic paths,
           impacted assets, and blast radius — visual and easy to understand instead of dense technical
           tables.
@@ -211,21 +212,14 @@ export function PolicyCopilotSimulationImpact() {
       </div>
 
       <div className="grid gap-4 p-4 md:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] md:gap-5 md:p-5">
-        <div
-          className="relative overflow-hidden rounded-xl"
-          style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-        >
-          <div className="flex items-center justify-between gap-3 border-b px-3.5 py-2.5" style={{ borderColor: CLAUDE.hairline }}>
+        <div className="relative overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+          <div className="flex items-center justify-between gap-3 border-b border-neutral-200 bg-white px-3.5 py-2.5">
             <div>
-              <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
-                Deployment preview
-              </p>
-              <p className="text-[10px]" style={{ color: CLAUDE.textSoft }}>
-                Simulated outcome · draft policy
-              </p>
+              <p className="text-[12px] font-semibold text-neutral-900">Deployment preview</p>
+              <p className="text-[10px] text-neutral-500">Simulated outcome · draft policy</p>
             </div>
             <span
-              className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+              className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
               style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
             >
               Ready to review
@@ -255,7 +249,7 @@ export function PolicyCopilotSimulationImpact() {
                   key={path}
                   d={path}
                   fill="none"
-                  stroke={index < 2 ? "rgb(93 184 114 / 0.35)" : "rgb(92 151 238 / 0.45)"}
+                  stroke={index < 2 ? "rgb(21 128 61 / 0.45)" : "rgb(59 130 246 / 0.5)"}
                   strokeWidth={1.5}
                   strokeLinecap="round"
                   initial={reduced ? false : { pathLength: 0, opacity: 0 }}
@@ -347,13 +341,8 @@ export function PolicyCopilotSimulationImpact() {
             </svg>
           </div>
 
-          <div
-            className="mx-3 mb-3 rounded-lg px-3 py-2 md:mx-4 md:mb-4"
-            style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-          >
-            <p className="text-[11px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
-              {focusLine}
-            </p>
+          <div className="mx-3 mb-3 rounded-lg border border-neutral-200 bg-white px-3 py-2 md:mx-4 md:mb-4">
+            <p className="text-[11px] leading-relaxed text-neutral-700">{focusLine}</p>
           </div>
         </div>
 
@@ -369,13 +358,10 @@ export function PolicyCopilotSimulationImpact() {
         </div>
       </div>
 
-      <div
-        className="mx-4 mb-4 rounded-xl px-3 py-2.5 md:mx-5 md:mb-5"
-        style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-      >
+      <div className="mx-4 mb-4 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 md:mx-5 md:mb-5">
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
-          <span style={{ color: CLAUDE.textMuted }}>Configuration hidden → impact surfaced</span>
-          <span className="font-medium tabular-nums" style={{ color: CLAUDE.validated }}>
+          <span className="text-neutral-600">Configuration hidden → impact surfaced</span>
+          <span className="font-semibold tabular-nums" style={{ color: CLAUDE.validated }}>
             240 users · 2 apps · low blast radius
           </span>
         </div>

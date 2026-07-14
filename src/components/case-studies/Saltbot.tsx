@@ -4,6 +4,7 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyDivider,
   CaseStudyH2,
   CaseStudyH3,
   CaseStudyParagraph,
@@ -97,6 +98,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>Just Ask Saltbot?</CaseStudyH2>
         <CaseStudyParagraph dense>
           You shouldn&apos;t need dashboards, filters, or multiple tools to understand
@@ -123,6 +125,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>Only What You Need to Know</CaseStudyH2>
         <CaseStudyParagraph dense>
           Workspace data gets complicated quickly. The more offices you manage, the
@@ -146,6 +149,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>See the Signal, Not the Spreadsheet</CaseStudyH2>
         <CaseStudyParagraph dense>
           In fast-moving workplaces, timing is everything. Saltbot helps you stay ahead
@@ -210,6 +214,7 @@ export default function SaltbotContent() {
       </CaseStudyWide>
 
       <CaseStudyProse dense>
+        <CaseStudyDivider />
         <CaseStudyH2>All Your Insights, Only Made Clearer</CaseStudyH2>
         <CaseStudyParagraph dense>
           Workspace tools often feel complicated — especially when data sits in different

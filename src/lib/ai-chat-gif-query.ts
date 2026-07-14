@@ -6,93 +6,141 @@ import {
 } from "@/lib/ai-chat-gif-sentiment";
 
 const INTENT_GIF_QUERIES: Record<AiChatIntentId, readonly string[]> = {
-  mentorship: [
-    "chandler bing friends",
-    "ross geller friends",
-    "joey tribbiani how you doin",
-    "sheldon cooper friends",
+  "strongest-project": [
+    "avengers assemble",
+    "iron man tony stark",
+    "captain america marvel",
+    "thor marvel reaction",
   ],
-  hiring: [
-    "chandler bing excited",
-    "ross geller happy",
-    "sheldon cooper thumbs up",
-    "joey tribbiani yes",
+  cisco: [
+    "iron man reaction",
+    "tony stark thinking",
+    "doctor strange marvel",
+    "avengers assemble",
   ],
-  portfolio: [
-    "sheldon cooper big bang theory",
-    "ross geller excited",
-    "chandler bing mind blown",
-    "big bang theory reaction",
+  process: [
+    "tony stark workshop",
+    "iron man suit up",
+    "avengers planning",
+    "marvel reaction thinking",
   ],
-  "case-study": [
-    "ross geller thinking",
-    "sheldon cooper thinking",
-    "chandler bing reading",
-    "friends ross lecture",
+  reach: [
+    "captain america salute",
+    "iron man thumbs up",
+    "spider-man mcu wave",
+    "avengers assemble",
   ],
 };
 
 const KEYWORD_GIF_QUERIES: Array<{ terms: string[]; queries: string[] }> = [
   {
     terms: ["contact", "email", "linkedin", "reach", "message"],
-    queries: ["chandler bing thumbs up", "sheldon cooper wave", "ross geller nod"],
+    queries: [
+      "captain america salute",
+      "iron man thumbs up",
+      "spider-man mcu hello",
+    ],
   },
   {
     terms: ["mentor", "mentorship", "advice", "feedback"],
-    queries: ["ross geller advice", "chandler bing supportive", "sheldon cooper explain"],
+    queries: [
+      "tony stark advice",
+      "captain america nod",
+      "marvel mentoring",
+    ],
   },
   {
     terms: ["hire", "hiring", "role", "job", "contract"],
-    queries: ["chandler bing excited", "sheldon cooper handshake", "joey tribbiani yes"],
+    queries: [
+      "avengers assemble",
+      "iron man yes",
+      "captain america ready",
+    ],
   },
   {
     terms: ["saltbot", "saltmine", "chatbot", "conversational"],
-    queries: ["sheldon cooper robot", "chandler bing talking", "ross geller explain"],
+    queries: [
+      "iron man jarvis",
+      "tony stark ai",
+      "marvel tech reaction",
+    ],
   },
   {
     terms: ["piggy", "fintech", "support", "mutual fund"],
-    queries: ["ross geller money", "chandler bing wallet", "sheldon cooper calculator"],
+    queries: [
+      "iron man money",
+      "tony stark confident",
+      "marvel celebration",
+    ],
   },
   {
     terms: ["freshprints", "design system", "system"],
-    queries: ["ross geller organized", "sheldon cooper organized", "chandler bing neat"],
+    queries: [
+      "tony stark organized",
+      "iron man suit",
+      "marvel studios reaction",
+    ],
   },
   {
     terms: ["kalash", "gold", "rewards"],
-    queries: ["joey tribbiani celebration", "ross geller excited", "sheldon cooper celebrate"],
+    queries: [
+      "avengers celebrate",
+      "thor victory",
+      "marvel celebration",
+    ],
   },
   {
     terms: ["portfolio", "built", "stack", "vercel", "next"],
-    queries: ["sheldon cooper science", "ross geller proud", "chandler bing impressed"],
+    queries: [
+      "tony stark workshop",
+      "iron man build",
+      "marvel tech",
+    ],
   },
   {
     terms: ["craft", "experiment", "prototype"],
-    queries: ["sheldon cooper experiment", "ross geller idea", "chandler bing creative"],
+    queries: [
+      "tony stark inventing",
+      "iron man prototype",
+      "marvel science",
+    ],
   },
   {
     terms: ["wrong", "error", "fail", "broken"],
-    queries: ["chandler bing confused", "ross geller panic", "sheldon cooper bazinga"],
+    queries: [
+      "hulk smash",
+      "iron man frustrated",
+      "marvel confused reaction",
+    ],
   },
   {
     terms: ["thanks", "thank you", "awesome", "great"],
-    queries: ["chandler bing clapping", "ross geller happy", "sheldon cooper applause"],
+    queries: [
+      "avengers celebrate",
+      "iron man clap",
+      "captain america proud",
+    ],
   },
   {
     terms: ["how you doin", "how you doing", "hey", "hello", "what's up"],
-    queries: ["joey tribbiani how you doin", "chandler bing hey", "sheldon cooper hello"],
+    queries: [
+      "spider-man mcu hello",
+      "iron man wave",
+      "avengers assemble",
+    ],
   },
 ];
 
 const DEFAULT_GIF_QUERIES = [
-  "chandler bing friends",
-  "ross geller friends",
-  "sheldon cooper bazinga",
-  "sheldon cooper big bang theory",
-  "chandler bing sarcastic",
-  "ross geller pivot",
-  "joey tribbiani friends",
-  "big bang theory reaction",
-  "friends tv reaction",
+  "avengers assemble",
+  "iron man tony stark",
+  "captain america marvel",
+  "thor marvel",
+  "hulk smash",
+  "spider-man mcu",
+  "marvel reaction",
+  "tony stark reaction",
+  "avengers endgame",
 ] as const;
 
 function includesAny(text: string, terms: string[]): boolean {

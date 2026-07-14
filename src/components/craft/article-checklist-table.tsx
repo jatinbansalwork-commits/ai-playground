@@ -6,7 +6,7 @@ interface ArticleChecklistTableProps {
 
 export function ArticleChecklistTable({ categories }: ArticleChecklistTableProps) {
   return (
-    <div className="craft-article-checklist my-6 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+    <div className="craft-article-checklist overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
       <table className="w-full border-collapse text-left">
         <caption className="sr-only">Design review checklist</caption>
         <tbody>

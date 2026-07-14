@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CLAUDE, COPILOT_TYPE } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE, COPILOT_TYPE } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const REQUEST =
@@ -46,21 +46,12 @@ const ILLUSTRATION_ARIA_LABEL =
 
 function WorkspaceChrome({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="flex min-h-[15.5rem] flex-col overflow-hidden rounded-xl"
-      style={{ backgroundColor: CLAUDE.bg, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-    >
-      <div
-        className="flex items-center justify-between border-b px-3 py-2"
-        style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surface }}
-      >
-        <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px]")} style={{ color: CLAUDE.textSoft }}>
+    <div className="flex min-h-[15.5rem] flex-col overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 shadow-sm">
+      <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-3 py-2">
+        <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px]")} style={{ color: CLAUDE.textMuted }}>
           Policy workspace
         </p>
-        <span
-          className="rounded-full px-2 py-0.5 text-[9px] font-medium tabular-nums"
-          style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textMuted }}
-        >
+        <span className="rounded-full border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[9px] font-medium tabular-nums text-neutral-600">
           Draft · not deployed
         </span>
       </div>
@@ -71,14 +62,11 @@ function WorkspaceChrome({ children }: { children: React.ReactNode }) {
 
 function RequestStrip() {
   return (
-    <div
-      className="mx-3 mt-3 rounded-lg px-3 py-2.5"
-      style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-    >
-      <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px]")} style={{ color: CLAUDE.textSoft }}>
+    <div className="mx-3 mt-3 rounded-lg border border-neutral-200 bg-white px-3 py-2.5">
+      <p className={cn(COPILOT_TYPE.eyebrow, "text-[8px]")} style={{ color: CLAUDE.textMuted }}>
         Business intent
       </p>
-      <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+      <p className="mt-1 text-[11px] leading-relaxed text-neutral-700">
         &ldquo;{REQUEST}&rdquo;
       </p>
     </div>
@@ -98,25 +86,23 @@ function IntentField({
 }) {
   return (
     <div
-      className="rounded-lg px-2.5 py-2"
+      className="rounded-lg border px-2.5 py-2"
       style={{
-        backgroundColor: highlight ? CLAUDE.warningMuted : CLAUDE.surfaceOverlay,
-        boxShadow: `inset 0 0 0 1px ${highlight ? "rgb(232 165 90 / 0.35)" : CLAUDE.hairline}`,
+        backgroundColor: highlight ? CLAUDE.warningMuted : "#FFFFFF",
+        borderColor: highlight ? "rgb(180 83 9 / 0.35)" : CLAUDE.border,
       }}
     >
       <div className="flex items-center justify-between gap-2">
-        <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.textSoft }}>
+        <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.textMuted }}>
           {label}
         </p>
         {resolved ? (
-          <span className="text-[8px] font-medium" style={{ color: CLAUDE.validated }}>
+          <span className="text-[8px] font-semibold" style={{ color: CLAUDE.validated }}>
             Resolved
           </span>
         ) : null}
       </div>
-      <p className="mt-0.5 text-[10px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
-        {value}
-      </p>
+      <p className="mt-0.5 text-[10px] leading-snug text-neutral-800">{value}</p>
     </div>
   );
 }
@@ -143,30 +129,25 @@ function FramePanel({ frameIndex }: { frameIndex: number }) {
               <RequestStrip />
               {frameIndex >= 1 ? (
                 <div
-                  className="rounded-lg px-2.5 py-2"
-                  style={{ backgroundColor: CLAUDE.primaryMuted, boxShadow: `inset 0 0 0 1px ${CLAUDE.primaryBorder}` }}
+                  className="rounded-lg border px-2.5 py-2"
+                  style={{ backgroundColor: CLAUDE.primaryMuted, borderColor: CLAUDE.primaryBorder }}
                 >
-                  <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.primary }}>
+                  <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.primaryActive }}>
                     Connected to request
                   </p>
-                  <p className="mt-1 text-[10px] leading-snug" style={{ color: CLAUDE.textMuted }}>
+                  <p className="mt-1 text-[10px] leading-snug text-neutral-700">
                     Clarifications stay tied to the original intent — nothing starts over.
                   </p>
                 </div>
               ) : null}
             </div>
 
-            <div
-              className="space-y-1.5 rounded-lg p-2"
-              style={{ backgroundColor: CLAUDE.surface, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-            >
+            <div className="space-y-1.5 rounded-lg border border-neutral-200 bg-white p-2">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-[10px] font-medium" style={{ color: CLAUDE.text }}>
-                  Intent summary
-                </p>
+                <p className="text-[10px] font-semibold text-neutral-900">Intent summary</p>
                 <span
-                  className="rounded-full px-1.5 py-0.5 text-[8px] font-medium tabular-nums"
-                  style={{ backgroundColor: CLAUDE.primaryMuted, color: CLAUDE.text }}
+                  className="rounded-full px-1.5 py-0.5 text-[8px] font-semibold tabular-nums"
+                  style={{ backgroundColor: CLAUDE.primaryMuted, color: CLAUDE.primaryActive }}
                 >
                   {confidence}%
                 </span>
@@ -193,11 +174,8 @@ function FramePanel({ frameIndex }: { frameIndex: number }) {
           </div>
 
           {frameIndex >= 2 ? (
-            <div
-              className="border-t px-3 py-2.5"
-              style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surfaceRaised }}
-            >
-              <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.textSoft }}>
+            <div className="border-t border-neutral-200 bg-white px-3 py-2.5">
+              <p className={cn(COPILOT_TYPE.eyebrow, "text-[7px]")} style={{ color: CLAUDE.textMuted }}>
                 Confirm understanding
               </p>
               <div className="mt-1.5 flex flex-wrap gap-1">
@@ -212,12 +190,12 @@ function FramePanel({ frameIndex }: { frameIndex: number }) {
                           ? {
                               borderColor: CLAUDE.primaryBorder,
                               backgroundColor: CLAUDE.primaryMuted,
-                              color: CLAUDE.text,
+                              color: CLAUDE.primaryActive,
                             }
                           : {
-                              borderColor: CLAUDE.border,
-                              backgroundColor: CLAUDE.surfaceOverlay,
-                              color: CLAUDE.textMuted,
+                              borderColor: CLAUDE.borderStrong,
+                              backgroundColor: "#FFFFFF",
+                              color: CLAUDE.textSecondary,
                             }
                       }
                     >
@@ -233,19 +211,20 @@ function FramePanel({ frameIndex }: { frameIndex: number }) {
             <motion.div
               initial={reduced ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mx-3 mb-3 rounded-lg px-2.5 py-2"
-              style={{ backgroundColor: CLAUDE.validatedMuted, boxShadow: `inset 0 0 0 1px ${CLAUDE.validated}44` }}
+              className="mx-3 mb-3 rounded-lg border px-2.5 py-2"
+              style={{
+                backgroundColor: CLAUDE.validatedMuted,
+                borderColor: "rgb(21 128 61 / 0.28)",
+              }}
             >
-              <p className="text-[10px] font-medium" style={{ color: CLAUDE.validated }}>
+              <p className="text-[10px] font-semibold" style={{ color: CLAUDE.validated }}>
                 Gap closed — confidence 72% → 84%
               </p>
             </motion.div>
           ) : null}
         </WorkspaceChrome>
 
-        <p className="mt-2 text-center text-[10px] leading-snug" style={{ color: CLAUDE.textMuted }}>
-          {frame.caption}
-        </p>
+        <p className="mt-2 text-center text-[11px] leading-snug text-neutral-600">{frame.caption}</p>
       </motion.div>
     </AnimatePresence>
   );
@@ -280,12 +259,12 @@ export function PolicyCopilotProgressiveClarification() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: CLAUDE.bg }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
-      <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
-        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.primary }}>
+      <div className="border-b border-neutral-200 px-4 py-4 md:px-5 md:py-5">
+        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.primaryActive }}>
           Storyboard
         </p>
         <p
@@ -294,7 +273,7 @@ export function PolicyCopilotProgressiveClarification() {
         >
           Progressive Clarification
         </p>
-        <p className="mt-1 max-w-3xl text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+        <p className="mt-1 max-w-3xl text-[13px] leading-relaxed text-neutral-600">
           One business request, one clarification, the administrator&rsquo;s response, and the workspace
           updating instantly — embedded in the product, not a chat thread.
         </p>
@@ -312,19 +291,32 @@ export function PolicyCopilotProgressiveClarification() {
                   onClick={() => setActiveFrame(index)}
                   className={cn(
                     "flex items-center gap-2 rounded-full border px-3 py-1.5 text-left transition-colors",
-                    isActive ? "border-sky-400/45 bg-sky-500/10" : "border-white/10 bg-white/[0.02]",
+                    isActive
+                      ? "border-sky-300 bg-sky-50"
+                      : "border-neutral-200 bg-white hover:bg-neutral-50",
                   )}
                 >
                   <span
                     className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold"
                     style={{
-                      backgroundColor: isComplete ? CLAUDE.validatedMuted : isActive ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
-                      color: isComplete ? CLAUDE.validated : isActive ? CLAUDE.primary : CLAUDE.textSoft,
+                      backgroundColor: isComplete
+                        ? CLAUDE.validatedMuted
+                        : isActive
+                          ? CLAUDE.primaryMuted
+                          : "#F5F5F5",
+                      color: isComplete
+                        ? CLAUDE.validated
+                        : isActive
+                          ? CLAUDE.primaryActive
+                          : CLAUDE.textMuted,
                     }}
                   >
                     {isComplete ? "✓" : frame.step}
                   </span>
-                  <span className="text-[11px] font-medium" style={{ color: isActive ? CLAUDE.text : CLAUDE.textMuted }}>
+                  <span
+                    className="text-[11px] font-medium"
+                    style={{ color: isActive ? CLAUDE.text : CLAUDE.textMuted }}
+                  >
                     {frame.title}
                   </span>
                 </button>

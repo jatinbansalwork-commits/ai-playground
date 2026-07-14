@@ -11,13 +11,13 @@ import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { buildCareerKnowledgeSection } from "@/lib/ai-chat-career-knowledge";
 
-interface CaseStudyChatMeta {
+export interface CaseStudyChatMeta {
   bestFor: string;
   outcome?: string;
 }
 
 /** Curated routing tags — keep in sync with public projects on `/projects`. */
-const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = {
+export const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = {
   "cisco-policy-copilot": {
     bestFor:
       "Cybersecurity AI, firewall policy UX, enterprise copilots, explainable AI, human-in-the-loop security",

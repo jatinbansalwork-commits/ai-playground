@@ -1,7 +1,3 @@
-import { CONTACT_EMAIL, CONTACT_LINKS } from "@/lib/constants";
-
-const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
-
 export const AI_CHAT_NAME = "JB_AI";
 
 export const AI_CHAT_TAGLINE = "Ask anything about JB";
@@ -19,7 +15,7 @@ export const AI_CHAT_FIRST_VISIT_MESSAGE =
 export const AI_CHAT_FIRST_VISIT_BUBBLE_MS = 5000;
 
 export const AI_CHAT_INTRO =
-  "Case studies, hiring, mentorship — Joey's got the vibe, Chandler's got the jokes, Ross has the details.";
+  "Case studies, process, hiring — ask me anything about JB's work.";
 
 export const AI_CHAT_GREETING = "So… what do you wanna know about JB?";
 
@@ -33,8 +29,11 @@ export const AI_CHAT_REPLY_PLACEHOLDER = "Reply…";
 /** Minimum time the thinking loader stays visible before the first reply token. */
 export const AI_CHAT_MIN_THINKING_MS = 1500;
 
-/** Total user messages (chips + typed + fallback) per browser session. */
-export const AI_CHAT_PROMPT_LIMIT = 10;
+/**
+ * Prompt cookie remaining math only — session chat is unlimited.
+ * Kept huge so older clients never treat the budget as exhausted.
+ */
+export const AI_CHAT_PROMPT_LIMIT = Number.MAX_SAFE_INTEGER;
 
 /** Max OpenAI-backed replies per browser session — static/fallback still available after. */
 export const AI_CHAT_OPENAI_MAX_PER_USER = readEnvInt(
@@ -50,12 +49,6 @@ export {
   AI_CHAT_SUGGESTED_PROMPTS,
   type AiChatIntentId,
 } from "@/lib/ai-chat-intents";
-
-export const AI_CHAT_LIMIT_MESSAGE = `All right — we've hit the 10-message limit for this session.
-
-Keep the conversation going here:
-
-[LinkedIn](${LINKEDIN}) · [Email](mailto:${CONTACT_EMAIL})`;
 
 export const AI_CHAT_OPENAI_LIMIT_MESSAGE =
   "Okay — the fancy AI replies are used up for this session. Could we *be* any more out of budget? No worries — I'll keep helping from curated site knowledge.";

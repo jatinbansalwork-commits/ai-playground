@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { CLAUDE } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 
 const REQUEST =
   "Allow doctors to securely access Electronic Health Records from hospital-managed devices.";
@@ -21,11 +21,14 @@ const ILLUSTRATION_ARIA_LABEL =
 function RequestBubble() {
   return (
     <div
-      className="rounded-xl px-4 py-3.5"
-      style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
+      className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5"
     >
-      <p className="text-[9px] uppercase tracking-[0.14em] text-white/35">Business request</p>
-      <p className="mt-1.5 text-[12px] leading-relaxed text-white/78">&ldquo;{REQUEST}&rdquo;</p>
+      <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-neutral-500">
+        Business request
+      </p>
+      <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-800">
+        &ldquo;{REQUEST}&rdquo;
+      </p>
     </div>
   );
 }
@@ -33,11 +36,13 @@ function RequestBubble() {
 function FastPathArrow({ reduced }: { reduced: boolean }) {
   return (
     <div className="relative flex flex-col items-center py-3" aria-hidden>
-      <p className="mb-2 text-[9px] uppercase tracking-[0.16em] text-[#c64545]/70">Immediate</p>
-      <div className="h-6 w-px bg-gradient-to-b from-white/15 to-[#c64545]/55" />
+      <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.16em] text-red-700">
+        Immediate
+      </p>
+      <div className="h-6 w-px bg-gradient-to-b from-neutral-300 to-red-400/70" />
       {!reduced ? (
         <motion.svg
-          className="h-3.5 w-3.5 text-[#c64545]/80"
+          className="h-3.5 w-3.5 text-red-600"
           viewBox="0 0 16 16"
           fill="none"
           animate={{ y: [0, 3, 0], opacity: [0.55, 1, 0.55] }}
@@ -52,7 +57,7 @@ function FastPathArrow({ reduced }: { reduced: boolean }) {
           />
         </motion.svg>
       ) : (
-        <svg className="h-3.5 w-3.5 text-[#c64545]/80" viewBox="0 0 16 16" fill="none">
+        <svg className="h-3.5 w-3.5 text-red-600" viewBox="0 0 16 16" fill="none">
           <path
             d="M8 3v10M8 13l-3-3M8 13l3-3"
             stroke="currentColor"
@@ -69,21 +74,23 @@ function FastPathArrow({ reduced }: { reduced: boolean }) {
 function ReflectionPath({ reduced }: { reduced: boolean }) {
   return (
     <div className="relative flex flex-col items-center py-3" aria-hidden>
-      <p className="mb-2 text-[9px] uppercase tracking-[0.16em] text-[#f97316]/75">Pause</p>
-      <div className="relative flex h-8 w-8 items-center justify-center rounded-full border border-[#f97316]/35 bg-[#f97316]/10">
+      <p className="mb-2 text-[9px] font-medium uppercase tracking-[0.16em] text-orange-700">
+        Pause
+      </p>
+      <div className="relative flex h-8 w-8 items-center justify-center rounded-full border border-orange-300 bg-orange-50">
         {!reduced ? (
           <motion.span
-            className="absolute inset-0 rounded-full border border-[#f97316]/25"
+            className="absolute inset-0 rounded-full border border-orange-300/60"
             animate={{ scale: [1, 1.35], opacity: [0.45, 0] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
           />
         ) : null}
-        <svg className="h-3.5 w-3.5 text-[#f97316]" viewBox="0 0 16 16" fill="none">
+        <svg className="h-3.5 w-3.5 text-orange-600" viewBox="0 0 16 16" fill="none">
           <path d="M5.5 4.5v7M10.5 4.5v7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
       </div>
-      <div className="mt-2 h-5 w-px bg-gradient-to-b from-[#f97316]/45 to-[#5C97EE]/45" />
-      <svg className="h-3.5 w-3.5 text-[#5C97EE]/75" viewBox="0 0 16 16" fill="none">
+      <div className="mt-2 h-5 w-px bg-gradient-to-b from-orange-400/50 to-sky-500/50" />
+      <svg className="h-3.5 w-3.5 text-sky-600" viewBox="0 0 16 16" fill="none">
         <path
           d="M8 3v10M8 13l-3-3M8 13l3-3"
           stroke="currentColor"
@@ -102,15 +109,15 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
   return (
     <figure className="space-y-3">
       <div
-        className="overflow-hidden rounded-lg border border-white/10 px-5 py-7 sm:px-7 md:py-9"
-        style={{ backgroundColor: "#0D1114" }}
+        className="overflow-hidden rounded-lg border border-neutral-200 px-5 py-7 sm:px-7 md:py-9 case-study-light-panel"
+        style={{ backgroundColor: CLAUDE.bg }}
         aria-label={ILLUSTRATION_ARIA_LABEL}
       >
         <header className="mx-auto max-w-lg text-center">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">
+          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-neutral-500">
             Understanding Before Generation
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-white/50">
+          <p className="mt-2 text-sm leading-relaxed text-neutral-600">
             The first prototype answered immediately. The final experience proved understanding
             first.
           </p>
@@ -123,43 +130,44 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
             viewport={{ once: true, amount: 0.45 }}
             transition={{ duration: 0.35 }}
             className="flex flex-col rounded-2xl border px-5 py-6 sm:px-6"
-            style={{ borderColor: "rgb(198 69 69 / 0.22)", backgroundColor: "rgb(31 30 27 / 0.45)" }}
+            style={{
+              borderColor: "rgb(185 28 28 / 0.28)",
+              backgroundColor: "rgb(254 242 242 / 0.85)",
+            }}
           >
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/40">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-red-800">
               First prototype
             </p>
-            <p className="mt-2 text-[13px] text-white/70">Generate first, understand later</p>
+            <p className="mt-2 text-[13px] text-neutral-700">Generate first, understand later</p>
 
             <div className="mt-5 flex flex-1 flex-col">
               <RequestBubble />
               <FastPathArrow reduced={Boolean(reduced)} />
               <div
-                className="rounded-xl px-4 py-4"
-                style={{
-                  backgroundColor: "rgb(198 69 69 / 0.08)",
-                  boxShadow: "inset 0 0 0 1px rgb(198 69 69 / 0.2)",
-                }}
+                className="rounded-xl border bg-white px-4 py-4"
+                style={{ borderColor: "rgb(185 28 28 / 0.22)" }}
               >
-                <p className="text-[9px] uppercase tracking-[0.14em] text-[#c64545]/75">Output</p>
-                <p className="mt-2 text-[14px] font-medium leading-snug text-white/90">
+                <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-red-700">
+                  Output
+                </p>
+                <p className="mt-2 text-[14px] font-medium leading-snug text-neutral-900">
                   &ldquo;Here&rsquo;s your policy.&rdquo;
                 </p>
                 <div className="mt-3 space-y-2">
                   {["Source", "Destination", "Protocol", "Ports"].map((field) => (
                     <div
                       key={field}
-                      className="flex items-center justify-between rounded-lg px-3 py-2"
-                      style={{ backgroundColor: "rgb(255 255 255 / 0.03)" }}
+                      className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2"
                     >
-                      <span className="text-[10px] text-white/35">{field}</span>
-                      <span className="h-1.5 w-12 rounded-full bg-white/10" aria-hidden />
+                      <span className="text-[10px] font-medium text-neutral-600">{field}</span>
+                      <span className="h-1.5 w-12 rounded-full bg-neutral-200" aria-hidden />
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            <p className="mt-5 text-center text-[10px] leading-relaxed text-white/35">
+            <p className="mt-5 text-center text-[11px] leading-relaxed text-neutral-600">
               Answered before proving it understood the request
             </p>
           </motion.div>
@@ -170,25 +178,27 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
             viewport={{ once: true, amount: 0.45 }}
             transition={{ duration: 0.35, delay: 0.06 }}
             className="flex flex-col rounded-2xl border px-5 py-6 sm:px-6"
-            style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: "rgb(31 30 27 / 0.45)" }}
+            style={{
+              borderColor: CLAUDE.primaryBorder,
+              backgroundColor: "rgb(239 246 255 / 0.9)",
+            }}
           >
-            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/40">
+            <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-sky-800">
               Slowed experience
             </p>
-            <p className="mt-2 text-[13px] text-white/70">Reflect understanding, then confirm</p>
+            <p className="mt-2 text-[13px] text-neutral-700">Reflect understanding, then confirm</p>
 
             <div className="mt-5 flex flex-1 flex-col">
               <RequestBubble />
               <ReflectionPath reduced={Boolean(reduced)} />
 
               <div
-                className="rounded-xl px-4 py-4"
-                style={{
-                  backgroundColor: CLAUDE.primaryMuted,
-                  boxShadow: `inset 0 0 0 1px ${CLAUDE.primaryBorder}`,
-                }}
+                className="rounded-xl border bg-white px-4 py-4"
+                style={{ borderColor: CLAUDE.primaryBorder }}
               >
-                <p className="text-[9px] uppercase tracking-[0.14em] text-white/40">It identified</p>
+                <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-sky-700">
+                  It identified
+                </p>
                 <ul className="mt-3 flex flex-wrap gap-2" aria-label="Reflected understanding">
                   {IDENTIFIED_ITEMS.map((item, index) => (
                     <motion.li
@@ -198,13 +208,7 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
                       viewport={{ once: true, amount: 0.6 }}
                       transition={{ duration: 0.28, delay: 0.08 + index * 0.04 }}
                     >
-                      <span
-                        className="inline-flex rounded-full px-2.5 py-1 text-[11px] text-white/78"
-                        style={{
-                          backgroundColor: `rgb(92 151 238 / ${0.1 + (index % 3) * 0.04})`,
-                          boxShadow: `inset 0 0 0 1px rgb(92 151 238 / ${0.18 + (index % 3) * 0.06})`,
-                        }}
-                      >
+                      <span className="inline-flex rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-medium text-sky-900">
                         {item}
                       </span>
                     </motion.li>
@@ -212,20 +216,16 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
                 </ul>
               </div>
 
-              <div
-                className="mt-3 rounded-xl px-4 py-3.5"
-                style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-              >
-                <p className="text-[13px] font-medium leading-snug text-white/88">
+              <div className="mt-3 rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
+                <p className="text-[13px] font-medium leading-snug text-neutral-900">
                   &ldquo;Here&rsquo;s what I think you mean. Did I get it right?&rdquo;
                 </p>
               </div>
 
-              <div
-                className="mt-3 rounded-xl px-4 py-3"
-                style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
-              >
-                <p className="text-[9px] uppercase tracking-[0.14em] text-white/40">Confirm understanding</p>
+              <div className="mt-3 rounded-xl border border-neutral-200 bg-white px-4 py-3">
+                <p className="text-[9px] font-medium uppercase tracking-[0.14em] text-neutral-500">
+                  Confirm understanding
+                </p>
                 <div className="mt-2 flex flex-wrap gap-1.5">
                   {[
                     { label: "Yes — looks right", primary: true },
@@ -240,12 +240,12 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
                           ? {
                               borderColor: CLAUDE.primaryBorder,
                               backgroundColor: CLAUDE.primaryMuted,
-                              color: CLAUDE.text,
+                              color: CLAUDE.primaryActive,
                             }
                           : {
-                              borderColor: CLAUDE.border,
-                              backgroundColor: CLAUDE.surfaceOverlay,
-                              color: CLAUDE.textMuted,
+                              borderColor: CLAUDE.borderStrong,
+                              backgroundColor: "#FFFFFF",
+                              color: CLAUDE.textSecondary,
                             }
                       }
                     >
@@ -256,13 +256,13 @@ export function PolicyCopilotUnderstandingBeforeGeneration() {
               </div>
             </div>
 
-            <p className="mt-5 text-center text-[10px] leading-relaxed text-white/35">
+            <p className="mt-5 text-center text-[11px] leading-relaxed text-neutral-600">
               People review meaning before configuration
             </p>
           </motion.div>
         </div>
 
-        <p className="mx-auto mt-7 max-w-md text-center text-[13px] leading-relaxed text-white/55">
+        <p className="mx-auto mt-7 max-w-md text-center text-[13px] leading-relaxed text-neutral-600">
           That small pause changed everything. People stopped reviewing configuration. They started
           reviewing meaning.
         </p>

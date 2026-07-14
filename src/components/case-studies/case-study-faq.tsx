@@ -32,26 +32,26 @@ function FaqItem({
   const reduced = useReducedMotion();
 
   return (
-    <div className="border-b border-white/10 last:border-b-0">
+    <div className="border-b border-neutral-200 last:border-b-0">
       <button
         type="button"
         id={buttonId}
         aria-expanded={open}
         aria-controls={panelId}
         onClick={onToggle}
-        className="group flex w-full items-start justify-between gap-6 py-5 text-left transition-colors hover:text-white md:py-6"
+        className="group flex w-full items-start justify-between gap-6 py-5 text-left transition-colors hover:text-neutral-900 md:py-6"
       >
         <span
           className={cn(
             "text-base font-medium leading-snug tracking-tight transition-colors md:text-lg",
-            open ? "text-white" : "text-neutral-200 group-hover:text-white",
+            open ? "text-neutral-900" : "text-neutral-800 group-hover:text-neutral-900",
           )}
         >
           {item.question}
         </span>
         <motion.span
           aria-hidden
-          className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-lg font-light leading-none text-neutral-500 transition-colors group-hover:text-neutral-300"
+          className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-lg font-light leading-none text-neutral-400 transition-colors group-hover:text-neutral-600"
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: reduced ? 0 : 0.22, ease: [0.25, 0.1, 0.25, 1] }}
         >
@@ -70,7 +70,7 @@ function FaqItem({
             transition={{ duration: 0.28, ease: [0.25, 0.1, 0.25, 1] }}
             className="overflow-hidden"
           >
-            <p className="max-w-3xl pb-5 text-base leading-relaxed text-neutral-400 md:pb-6">
+            <p className="max-w-3xl pb-5 text-base leading-relaxed text-neutral-600 md:pb-6">
               {item.answer}
             </p>
           </motion.div>
@@ -86,8 +86,8 @@ export function CaseStudyFaq({ items, title = "FAQ", className = "" }: CaseStudy
 
   return (
     <section className={cn("w-full max-w-5xl mx-auto", className)} aria-label={title}>
-      <CaseStudyH2 className="!mb-6 md:!mb-8">{title}</CaseStudyH2>
-      <div className="border-t border-white/10">
+      <CaseStudyH2 className="mb-6 md:mb-8">{title}</CaseStudyH2>
+      <div className="border-t border-neutral-200">
         {items.map((item, index) => {
           const itemId = `${baseId}-faq-${index}`;
           const isOpen = openId === itemId;

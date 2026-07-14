@@ -19,8 +19,11 @@ import {
   INSIGHT_KIND_LABEL,
 } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
 import {
+  JOURNEY_STEP_COUNT,
+  JOURNEY_STEPS,
+} from "@/components/case-studies/policy-copilot/policy-copilot-journey-steps";
+import {
   COPILOT_SKILLS,
-  isSkillComplete,
   type CopilotSkillId,
 } from "@/components/case-studies/policy-copilot/policy-copilot-skills";
 import { CopilotMark } from "@/components/case-studies/policy-copilot/policy-copilot-shell";
@@ -43,27 +46,43 @@ function SkillIcon({ icon, className }: { icon: (typeof SKILL_TOKENS)[CopilotSki
   );
 }
 
-export function JourneySkillProgressBar({ activeSkill }: { activeSkill: CopilotSkillId }) {
+/** Segmented journey bar — 8 case-study steps, not the 6 product skills. */
+export function JourneySkillProgressBar({
+  currentStep,
+}: {
+  /** 1-based journey step from `resolveJourneyStep` */
+  currentStep: number;
+}) {
+  const step = Math.min(JOURNEY_STEP_COUNT, Math.max(1, currentStep));
+
   return (
-    <div className="flex gap-1" aria-hidden>
-      {COPILOT_SKILLS.map((s) => {
-        const complete = isSkillComplete(s.id, activeSkill);
-        const active = s.id === activeSkill;
-        const t = SKILL_TOKENS[s.id];
-        const tips = SKILL_STEP_TOOLTIPS[s.id];
+    <div
+      className="flex gap-1"
+      aria-hidden
+      title={`Step ${step} of ${JOURNEY_STEP_COUNT}`}
+    >
+      {JOURNEY_STEPS.map((journey) => {
+        const complete = journey.step < step;
+        const active = journey.step === step;
+        const isLastComplete = step >= JOURNEY_STEP_COUNT && journey.step === JOURNEY_STEP_COUNT;
 
         return (
           <div
-            key={s.id}
+            key={journey.step}
             className="group/step relative h-1 flex-1 overflow-hidden rounded-full"
             style={{ backgroundColor: CLAUDE.surfaceOverlay }}
           >
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
-                width: complete ? "100%" : active ? "55%" : "0%",
-                backgroundColor: complete ? CLAUDE.validated : active ? t.color : "transparent",
-                boxShadow: active ? `0 0 8px ${t.color}55` : undefined,
+                width: complete || isLastComplete ? "100%" : active ? "45%" : "0%",
+                backgroundColor:
+                  complete || isLastComplete
+                    ? CLAUDE.validated
+                    : active
+                      ? CLAUDE.primary
+                      : "transparent",
+                boxShadow: active && !isLastComplete ? `0 0 8px ${CLAUDE.primary}55` : undefined,
               }}
             />
             <span
@@ -75,10 +94,14 @@ export function JourneySkillProgressBar({ activeSkill }: { activeSkill: CopilotS
               }}
               role="tooltip"
             >
-              <span className="font-medium" style={{ color: t.color }}>
-                {s.label}
+              <span className="font-medium" style={{ color: CLAUDE.primary }}>
+                Step {journey.step}
               </span>
-              {active ? ` — ${tips.active}` : complete ? " — complete" : ` — ${tips.next}`}
+              {active && !isLastComplete
+                ? ` — ${journey.title}`
+                : complete || isLastComplete
+                  ? ` — ${journey.title} · complete`
+                  : ` — ${journey.title}`}
             </span>
           </div>
         );
@@ -91,17 +114,23 @@ export function JourneyStepIndicatorRich({
   activeSkill,
   showProgress = true,
   caseStudyStep,
+  currentJourneyStep,
 }: {
   activeSkill: CopilotSkillId;
   showProgress?: boolean;
   /** Case study walkthrough label — e.g. "Step 4 of 8 — Assemble the Policy" */
   caseStudyStep?: string;
+  /** 1-based journey step for the progress bar */
+  currentJourneyStep?: number;
 }) {
   const activeIdx = COPILOT_SKILLS.findIndex((s) => s.id === activeSkill);
   const skill = COPILOT_SKILLS[activeIdx];
   const tokens = SKILL_TOKENS[activeSkill];
   const stepTips = SKILL_STEP_TOOLTIPS[activeSkill];
   const nextSkill = COPILOT_SKILLS[activeIdx + 1];
+  const progressStep =
+    currentJourneyStep ??
+    Math.min(JOURNEY_STEP_COUNT, Math.max(1, activeIdx + 1));
 
   const titleBlock = (
     <>
@@ -156,7 +185,7 @@ export function JourneyStepIndicatorRich({
     <div className="flex min-w-0 flex-1 flex-col gap-2" aria-label="Policy journey progress">
       <div className="flex items-center gap-3">{titleBlock}</div>
       <div className="pl-11">
-        <JourneySkillProgressBar activeSkill={activeSkill} />
+        <JourneySkillProgressBar currentStep={progressStep} />
       </div>
     </div>
   );

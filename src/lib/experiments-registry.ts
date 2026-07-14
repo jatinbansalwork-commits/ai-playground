@@ -250,7 +250,7 @@ export const EXPERIMENTS_REGISTRY: ExperimentRegistryEntry[] = [
             },
             {
               type: "image",
-              src: "/Review%20Checklist/cover.png",
+              src: "/assets/craft/design-review-checklist-cover.png",
               alt: "Design system overview",
               aspect: "natural",
             },

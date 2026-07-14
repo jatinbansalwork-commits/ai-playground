@@ -27,9 +27,9 @@ const SENTIMENT_RULES: readonly SentimentRule[] = [
       "good to see",
     ],
     queries: [
-      "joey tribbiani how you doin",
-      "chandler bing hey",
-      "friends wave hello",
+      "spider-man mcu hello",
+      "iron man wave",
+      "avengers assemble",
     ],
   },
   {
@@ -49,10 +49,10 @@ const SENTIMENT_RULES: readonly SentimentRule[] = [
       "out of budget",
     ],
     queries: [
-      "chandler bing confused",
-      "ross geller confused",
-      "joey tribbiani confused",
-      "sheldon cooper puzzled",
+      "hulk confused",
+      "iron man frustrated",
+      "marvel confused reaction",
+      "tony stark what",
     ],
   },
   {
@@ -72,11 +72,11 @@ const SENTIMENT_RULES: readonly SentimentRule[] = [
       "fun fact",
     ],
     queries: [
-      "friends celebration",
-      "chandler bing dance",
-      "joey tribbiani happy",
-      "ross geller excited",
-      "sheldon cooper celebrate",
+      "avengers celebrate",
+      "iron man dance",
+      "thor victory",
+      "marvel celebration",
+      "avengers assemble",
     ],
   },
   {
@@ -98,11 +98,11 @@ const SENTIMENT_RULES: readonly SentimentRule[] = [
       "browse",
     ],
     queries: [
-      "ross geller thinking",
-      "sheldon cooper thinking",
-      "chandler bing reading",
-      "friends thinking",
-      "ross geller lecture",
+      "tony stark thinking",
+      "iron man thinking",
+      "doctor strange marvel",
+      "marvel reaction thinking",
+      "captain america serious",
     ],
   },
   {
@@ -121,10 +121,10 @@ const SENTIMENT_RULES: readonly SentimentRule[] = [
       "when you're ready",
     ],
     queries: [
-      "chandler bing thumbs up",
-      "joey tribbiani supportive",
-      "ross geller nod",
-      "sheldon cooper thumbs up",
+      "captain america thumbs up",
+      "iron man thumbs up",
+      "spider-man mcu nod",
+      "marvel supportive",
     ],
   },
 ];

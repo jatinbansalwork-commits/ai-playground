@@ -1541,6 +1541,7 @@ export function PolicyCopilotLiving({
               activeSkill={activeSkill}
               showProgress={false}
               caseStudyStep={journeyStepLabel(journeyStep)}
+              currentJourneyStep={journeyStep.step}
             />
             <ConfidenceRing
               phase={phase}
@@ -1549,7 +1550,7 @@ export function PolicyCopilotLiving({
               mappingDone={mappingDone}
             />
           </div>
-          <JourneySkillProgressBar activeSkill={activeSkill} />
+          <JourneySkillProgressBar currentStep={journeyStep.step} />
         </header>
         ) : null}
 

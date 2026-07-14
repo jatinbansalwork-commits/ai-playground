@@ -10,6 +10,8 @@ export interface CaseStudyBentoCell {
   alt?: string;
   paragraph?: ReactNode;
   borderless?: boolean;
+  /** Override media shell background when a frame border is shown. */
+  shellBackground?: string;
   rounded?: string;
 }
 
@@ -40,6 +42,7 @@ export function CaseStudyBento({
           alt={cell.alt ?? cell.label}
           paragraph={cell.paragraph}
           borderless={cell.borderless}
+          shellBackground={cell.shellBackground}
           rounded={cell.rounded}
           className={cell.span === "full" ? "md:col-span-2" : undefined}
         />

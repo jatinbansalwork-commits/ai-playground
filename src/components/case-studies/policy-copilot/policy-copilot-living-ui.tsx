@@ -2094,116 +2094,142 @@ export function UnderstandingReflectionCard({
     return (
       <div
         className={cn(
-          "rounded-lg px-3 py-2.5 transition-colors",
+          "rounded-xl px-3.5 py-3 transition-colors",
           isWhyOpen && "ring-1 ring-inset",
         )}
         style={{
-          backgroundColor: CLAUDE.surfaceOverlay,
-          boxShadow: isWhyOpen ? `inset 0 0 0 1px ${CLAUDE.primary}44` : undefined,
+          backgroundColor: isEditing ? CLAUDE.surfaceRaised : CLAUDE.surfaceOverlay,
+          boxShadow: isEditing
+            ? `inset 0 0 0 1px ${CLAUDE.primaryBorder}`
+            : isWhyOpen
+              ? `inset 0 0 0 1px ${CLAUDE.primary}44`
+              : undefined,
         }}
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
+        {isEditing ? (
+          <div className="space-y-2.5">
             <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
               {row.label}
               {certaintyBadge(row.certainty)}
             </p>
-            {isEditing ? (
-              <input
-                type="text"
-                value={draftValue}
-                onChange={(e) => setDraftValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    saveEdit(row);
-                  }
-                  if (e.key === "Escape") cancelEdit();
-                }}
-                className={cn(
-                  COPILOT_FOCUS,
-                  "mt-1 w-full rounded-lg border bg-transparent px-2.5 py-1.5 text-[13px] outline-none",
-                )}
-                style={{ borderColor: CLAUDE.primaryBorder, color: CLAUDE.text }}
-                autoFocus
-                aria-label={`Edit ${row.label}`}
-              />
-            ) : (
-              <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
-                {displayValue(row)}
-                {fieldOverrides?.[row.fieldId] ? (
-                  <span className="ml-1.5 text-[10px] font-medium" style={{ color: CLAUDE.validated }}>
-                    · edited
-                  </span>
-                ) : null}
-              </p>
-            )}
-          </div>
-          {interactive && !isEditing ? (
-            <div className="flex shrink-0 items-center gap-1">
-              <button
-                type="button"
-                onClick={() => startEdit(row)}
-                className={cn(
-                  COPILOT_FOCUS,
-                  COPILOT_TARGET.chip,
-                  "rounded-md px-2 py-1 text-[10px] font-medium",
-                )}
-                style={{ color: CLAUDE.textMuted }}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                onClick={() => toggleWhy(row)}
-                className={cn(
-                  COPILOT_FOCUS,
-                  COPILOT_TARGET.chip,
-                  "rounded-md px-2 py-1 text-[10px] font-medium",
-                )}
-                style={{ color: isWhyOpen ? CLAUDE.text : CLAUDE.primary }}
-                aria-expanded={isWhyOpen}
-              >
-                Why?
-              </button>
-            </div>
-          ) : null}
-          {isEditing ? (
-            <div className="flex shrink-0 items-center gap-1">
+            <input
+              type="text"
+              value={draftValue}
+              onChange={(e) => setDraftValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  saveEdit(row);
+                }
+                if (e.key === "Escape") cancelEdit();
+              }}
+              className={cn(
+                COPILOT_FOCUS,
+                "h-9 w-full rounded-lg border px-3 text-[13px] leading-none outline-none",
+              )}
+              style={{
+                borderColor: CLAUDE.primaryBorder,
+                backgroundColor: CLAUDE.bg,
+                color: CLAUDE.text,
+              }}
+              autoFocus
+              aria-label={`Edit ${row.label}`}
+            />
+            <div className="flex items-center justify-end gap-2">
               <button
                 type="button"
                 onClick={cancelEdit}
-                className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-md px-2 py-1 text-[10px] font-medium")}
-                style={{ color: CLAUDE.textMuted }}
+                className={cn(
+                  COPILOT_FOCUS,
+                  COPILOT_TARGET.chipCompact,
+                  "rounded-lg border px-3 text-[12px] font-medium",
+                )}
+                style={{
+                  borderColor: CLAUDE.borderStrong,
+                  backgroundColor: CLAUDE.surfaceOverlay,
+                  color: CLAUDE.textSecondary,
+                }}
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={() => saveEdit(row)}
-                className={cn(COPILOT_FOCUS, COPILOT_TARGET.chip, "rounded-md px-2 py-1 text-[10px] font-medium text-white")}
+                className={cn(
+                  COPILOT_FOCUS,
+                  COPILOT_TARGET.chipCompact,
+                  "rounded-lg px-3.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90",
+                )}
                 style={{ backgroundColor: CLAUDE.primary }}
               >
                 Save
               </button>
             </div>
-          ) : null}
-        </div>
-        {isWhyOpen ? (
-          <motion.div
-            initial={reduced ? false : { opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="mt-2 border-t pt-2"
-            style={{ borderColor: CLAUDE.hairline }}
-          >
-            <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.primary }}>
-              Why I read it this way
-            </p>
-            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-              {whyText}
-            </p>
-          </motion.div>
-        ) : null}
+          </div>
+        ) : (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
+                  {row.label}
+                  {certaintyBadge(row.certainty)}
+                </p>
+                <p className="mt-1.5 text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+                  {displayValue(row)}
+                  {fieldOverrides?.[row.fieldId] ? (
+                    <span className="ml-1.5 text-[10px] font-medium" style={{ color: CLAUDE.validated }}>
+                      · edited
+                    </span>
+                  ) : null}
+                </p>
+              </div>
+              {interactive ? (
+                <div className="flex shrink-0 items-center gap-1 pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => startEdit(row)}
+                    className={cn(
+                      COPILOT_FOCUS,
+                      COPILOT_TARGET.chipCompact,
+                      "rounded-md px-2.5 text-[11px] font-medium",
+                    )}
+                    style={{ color: CLAUDE.textMuted }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleWhy(row)}
+                    className={cn(
+                      COPILOT_FOCUS,
+                      COPILOT_TARGET.chipCompact,
+                      "rounded-md px-2.5 text-[11px] font-medium",
+                    )}
+                    style={{ color: isWhyOpen ? CLAUDE.text : CLAUDE.primary }}
+                    aria-expanded={isWhyOpen}
+                  >
+                    Why?
+                  </button>
+                </div>
+              ) : null}
+            </div>
+            {isWhyOpen ? (
+              <motion.div
+                initial={reduced ? false : { opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="mt-2.5 border-t pt-2.5"
+                style={{ borderColor: CLAUDE.hairline }}
+              >
+                <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.primary }}>
+                  Why I read it this way
+                </p>
+                <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  {whyText}
+                </p>
+              </motion.div>
+            ) : null}
+          </>
+        )}
       </div>
     );
   }

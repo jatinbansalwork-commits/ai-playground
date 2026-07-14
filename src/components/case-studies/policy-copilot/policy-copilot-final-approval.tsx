@@ -2,7 +2,12 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ShieldCheckIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
-import { CLAUDE, COPILOT_FOCUS, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import {
+  EDITORIAL,
+  COPILOT_FOCUS,
+  COPILOT_TYPE,
+  LIVING_MOTION,
+} from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const SUMMARY_SECTIONS = [
@@ -56,13 +61,13 @@ const ILLUSTRATION_ARIA_LABEL =
 function toneStyles(tone: "neutral" | "primary" | "success" | "warn") {
   switch (tone) {
     case "success":
-      return { accent: CLAUDE.validated, muted: CLAUDE.validatedMuted };
+      return { accent: EDITORIAL.validated, muted: EDITORIAL.validatedMuted, badgeBg: "#ECFDF5" };
     case "warn":
-      return { accent: CLAUDE.warning, muted: CLAUDE.warningMuted };
+      return { accent: EDITORIAL.warning, muted: EDITORIAL.warningMuted, badgeBg: "#FFFBEB" };
     case "primary":
-      return { accent: CLAUDE.primary, muted: CLAUDE.primaryMuted };
+      return { accent: EDITORIAL.primaryActive, muted: EDITORIAL.primaryMuted, badgeBg: "#EFF6FF" };
     default:
-      return { accent: CLAUDE.textSecondary, muted: CLAUDE.surfaceOverlay };
+      return { accent: EDITORIAL.textSecondary, muted: "#F5F5F5", badgeBg: "#F5F5F5" };
   }
 }
 
@@ -74,27 +79,27 @@ function SummaryRow({
   delay: number;
 }) {
   const reduced = useReducedMotion();
-  const { accent, muted } = toneStyles(section.tone);
+  const { accent, muted, badgeBg } = toneStyles(section.tone);
 
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
-      className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl px-3.5 py-3"
-      style={{ backgroundColor: muted, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
+      className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border border-neutral-200 bg-white px-3.5 py-3"
+      style={{ boxShadow: `inset 3px 0 0 0 ${accent}` }}
     >
       <div className="min-w-0">
-        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
+        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: EDITORIAL.textMuted }}>
           {section.label}
         </p>
-        <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+        <p className="mt-1 text-[13px] leading-relaxed" style={{ color: EDITORIAL.text }}>
           {section.value}
         </p>
       </div>
       <span
-        className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium"
-        style={{ backgroundColor: CLAUDE.surfaceRaised, color: accent }}
+        className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold"
+        style={{ backgroundColor: badgeBg, color: accent }}
       >
         {section.status}
       </span>
@@ -107,8 +112,8 @@ export function PolicyCopilotFinalApproval() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: EDITORIAL.bg }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="grid gap-4 p-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] md:gap-5 md:p-5">
@@ -122,24 +127,21 @@ export function PolicyCopilotFinalApproval() {
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={LIVING_MOTION.discover}
-          className="flex flex-col rounded-xl p-4"
-          style={{
-            backgroundColor: CLAUDE.surfaceRaised,
-            boxShadow: `inset 0 0 0 1px ${CLAUDE.primaryBorder}`,
-          }}
+          className="flex flex-col rounded-xl border bg-white p-4"
+          style={{ borderColor: EDITORIAL.primaryBorder }}
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+              <p className="text-[13px] font-semibold" style={{ color: EDITORIAL.text }}>
                 Approval readiness
               </p>
-              <p className="mt-0.5 text-[11px]" style={{ color: CLAUDE.textMuted }}>
+              <p className="mt-0.5 text-[12px]" style={{ color: EDITORIAL.textSecondary }}>
                 Draft policy · clinical access request
               </p>
             </div>
             <span
               className="flex h-9 w-9 items-center justify-center rounded-full"
-              style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
+              style={{ backgroundColor: EDITORIAL.validatedMuted, color: EDITORIAL.validated }}
               aria-hidden
             >
               <ShieldCheckIcon className="h-4 w-4" />
@@ -148,17 +150,20 @@ export function PolicyCopilotFinalApproval() {
 
           <div className="mt-5">
             <div className="flex items-end justify-between gap-2">
-              <p className="text-[28px] font-medium leading-none tabular-nums" style={{ color: CLAUDE.text }}>
+              <p
+                className="text-[28px] font-semibold leading-none tabular-nums"
+                style={{ color: EDITORIAL.text }}
+              >
                 94%
               </p>
-              <p className="text-[11px]" style={{ color: CLAUDE.validated }}>
+              <p className="text-[12px] font-medium" style={{ color: EDITORIAL.validated }}>
                 Confidence at ready
               </p>
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full" style={{ backgroundColor: CLAUDE.surfaceOverlay }}>
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-neutral-100">
               <motion.div
                 className="h-full rounded-full"
-                style={{ backgroundColor: CLAUDE.validated }}
+                style={{ backgroundColor: EDITORIAL.validated }}
                 initial={reduced ? false : { width: "0%" }}
                 animate={{ width: "94%" }}
                 transition={{ duration: 0.8, ease: LIVING_MOTION.confidence.ease }}
@@ -167,13 +172,16 @@ export function PolicyCopilotFinalApproval() {
           </div>
 
           <div
-            className="mt-5 rounded-xl px-3 py-2.5"
-            style={{ backgroundColor: CLAUDE.warningMuted, boxShadow: `inset 0 0 0 1px ${CLAUDE.warning}33` }}
+            className="mt-5 rounded-xl border px-3 py-2.5"
+            style={{
+              borderColor: "rgb(180 83 9 / 0.35)",
+              backgroundColor: EDITORIAL.warningMuted,
+            }}
           >
-            <p className="text-[11px] font-medium" style={{ color: CLAUDE.warning }}>
+            <p className="text-[12px] font-semibold" style={{ color: EDITORIAL.warning }}>
               Human approval required
             </p>
-            <p className="mt-1 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: EDITORIAL.textSecondary }}>
               Policy Copilot prepared the draft. You own the decision to deploy to production.
             </p>
           </div>
@@ -183,9 +191,9 @@ export function PolicyCopilotFinalApproval() {
               type="button"
               className={cn(
                 COPILOT_FOCUS,
-                "w-full rounded-xl px-4 py-3 text-[13px] font-medium transition-opacity hover:opacity-95",
+                "w-full rounded-xl px-4 py-3 text-[13px] font-medium text-white transition-opacity hover:opacity-95",
               )}
-              style={{ backgroundColor: CLAUDE.primary, color: CLAUDE.text }}
+              style={{ backgroundColor: EDITORIAL.primary }}
             >
               Approve Policy
             </button>
@@ -194,12 +202,8 @@ export function PolicyCopilotFinalApproval() {
                 type="button"
                 className={cn(
                   COPILOT_FOCUS,
-                  "rounded-xl px-3 py-2 text-[12px] font-medium transition-colors hover:bg-white/[0.03]",
+                  "rounded-xl border border-neutral-300 bg-white px-3 py-2 text-[12px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50",
                 )}
-                style={{
-                  color: CLAUDE.textSecondary,
-                  boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}`,
-                }}
               >
                 Request changes
               </button>
@@ -207,12 +211,8 @@ export function PolicyCopilotFinalApproval() {
                 type="button"
                 className={cn(
                   COPILOT_FOCUS,
-                  "rounded-xl px-3 py-2 text-[12px] font-medium transition-colors hover:bg-white/[0.03]",
+                  "rounded-xl border border-neutral-300 bg-white px-3 py-2 text-[12px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50",
                 )}
-                style={{
-                  color: CLAUDE.textSecondary,
-                  boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}`,
-                }}
               >
                 Save draft
               </button>
@@ -222,12 +222,13 @@ export function PolicyCopilotFinalApproval() {
       </div>
 
       <div
-        className="mx-4 mb-4 rounded-xl px-3 py-2.5 md:mx-5 md:mb-5"
-        style={{ backgroundColor: CLAUDE.surfaceOverlay, boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}` }}
+        className="mx-4 mb-4 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 md:mx-5 md:mb-5"
       >
-        <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
-          <span style={{ color: CLAUDE.textMuted }}>AI supports judgement → you approve deployment</span>
-          <span className="font-medium" style={{ color: CLAUDE.primary }}>
+        <div className="flex flex-wrap items-center justify-between gap-2 text-[12px]">
+          <span style={{ color: EDITORIAL.textSecondary }}>
+            AI supports judgement → you approve deployment
+          </span>
+          <span className="font-semibold" style={{ color: EDITORIAL.primaryActive }}>
             Approve Policy
           </span>
         </div>

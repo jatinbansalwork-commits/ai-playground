@@ -4,9 +4,9 @@ import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import { CaseStudyMedia } from "@/components/case-studies/case-study-media";
 import {
+  CaseStudyDivider,
   CaseStudyH2,
   CaseStudyH3,
-  CaseStudyDivider,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -69,6 +69,7 @@ export default function KalashRewardsContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>Why were Indians still saving offline?</CaseStudyH2>
         <CaseStudyParagraph>
           People had already become comfortable using UPI for daily payments like
@@ -81,7 +82,6 @@ export default function KalashRewardsContent() {
           too complicated to understand.
         </CaseStudyParagraph>
 
-        <CaseStudyDivider />
 
         <CaseStudyH2>One user during testing described it simply:</CaseStudyH2>
         <CaseStudyQuote>
@@ -105,6 +105,7 @@ export default function KalashRewardsContent() {
       </CaseStudyProse>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>What did I do</CaseStudyH2>
       </CaseStudyProse>
 
@@ -199,8 +200,9 @@ export default function KalashRewardsContent() {
         />
       </CaseStudyWide>
 
-      <div className="w-full space-y-8">
+      <div className="w-full">
         <CaseStudyProse>
+          <CaseStudyDivider />
           <CaseStudyH2>Trust and safety before anything else</CaseStudyH2>
           <CaseStudyParagraph dense>
             Saving money is emotional. Before users invest, they first need to
@@ -238,6 +240,7 @@ export default function KalashRewardsContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>Making investing fun</CaseStudyH2>
         <CaseStudyParagraph>
           We created engaging feature that kept the users excited and not
@@ -255,6 +258,7 @@ export default function KalashRewardsContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudyH2>Uncomplicated Investing</CaseStudyH2>
         <CaseStudyParagraph>
           Financial jargon and information is often tough to read. We switched

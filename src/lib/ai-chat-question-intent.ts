@@ -1,3 +1,4 @@
+import { resolveSuggestionChipReply } from "@/lib/ai-chat-chip-replies";
 import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 import { resolveCareerKnowledgeReply } from "@/lib/ai-chat-career-knowledge";
 import {
@@ -17,6 +18,10 @@ export type QuestionIntentId =
   | "contact"
   | "mentorship"
   | "career_interview"
+  | "strongest_project"
+  | "design_process"
+  | "work_history"
+  | "jb_manual"
   | "project_saltbot"
   | "project_cisco"
   | "project_piggy"
@@ -98,8 +103,11 @@ const INTENT_RULES: readonly IntentRule[] = [
       includesAny(text, [
         "how do i contact",
         "how to contact",
+        "how do i reach",
+        "how to reach",
         "get in touch",
         "reach out",
+        "reach him",
         "reach jb",
         "message jb",
         "talk to jb",
@@ -114,6 +122,54 @@ const INTENT_RULES: readonly IntentRule[] = [
     matches: (text) => includesAny(text, ["mentor", "mentorship", "career advice"]),
   },
   {
+    id: "strongest_project",
+    goal: "They want JB's strongest / flagship project — compare Policy Copilot, Saltbot, Piggy with metrics.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, [
+        "strongest project",
+        "best project",
+        "flagship",
+        "proudest project",
+        "favourite project",
+        "favorite project",
+      ]),
+  },
+  {
+    id: "design_process",
+    goal: "They asked how JB works / his design process — intent-first, prototype-in-code, measure impact.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, [
+        "design process",
+        "his process",
+        "how does he work",
+        "how does jb work",
+        "how he designs",
+        "how jb designs",
+      ]),
+  },
+  {
+    id: "work_history",
+    goal: "They asked where JB has worked — timeline across fintech, FreshPrints, Saltmine, Cisco.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, [
+        "where has he worked",
+        "where has jb worked",
+        "where did he work",
+        "work history",
+        "companies has he",
+        "companies has jb",
+      ]),
+  },
+  {
+    id: "jb_manual",
+    goal: "They asked what the JB Manual is — explain and link it.",
+    curated: true,
+    matches: (text) => includesAny(text, ["jb manual", "what is in the jb manual"]),
+  },
+  {
     id: "career_interview",
     goal: "Interview or background question — answer from career narratives with metrics.",
     curated: true,
@@ -123,7 +179,13 @@ const INTENT_RULES: readonly IntentRule[] = [
     id: "project_saltbot",
     goal: "They asked about Saltbot / conversational AI work — link that case study.",
     curated: true,
-    matches: (text) => includesAny(text, ["saltbot", "saltmine", "conversational analytics"]),
+    matches: (text) =>
+      includesAny(text, [
+        "saltbot",
+        "saltmine",
+        "conversational analytics",
+        "analytics answers",
+      ]),
   },
   {
     id: "project_cisco",
@@ -133,16 +195,21 @@ const INTENT_RULES: readonly IntentRule[] = [
       includesAny(text, [
         "cisco",
         "policy copilot",
+        "case notes",
         "field notes",
+        "jb's case notes",
         "jb's field notes",
         "jb notes",
         "firewall policy",
+        "intent-before-rules",
+        "intent before",
+        "user testing uncover",
         "agentiops",
       ]),
   },
   {
     id: "project_piggy",
-    goal: "They asked about Piggy / fintech support work — link that case study.",
+    goal: "They asked about Piggy / fintech support work — explain how tickets dropped (status clarity, timelines, Prime Hour), not just link the case.",
     curated: true,
     matches: (text) =>
       includesAny(text, ["piggy", "mutual fund", "support ticket"]) ||
@@ -242,6 +309,9 @@ export function buildIntentReply(
   userMessage: string,
   pagePath?: string,
 ): string | null {
+  const chipReply = resolveSuggestionChipReply(userMessage, pagePath);
+  if (chipReply) return chipReply;
+
   switch (intent.id) {
     case "greeting":
       return `How YOU doin'? I'm JB_AI — JB's chat on this portfolio. Could this *be* any more fun?
@@ -260,49 +330,135 @@ Ask about hiring, a case study, or how to reach JB — I'll match the answer to 
 Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
 
     case "contact":
-      return `You want to reach JB — Ross made me organise this:
-- [LinkedIn](${LINKEDIN})
-- [Email](mailto:${CONTACT_EMAIL})
-- [Resume](${RESUME})
-- [JB Manual](${JB_MANUAL}) for how he likes to work`;
+      return `Best ways to connect:
+
+- **[LinkedIn](${LINKEDIN})**
+- **[Email](mailto:${CONTACT_EMAIL})**
+- **[Resume](${RESUME})**
+- **[JB Manual](${JB_MANUAL})** for how he likes to work
+- Hiring? Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**
+
+Want a case first, or jump straight to hiring?`;
 
     case "mentorship":
-      return `You're asking about mentorship — JB's open when it's a good fit. Start with the [JB Manual](${JB_MANUAL}), then [LinkedIn](${LINKEDIN}) with **one** focused question.`;
+      return `JB's open to mentorship when it's a good fit — especially designers moving into product, fintech, or AI.
+
+Start with the **[JB Manual](${JB_MANUAL})**, then message on [LinkedIn](${LINKEDIN}) with **one** focused question. Keep it sharp — that's how you get a real answer.`;
+
+    case "work_history":
+      return resolveSuggestionChipReply("Where has JB worked?")!;
+
+    case "jb_manual":
+      return resolveSuggestionChipReply("What is in the JB Manual?")!;
+
+    case "strongest_project":
+      return resolveSuggestionChipReply("What's JB's strongest project?")!;
+
+    case "design_process":
+      return resolveSuggestionChipReply("What's his design process?")!;
 
     case "career_interview":
       return resolveCareerKnowledgeReply(userMessage);
 
     case "project_saltbot":
-      return `You're asking about Saltbot — conversational analytics for Saltmine. Reports in seconds, not spreadsheets. [Read the case study](${ROUTES.projects}/saltbot-ai-saltmine).`;
+      return `**Saltbot** (Saltmine) was built for a familiar pain: report analytics buried in spreadsheets and slow navigation.
+
+**What JB changed:**
+- Conversational / guided asks instead of hunting menus
+- Answers aimed at **~5 seconds**, not a data scrape ritual
+- Guardrails so automation stays trustworthy for workplace insights
+
+Desktop + mobile UX — proof of concept through shipped conversation patterns.
+
+Want a deeper tour of the [Saltbot case](${ROUTES.projects}/saltbot-ai-saltmine), or how he designs AI with guardrails?`;
 
     case "project_cisco":
-      return `You're asking about Policy Copilot — AI-assisted firewall policy at Cisco. Short read: [JB's Case Notes #1](${ROUTES.fieldNotesOne}). Full case study: [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}).`;
+      if (
+        userMessage.toLowerCase().includes("intent") ||
+        userMessage.toLowerCase().includes("before")
+      ) {
+        return `Policy Copilot starts with **intent before rules**.
+
+**Before:** Admins got a one-line business ask, then spent hours translating it into users, apps, zones, and compliance — often in chat or tickets before the rule editor.
+
+**After:** Copilot reflects understanding first (who / what / conditions), maps inventory objects, runs visible validation, and keeps drafts out of production until a human **Approves**.
+
+That flip is why the workspace sits beside chat — not as a buried card in the thread. Detail: [Case Notes #1](${ROUTES.fieldNotesOne}) · full story: [Policy Copilot](${ROUTES.ciscoPolicyCopilot}).`;
+      }
+      if (userMessage.toLowerCase().includes("user testing")) {
+        return `User testing found admins struggled to hold **both** the business request and the technical policy in the same chat thread.
+
+Dumping a full draft into the conversation looked smart at first — then follow-ups buried Edit / Approve. That's why the product moved to a **side-by-side workspace**: intent on one side, living draft on the other.
+
+Short write-up: [JB's Case Notes #1](${ROUTES.fieldNotesOne}).`;
+      }
+      return `**Cisco Policy Copilot** helps firewall admins turn a business ask into a policy they can trust — without drowning in prep work.
+
+**How it works:**
+1. Describe the outcome in plain language
+2. Copilot **reflects** users, apps, and conditions first
+3. Maps inventory objects + continuous validation
+4. Human still owns **Approve** — AI never deploys alone
+
+Impact framing: **~40% less policy-generation time** on the journey from intent to trusted draft.
+
+Curious about intent-before-rules, or the shorter [Case Notes #1](${ROUTES.fieldNotesOne})?`;
 
     case "project_piggy":
-      return `You're asking about Piggy — UX research that cut mutual fund support tickets by 19%. [Read the case study](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets).`;
+      return `At **Piggy**, JB cut mutual-fund support tickets by **~19%** — not by stuffing FAQ links, but by fixing the moments that created anxiety.
+
+**The problem:** After buying funds, users couldn't tell if allotment was "working" or "broken." Misleading status language + unclear timelines = support volume around unit allotment and transaction status.
+
+**What changed:**
+- **Pre-purchase education** — allotment timelines shown before payment so expectations were set upfront
+- **Clearer post-purchase status** — removed wording that made normal processing look like failure
+- **Piggy Prime Hour** — reframed market cut-off timing into something understandable
+- **A/B rollout** — validated conversion stayed healthy while allotment/status tickets dropped
+
+Result: fewer panic tickets, more confidence after invest — research-led, measurable.
+
+Want the research findings next, or another fintech case like Kalash?`;
 
     case "project_freshprints":
-      return userMessage.toLowerCase().includes("image gen")
-        ? `FreshPrints Image Gen AI — generative tooling and review flows. [Read the case study](${ROUTES.projects}/freshprints-image-gen-ai).`
-        : `FreshPrints — custom apparel platform (design tool, stores, order ops, AI). [Design System case study](${ROUTES.projects}/freshprints-design-system).`;
+      if (userMessage.toLowerCase().includes("image gen") || userMessage.toLowerCase().includes("review")) {
+        return `**FreshPrints Image Gen AI** was about shipping generative image tooling creators could actually review — not a flashy demobot.
+
+**What JB designed:**
+- Prompt → generate flows for merch / apparel workflows
+- Asset **review** interfaces so teams could judge, iterate, and hand off
+- Desktop + mobile UX for a shipped MVP
+
+Want process notes (how he scoped AI UX), or the design-system work that sped delivery across teams?`;
+      }
+      return `The **FreshPrints design system** existed for one job: stop endless UI debates and help teams ship.
+
+**What it did:**
+- Shared components + tokens so product squads stopped reinventing buttons every sprint
+- Documentation that made the "right" pattern obvious
+- Helped **4 product teams** ship faster with less design debt
+
+That's systems work — boring until you measure cycle time. Curious about Image Gen AI next, or how JB runs design reviews?`;
 
     case "project_kalash":
-      return userMessage.toLowerCase().includes("recap")
-        ? `Kalash year-end recap — personalised retention story. [Read the case study](${ROUTES.projects}/kalash-year-end-recap).`
-        : `Kalash — digital gold and rewards for 1M+ users. [Read the case study](${ROUTES.projects}/kalash-rewards).`;
+      if (userMessage.toLowerCase().includes("recap")) {
+        return `**Kalash year-end recap** turns a year of gold-saving behaviour into a personalised story — delight that nudges retention, not a generic "thanks for banking with us."
+
+It's growth + craft: make the year feel *theirs* so people come back. Full story lives in the case when you want visuals.`;
+      }
+      return `**Kalash** helps people in India buy **digital gold from ₹10** — daily, weekly, or monthly — without the friction of physical gold.
+
+JB's work sat at the growth/product layer: make saving feel attainable, trustworthy, and sticky for **1M+** users. Highlights include clearer value early in onboarding and reward loops that encourage consistency.
+
+Want the year-end recap story, or how he thinks about activation metrics?`;
 
     case "portfolio_site":
-      return `You're asking how this site was built — custom Next.js, Framer Motion, editorial case studies, no template. Peek at [Craft](${ROUTES.craft}) and [Projects](${ROUTES.projects}).`;
+      return resolveSuggestionChipReply("How did JB build this portfolio?")!;
 
     case "craft":
-      return `You're browsing experiments — [Craft](${ROUTES.craft}) has prototypes and the [Design Review](${ROUTES.craft}/design-review-checklist) essay.`;
+      return resolveSuggestionChipReply("What is on the Craft page?")!;
 
     case "case_study_pick":
-      return `You want a place to start — pick your lane:
-- Firewall / AI policy UX → [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}) or [JB's Case Notes #1](${ROUTES.fieldNotesOne})
-- AI UX → [Saltbot AI](${ROUTES.projects}/saltbot-ai-saltmine)
-- Design systems → [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system)
-- Fintech → [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)`;
+      return resolveSuggestionChipReply("Which case study should I start with?")!;
 
     case "case_study_fun_fact": {
       if (!pagePath) return null;

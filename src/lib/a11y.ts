@@ -67,7 +67,7 @@ export const PROJECTS_ROW_LINK_CLASS =
 
 /** External text link in case study meta — contrast + focus + hit area. */
 export const CASE_STUDY_EXTERNAL_LINK_CLASS =
-  `inline-flex min-h-11 items-center px-1 font-sans text-sm font-medium text-neutral-400 underline decoration-neutral-400 underline-offset-4 transition-colors hover:text-white hover:decoration-white ${FOCUS_RING}`;
+  `inline-flex min-h-11 items-center px-1 font-sans text-sm font-medium text-neutral-600 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 hover:decoration-neutral-900 ${FOCUS_RING}`;
 
 /**
  * Skip link — bypasses chrome to main content (2.4.1).
@@ -91,7 +91,7 @@ export function externalDemoLinkLabel(
 
 /** Case study in-page navigation — contrast + 44px target (2.5.8). */
 export const CASE_STUDY_IN_PAGE_LINK_CLASS =
-  `inline-flex min-h-11 items-center rounded-sm px-1 text-sm text-neutral-400 underline-offset-4 transition-colors hover:text-white focus-visible:text-white focus-visible:underline ${FOCUS_RING}`;
+  `inline-flex min-h-11 items-center rounded-sm px-1 text-sm text-neutral-500 underline-offset-4 transition-colors hover:text-neutral-900 focus-visible:text-neutral-900 focus-visible:underline ${FOCUS_RING}`;
 
 /** Case study footer / utility controls. */
 export const CASE_STUDY_FOOTER_NAV_LABEL = "Case study page actions";

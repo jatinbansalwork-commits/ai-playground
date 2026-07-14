@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { EDITORIAL as CLAUDE, COPILOT_TYPE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 type CheckStatus = "idle" | "watching" | "running" | "clear" | "note";
@@ -161,10 +161,10 @@ function ValidationRow({
       initial={reduced ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
-      className="rounded-xl"
+      className="rounded-xl border border-neutral-200 bg-white"
       style={{
-        backgroundColor: status === "running" ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
-        boxShadow: `inset 0 0 0 1px ${status === "running" ? CLAUDE.primaryBorder : CLAUDE.hairline}`,
+        backgroundColor: status === "running" ? CLAUDE.primaryMuted : "#FFFFFF",
+        borderColor: status === "running" ? CLAUDE.primaryBorder : CLAUDE.border,
       }}
     >
       <button
@@ -173,32 +173,32 @@ function ValidationRow({
         className={cn(
           "grid w-full grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-3 px-3.5 py-3 text-left",
           status === "running" && "items-start",
-          canExpand && "cursor-pointer hover:bg-white/[0.02]",
+          canExpand && "cursor-pointer hover:bg-neutral-50",
         )}
         aria-expanded={canExpand ? expanded : undefined}
       >
         <StatusIndicator status={status} />
         <div className="min-w-0">
           <div className="flex min-h-4 flex-wrap items-center gap-x-2 gap-y-0.5">
-            <p className="text-[13px] font-medium leading-none" style={{ color: CLAUDE.text }}>
+            <p className="text-[13px] font-semibold leading-none text-neutral-900">
               {check.label}
             </p>
             <span
-              className="text-[9px] font-medium uppercase leading-none tracking-wide tabular-nums"
+              className="text-[9px] font-semibold uppercase leading-none tracking-wide tabular-nums"
               style={{
                 color:
                   status === "clear"
                     ? CLAUDE.validated
                     : status === "running"
-                      ? CLAUDE.primary
-                      : CLAUDE.textSoft,
+                      ? CLAUDE.primaryActive
+                      : CLAUDE.textMuted,
               }}
             >
               {statusLabel(status)}
             </span>
           </div>
           {status === "running" ? (
-            <p className="mt-1.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-600">
               Re-evaluating as policy context updates…
             </p>
           ) : null}
@@ -222,8 +222,7 @@ function ValidationRow({
             className="overflow-hidden"
           >
             <p
-              className="border-t px-3.5 py-2.5 text-[12px] leading-relaxed"
-              style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textMuted }}
+              className="border-t border-neutral-200 px-3.5 py-2.5 text-[12px] leading-relaxed text-neutral-600"
             >
               {check.explanation}
             </p>
@@ -293,8 +292,8 @@ export function PolicyCopilotContinuousValidation() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-white/10"
-      style={{ backgroundColor: "#0D1114" }}
+      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
+      style={{ backgroundColor: "#FFFFFF" }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
@@ -306,18 +305,18 @@ export function PolicyCopilotContinuousValidation() {
             >
               Continuous validation
             </p>
-            <p className="mt-1 max-w-2xl text-[13px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+            <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-neutral-600">
               Checks refresh as you confirm users, applications, and access conditions — no separate
               validation screen.
             </p>
           </div>
           <div className="text-right">
-            <p className="text-[10px] uppercase tracking-wide" style={{ color: CLAUDE.textSoft }}>
+            <p className="text-[10px] font-medium uppercase tracking-wide text-neutral-500">
               Informed
             </p>
-            <p className="text-[18px] font-medium tabular-nums" style={{ color: CLAUDE.text }}>
+            <p className="text-[18px] font-semibold tabular-nums text-neutral-900">
               {informedCount}
-              <span className="text-[13px] font-normal" style={{ color: CLAUDE.textMuted }}>
+              <span className="text-[13px] font-normal text-neutral-500">
                 {" "}
                 / {CHECKS.length}
               </span>
@@ -333,14 +332,14 @@ export function PolicyCopilotContinuousValidation() {
                 key={milestone.label}
                 initial={false}
                 animate={{
-                  opacity: confirmed ? 1 : 0.45,
+                  opacity: confirmed ? 1 : 0.55,
                   scale: confirmed ? 1 : 0.98,
                 }}
                 transition={{ duration: 0.28 }}
-                className="min-w-[9rem] flex-1 rounded-xl px-3 py-2.5"
+                className="min-w-[9rem] flex-1 rounded-xl border px-3 py-2.5"
                 style={{
-                  backgroundColor: confirmed ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
-                  boxShadow: `inset 0 0 0 1px ${confirmed ? CLAUDE.primaryBorder : CLAUDE.hairline}`,
+                  backgroundColor: confirmed ? CLAUDE.primaryMuted : "#FFFFFF",
+                  borderColor: confirmed ? CLAUDE.primaryBorder : CLAUDE.border,
                 }}
               >
                 <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
@@ -351,7 +350,7 @@ export function PolicyCopilotContinuousValidation() {
                     </span>
                   ) : null}
                 </p>
-                <p className="mt-1 text-[12px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
+                <p className="mt-1 text-[12px] leading-snug text-neutral-800">
                   {milestone.value}
                 </p>
               </motion.div>
@@ -359,7 +358,7 @@ export function PolicyCopilotContinuousValidation() {
           })}
         </div>
 
-        <div className="mt-4 h-1 overflow-hidden rounded-full" style={{ backgroundColor: CLAUDE.surfaceOverlay }}>
+        <div className="mt-4 h-1 overflow-hidden rounded-full bg-neutral-200">
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: CLAUDE.primary }}
@@ -372,7 +371,7 @@ export function PolicyCopilotContinuousValidation() {
         </div>
       </div>
 
-      <div className="space-y-2 p-4 md:p-5">
+      <div className="space-y-2 bg-neutral-50/60 p-4 md:p-5">
         {CHECKS.map((check, index) => (
           <ValidationRow
             key={check.id}
@@ -385,10 +384,7 @@ export function PolicyCopilotContinuousValidation() {
         ))}
       </div>
 
-      <p
-        className="border-t px-4 py-3 text-center text-[11px] leading-relaxed md:px-5"
-        style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textSoft }}
-      >
+      <p className="border-t border-neutral-200 px-4 py-3 text-center text-[12px] leading-relaxed text-neutral-600 md:px-5">
         Nothing blocks the workflow — issues surface only when they matter.
       </p>
     </figure>

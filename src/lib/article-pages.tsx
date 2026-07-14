@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleLayout } from "@/components/craft/article-layout";
-import { getCraftSection } from "@/lib/craft-content";
+import { getAdjacentArticles, getCraftSection } from "@/lib/craft-content";
 import {
   getAdjacentExperimentArticles,
   getExperimentArticle,
@@ -20,11 +20,14 @@ export function renderArticlePage({ sectionId, slug }: ArticlePageProps) {
     const article = getExperimentArticle(slug);
     if (!article) notFound();
 
+    const { prev, next } = getAdjacentExperimentArticles(slug);
+
     return (
       <ArticleLayout
         section={getExperimentsArticleSection()}
         article={article}
-        getAdjacentArticles={getAdjacentExperimentArticles}
+        prevSlug={prev}
+        nextSlug={next}
       />
     );
   }
@@ -35,7 +38,16 @@ export function renderArticlePage({ sectionId, slug }: ArticlePageProps) {
   const article = section.articles[slug];
   if (!article) notFound();
 
-  return <ArticleLayout section={section} article={article} />;
+  const { prev, next } = getAdjacentArticles(sectionId, slug);
+
+  return (
+    <ArticleLayout
+      section={section}
+      article={article}
+      prevSlug={prev}
+      nextSlug={next}
+    />
+  );
 }
 
 export function articleMetadata(sectionId: string, slug: string): Metadata {

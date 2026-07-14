@@ -3,6 +3,7 @@
 import { CaseStudyBento } from "@/components/case-studies/case-study-bento";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
 import {
+  CaseStudyDivider,
   CaseStudyList,
   CaseStudyParagraph,
   CaseStudyProse,
@@ -45,6 +46,7 @@ export default function DesignToolContent() {
       </CaseStudyWide>
 
       <CaseStudyProse>
+        <CaseStudyDivider />
         <CaseStudySubheading>Designing for Parallel Attention</CaseStudySubheading>
         <CaseStudyList
           items={[

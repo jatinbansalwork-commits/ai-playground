@@ -1,133 +1,72 @@
 import type { AiChatIntentId } from "@/lib/ai-chat-intents";
 import type { ChatGif } from "@/lib/ai-chat-types";
 
-/** Verified embed URLs from GIPHY search (legacy `i.giphy.com/{id}` links often 404). */
-const JOEY_GIFS: readonly ChatGif[] = [
-  {
-    giphyId: "YTDZakyAorkLDYqN0q",
-    url: "https://media2.giphy.com/media/v1.Y2lkPThhMWY5NGJhYzVsdWlqMW8zamVsOTY0N3FteXQ0eWozYnducTN6eWh1ZGtiN3R1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YTDZakyAorkLDYqN0q/giphy-downsized.gif",
-    alt: "Joey Tribbiani — Friends",
-    width: 480,
-    height: 400,
-  },
-  {
-    giphyId: "11ykUODgXjAXZu",
-    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhYzVsdWlqMW8zamVsOTY0N3FteXQ0eWozYnducTN6eWh1ZGtiN3R1bCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/11ykUODgXjAXZu/giphy.gif",
-    alt: "Joey Tribbiani — Friends",
-    width: 400,
-    height: 300,
-  },
+/** Stable media URLs — `media.giphy.com/media/{id}/giphy.gif`. */
+function avengerGif(
+  giphyId: string,
+  alt: string,
+  width = 480,
+  height = 270,
+): ChatGif {
+  return {
+    giphyId,
+    url: `https://media.giphy.com/media/${giphyId}/giphy.gif`,
+    alt,
+    width,
+    height,
+  };
+}
+
+const IRON_MAN_GIFS: readonly ChatGif[] = [
+  avengerGif("9JrstIyBclRGhce4SG", "Iron Man — Avengers"),
+  avengerGif("5wu6zc60M9GmscmFje", "Tony Stark — Iron Man"),
+  avengerGif("gZGlQX3wWAV1u", "Iron Man reaction"),
+  avengerGif("43QvEVIc7F5p1PKTww", "Tony Stark — Iron Man"),
+  avengerGif("jP1uaoNPmn5O5gjS7k", "Tony Stark — Iron Man"),
+  avengerGif("qmfpjpAT2fJRK", "Iron Man reaction"),
+  avengerGif("Mnx9WmHrYN3qicTsCd", "Tony Stark — Iron Man"),
 ];
 
-const CHANDLER_GIFS: readonly ChatGif[] = [
-  {
-    giphyId: "amkS2AoPLAGg8",
-    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhendtaTN1czcyMXgzODcxc2Y3ajRrdXZwOWpkYWJyNHZ1eDNuZWw0biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/amkS2AoPLAGg8/giphy.gif",
-    alt: "Chandler Bing — Friends",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "10I5e2yNnaozOo",
-    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJheGk0MWV0YXJzMGl6NDJ2dzA3cm50MTc5bnE1N3Awbm16YWo3cXg4byZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10I5e2yNnaozOo/giphy.gif",
-    alt: "Chandler Bing — sarcastic",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "fA81FF4mdE6lgeoJwb",
-    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhendtaTN1czcyMXgzODcxc2Y3ajRrdXZwOWpkYWJyNHZ1eDNuZWw0biZlcD12MV9naWZzX3NlYXJjaCZjdD1n/fA81FF4mdE6lgeoJwb/giphy.gif",
-    alt: "Chandler Bing — Friends",
-    width: 480,
-    height: 270,
-  },
+const CAPTAIN_AMERICA_GIFS: readonly ChatGif[] = [
+  avengerGif("VIul6kR8mDHzXoVMLv", "Avengers Assemble"),
+  avengerGif("3oxHQpJKupQXsmU1JS", "Captain America — Avengers"),
+  avengerGif("vAjhdaZ6MsKI0", "Captain America — Civil War"),
+  avengerGif("fWBg2J2GJy2RkIyKL8", "Captain America — Marvel Studios"),
+  avengerGif("8lJwA6kNkKyfC", "The Avengers"),
 ];
 
-const ROSS_GIFS: readonly ChatGif[] = [
-  {
-    giphyId: "JOe7JxOiMg61ogl6fH",
-    url: "https://media2.giphy.com/media/v1.Y2lkPThhMWY5NGJhZjFnNnRkNG42MHUzNDAwZ2JmY3JiZGpvYjhoeGdsbTRhODE4bWNlYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JOe7JxOiMg61ogl6fH/giphy.gif",
-    alt: "Ross Geller — Friends",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "2OP9jbHFlFPW",
-    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhbnBxcWY5dzR6ZzNjb241Z3hhbWY2M2ZrZm8wc3g4aTdzNnJzZ3VheiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/2OP9jbHFlFPW/giphy.gif",
-    alt: "Ross Geller — pivot",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "YhRzFyF3EzhXG",
-    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhZjFnNnRkNG42MHUzNDAwZ2JmY3JiZGpvYjhoeGdsbTRhODE4bWNlYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/YhRzFyF3EzhXG/giphy.gif",
-    alt: "Ross Geller — Friends",
-    width: 480,
-    height: 270,
-  },
+const THOR_GIFS: readonly ChatGif[] = [
+  avengerGif("3ov9jOjo4n7HASUu8U", "Thor — Marvel Studios"),
+  avengerGif("JVaGIHrnC4Xi9DBPwr", "Thor: Love and Thunder"),
+  avengerGif("bnYY3OVydHwss7WLfQ", "Thor — Marvel"),
+  avengerGif("EfsqyinraWHCKWxsjq", "Thor: Love and Thunder"),
 ];
 
-const SHELDON_GIFS: readonly ChatGif[] = [
-  {
-    giphyId: "JuqDes49CeCeQ",
-    url: "https://media1.giphy.com/media/v1.Y2lkPThhMWY5NGJhem8za21pcDB1NnBxOWZhbzRyNW9mYnl5aXphMml0bDBod281bXowYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JuqDes49CeCeQ/giphy.gif",
-    alt: "Sheldon Cooper — bazinga",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "i79na9XMwDues",
-    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhb2Z5aXJvd2dibHFpNjl0MDAwdnRoODQ0aHJhbDJ1am81dG1jOTRlYyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/i79na9XMwDues/giphy.gif",
-    alt: "Sheldon Cooper — The Big Bang Theory",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "KSCYjxdjm0yA0",
-    url: "https://media1.giphy.com/media/v1.Y2lkPThhMWY5NGJhem8za21pcDB1NnBxOWZhbzRyNW9mYnl5aXphMml0bDBod281bXowYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/KSCYjxdjm0yA0/giphy.gif",
-    alt: "Sheldon Cooper — bazinga",
-    width: 480,
-    height: 270,
-  },
-  {
-    giphyId: "1FMaabePDEfgk",
-    url: "https://media0.giphy.com/media/v1.Y2lkPThhMWY5NGJhbW03YnBqeGJ3bWFuNTVvNjZzdmpsbWgwdjJsdXRhcnl0ZmxqaDhwOCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1FMaabePDEfgk/giphy.gif",
-    alt: "The Big Bang Theory — reaction",
-    width: 480,
-    height: 270,
-  },
+const HULK_GIFS: readonly ChatGif[] = [
+  avengerGif("10H4by255F2UsU", "Hulk smash"),
+  avengerGif("xFBnkMvpTM6m4", "The Incredible Hulk"),
+  avengerGif("XSc4Kkc5u2WZy", "Hulk — The Avengers"),
+  avengerGif("lFZKK1pINTGA8", "Hulk smash"),
 ];
 
-const SPONGEBOB_GIFS: readonly ChatGif[] = [
-  {
-    giphyId: "MTclfCr4tVgis",
-    url: "https://media3.giphy.com/media/v1.Y2lkPThhMWY5NGJhaHIxd2kzYjl1MTYzZWhqaTNsbnNtbXF5YWtsczZhZWY4M2p3NTl2ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/MTclfCr4tVgis/giphy.gif",
-    alt: "SpongeBob celebration",
-    width: 320,
-    height: 198,
-  },
-  {
-    giphyId: "GWNBoSxSpt7Ik",
-    url: "https://media4.giphy.com/media/v1.Y2lkPThhMWY5NGJhaHIxd2kzYjl1MTYzZWhqaTNsbnNtbXF5YWtsczZhZWY4M2p3NTl2ciZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GWNBoSxSpt7Ik/giphy.gif",
-    alt: "SpongeBob SquarePants",
-    width: 500,
-    height: 285,
-  },
+const SPIDER_MAN_GIFS: readonly ChatGif[] = [
+  avengerGif("3o6fIZjYglR6qpOXKM", "Spider-Man — MCU"),
+  avengerGif("IXexMSyZCrowhY11m1", "Spider-Man"),
 ];
 
 const ALL_REACTION_GIFS: readonly ChatGif[] = [
-  ...JOEY_GIFS,
-  ...CHANDLER_GIFS,
-  ...ROSS_GIFS,
-  ...SHELDON_GIFS,
-  ...SPONGEBOB_GIFS,
+  ...IRON_MAN_GIFS,
+  ...CAPTAIN_AMERICA_GIFS,
+  ...THOR_GIFS,
+  ...HULK_GIFS,
+  ...SPIDER_MAN_GIFS,
 ];
 
 const INTENT_GIF_POOLS: Record<AiChatIntentId, readonly ChatGif[]> = {
-  mentorship: [...JOEY_GIFS, ...CHANDLER_GIFS, ...ROSS_GIFS],
-  hiring: [...CHANDLER_GIFS, ...ROSS_GIFS, ...SHELDON_GIFS],
-  portfolio: [...ROSS_GIFS, ...SHELDON_GIFS, ...CHANDLER_GIFS],
-  "case-study": [...ROSS_GIFS, ...SHELDON_GIFS, ...CHANDLER_GIFS],
+  "strongest-project": [...CAPTAIN_AMERICA_GIFS, ...IRON_MAN_GIFS, ...THOR_GIFS],
+  cisco: [...IRON_MAN_GIFS, ...CAPTAIN_AMERICA_GIFS, ...THOR_GIFS],
+  process: [...IRON_MAN_GIFS, ...THOR_GIFS, ...CAPTAIN_AMERICA_GIFS],
+  reach: [...CAPTAIN_AMERICA_GIFS, ...IRON_MAN_GIFS, ...SPIDER_MAN_GIFS],
 };
 
 function hashSeed(value: string): number {
@@ -154,14 +93,18 @@ function filterExcluded(
 
 function poolForQuery(query: string): readonly ChatGif[] {
   const lower = query.toLowerCase();
-  if (lower.includes("sheldon") || lower.includes("bazinga") || lower.includes("big bang")) {
-    return SHELDON_GIFS;
+  if (lower.includes("iron man") || lower.includes("tony stark")) {
+    return IRON_MAN_GIFS;
   }
-  if (lower.includes("chandler")) return CHANDLER_GIFS;
-  if (lower.includes("ross")) return ROSS_GIFS;
-  if (lower.includes("joey")) return JOEY_GIFS;
-  if (lower.includes("spongebob")) return SPONGEBOB_GIFS;
-  if (lower.includes("friends")) return ALL_REACTION_GIFS;
+  if (lower.includes("captain america") || lower.includes("assemble")) {
+    return CAPTAIN_AMERICA_GIFS;
+  }
+  if (lower.includes("thor")) return THOR_GIFS;
+  if (lower.includes("hulk")) return HULK_GIFS;
+  if (lower.includes("spider")) return SPIDER_MAN_GIFS;
+  if (lower.includes("avenger") || lower.includes("marvel")) {
+    return ALL_REACTION_GIFS;
+  }
   return ALL_REACTION_GIFS;
 }
 

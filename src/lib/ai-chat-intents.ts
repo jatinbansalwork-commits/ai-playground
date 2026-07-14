@@ -5,10 +5,10 @@ const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
 const JB_MANUAL = CONTACT_LINKS.find((link) => link.label === "JB Manual")!.href;
 
 export type AiChatIntentId =
-  | "mentorship"
-  | "hiring"
-  | "portfolio"
-  | "case-study";
+  | "strongest-project"
+  | "cisco"
+  | "process"
+  | "reach";
 
 export interface AiChatIntent {
   id: AiChatIntentId;
@@ -21,54 +21,61 @@ export interface AiChatIntent {
 
 export const AI_CHAT_INTENTS: readonly AiChatIntent[] = [
   {
-    id: "mentorship",
-    prompt: "I'm interested in mentorship",
+    id: "strongest-project",
+    prompt: "What's JB's strongest project?",
     instruction:
-      "If the user asks about mentorship: explain what JB offers (design feedback, career guidance, AI product craft), point to the JB Manual first, then LinkedIn. Friends trio voice — Joey warmth + Ross clarity. One catchphrase max. Do not promise unlimited time — suggest a focused ask.",
-    staticReply: `How you doin'? JB's open to mentorship — especially for designers moving into product, fintech, or AI work.
+      "If they ask for JB's strongest / best / flagship project: compare 1–2 strengths (Policy Copilot for high-stakes AI UX, Saltbot for speed, Piggy for research impact). Lead with Policy Copilot + ~40% policy-generation time, mention Piggy 19% tickets or Saltbot ~5s analytics as runners-up. End with a clear next step and markdown case study links. Warm third-person about JB; one Friends line max.",
+    staticReply: `That's a tough call — they shine in different ways — but if I had to pick, **Cisco Policy Copilot** stands out for clarity under real pressure.
 
-Actually… before you reach out, skim the [JB Manual](${JB_MANUAL}) — it explains how JB works best and what makes a good conversation.
+Firewall policy is high-stakes: one wrong rule and you break access or open risk. JB flipped the order — start with the business ask, reflect understanding, then draft — so admins aren't stuck holding intent and ports in the same thread. The case positions **~40% less policy-generation time**, with humans still owning Approve.
 
-When you're ready, message on [LinkedIn](${LINKEDIN}) with what you're working on and **one** specific question. Keep it focused — that's how you get a real answer.`,
+**Saltbot** is the other flagship for AI UX: analytics answers in ~5 seconds instead of spreadsheets. And **Piggy** shows research punch — **19% fewer** mutual-fund support tickets from clearer status and flows.
+
+Core pattern: find the real pain, then ship something measurable.
+
+Want [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [Saltbot](${ROUTES.projects}/saltbot-ai-saltmine), or [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets) next?`,
   },
   {
-    id: "hiring",
-    prompt: "I'd love to hire JB",
+    id: "cisco",
+    prompt: "Tell me about Cisco Policy Copilot",
     instruction:
-      "If the user wants to hire JB: keep it short — Chandler quip optional, then share only JB's phone number for hiring enquiries. Do not list case studies, resume, LinkedIn, or email unless they ask. Phone: 6362408280.",
-    staticReply: `Hiring? Could this *be* any more straightforward?
+      "If they ask about Cisco Policy Copilot / firewall AI: cover intent-first flow, validation, human approve, ~40% time claim, and link the full case plus JB's Case Notes #1 for the short read. Warm, concrete, metrics over fluff. One Friends line max.",
+    staticReply: `Policy Copilot is JB's flagship at Cisco — AI-assisted firewall policy for Hybrid Mesh Firewall.
 
-Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`,
+Admins describe outcomes in plain language; Copilot reflects who/what/conditions, maps inventory objects, runs visible validation, and keeps every draft out of production until a human approves. There's also **[JB's Case Notes #1](${ROUTES.fieldNotesOne})** — a shorter note on why dumping a full policy draft into chat fails, and why a side-by-side workspace works better.
+
+Want the [full case](${ROUTES.ciscoPolicyCopilot}), the Case Notes, or how he thinks about trust in AI?`,
   },
   {
-    id: "portfolio",
-    prompt: "How did JB build this portfolio?",
+    id: "process",
+    prompt: "What's his design process?",
     instruction:
-      'If the user asks how the portfolio was built: answer in bullets — stack, motion/index slider, editorial case-study system, craft gallery, Ideas AI demos, Vercel + Blob CDN, analytics, and JB_AI itself. Link /craft, /ideas, and /projects. Friends trio — Ross explains the stack, Chandler light aside optional. Builder-credible, not promotional.',
-    staticReply: `Fun fact: this portfolio is custom-built. No template. Ross would approve of the structure.
+      "If they ask about JB's process / how he works: intent-first, prototype-in-code, ship systems (FreshPrints 4 teams), measure impact (Piggy 19%, Kalash 1M+). Numbered steps optional. Link one proof case study. One Friends line max.",
+    staticReply: `JB works **intent-first, prototype-in-code**. Roughly:
 
-- **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
-- **Experience:** Scroll-linked index slider, editorial case-study components, craft bento gallery, JB's Case Notes
-- **Infrastructure:** Vercel hosting, Blob CDN for media, custom analytics events
-- **This chat:** JB_AI — that's me — curated knowledge plus OpenAI
+1. **Start with the real ask** — business language before control panels ([Policy Copilot](${ROUTES.ciscoPolicyCopilot}))
+2. **Prove it in product** — interactive demos, not slideware
+3. **Ship systems** — FreshPrints design system stopped UI debates and helped **4 product teams** ship faster
+4. **Measure impact** — Piggy −19% tickets; Kalash gold savings for **1M+** users
 
-Check out [Craft](${ROUTES.craft}) for motion studies, [Ideas](${ROUTES.ideas}) for AI demos, [Projects](${ROUTES.projects}) for case studies, or [JB's Case Notes #1](${ROUTES.fieldNotesOne}) for a working note on Policy Copilot. Oh yeah — pretty cool.`,
+Craft + AI Labs sit beside the case studies when you want process experiments.
+
+Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)?`,
   },
   {
-    id: "case-study",
-    prompt: "Which case study should I start with?",
+    id: "reach",
+    prompt: "How do I reach him?",
     instruction:
-      "If the user asks which case study to read: either ask one clarifying question (AI vs fintech vs design systems vs growth vs cybersecurity) OR route by interest using the case study tags in knowledge. Friends trio — Ross organises the list, Chandler optional quip, Joey friendly close. Always link with markdown and explain why in one sentence each. Mention JB's Case Notes #1 when they want a shorter read on Policy Copilot chat-vs-draft.",
-    staticReply: `Could this *be* any more options? Fine — here's the organised version:
+      "If they ask how to reach / contact JB: share LinkedIn, email, resume, and JB Manual. For hiring specifically, prefer the phone number. Soft CTA — offer a case first or hiring next. One Friends line max.",
+    staticReply: `Best ways to connect:
 
-- **AI / firewall policy UX** → [Cisco Policy Copilot](/projects/cisco-policy-copilot) — or the shorter [JB's Case Notes #1](${ROUTES.fieldNotesOne})
-- **AI / conversational UX** → [Saltbot AI](/projects/saltbot-ai-saltmine)
-- **Design systems at scale** → [FreshPrints Design System](/projects/freshprints-design-system)
-- **Generative AI tooling** → [FreshPrints Image Gen AI](/projects/freshprints-image-gen-ai)
-- **Fintech / support reduction** → [Piggy — Reduced Support Tickets](/projects/piggy-reduced-mutual-fund-support-tickets)
-- **Consumer growth / rewards** → [Kalash — Your New Gold](/projects/kalash-rewards)
+- **[LinkedIn](${LINKEDIN})**
+- **[Email](mailto:${CONTACT_EMAIL})**
+- **[Resume](${RESUME})**
+- **[JB Manual](${JB_MANUAL})** for how he likes to work
+- Hiring? Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**
 
-Tell me your focus and I'll narrow it down. How you doin' with picking one?`,
+Want a case first, or jump straight to hiring?`,
   },
 ] as const;
 
