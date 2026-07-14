@@ -34,8 +34,8 @@ export const FRAMES = [
     id: "archive",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Field Notes",
-    fieldNotesTitle: "JB's Field Notes",
+    label: "Case Notes",
+    fieldNotesTitle: "JB's Case Notes",
     href: ROUTES.fieldNotesOne,
   },
   {
@@ -175,7 +175,7 @@ export const CONTACT_LINKS = [
   },
   {
     label: "Resume",
-    href: "https://drive.google.com/file/d/18SdU4YHBhYxfRyWCt6I7oXBoFVxGPcvT/view?usp=sharing",
+    href: "https://drive.google.com/file/d/18SdU4YHBhYxfRyWCt6I7oXBoFVxGPcvT/view?usp=drive_link",
     position: "bottom-right" as const,
   },
 ] as const;

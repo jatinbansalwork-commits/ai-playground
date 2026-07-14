@@ -127,7 +127,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     id: "project_cisco",
-    goal: "They asked about Cisco Policy Copilot / JB's Field Notes on chat vs policy draft.",
+    goal: "They asked about Cisco Policy Copilot / JB's Case Notes on chat vs policy draft.",
     curated: true,
     matches: (text) =>
       includesAny(text, [
@@ -276,7 +276,7 @@ Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
       return `You're asking about Saltbot — conversational analytics for Saltmine. Reports in seconds, not spreadsheets. [Read the case study](${ROUTES.projects}/saltbot-ai-saltmine).`;
 
     case "project_cisco":
-      return `You're asking about Policy Copilot — AI-assisted firewall policy at Cisco. Short read: [JB's Field Notes #1](${ROUTES.fieldNotesOne}). Full case study: [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}).`;
+      return `You're asking about Policy Copilot — AI-assisted firewall policy at Cisco. Short read: [JB's Case Notes #1](${ROUTES.fieldNotesOne}). Full case study: [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}).`;
 
     case "project_piggy":
       return `You're asking about Piggy — UX research that cut mutual fund support tickets by 19%. [Read the case study](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets).`;
@@ -299,7 +299,7 @@ Call **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`;
 
     case "case_study_pick":
       return `You want a place to start — pick your lane:
-- Firewall / AI policy UX → [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}) or [JB's Field Notes #1](${ROUTES.fieldNotesOne})
+- Firewall / AI policy UX → [Cisco Policy Copilot](${ROUTES.ciscoPolicyCopilot}) or [JB's Case Notes #1](${ROUTES.fieldNotesOne})
 - AI UX → [Saltbot AI](${ROUTES.projects}/saltbot-ai-saltmine)
 - Design systems → [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system)
 - Fintech → [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)`;

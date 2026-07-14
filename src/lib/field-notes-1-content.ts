@@ -1,4 +1,4 @@
-/** JB's Field Notes #1 — Policy Copilot: chat vs policy draft. */
+/** JB's Case Notes #1 — Policy Copilot: chat vs policy draft. */
 
 export type FieldNotesPolicyDemoId =
   | "in-thread-policy"

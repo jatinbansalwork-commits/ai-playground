@@ -1435,7 +1435,7 @@ export function PolicyCopilotLiving({
     phase === "check" ||
     phase === "approve" ||
     isIntentSummaryPresentation ||
-    // All showcase embeds (Cisco case study + JB's Field Notes) — fill the wide frame, no max-w-2xl gutter.
+    // All showcase embeds (Cisco case study + JB's Case Notes) — fill the wide frame, no max-w-2xl gutter.
     isPresentation;
   const showRefineBlastRadius =
     phase === "refine" && flowMode === "author" && !approvalReviewReady;

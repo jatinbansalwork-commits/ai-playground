@@ -8,7 +8,7 @@ export const ibmPlexSans = IBM_Plex_Sans({
   display: "swap",
 });
 
-/** JB's Field Notes index slide — Google Fonts handwriting face. */
+/** JB's Case Notes index slide — Google Fonts handwriting face. */
 export const justAnotherHand = Just_Another_Hand({
   variable: "--font-just-another-hand",
   weight: "400",

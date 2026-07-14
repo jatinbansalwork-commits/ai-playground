@@ -9,8 +9,8 @@ const fontPath = path.join(root, "public/assets/fonts/JustAnotherHand-Regular.tt
 const outPath = path.join(root, "src/lib/field-notes-handwriting-paths.ts");
 
 const VARIANTS = {
-  slide: "JB's Field Notes",
-  page: "JB's Field Notes #1",
+  slide: "JB's Case Notes",
+  page: "JB's Case Notes #1",
   /** End-of-note sign-off — smiley is drawn separately in the React component. */
   signature: "jb",
 };

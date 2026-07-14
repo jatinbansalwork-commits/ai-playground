@@ -48,20 +48,20 @@ Call JB at **[${JB_CONTACT_PHONE}](${JB_CONTACT_PHONE_TEL})**.`,
     staticReply: `Fun fact: this portfolio is custom-built. No template. Ross would approve of the structure.
 
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
-- **Experience:** Scroll-linked index slider, editorial case-study components, craft bento gallery, JB's Field Notes
+- **Experience:** Scroll-linked index slider, editorial case-study components, craft bento gallery, JB's Case Notes
 - **Infrastructure:** Vercel hosting, Blob CDN for media, custom analytics events
 - **This chat:** JB_AI — that's me — curated knowledge plus OpenAI
 
-Check out [Craft](${ROUTES.craft}) for motion studies, [Ideas](${ROUTES.ideas}) for AI demos, [Projects](${ROUTES.projects}) for case studies, or [JB's Field Notes #1](${ROUTES.fieldNotesOne}) for a working note on Policy Copilot. Oh yeah — pretty cool.`,
+Check out [Craft](${ROUTES.craft}) for motion studies, [Ideas](${ROUTES.ideas}) for AI demos, [Projects](${ROUTES.projects}) for case studies, or [JB's Case Notes #1](${ROUTES.fieldNotesOne}) for a working note on Policy Copilot. Oh yeah — pretty cool.`,
   },
   {
     id: "case-study",
     prompt: "Which case study should I start with?",
     instruction:
-      "If the user asks which case study to read: either ask one clarifying question (AI vs fintech vs design systems vs growth vs cybersecurity) OR route by interest using the case study tags in knowledge. Friends trio — Ross organises the list, Chandler optional quip, Joey friendly close. Always link with markdown and explain why in one sentence each. Mention JB's Field Notes #1 when they want a shorter read on Policy Copilot chat-vs-draft.",
+      "If the user asks which case study to read: either ask one clarifying question (AI vs fintech vs design systems vs growth vs cybersecurity) OR route by interest using the case study tags in knowledge. Friends trio — Ross organises the list, Chandler optional quip, Joey friendly close. Always link with markdown and explain why in one sentence each. Mention JB's Case Notes #1 when they want a shorter read on Policy Copilot chat-vs-draft.",
     staticReply: `Could this *be* any more options? Fine — here's the organised version:
 
-- **AI / firewall policy UX** → [Cisco Policy Copilot](/projects/cisco-policy-copilot) — or the shorter [JB's Field Notes #1](${ROUTES.fieldNotesOne})
+- **AI / firewall policy UX** → [Cisco Policy Copilot](/projects/cisco-policy-copilot) — or the shorter [JB's Case Notes #1](${ROUTES.fieldNotesOne})
 - **AI / conversational UX** → [Saltbot AI](/projects/saltbot-ai-saltmine)
 - **Design systems at scale** → [FreshPrints Design System](/projects/freshprints-design-system)
 - **Generative AI tooling** → [FreshPrints Image Gen AI](/projects/freshprints-image-gen-ai)
