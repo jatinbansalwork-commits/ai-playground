@@ -511,7 +511,7 @@ export function resolveCareerKnowledgeReply(userMessage: string): string | null 
 
   return `${best.body.trim()}
 
-Ask about [Projects](/projects) for case-study proof, or [Craft](/craft) for interaction work.`;
+Ask about [Projects](/projects) for case-study proof, or [Craft / Design to Build](https://design-to-build.vercel.app/) for interaction work.`;
 }
 
 /** Full career pointers for the OpenAI system prompt. */

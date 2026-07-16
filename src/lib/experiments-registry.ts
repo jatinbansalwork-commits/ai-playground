@@ -601,14 +601,8 @@ export function getExperimentCategories(slug: string): ExperimentCategory[] {
   return getExperimentRegistryEntry(slug)?.categories ?? ["ai-experiment"];
 }
 
-/** External AI demos on `/ideas` — omitted from the Craft gallery. */
-export const IDEAS_EXPERIMENT_SLUGS = [
-  "ghost-spacer",
-  "spring-physics",
-  "click-sound",
-  "scroll-slider",
-  "clip-reveal",
-] as const;
+/** AI Labs gallery retired — keep empty so demos stay off Craft and Ideas. */
+export const IDEAS_EXPERIMENT_SLUGS = [] as const;
 
 export function isIdeasGalleryExperiment(slug: string): boolean {
   return (IDEAS_EXPERIMENT_SLUGS as readonly string[]).includes(slug);

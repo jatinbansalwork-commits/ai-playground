@@ -13,6 +13,9 @@ export const ROUTES = {
   fieldNotesOne: "/notes/1",
 } as const;
 
+/** Index Craft slide — opens Design to Build in a new tab. */
+export const CRAFT_EXTERNAL_URL = "https://design-to-build.vercel.app/" as const;
+
 export const FRAMES = [
   {
     id: "hero",
@@ -49,14 +52,6 @@ export const FRAMES = [
     href: ROUTES.projects,
   },
   {
-    id: "ideas",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "AI Labs",
-    monogramImage: "/assets/index/ideas-monogram.png",
-    href: ROUTES.ideas,
-  },
-  {
     id: "design-review-checklist",
     type: "section" as const,
     variant: "slide" as const,
@@ -70,10 +65,11 @@ export const FRAMES = [
     id: "experiments",
     type: "section" as const,
     variant: "slide" as const,
-    label: "Illustration",
-    monogramImage: "/assets/index/craft-monogram.png",
-    monogramWireframeImage: "/assets/index/craft-monogram-wireframe.png",
-    href: ROUTES.craft,
+    label: "Craft",
+    monogram: "Craft",
+    monogramPan: true,
+    monogramPanDuration: 14,
+    href: CRAFT_EXTERNAL_URL,
   },
   {
     id: "contact",

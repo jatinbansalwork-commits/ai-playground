@@ -40,17 +40,18 @@ function sectionLinkProps(
     className: "absolute inset-0 z-10 touch-manipulation",
     "aria-label": frame.label,
     onMouseDown: onInteract,
-    onClick: openInNewTab
-      ? undefined
-      : () => {
-          saveIndexActiveFrameForNavigation(frameIndex);
-          saveSessionBackContext(backContextForIndexNavigation(href));
-          trackIndexSlideClick({
-            frame_id: frame.id,
-            frame_label: frame.label,
-            href,
-          });
-        },
+    onClick: () => {
+      if (!openInNewTab) {
+        saveIndexActiveFrameForNavigation(frameIndex);
+        saveSessionBackContext(backContextForIndexNavigation(href));
+      }
+      trackIndexSlideClick({
+        frame_id: frame.id,
+        frame_label: frame.label,
+        href,
+        external: openInNewTab,
+      });
+    },
     ...(openInNewTab
       ? { target: "_blank" as const, rel: "noopener noreferrer" }
       : {}),

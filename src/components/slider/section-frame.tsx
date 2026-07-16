@@ -71,7 +71,7 @@ export function SectionFramePanel({
           pan={frame.monogramPan}
           panDuration={frame.monogramPanDuration}
         />
-      ) : (
+      ) : monogram ? (
         <div className="flex h-full w-full items-center justify-center overflow-hidden">
           <motion.h3
             aria-hidden
@@ -83,7 +83,7 @@ export function SectionFramePanel({
             {monogram}
           </motion.h3>
         </div>
-      )}
+      ) : null}
     </FrameShell>
   );
 }

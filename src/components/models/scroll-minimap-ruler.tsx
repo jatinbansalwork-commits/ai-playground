@@ -17,7 +17,8 @@ const RULER_TICKS_LAYOUT = [
 ] as const;
 
 const TICK_COUNT = RULER_TICKS_LAYOUT.length;
-const BRAND_ACCENT = "var(--brand-accent)";
+const BEAM_ACCENT = "#02BCEA";
+const BEAM_LABEL_TEXT = "#0A0A0A";
 
 /** Vertical band where the beam travels — aligned to case study body insets. */
 const CASE_STUDY_TRACK_TOP = `${CASE_STUDY_CONTENT_TOP_PADDING_PX}px`;
@@ -133,17 +134,20 @@ export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
           >
             <path
               d="M3.54688 6L0.515786 0.75L6.57796 0.75L3.54688 6Z"
-              fill="var(--brand-accent)"
+              fill={BEAM_ACCENT}
             />
           </svg>
 
-          <div className="h-px min-h-px flex-1 bg-brand-accent/80" />
+          <div
+            className="h-px min-h-px flex-1 opacity-80"
+            style={{ backgroundColor: BEAM_ACCENT }}
+          />
 
           <span
-            className="absolute top-1/2 right-[332px] flex h-6 -translate-y-1/2 items-center rounded px-3 text-[11px] font-medium tracking-wide whitespace-nowrap text-brand-accent-foreground"
-            style={{ backgroundColor: BRAND_ACCENT }}
+            className="absolute top-1/2 right-[332px] flex h-6 -translate-y-1/2 items-center rounded px-3 text-[11px] font-medium tracking-wide whitespace-nowrap"
+            style={{ backgroundColor: BEAM_ACCENT, color: BEAM_LABEL_TEXT }}
           >
-            You are here
+            I&apos;m here
           </span>
         </motion.div>
       </div>

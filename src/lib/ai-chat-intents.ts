@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
+import { CONTACT_EMAIL, CONTACT_LINKS, CRAFT_EXTERNAL_URL, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 
 const LINKEDIN = CONTACT_LINKS.find((link) => link.label === "LinkedIn")!.href;
 const RESUME = CONTACT_LINKS.find((link) => link.label === "Resume")!.href;
@@ -58,7 +58,7 @@ Want the [full case](${ROUTES.ciscoPolicyCopilot}), the Case Notes, or how he th
 3. **Ship systems** — FreshPrints design system stopped UI debates and helped **4 product teams** ship faster
 4. **Measure impact** — Piggy −19% tickets; Kalash gold savings for **1M+** users
 
-Craft + AI Labs sit beside the case studies when you want process experiments.
+Craft sits beside the case studies — the index Craft slide opens [Design to Build](${CRAFT_EXTERNAL_URL}).
 
 Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)?`,
   },
