@@ -1,6 +1,7 @@
 import {
   CONTACT_EMAIL,
   CONTACT_LINKS,
+  CRAFT_EXTERNAL_URL,
   JB_CONTACT_PHONE,
   JB_CONTACT_PHONE_TEL,
   ROUTES,
@@ -102,20 +103,19 @@ Skim that first, then bring **one** focused question on [LinkedIn](${LINKEDIN}).
     reply: () => `This portfolio is **custom-built** — no template.
 
 **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion  
-**Experience:** Scroll-linked index slider, editorial case-study system, Craft bento gallery, Ideas AI demos, JB's Case Notes  
+**Experience:** Scroll-linked index slider, editorial case-study system, Craft (Design to Build external + on-site gallery), JB's Case Notes  
 **Infra:** Vercel + Blob CDN, custom analytics  
 **This chat:** JB_AI — curated knowledge plus OpenAI when needed
 
-Peek at [Craft](${ROUTES.craft}) for motion/craft studies or [Projects](${ROUTES.projects}) for the case work.`,
+Peek at [Craft / Design to Build](${CRAFT_EXTERNAL_URL}) or [Projects](${ROUTES.projects}) for the case work.`,
   },
   {
-    match: (t) => includesAny(t, ["craft page", "what is on the craft"]),
-    reply: () => `**[Craft](${ROUTES.craft})** is JB's playground for slides, illustrations, icons, and interface sketches — design for fun and skill, not always a client brief.
+    match: (t) => includesAny(t, ["craft page", "what is on the craft", "design to build"]),
+    reply: () => `**Craft** on the index opens **[Design to Build](${CRAFT_EXTERNAL_URL})** in a new tab — JB's craft playground for slides, illustrations, icons, and interface sketches.
 
-Highlights:
-- Design Review checklist essay (how FreshPrints paired reviews with a design system)
-- Wireframe mode and minimap motion studies for the index slider
-- A reshuffling gallery so every visit feels alive
+Still on this site:
+- [Design Review checklist essay](${ROUTES.craft}/design-review-checklist) — how FreshPrints paired reviews with a design system
+- [Craft gallery](${ROUTES.craft}) — motion and illustration studies
 
 Want the Design Review essay, or jump to a shipped case study?`,
   },

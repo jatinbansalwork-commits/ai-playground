@@ -3,7 +3,7 @@ import { getCaseStudyContent } from "@/lib/project-content";
 /** Injects page-aware hints into the JB_AI system prompt. */
 export function buildPageContext(pagePath?: string): string {
   if (!pagePath || pagePath === "/") {
-    return "The user is on the index slider — mention Projects, Ideas, Craft, or Contact if relevant.";
+    return "The user is on the index slider — mention Projects, Craft (opens Design to Build externally), Design Review, Case Notes, or Contact if relevant.";
   }
 
   if (pagePath.startsWith("/projects/")) {
@@ -26,15 +26,11 @@ Overview (for other questions only): ${study.overviewText}`;
   }
 
   if (pagePath === "/craft") {
-    return "The user is browsing the Craft gallery — motion studies and illustrations only. The Design Review essay lives at /craft/design-review-checklist; AI demos are on /ideas.";
+    return "The user is browsing the Craft gallery — motion studies and illustrations only. The Design Review essay lives at /craft/design-review-checklist.";
   }
 
   if (pagePath === "/projects") {
     return "The user is on the Projects index — help them pick a case study based on their interest.";
-  }
-
-  if (pagePath === "/ideas") {
-    return "The user is browsing Ideas — external AI demos and side experiments. Point them to Try Now links when relevant.";
   }
 
   if (pagePath === "/archive") {

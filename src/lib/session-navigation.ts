@@ -19,7 +19,7 @@ export const BACK_PROJECTS: SessionBackContext = {
 
 export const BACK_CRAFT: SessionBackContext = {
   href: ROUTES.craft,
-  destination: "Illustration",
+  destination: "Craft",
 };
 
 export const BACK_IDEAS: SessionBackContext = {

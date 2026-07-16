@@ -1,11 +1,12 @@
 import {
   CONTACT_EMAIL,
   CONTACT_LINKS,
+  CRAFT_EXTERNAL_URL,
   HERO_COPY,
   MANIFEST_LINES,
   ROUTES,
 } from "@/lib/constants";
-import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY, IDEAS_EXPERIMENT_SLUGS } from "@/lib/experiments-registry";
+import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY } from "@/lib/experiments-registry";
 import { PROJECTS_LIST } from "@/lib/projects-list-data";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
@@ -56,14 +57,6 @@ const CRAFT_HIGHLIGHT_SLUGS = [
   "minimap-tracker",
 ] as const;
 
-const IDEAS_HIGHLIGHT_BLURBS: Partial<Record<string, string>> = {
-  "scroll-slider": "FriendCaptcha — AI experiment (external demo).",
-  "clip-reveal": "Focus Mode — interaction prototype (external demo).",
-  "spring-physics": "Miner Gift — spring-physics AI experiment (external demo).",
-  "ghost-spacer": "Lock in Police — AI experiment (external demo).",
-  "click-sound": "DoodleLab — AI experiment (external demo).",
-};
-
 const CRAFT_HIGHLIGHT_BLURBS: Partial<Record<string, string>> = {
   "design-review-checklist":
     "Essay on introducing a design review checklist alongside a design system at FreshPrints.",
@@ -89,24 +82,6 @@ function formatCaseStudyLine(slug: string, title: string, year: string): string 
   ].filter(Boolean);
 
   return parts.join("\n");
-}
-
-function buildIdeasHighlights(): string {
-  return IDEAS_EXPERIMENT_SLUGS.map((slug) => {
-    const entry = EXPERIMENTS_REGISTRY.find((item) => item.slug === slug);
-    if (!entry) return "";
-
-    const blurb = IDEAS_HIGHLIGHT_BLURBS[slug] ?? entry.title;
-    const href = entry.external && entry.href ? entry.href : ROUTES.ideas;
-    const linkLabel =
-      entry.external && entry.href
-        ? `[Try demo](${entry.href})`
-        : `[Ideas gallery](${ROUTES.ideas})`;
-
-    return `- **${entry.title}** — ${blurb} ${linkLabel}`;
-  })
-    .filter(Boolean)
-    .join("\n");
 }
 
 function buildCraftHighlights(): string {
@@ -156,11 +131,11 @@ JB designs AI products, prototypes them in code, and raises the bar for design c
 ## Site sections
 - **Index** — scroll-driven slide experience at ${ROUTES.home}
 - **${PROJECTS_PAGE.title}** — ${PROJECTS_PAGE.description} (${ROUTES.projects})
-- **${EXPERIMENTS_PAGE.title}** — ${EXPERIMENTS_PAGE.description} (${ROUTES.craft})
-- **Ideas** — side projects and AI experiments (${ROUTES.ideas})
+- **${EXPERIMENTS_PAGE.title}** — index Craft slide opens [Design to Build](${CRAFT_EXTERNAL_URL}) in a new tab (JB's design-to-build craft site). On-site Craft gallery remains at ${ROUTES.craft}; Design Review essay at ${ROUTES.craft}/design-review-checklist
 - **Design Review essay** — process and quality framework at ${ROUTES.craft}/design-review-checklist
 - **Case Notes** — JB's Case Notes (${ROUTES.fieldNotesOne})
 - **Contact** — LinkedIn, email, resume, and JB Manual on the index Contact slide
+- **AI Labs / Ideas** — retired; old /ideas links redirect home
 
 ## JB's Case Notes
 - **JB's Case Notes #1** (${ROUTES.fieldNotesOne}): JB's note on Cisco Policy Copilot — a one-line business ask vs a structured firewall policy.
@@ -174,9 +149,6 @@ ${caseStudyLines || "Case studies are being updated."}
 
 ## Craft highlights
 ${buildCraftHighlights()}
-
-## Ideas highlights
-${buildIdeasHighlights()}
 
 ## How this portfolio was built
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion

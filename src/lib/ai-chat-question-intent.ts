@@ -245,10 +245,16 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     id: "craft",
-    goal: "They want experiments / Craft gallery — link /craft.",
+    goal: "They want Craft / Design to Build — link https://design-to-build.vercel.app/ (and Design Review essay on-site if relevant).",
     curated: true,
     matches: (text) =>
-      includesAny(text, ["craft page", "experiments", "prototype", "interaction demo"]) ||
+      includesAny(text, [
+        "craft page",
+        "experiments",
+        "prototype",
+        "interaction demo",
+        "design to build",
+      ]) ||
       (text.includes("craft") && !text.includes("case study")),
   },
   {

@@ -110,13 +110,19 @@ export function trackCraftFilter(filter: string): void {
   track("craft_filter", { filter });
 }
 
-/** Index slide link click — visitor leaves the slider for a section. */
+/** Index slide link click — visitor leaves the slider for a section (or opens an external tab). */
 export function trackIndexSlideClick(properties: {
   frame_id: string;
   frame_label: string;
   href: string;
+  external?: boolean;
 }): void {
-  track("index_slide_click", properties);
+  track("index_slide_click", {
+    frame_id: properties.frame_id,
+    frame_label: properties.frame_label,
+    href: properties.href,
+    ...(properties.external != null ? { external: properties.external } : {}),
+  });
 }
 
 export function trackCaseStudyScrollDepth(

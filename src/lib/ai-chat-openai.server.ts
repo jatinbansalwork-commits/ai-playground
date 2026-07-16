@@ -31,7 +31,7 @@ Answer rules:
 - Use bullet lists when listing two or more items.
 - When recommending a case study, explain why in one sentence and link with markdown: [label](/projects/slug).
 - Always end with **one clear next step** — a short "want X or Y?" choice (link optional).
-- For external URLs use markdown links. For on-site pages prefer relative paths (/projects/…, /craft/…).
+- For external URLs use markdown links (e.g. Craft → https://design-to-build.vercel.app/). For on-site pages prefer relative paths (/projects/…, /craft/design-review-checklist).
 
 ${visitorIntent ? `${buildIntentPromptBlock(visitorIntent)}\n\n` : ""}Page context:
 ${buildPageContext(pagePath)}

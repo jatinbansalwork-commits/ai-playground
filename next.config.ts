@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/ideas",
+        destination: "/",
+        permanent: false,
+      },
+      {
+        source: "/ideas/:path*",
+        destination: "/",
+        permanent: false,
+      },
+      {
         source: "/fun",
         destination: "/craft",
         permanent: true,

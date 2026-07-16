@@ -200,7 +200,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | Event | Key properties | When |
 |-------|----------------|------|
 | `site_entry` | `landing_path`, `referrer_host`, `timezone`, `locale` | Once per session on first page load |
-| `index_slide_click` | `frame_id`, `frame_label`, `href` | Index slide link click (internal routes) |
+| `index_slide_click` | `frame_id`, `frame_label`, `href`, `external` | Index slide link click (internal or new-tab external) |
 | `index_frame_view` | `frame_id`, `frame_label`, `index` | Index frame enters view |
 | `index_frame_navigate` | `from`, `to`, `method` | Index frame change (scroll, nav, keyboard, minimap) |
 | `project_list_click` | `slug` | Projects index row click |

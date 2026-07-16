@@ -1,15 +1,7 @@
-import type { Metadata } from "next";
-import { IdeasPage } from "@/components/ideas/ideas-page";
-import { allProjectsSeoKeywords, buildPageMetadata } from "@/lib/seo";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/constants";
 
-export const metadata: Metadata = buildPageMetadata({
-  title: "Ideas",
-  description:
-    "AI experiments and side projects by Jatin Bansal — focus tools, generative interfaces, playful prototypes, and motion-driven product demos.",
-  path: "/ideas",
-  keywords: allProjectsSeoKeywords(),
-});
-
+/** AI Labs retired — keep the route so old links land on the index. */
 export default function IdeasRoutePage() {
-  return <IdeasPage />;
+  redirect(ROUTES.home);
 }
