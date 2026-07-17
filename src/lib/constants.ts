@@ -24,16 +24,6 @@ export const FRAMES = [
     label: SITE_NAME,
   },
   {
-    id: "cisco-policy-copilot",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "Recent",
-    monogram: "Cisco",
-    monogramPan: true,
-    monogramPanDuration: 14,
-    href: ROUTES.ciscoPolicyCopilot,
-  },
-  {
     id: "archive",
     type: "section" as const,
     variant: "slide" as const,
