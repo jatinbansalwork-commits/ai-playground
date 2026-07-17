@@ -24,16 +24,16 @@ export const AI_CHAT_INTENTS: readonly AiChatIntent[] = [
     id: "strongest-project",
     prompt: "What's JB's strongest project?",
     instruction:
-      "If they ask for JB's strongest / best / flagship project: compare 1–2 strengths (Policy Copilot for high-stakes AI UX, Saltbot for speed, Piggy for research impact). Lead with Policy Copilot + ~40% policy-generation time, mention Piggy 19% tickets or Saltbot ~5s analytics as runners-up. End with a clear next step and markdown case study links. Warm third-person about JB; one Friends line max.",
+      "If they ask for JB's strongest / best / flagship project: compare 1–2 public projects (Policy Copilot for high-stakes AI UX, Saltbot for speed, FreshPrints for systems impact). Lead with Policy Copilot + ~40% policy-generation time, then mention Saltbot ~5s analytics or FreshPrints helping 4 teams ship faster. End with a clear next step and markdown case study links. Warm third-person about JB; one Friends line max.",
     staticReply: `That's a tough call — they shine in different ways — but if I had to pick, **Cisco Policy Copilot** stands out for clarity under real pressure.
 
 Firewall policy is high-stakes: one wrong rule and you break access or open risk. JB flipped the order — start with the business ask, reflect understanding, then draft — so admins aren't stuck holding intent and ports in the same thread. The case positions **~40% less policy-generation time**, with humans still owning Approve.
 
-**Saltbot** is the other flagship for AI UX: analytics answers in ~5 seconds instead of spreadsheets. And **Piggy** shows research punch — **19% fewer** mutual-fund support tickets from clearer status and flows.
+**Saltbot** is the other flagship for AI UX: analytics answers in ~5 seconds instead of spreadsheets. **FreshPrints Design System** shows systems impact — helping **4 product teams** ship faster.
 
 Core pattern: find the real pain, then ship something measurable.
 
-Want [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [Saltbot](${ROUTES.projects}/saltbot-ai-saltmine), or [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets) next?`,
+Want [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [Saltbot](${ROUTES.projects}/saltbot-ai-saltmine), or [FreshPrints Design System](${ROUTES.projects}/freshprints-design-system) next?`,
   },
   {
     id: "cisco",
@@ -50,17 +50,17 @@ Want the [full case](${ROUTES.ciscoPolicyCopilot}), the Case Notes, or how he th
     id: "process",
     prompt: "What's his design process?",
     instruction:
-      "If they ask about JB's process / how he works: intent-first, prototype-in-code, ship systems (FreshPrints 4 teams), measure impact (Piggy 19%, Kalash 1M+). Numbered steps optional. Link one proof case study. One Friends line max.",
+      "If they ask about JB's process / how he works: intent-first, prototype-in-code, ship systems (FreshPrints 4 teams), measure impact (Policy Copilot ~40%, Saltbot ~5s, Kalash 1M+). Numbered steps optional. Link one public proof case study. One Friends line max.",
     staticReply: `JB works **intent-first, prototype-in-code**. Roughly:
 
 1. **Start with the real ask** — business language before control panels ([Policy Copilot](${ROUTES.ciscoPolicyCopilot}))
 2. **Prove it in product** — interactive demos, not slideware
 3. **Ship systems** — FreshPrints design system stopped UI debates and helped **4 product teams** ship faster
-4. **Measure impact** — Piggy −19% tickets; Kalash gold savings for **1M+** users
+4. **Measure impact** — Policy Copilot targets ~40% less generation time; Kalash serves **1M+** gold savers
 
 Craft sits beside the case studies — the index Craft slide opens [Design to Build](${CRAFT_EXTERNAL_URL}).
 
-Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Piggy](${ROUTES.projects}/piggy-reduced-mutual-fund-support-tickets)?`,
+Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Kalash](${ROUTES.projects}/kalash-rewards)?`,
   },
   {
     id: "reach",

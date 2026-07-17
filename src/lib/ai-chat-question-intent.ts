@@ -24,7 +24,6 @@ export type QuestionIntentId =
   | "jb_manual"
   | "project_saltbot"
   | "project_cisco"
-  | "project_piggy"
   | "project_freshprints"
   | "project_kalash"
   | "portfolio_site"
@@ -123,7 +122,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     id: "strongest_project",
-    goal: "They want JB's strongest / flagship project — compare Policy Copilot, Saltbot, Piggy with metrics.",
+    goal: "They want JB's strongest / flagship project — compare public work: Policy Copilot, Saltbot, and FreshPrints with metrics.",
     curated: true,
     matches: (text) =>
       includesAny(text, [
@@ -208,14 +207,6 @@ const INTENT_RULES: readonly IntentRule[] = [
       ]),
   },
   {
-    id: "project_piggy",
-    goal: "They asked about Piggy / fintech support work — explain how tickets dropped (status clarity, timelines, Prime Hour), not just link the case.",
-    curated: true,
-    matches: (text) =>
-      includesAny(text, ["piggy", "mutual fund", "support ticket"]) ||
-      (text.includes("fintech") && !text.includes("kalash")),
-  },
-  {
     id: "project_freshprints",
     goal: "They asked about FreshPrints — design system, merch platform, or Image Gen AI.",
     curated: true,
@@ -224,9 +215,10 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     id: "project_kalash",
-    goal: "They asked about Kalash / gold rewards — link the relevant case study.",
+    goal: "They asked about Kalash / gold rewards — explain and link the public Kalash Rewards case study.",
     curated: true,
-    matches: (text) => includesAny(text, ["kalash", "gold rewards", "year-end recap", "year end recap"]),
+    matches: (text) =>
+      includesAny(text, ["kalash", "gold rewards", "digital gold", "fintech"]),
   },
   {
     id: "portfolio_site",
@@ -410,21 +402,6 @@ Impact framing: **~40% less policy-generation time** on the journey from intent 
 
 Curious about intent-before-rules, or the shorter [Case Notes #1](${ROUTES.fieldNotesOne})?`;
 
-    case "project_piggy":
-      return `At **Piggy**, JB cut mutual-fund support tickets by **~19%** — not by stuffing FAQ links, but by fixing the moments that created anxiety.
-
-**The problem:** After buying funds, users couldn't tell if allotment was "working" or "broken." Misleading status language + unclear timelines = support volume around unit allotment and transaction status.
-
-**What changed:**
-- **Pre-purchase education** — allotment timelines shown before payment so expectations were set upfront
-- **Clearer post-purchase status** — removed wording that made normal processing look like failure
-- **Piggy Prime Hour** — reframed market cut-off timing into something understandable
-- **A/B rollout** — validated conversion stayed healthy while allotment/status tickets dropped
-
-Result: fewer panic tickets, more confidence after invest — research-led, measurable.
-
-Want the research findings next, or another fintech case like Kalash?`;
-
     case "project_freshprints":
       if (userMessage.toLowerCase().includes("image gen") || userMessage.toLowerCase().includes("review")) {
         return `**FreshPrints Image Gen AI** was about shipping generative image tooling creators could actually review — not a flashy demobot.
@@ -446,16 +423,11 @@ Want process notes (how he scoped AI UX), or the design-system work that sped de
 That's systems work — boring until you measure cycle time. Curious about Image Gen AI next, or how JB runs design reviews?`;
 
     case "project_kalash":
-      if (userMessage.toLowerCase().includes("recap")) {
-        return `**Kalash year-end recap** turns a year of gold-saving behaviour into a personalised story — delight that nudges retention, not a generic "thanks for banking with us."
-
-It's growth + craft: make the year feel *theirs* so people come back. Full story lives in the case when you want visuals.`;
-      }
       return `**Kalash** helps people in India buy **digital gold from ₹10** — daily, weekly, or monthly — without the friction of physical gold.
 
 JB's work sat at the growth/product layer: make saving feel attainable, trustworthy, and sticky for **1M+** users. Highlights include clearer value early in onboarding and reward loops that encourage consistency.
 
-Want the year-end recap story, or how he thinks about activation metrics?`;
+Want the activation story, or how he thinks about growth metrics?`;
 
     case "portfolio_site":
       return resolveSuggestionChipReply("How did JB build this portfolio?")!;
