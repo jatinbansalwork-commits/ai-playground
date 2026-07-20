@@ -25,6 +25,14 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "How did JB build this portfolio?",
     "What is on the Craft page?",
   ],
+  darkroom: [
+    "What's JB's strongest project?",
+    "What is on the Craft page?",
+  ],
+  easter_secret: [
+    "What's JB's strongest project?",
+    "Tell me about Cisco Policy Copilot",
+  ],
   resume: ["I'd love to hire JB", "How do I reach him?"],
   hiring: ["Where is JB's resume?", "What's JB's strongest project?"],
   contact: [

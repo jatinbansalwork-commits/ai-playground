@@ -12,15 +12,16 @@ Related docs: [`design.md`](./design.md) (implementation) · [`README.md`](./REA
 /                           Index — horizontal scroll slider (entry)
 ├── /projects               Case study list (hover thumbnails)
 │   └── /projects/[slug]    Long-form case study (one TSX per slug)
-├── /ideas                  AI experiment gallery (external demos)
 ├── /craft                  Motion + illustration bento grid
 │   └── /craft/[slug]       Craft essays (e.g. design review checklist)
 ├── /archive                About / “Me”
+├── /notes/1                JB's Case Notes (Field Notes)
 ├── /recent                 Legacy alias → Cisco case study href
+├── /ideas, /ideas/*        Redirect → / (Ideas gallery retired)
 └── /fun/*                  Legacy redirects → /craft (next.config.ts)
 ```
 
-Global chrome on every page: **JBAI** floating chat (`src/components/ai-chat/*`).
+Global chrome on every page: **JBAI** floating chat (`src/components/ai-chat/*`), custom cursor (`site-cursor.tsx`).
 
 ---
 
@@ -31,15 +32,16 @@ Scroll-driven frame carousel. Frame order matches `FRAMES` in `src/lib/constants
 | # | Frame id | Label | Destination |
 |---|----------|-------|-------------|
 | 1 | `hero` | JB Portfolio | — |
-| 2 | `projects` | Projects | `/projects` |
-| 3 | `ideas` | AI Experiment | `/ideas` |
-| 4 | `design-review-checklist` | My favorite | `/craft/design-review-checklist` |
-| 5 | `experiments` | Craft | `/craft` |
-| 6 | `archive` | Me | `/archive` |
-| 7 | `contact` | Contact | In-page contact sheet |
-| 8 | `manifest` | Manifest | In-page manifest sheet |
+| 2 | `archive` | Case Notes | `/notes/1` |
+| 3 | `projects` | Projects | `/projects` |
+| 4 | `design-review-checklist` | Design Review | `/craft/design-review-checklist` |
+| 5 | `experiments` | Craft | External `CRAFT_EXTERNAL_URL` (new tab) |
+| 6 | `contact` | Contact | In-page contact sheet |
+| 7 | `manifest` | Manifest | In-page manifest sheet |
 
-Monogram assets: `public/assets/index/` (`craft-monogram.png`, `ideas-monogram.png`, `article-cursor-hand.png`, wireframe variants).
+Monogram assets: `public/assets/index/` (`article-cursor-hand.png`, wireframe variants). Craft slide uses the text monogram `"Craft"` (no Ideas monogram on the index).
+
+Modes & easter eggs (wireframe, darkroom, askew, barrel roll, Manifest visit remix): [`design.md` § Design system](./design.md#design-system) · [§ Easter eggs](./design.md#easter-eggs).
 
 ---
 
@@ -69,10 +71,10 @@ Direct URLs work for hidden case studies. Pre-launch blur gate (`CASE_STUDY_REVE
 
 ## Craft vs Ideas
 
-| Gallery | Route | Source | Grid shows |
-|---------|-------|--------|------------|
-| **Craft** | `/craft` | `getExperimentGalleryItems()` | Motion + illustration (not article-only, not Ideas slugs) |
-| **Ideas** | `/ideas` | `IDEAS_EXPERIMENT_SLUGS` | Five external AI demos with **Try Now** |
+| Gallery | Route | Source | Status |
+|---------|-------|--------|--------|
+| **Craft** | `/craft` | `getExperimentGalleryItems()` | Live — motion + illustration (not article-only, not Ideas slugs) |
+| **Ideas** | `/ideas` | — | **Retired** — redirects to `/` |
 
 Craft essays (e.g. design review checklist) live at `/craft/[slug]` but may be omitted from the bento grid when `isArticleOnlyExperiment`.
 
@@ -98,7 +100,7 @@ Local prefixes are allowlisted in `LOCAL_PUBLIC_ASSET_PREFIXES` — not rewritte
 |-----|---------|
 | [`README.md`](./README.md) | Setup, scripts, deploy, SEO monitoring, preview images |
 | [`IA.md`](./IA.md) | This file — routes and content ownership |
-| [`design.md`](./design.md) | Component wiring, gallery rules, editorial patterns |
+| [`design.md`](./design.md) | Design system tokens, slider, easter eggs, gallery rules, editorial patterns |
 | `.cursor/rules/case-study-headings.mdc` | Heading & caption casing |
 | `.cursor/rules/case-study-reveal-timer.mdc` | IST reveal countdown rules |
 | `.cursor/skills/jb_illustrations/` | Illustration generation skill |

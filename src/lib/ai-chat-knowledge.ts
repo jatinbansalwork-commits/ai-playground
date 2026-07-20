@@ -138,7 +138,8 @@ ${buildCraftHighlights()}
 ## How this portfolio was built
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
 - **Hosting / media:** Vercel, Vercel Blob CDN, Vercel Analytics with custom events
-- **Patterns:** Custom editorial case-study components, scroll-linked index slider, craft bento gallery, wireframe debug mode, no off-the-shelf UI kit
+- **Patterns:** Custom editorial case-study components, scroll-linked index slider, craft bento gallery, wireframe debug mode, darkroom mood toggle, soft chat secrets, no off-the-shelf UI kit
+- Soft easter eggs (do not dump unprompted): chat secrets \`pivot\` / \`friends\` / \`could this be any more\`; \`darkroom\` mood; \`do a barrel roll\`; \`askew\`; \`i'm feeling lucky\`; Shift-click cycles the custom cursor label; visit Manifest 3× to remix the case-study minimap label
 - **JB_AI:** This chat uses curated site knowledge plus OpenAI — not general web browsing
 - **Footer:** "2026 · Designed by JB · Amplified by AI."
 

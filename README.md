@@ -1,15 +1,13 @@
 # ai-playground
 
-Portfolio site for case studies, Craft gallery (motion + illustration), and Ideas (AI experiments). Built with Next.js 16, React 19, Tailwind CSS v4, and Framer Motion.
+Portfolio site for case studies and Craft gallery (motion + illustration). Built with Next.js 16, React 19, Tailwind CSS v4, and Framer Motion.
 
 ## Preview
 
-Index slide monograms (Craft + Ideas):
+Index Design Review monogram:
 
 <p align="center">
-  <img src="./public/assets/index/craft-monogram.png" alt="Craft gallery monogram — motion and illustration" width="280" />
-  &nbsp;&nbsp;
-  <img src="./public/assets/index/ideas-monogram.png" alt="Ideas gallery monogram — AI experiments" width="280" />
+  <img src="./public/assets/index/article-cursor-hand.png" alt="Design Review slide monogram — cursor hand" width="280" />
 </p>
 
 Case study editorial art ([Cisco Policy Copilot](https://jatinbansal.vercel.app/projects/cisco-policy-copilot) — JB illustration library):
@@ -33,7 +31,7 @@ Impact-card illustration (light mode):
 | Doc | Contents |
 |-----|----------|
 | [`IA.md`](./IA.md) | Site tree, index frames, case study visibility, media sources |
-| [`design.md`](./design.md) | Slider, Craft/Ideas rules, case study components, Policy Copilot demo, analytics catalogue |
+| [`design.md`](./design.md) | Design system tokens, index modes, easter eggs, Craft rules, case study components, analytics |
 | `.cursor/skills/jb_illustrations/` | Cursor skill for generating editorial art |
 | `.cursor/rules/case-study-headings.mdc` | Title case for headings & captions |
 
@@ -72,15 +70,30 @@ Full route map, index slider frames, and visibility rules: **[`IA.md`](./IA.md)*
 
 | Route | Content |
 |-------|---------|
-| `/` | Index — horizontal scroll slider (hero → projects → ideas → My favorite → craft → me → contact → manifest) |
+| `/` | Index — horizontal scroll slider (hero → Case Notes → Projects → Design Review → Craft → Contact → Manifest) |
 | `/projects` | Case study list with hover thumbnails |
 | `/projects/[slug]` | Long-form case study pages |
 | `/craft` | Motion graphics and illustration gallery (bento grid + filter chips) |
 | `/craft/[slug]` | Craft essays (e.g. design review checklist) |
-| `/ideas` | AI experiment demos — external side projects with detail modals |
-| `/archive` | About / “Me” slide destination |
+| `/notes/1` | JB's Case Notes |
+| `/archive` | About / “Me” |
 
-Legacy `/fun/*` redirects to `/craft`; `/recent` aliases the Cisco case study (`next.config.ts`, `src/app/recent/page.tsx`).
+Legacy `/fun/*` redirects to `/craft`; `/recent` aliases the Cisco case study; `/ideas` redirects home (`next.config.ts`).
+
+### Design system
+
+Surfaces, accents, and index modes (wireframe, darkroom, askew, barrel roll): **[`design.md` § Design system](./design.md#design-system)**.
+
+| Accent | Hex | Role |
+|--------|-----|------|
+| Soft sky (`--brand-accent`) | `#a3d9ff` | Manifest, chat, footer |
+| Presence cyan (`--presence-accent`) | `#02BCEA` | Cursor label, case-study beam, 404, darkroom |
+
+Tokens: `src/app/globals.css` · JS mirrors: `SITE_CANVAS`, `PRESENCE_ACCENT`, etc. in `src/lib/constants.ts`.
+
+### Easter eggs
+
+Soft discovery moments (chat secrets, darkroom, barrel roll, Shift-click cursor labels, Manifest minimap remix, witty 404). Full catalogue: **[`design.md` § Easter eggs](./design.md#easter-eggs)**.
 
 ## Case studies
 
@@ -119,19 +132,15 @@ Register new assets in `JB_ILLUSTRATIONS`, then reference them from case study c
 
 Default filter is **Motion Graphic**. Categories on Craft: `motion-graphic`, `illustration`. Article-only and AI experiment entries are excluded from the Craft grid — see [`design.md`](./design.md).
 
-## Ideas
+## Ideas (retired)
 
-- **Gallery slugs**: `IDEAS_EXPERIMENT_SLUGS` in `experiments-registry.ts`
-- **Card copy & preview sizes**: `src/lib/ideas-page-data.ts`
-- **UI**: `src/components/ideas/*`, route `src/app/ideas/page.tsx`
-
-Five external demos: Lock in Police, Miner Gift, DoodleLab, FriendCaptcha, Focus Mode.
+`/ideas` redirects to `/`. Legacy registry rows may remain for media reuse — see [`design.md` § Ideas gallery](./design.md#ideas-gallery-retired).
 
 ## JBAI (site chat)
 
 Floating assistant on every page — `src/components/ai-chat/*`, API at `src/app/api/chat/route.ts`.
 
-Curated knowledge, intent chips, OpenAI streaming, GIPHY reactions, and session limits.
+Curated knowledge, intent chips, OpenAI streaming, GIPHY reactions, session limits, plus client commands (`wireframe`, `darkroom`) and soft chat secrets.
 
 ### Question logging
 
@@ -149,7 +158,7 @@ Set `AI_CHAT_LOG_ENABLED=false` to disable the sheet webhook without removing th
 ## Design notes
 
 - **[`IA.md`](./IA.md)** — routes, index frames, visibility
-- **[`design.md`](./design.md)** — slider wiring, Craft/Ideas gallery rules, case study UI, JB illustrations
+- **[`design.md`](./design.md)** — design system tokens, easter eggs, slider wiring, Craft rules, case study UI, JB illustrations
 
 ## Deploy
 
@@ -213,10 +222,9 @@ In the Vercel dashboard: **Project → Analytics → Production**
 | Case study opens | Events → `project_open` (filter `slug`, `source`) |
 | Case study scroll depth | Events → `case_study_scroll_depth` (filter `slug`, `depth`) |
 | Policy Copilot demo funnel | Events → `policy_copilot_demo` (filter `action`, `scenario_id`) |
-| Craft / Ideas gallery views | Events → `craft_view`, `ai_experiment_view` |
-| Craft / Ideas item clicks | Events → `craft_item_click`, `ai_experiment_item_click` |
+| Craft gallery views / clicks | Events → `craft_view`, `craft_item_click` |
 | JB's Field Notes article views | Events → `field_notes_view` (filter `note_id`) |
-| External demo opens | Events → `external_demo_open` |
+| Easter eggs | Events → `google_easter_egg`, `ai_chat_darkroom_toggle`, `ai_chat_secret`, `cursor_label_cycle`, `manifest_visit` |
 | JBAI chat funnel | Events → `ai_chat_open`, `ai_chat_message`, `ai_chat_intent`, `ai_chat_close` |
 | Contact / resume | Events → `contact_click`, `resume_download` |
 | Video / motion plays | Events → `media_play` (filter `surface`, `slug`) |
@@ -259,7 +267,7 @@ Once a month, open **Vercel → Project → Analytics → Production** and work 
 1. **Case studies opened but not read** — filter `project_open` by `slug`, then compare with `case_study_scroll_depth` for the same slug. Slugs with opens but no 50%+ depth need a stronger hook or faster LCP.
 2. **Policy Copilot demo drop-off** — compare `understand_intent` → `draft_revealed` → `approve` counts on `policy_copilot_demo`. Low draft rate may mean clarifications are blocking; low approve rate may mean the demo runs too long.
 3. **Repeated chat intents** — filter `ai_chat_intent` by `intent_id`. Intents with high volume but low confidence suggest missing copy or nav.
-4. **Gallery drop-off** — compare `craft_view` / `ai_experiment_view` with `craft_item_click` / `ai_experiment_item_click`. Low click-through means card previews or hints need work.
+4. **Gallery drop-off** — compare `craft_view` with `craft_item_click`. Low click-through means card previews or hints need work.
 5. **Index discovery** — check `index_frame_view` for frame 1 vs later frames. If most sessions never leave slide 1, revisit index hints or JB_AI “Show me around”.
 6. **JBAI Q&A sheet** — scan the Google Sheet for unanswered patterns, typos in questions, and pages where visitors get stuck (`Page` column).
 7. **Speed Insights** — note routes with poor LCP; case study hero preloads and below-fold lazy media live in `src/app/projects/[slug]/layout.tsx` and `CaseStudyMedia`.

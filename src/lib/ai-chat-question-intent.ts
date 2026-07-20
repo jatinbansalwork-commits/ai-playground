@@ -1,4 +1,5 @@
 import { resolveSuggestionChipReply } from "@/lib/ai-chat-chip-replies";
+import { resolveChatSecretReply } from "@/lib/ai-chat-secrets";
 import { CONTACT_EMAIL, CONTACT_LINKS, JB_CONTACT_PHONE, JB_CONTACT_PHONE_TEL, ROUTES } from "@/lib/constants";
 import { resolveCareerKnowledgeReply } from "@/lib/ai-chat-career-knowledge";
 import {
@@ -13,6 +14,8 @@ const JB_MANUAL = CONTACT_LINKS.find((link) => link.label === "JB Manual")!.href
 export type QuestionIntentId =
   | "greeting"
   | "wireframe"
+  | "darkroom"
+  | "easter_secret"
   | "resume"
   | "hiring"
   | "contact"
@@ -71,6 +74,23 @@ const INTENT_RULES: readonly IntentRule[] = [
     goal: "Explain the wireframe easter egg — toggle via chat command or index cross.",
     curated: true,
     matches: (text) => includesAny(text, ["wireframe", "layout debug", "debug mode"]),
+  },
+  {
+    id: "darkroom",
+    goal: "Explain or acknowledge the darkroom mood toggle — type darkroom in chat.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, ["darkroom mode"]) || text.trim() === "darkroom",
+  },
+  {
+    id: "easter_secret",
+    goal: "Friends-flavoured secret unlock — pivot / could this be any more / friends.",
+    curated: true,
+    matches: (text) =>
+      includesAny(text, ["central perk"]) ||
+      text.trim() === "pivot" ||
+      text.trim() === "friends" ||
+      text.includes("could this be any more"),
   },
   {
     id: "resume",
@@ -318,6 +338,15 @@ Ask about hiring, a case study, or how to reach JB — I'll match the answer to 
 
     case "wireframe":
       return "Type **wireframe mode** in this chat to toggle layout debug on the index slider — or click the centre cross on the homepage. Could this *be* any more designer?";
+
+    case "darkroom":
+      return "Type **darkroom** in this chat to flip the index into a near-black studio mood with cyan accents. Type it again to bring the lights back.";
+
+    case "easter_secret":
+      return (
+        resolveChatSecretReply(userMessage) ??
+        `You found a soft secret. Try \`pivot\`, \`friends\`, or \`could this be any more\` — then follow the case link.`
+      );
 
     case "resume":
       return `You asked for the CV — here it is. JB's [Resume](${RESUME}) on Google Drive. Could this *be* any more straightforward?`;

@@ -4,6 +4,49 @@ Implementation reference for the portfolio. For routes and content ownership, se
 
 ---
 
+## Design system
+
+Site-wide visual language — not a component library. Tokens live in CSS (`src/app/globals.css`) and JS mirrors (`src/lib/constants.ts`).
+
+### Surfaces & accents
+
+| Token | CSS | JS constant | Hex | Use |
+|-------|-----|-------------|-----|-----|
+| Site canvas | `--site-canvas` / `--background` | `SITE_CANVAS` | `#09090b` | Default page canvas (index, craft, 404) |
+| Darkroom canvas | `--darkroom-canvas` | `DARKROOM_CANVAS` | `#050507` | Near-black studio mood when darkroom is on |
+| Brand accent (soft sky) | `--brand-accent` | `BRAND_ACCENT` | `#a3d9ff` | Manifest panel, chat bubbles, footer strip, index minimap active |
+| Brand accent soft | `--brand-accent-soft` | — | `#c8e8ff` | Softer sky highlights |
+| Brand accent foreground | `--brand-accent-foreground` | — | `#09090b` | Text on sky surfaces |
+| Presence accent (cyan) | `--presence-accent` | `PRESENCE_ACCENT` | `#02BCEA` | Cursor label, case-study scroll beam, 404 CTA, darkroom accents |
+| Presence foreground | `--presence-accent-foreground` | `PRESENCE_ACCENT_FOREGROUND` | `#0A0A0A` | Text on presence cyan |
+
+Tailwind aliases (via `@theme inline`): `bg-brand-accent`, `text-brand-accent-soft`, `bg-presence-accent`, `text-presence-accent`, etc.
+
+**Rule of thumb:** soft sky = chrome / chat / Manifest; presence cyan = “you are here” / discovery / darkroom.
+
+### Typography
+
+| Role | Source |
+|------|--------|
+| UI / body | IBM Plex Sans — `src/lib/fonts.ts` → `ibmPlexSans` |
+| Hand / back-link flavour | Just Another Hand — `justAnotherHand` |
+| Stack helper | `SITE_FONT_STACK` |
+
+Case study headings use editorial components in `case-study-prose.tsx` — title case rules in `.cursor/rules/case-study-headings.mdc`.
+
+### Index modes
+
+| Mode | How to toggle | What changes | Context / styles |
+|------|---------------|--------------|------------------|
+| **Wireframe** | Centre cross on index, or chat `wireframe` / `wireframe mode` | Layout strokes, blueprint overlay | `wireframe-context.tsx`, `.wireframe-mode` |
+| **Darkroom** | Chat `darkroom` / `darkroom mode` | Near-black canvas, presence cyan labels & Manifest | `darkroom-context.tsx`, `html.darkroom-mode`, `.darkroom-mode` |
+| **Askew** | Chat `askew` / `tilt` | Index track tips ~−2° | `sessionStorage` `jb_askew`, `.index-askew` |
+| **Barrel roll** | Chat `do a barrel roll` | One 360° spin of the slider track | `jb-barrel-roll` event, `.index-barrel-roll` |
+
+Prefer CSS variables over hard-coded hex when adding new chrome that uses these accents.
+
+---
+
 ## Index slider
 
 The homepage is a horizontal scroll-driven frame carousel.
@@ -20,17 +63,37 @@ The homepage is a horizontal scroll-driven frame carousel.
 | Frame | Label | Destination |
 |-------|-------|-------------|
 | Hero | JB Portfolio | — |
+| Case Notes | Case Notes | `/notes/1` |
 | Projects | Projects | `/projects` |
-| Ideas | AI Experiment | `/ideas` |
-| Design Review | My favorite | `/craft/design-review-checklist` |
-| Craft | Craft | `/craft` |
-| Archive | Me | `/archive` |
+| Design Review | Design Review | `/craft/design-review-checklist` |
+| Craft | Craft | External — `CRAFT_EXTERNAL_URL` (`design-to-build.vercel.app`) in a new tab |
 | Contact | Contact | in-page contact sheet |
 | Manifest | Manifest | in-page manifest sheet |
 
 Monogram pan speed is normalised by overflow distance in `section-frame-monogram.tsx` so shorter labels scroll at the same pixel velocity as longer ones.
 
-**Wireframe mode** — layout debug overlay on the index. Toggle via the centre cross on the homepage or by typing `wireframe mode` in JBAI. Context: `src/context/wireframe-context.tsx`.
+`/ideas` redirects to `/` (`next.config.ts`) — the Ideas index frame is retired.
+
+---
+
+## Easter eggs
+
+Soft discovery moments — document here for maintainers; JB_AI should not dump the full list unprompted (see `ai-chat-knowledge.ts`).
+
+| Egg | Trigger | Behaviour | Primary files |
+|-----|---------|-----------|---------------|
+| Chat secrets | `pivot`, `we were on a break`, `friends`, `central perk`, `could this be any more` | Friends-flavoured reply + public case link | `ai-chat-secrets.ts`, `ai-chat-ball.tsx` |
+| Wireframe | `wireframe` / centre cross | Index layout debug | `wireframe-context.tsx`, `ai-chat-commands.client.ts` |
+| Darkroom | `darkroom` | Near-black studio + presence cyan | `darkroom-context.tsx`, `globals.css` |
+| Barrel roll | `do a barrel roll` | 360° spin on index | `google-easter-eggs.ts`, `index-experience.tsx` |
+| Askew | `askew` / `tilt` | Tip index ~2° (toggle) | `google-easter-eggs.ts` |
+| I'm Feeling Lucky | `i'm feeling lucky` | Navigate to a random public case | `google-easter-eggs.ts` |
+| Cursor personality | **Shift+click** empty canvas | Cycle label: I'm here → Still here → Hire me? | `site-cursor.tsx` |
+| Minimap remix | Visit Manifest slide **3×** | Case-study beam label → **Still making it.** | `manifest-visits.ts`, `scroll-minimap-ruler.tsx` |
+| 404 wit | Any unknown route | “This page ghosted us.” + Policy Copilot CTA | `src/app/not-found.tsx` |
+| Console tip | Open DevTools on index | One-time styled hint listing Google-style commands | `logIndexConsoleEasterEgg()` |
+
+Analytics: `ai_chat_secret`, `ai_chat_darkroom_toggle`, `ai_chat_wireframe_toggle`, `cursor_label_cycle`, `manifest_visit`, `google_easter_egg` — see § Analytics.
 
 ---
 
@@ -53,7 +116,7 @@ Creative work — motion graphics, illustrations, and essays — in a bento grid
 `getExperimentGalleryItems()` returns registry rows **except**:
 
 - **Article-only** entries (`isArticleOnlyExperiment`) — essays stay at `/craft/[slug]` but are omitted from the grid (reachable from the index Design Review slide).
-- **Ideas slugs** (`isIdeasGalleryExperiment`) — live on `/ideas` instead.
+- **Ideas slugs** (`isIdeasGalleryExperiment`) — legacy AI demos; `/ideas` redirects home (registry rows may still exist for media reuse).
 
 ### Filter tabs
 
@@ -81,40 +144,19 @@ On the **All** tab, multi-category entries expand to one card per category (arti
 1. Add a row to `EXPERIMENTS_REGISTRY` with `slug`, `title`, `categories`, and `media`.
 2. Wire CDN preview in `EXPERIMENT_CDN_MEDIA` if needed.
 3. For essays, add an `article` block — route is automatic at `/craft/[slug]`.
-4. Do **not** add AI experiment slugs here if they belong on Ideas — use `IDEAS_EXPERIMENT_SLUGS` instead.
+4. Do **not** add new AI experiment slugs for a public Ideas gallery — that surface is retired.
 
 ---
 
-## Ideas gallery
+## Ideas gallery (retired)
 
-External AI side projects at `/ideas` — detail.design-style cards with preview media, chips, editor notes, and **Try Now** links.
-
-### Source of truth
+`/ideas` and `/ideas/*` **redirect to `/`** (`next.config.ts`). External AI demos are no longer a primary nav destination; registry + `ideas-page-data.ts` may remain for assets or archival reference.
 
 | Piece | Location |
 |-------|----------|
-| Slug list | `IDEAS_EXPERIMENT_SLUGS` in `experiments-registry.ts` |
-| Intro copy | `src/lib/ideas-page-data.ts` → `IDEAS_PAGE_INTRO` |
-| Per-card meta | `IDEAS_CARD_META` in `ideas-page-data.ts` (subtext, chips, editor note, preview size) |
-| Grid & modals | `src/components/ideas/*` |
-
-### Current demos
-
-| Slug | Title | External link |
-|------|-------|---------------|
-| `ghost-spacer` | Lock in Police | Registry `href` |
-| `spring-physics` | Miner Gift | Registry `href` |
-| `click-sound` | DoodleLab | Registry `href` |
-| `scroll-slider` | FriendCaptcha | Registry `href` |
-| `clip-reveal` | Focus Mode | Registry `href` |
-
-Registry rows must keep `categories: ["ai-experiment"]` and `external: true`. Preview media reuses `EXPERIMENT_CDN_MEDIA` keys shared with the experiments registry.
-
-### Adding an Ideas demo
-
-1. Add the full registry entry in `EXPERIMENTS_REGISTRY`.
-2. Append the slug to `IDEAS_EXPERIMENT_SLUGS`.
-3. Add card meta in `IDEAS_CARD_META` (`ideas-page-data.ts`).
+| Redirect | `next.config.ts` |
+| Legacy slug list | `IDEAS_EXPERIMENT_SLUGS` in `experiments-registry.ts` |
+| Legacy card meta | `src/lib/ideas-page-data.ts` |
 
 ---
 
@@ -129,11 +171,16 @@ Floating assistant (`JB_AI`) on all pages.
 | Intents & chips | `src/lib/ai-chat-intents.ts` |
 | Question routing | `src/lib/ai-chat-question-intent.ts` |
 | Knowledge bank | `src/lib/ai-chat-knowledge.ts`, `ai-chat-career-knowledge.ts` |
+| Client commands | `src/lib/ai-chat-commands.client.ts` (wireframe, darkroom) |
+| Chat secrets | `src/lib/ai-chat-secrets.ts` |
+| Google-style eggs | `src/lib/google-easter-eggs.ts` |
 | OpenAI stream | `src/lib/ai-chat-openai.server.ts` |
 | GIPHY reactions | `src/lib/ai-chat-giphy.server.ts` |
 | Session limits | `src/lib/ai-chat-config.ts`, cookie helpers |
 
-Reply path: detect intent → static chip reply or OpenAI stream → optional GIPHY GIF → follow-up suggestions. After the OpenAI session budget is used, curated fallback replies still respond without an API call.
+Reply path: client commands / secrets → detect intent → static chip reply or OpenAI stream → optional GIPHY GIF → follow-up suggestions. After the OpenAI session budget is used, curated fallback replies still respond without an API call.
+
+Promote **public** case studies only (Policy Copilot, Saltbot, FreshPrints, Kalash, etc.) — do not surface hidden / unpublished project URLs.
 
 ---
 
@@ -201,6 +248,11 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 |-------|----------------|------|
 | `site_entry` | `landing_path`, `referrer_host`, `timezone`, `locale` | Once per session on first page load |
 | `index_slide_click` | `frame_id`, `frame_label`, `href`, `external` | Index slide link click (internal or new-tab external) |
+| `ai_chat_darkroom_toggle` | `enabled` | Chat toggles darkroom mood |
+| `ai_chat_secret` | `secret` | Chat secret password unlock |
+| `cursor_label_cycle` | `label` | Shift-click cycles custom cursor label |
+| `manifest_visit` | `count` | Manifest slide becomes active |
+| `google_easter_egg` | `kind` | Barrel roll, askew, or I'm Feeling Lucky |
 | `index_frame_view` | `frame_id`, `frame_label`, `index` | Index frame enters view |
 | `index_frame_navigate` | `from`, `to`, `method` | Index frame change (scroll, nav, keyboard, minimap) |
 | `project_list_click` | `slug` | Projects index row click |
@@ -210,7 +262,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `craft_view` | — | `/craft` page load |
 | `craft_item_click` | `slug`, `category`, `external` | Craft gallery item click |
 | `craft_filter` | `filter` | Craft filter tab change (legacy bento) |
-| `ai_experiment_view` | — | `/ideas` page load |
+| `ai_experiment_view` | — | Legacy `/ideas` page load (redirects home) |
 | `ai_experiment_detail_view` | `slug` | Ideas detail modal open |
 | `ai_experiment_item_click` | `slug`, `cta`, `url` | Ideas card or live-demo CTA |
 | `external_demo_open` | `slug`, `url`, `surface` | External demo link |
@@ -236,19 +288,18 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 
 | Route | Hook / component | Event(s) |
 |-------|------------------|----------|
-| `/` | `use-scroll-slider.ts` | `index_frame_view`, `index_frame_navigate`, `index_slide_click` |
+| `/` | `use-scroll-slider.ts`, `index-experience.tsx` | `index_frame_view`, `index_frame_navigate`, `index_slide_click`, `manifest_visit`, barrel/askew listeners |
 | `/projects` | `use-projects-page-analytics.ts` | `projects_view` |
 | `/projects` rows | `projects-list.tsx` | `project_list_click` |
 | `/projects/[slug]` | `case-study-page-shell.tsx` → `use-case-study-page-analytics.ts` | `project_open`, `case_study_scroll_depth` (25 / 50 / 75 / 100 %) |
 | `/projects/cisco-policy-copilot` | `policy-copilot-workspace.tsx`, `CiscoPolicyCopilot.tsx` | `policy_copilot_demo` — see actions below |
 | `/craft` | `use-craft-page-analytics.ts` | `craft_view` |
 | `/craft/[slug]` | `craft-article-page-analytics.tsx` | `design_review_view` |
-| `/ideas` | `use-ideas-page-analytics.ts` | `ai_experiment_view` |
 | `/archive` | `use-archive-page-analytics.ts` | `archive_view` |
 | `/notes/1` | `field-notes-page-analytics.tsx` | `field_notes_view` |
-| Case study / craft / ideas media | `use-track-media-play.ts` | `media_play` |
+| Case study / craft media | `use-track-media-play.ts` | `media_play` |
 | All pages | `site-entry-analytics.tsx` | `site_entry` (once per session) |
-| JBAI chat | `ai-chat/*` | `ai_chat_*` events |
+| JBAI chat | `ai-chat/*` | `ai_chat_*` events, `google_easter_egg` |
 
 **`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset`
 

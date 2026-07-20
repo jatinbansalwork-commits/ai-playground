@@ -60,7 +60,10 @@ import {
   trackAiChatOpen,
   trackAiChatReplySource,
   trackAiChatSessionMessages,
+  trackAiChatDarkroomToggle,
+  trackAiChatSecretUnlock,
   trackAiChatWireframeToggle,
+  trackGoogleEasterEgg,
 } from "@/lib/analytics";
 import {
   AI_CHAT_FAB_MOBILE_INDEX_BOTTOM,
@@ -71,11 +74,26 @@ import { isFieldNotesPathname } from "@/lib/long-read-routes";
 import { EXPERIMENTS_CARD } from "@/lib/experiments-bento";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useAiChatSounds } from "@/hooks/use-ai-chat-sounds";
+import { useDarkroom } from "@/context/darkroom-context";
 import { useWireframe } from "@/context/wireframe-context";
 import {
+  buildDarkroomModeReply,
   buildWireframeModeReply,
+  isDarkroomModeCommand,
   isWireframeModeCommand,
 } from "@/lib/ai-chat-commands.client";
+import { resolveChatSecretReply } from "@/lib/ai-chat-secrets";
+import {
+  buildAskewReply,
+  buildBarrelRollReply,
+  buildFeelingLuckyReply,
+  dispatchAskewToggle,
+  dispatchBarrelRoll,
+  isAskewCommand,
+  isBarrelRollCommand,
+  isFeelingLuckyCommand,
+  pickFeelingLuckyProject,
+} from "@/lib/google-easter-eggs";
 import { detectQuestionIntent } from "@/lib/ai-chat-question-intent";
 import { queueClientChatLog } from "@/lib/ai-chat-log.client";
 import { springSnappy } from "@/lib/spring";
@@ -120,6 +138,7 @@ export function AiChatBall() {
   const reducedMotion = useReducedMotion();
   const { playOpenPop, playSendWhoosh } = useAiChatSounds();
   const { wireframe, setWireframe } = useWireframe();
+  const { darkroom, setDarkroom } = useDarkroom();
   const dialogId = useId();
   const titleId = useId();
   const descriptionId = useId();
@@ -289,6 +308,158 @@ export function AiChatBall() {
           ...current,
           { role: "user", content },
           { role: "assistant", content: reply },
+        ]);
+        return;
+      }
+
+      if (isDarkroomModeCommand(content)) {
+        const nextEnabled = !darkroom;
+        setDarkroom(nextEnabled);
+        trackAiChatDarkroomToggle(nextEnabled);
+        trackAiChatIntent({
+          intent_id: "darkroom",
+          confidence: "high",
+          input: "typed",
+          goal: "Toggle the darkroom mood easter egg on the index.",
+        });
+
+        const reply = buildDarkroomModeReply(
+          nextEnabled,
+          pathname === "/" || pathname === "",
+        );
+
+        queueClientChatLog({
+          question: content,
+          reply,
+          pagePath: pathname,
+          questionIntentId: "darkroom",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: reply },
+        ]);
+        return;
+      }
+
+      if (isBarrelRollCommand(content)) {
+        const onIndex = pathname === "/" || pathname === "";
+        trackGoogleEasterEgg("barrel_roll");
+        if (onIndex) dispatchBarrelRoll();
+        const reply = buildBarrelRollReply(onIndex);
+
+        queueClientChatLog({
+          question: content,
+          reply,
+          pagePath: pathname,
+          questionIntentId: "easter_secret",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: reply },
+        ]);
+        return;
+      }
+
+      if (isAskewCommand(content)) {
+        const onIndex = pathname === "/" || pathname === "";
+        trackGoogleEasterEgg("askew");
+        const nextAskew = window.sessionStorage.getItem("jb_askew") !== "1";
+        window.sessionStorage.setItem("jb_askew", nextAskew ? "1" : "0");
+        document.documentElement.classList.toggle("index-askew-active", nextAskew);
+        dispatchAskewToggle();
+        const reply = buildAskewReply(nextAskew, onIndex);
+
+        queueClientChatLog({
+          question: content,
+          reply,
+          pagePath: pathname,
+          questionIntentId: "easter_secret",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: reply },
+        ]);
+        return;
+      }
+
+      if (isFeelingLuckyCommand(content)) {
+        const project = pickFeelingLuckyProject();
+        trackGoogleEasterEgg("feeling_lucky");
+        const reply = buildFeelingLuckyReply(project);
+
+        queueClientChatLog({
+          question: content,
+          reply,
+          pagePath: pathname,
+          questionIntentId: "easter_secret",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: reply },
+        ]);
+
+        if (project) {
+          window.setTimeout(() => {
+            window.location.assign(project.href);
+          }, 700);
+        }
+        return;
+      }
+
+      const secretReply = resolveChatSecretReply(content);
+      if (secretReply) {
+        trackAiChatSecretUnlock(content.trim().toLowerCase());
+        trackAiChatIntent({
+          intent_id: "easter_secret",
+          confidence: "high",
+          input: "typed",
+          goal: "Friends-flavoured secret unlock with a public case link.",
+        });
+
+        queueClientChatLog({
+          question: content,
+          reply: secretReply,
+          pagePath: pathname,
+          questionIntentId: "easter_secret",
+          replySource: "static",
+          turn: messages.filter((message) => message.role === "user").length + 1,
+        });
+
+        ensureChatOpen();
+        setFollowUps([]);
+        setDraft("");
+        setMessages((current) => [
+          ...current,
+          { role: "user", content },
+          { role: "assistant", content: secretReply },
         ]);
         return;
       }
@@ -475,7 +646,9 @@ export function AiChatBall() {
       playSendWhoosh,
       reducedMotion,
       refreshRemaining,
+      setDarkroom,
       setWireframe,
+      darkroom,
       wireframe,
     ],
   );

@@ -249,6 +249,26 @@ export function trackAiChatWireframeToggle(enabled: boolean): void {
   track("ai_chat_wireframe_toggle", { enabled: enabled ? "1" : "0" });
 }
 
+export function trackAiChatDarkroomToggle(enabled: boolean): void {
+  track("ai_chat_darkroom_toggle", { enabled: enabled ? "1" : "0" });
+}
+
+export function trackAiChatSecretUnlock(secret: string): void {
+  track("ai_chat_secret", { secret: secret.slice(0, 40) });
+}
+
+export function trackGoogleEasterEgg(kind: "barrel_roll" | "askew" | "feeling_lucky"): void {
+  track("google_easter_egg", { kind });
+}
+
+export function trackCursorLabelCycle(label: string): void {
+  track("cursor_label_cycle", { label: label.slice(0, 40) });
+}
+
+export function trackManifestVisit(count: number): void {
+  track("manifest_visit", { count: String(count) });
+}
+
 export function trackAiChatGif(giphyId?: string): void {
   track("ai_chat_gif", {
     ...(giphyId ? { giphy_id: giphyId } : {}),
