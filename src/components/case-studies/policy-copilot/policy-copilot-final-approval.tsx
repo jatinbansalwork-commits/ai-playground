@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ShieldCheckIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
 import {
-  EDITORIAL,
+  CLAUDE,
   COPILOT_FOCUS,
   COPILOT_TYPE,
   LIVING_MOTION,
@@ -61,13 +61,29 @@ const ILLUSTRATION_ARIA_LABEL =
 function toneStyles(tone: "neutral" | "primary" | "success" | "warn") {
   switch (tone) {
     case "success":
-      return { accent: EDITORIAL.validated, muted: EDITORIAL.validatedMuted, badgeBg: "#ECFDF5" };
+      return {
+        accent: CLAUDE.validated,
+        muted: CLAUDE.validatedMuted,
+        badgeBg: CLAUDE.validatedMuted,
+      };
     case "warn":
-      return { accent: EDITORIAL.warning, muted: EDITORIAL.warningMuted, badgeBg: "#FFFBEB" };
+      return {
+        accent: CLAUDE.warning,
+        muted: CLAUDE.warningMuted,
+        badgeBg: CLAUDE.warningMuted,
+      };
     case "primary":
-      return { accent: EDITORIAL.primaryActive, muted: EDITORIAL.primaryMuted, badgeBg: "#EFF6FF" };
+      return {
+        accent: CLAUDE.primary,
+        muted: CLAUDE.primaryMuted,
+        badgeBg: CLAUDE.primaryMuted,
+      };
     default:
-      return { accent: EDITORIAL.textSecondary, muted: "#F5F5F5", badgeBg: "#F5F5F5" };
+      return {
+        accent: CLAUDE.textMuted,
+        muted: CLAUDE.surfaceOverlay,
+        badgeBg: CLAUDE.surfaceOverlay,
+      };
   }
 }
 
@@ -79,21 +95,24 @@ function SummaryRow({
   delay: number;
 }) {
   const reduced = useReducedMotion();
-  const { accent, muted, badgeBg } = toneStyles(section.tone);
+  const { accent, badgeBg } = toneStyles(section.tone);
 
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ ...LIVING_MOTION.discover, delay }}
-      className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl border border-neutral-200 bg-white px-3.5 py-3"
-      style={{ boxShadow: `inset 3px 0 0 0 ${accent}` }}
+      className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 rounded-xl px-3.5 py-3"
+      style={{
+        backgroundColor: CLAUDE.surfaceRaised,
+        boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}, inset 3px 0 0 0 ${accent}`,
+      }}
     >
       <div className="min-w-0">
-        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: EDITORIAL.textMuted }}>
+        <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
           {section.label}
         </p>
-        <p className="mt-1 text-[13px] leading-relaxed" style={{ color: EDITORIAL.text }}>
+        <p className="mt-1 text-[13px] leading-relaxed" style={{ color: CLAUDE.text }}>
           {section.value}
         </p>
       </div>
@@ -107,13 +126,17 @@ function SummaryRow({
   );
 }
 
+/** Product-chrome final approval — uses `CLAUDE` (Cisco demo dark), not light editorial. */
 export function PolicyCopilotFinalApproval() {
   const reduced = useReducedMotion();
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
-      style={{ backgroundColor: EDITORIAL.bg }}
+      className="overflow-hidden rounded-xl case-study-dark-panel"
+      style={{
+        backgroundColor: CLAUDE.bg,
+        boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}`,
+      }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
       <div className="grid gap-4 p-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] md:gap-5 md:p-5">
@@ -127,21 +150,24 @@ export function PolicyCopilotFinalApproval() {
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={LIVING_MOTION.discover}
-          className="flex flex-col rounded-xl border bg-white p-4"
-          style={{ borderColor: EDITORIAL.primaryBorder }}
+          className="flex flex-col rounded-xl p-4"
+          style={{
+            backgroundColor: CLAUDE.surface,
+            boxShadow: `inset 0 0 0 1px ${CLAUDE.primaryBorder}`,
+          }}
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-[13px] font-semibold" style={{ color: EDITORIAL.text }}>
+              <p className="text-[13px] font-semibold" style={{ color: CLAUDE.text }}>
                 Approval readiness
               </p>
-              <p className="mt-0.5 text-[12px]" style={{ color: EDITORIAL.textSecondary }}>
+              <p className="mt-0.5 text-[12px]" style={{ color: CLAUDE.textSecondary }}>
                 Draft policy · clinical access request
               </p>
             </div>
             <span
               className="flex h-9 w-9 items-center justify-center rounded-full"
-              style={{ backgroundColor: EDITORIAL.validatedMuted, color: EDITORIAL.validated }}
+              style={{ backgroundColor: CLAUDE.validatedMuted, color: CLAUDE.validated }}
               aria-hidden
             >
               <ShieldCheckIcon className="h-4 w-4" />
@@ -152,18 +178,21 @@ export function PolicyCopilotFinalApproval() {
             <div className="flex items-end justify-between gap-2">
               <p
                 className="text-[28px] font-semibold leading-none tabular-nums"
-                style={{ color: EDITORIAL.text }}
+                style={{ color: CLAUDE.text }}
               >
                 94%
               </p>
-              <p className="text-[12px] font-medium" style={{ color: EDITORIAL.validated }}>
+              <p className="text-[12px] font-medium" style={{ color: CLAUDE.validated }}>
                 Confidence at ready
               </p>
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-neutral-100">
+            <div
+              className="mt-3 h-2 overflow-hidden rounded-full"
+              style={{ backgroundColor: CLAUDE.surfaceOverlay }}
+            >
               <motion.div
                 className="h-full rounded-full"
-                style={{ backgroundColor: EDITORIAL.validated }}
+                style={{ backgroundColor: CLAUDE.validated }}
                 initial={reduced ? false : { width: "0%" }}
                 animate={{ width: "94%" }}
                 transition={{ duration: 0.8, ease: LIVING_MOTION.confidence.ease }}
@@ -172,16 +201,16 @@ export function PolicyCopilotFinalApproval() {
           </div>
 
           <div
-            className="mt-5 rounded-xl border px-3 py-2.5"
+            className="mt-5 rounded-xl px-3 py-2.5"
             style={{
-              borderColor: "rgb(180 83 9 / 0.35)",
-              backgroundColor: EDITORIAL.warningMuted,
+              backgroundColor: CLAUDE.warningMuted,
+              boxShadow: `inset 0 0 0 1px ${CLAUDE.warning}55`,
             }}
           >
-            <p className="text-[12px] font-semibold" style={{ color: EDITORIAL.warning }}>
+            <p className="text-[12px] font-semibold" style={{ color: CLAUDE.warning }}>
               Human approval required
             </p>
-            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: EDITORIAL.textSecondary }}>
+            <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
               Policy Copilot prepared the draft. You own the decision to deploy to production.
             </p>
           </div>
@@ -193,7 +222,7 @@ export function PolicyCopilotFinalApproval() {
                 COPILOT_FOCUS,
                 "w-full rounded-xl px-4 py-3 text-[13px] font-medium text-white transition-opacity hover:opacity-95",
               )}
-              style={{ backgroundColor: EDITORIAL.primary }}
+              style={{ backgroundColor: CLAUDE.primary }}
             >
               Approve Policy
             </button>
@@ -202,8 +231,13 @@ export function PolicyCopilotFinalApproval() {
                 type="button"
                 className={cn(
                   COPILOT_FOCUS,
-                  "rounded-xl border border-neutral-300 bg-white px-3 py-2 text-[12px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50",
+                  "rounded-xl px-3 py-2 text-[12px] font-medium transition-colors",
                 )}
+                style={{
+                  backgroundColor: CLAUDE.surfaceRaised,
+                  color: CLAUDE.textSecondary,
+                  boxShadow: `inset 0 0 0 1px ${CLAUDE.border}`,
+                }}
               >
                 Request changes
               </button>
@@ -211,8 +245,13 @@ export function PolicyCopilotFinalApproval() {
                 type="button"
                 className={cn(
                   COPILOT_FOCUS,
-                  "rounded-xl border border-neutral-300 bg-white px-3 py-2 text-[12px] font-medium text-neutral-800 transition-colors hover:bg-neutral-50",
+                  "rounded-xl px-3 py-2 text-[12px] font-medium transition-colors",
                 )}
+                style={{
+                  backgroundColor: CLAUDE.surfaceRaised,
+                  color: CLAUDE.textSecondary,
+                  boxShadow: `inset 0 0 0 1px ${CLAUDE.border}`,
+                }}
               >
                 Save draft
               </button>
@@ -222,13 +261,17 @@ export function PolicyCopilotFinalApproval() {
       </div>
 
       <div
-        className="mx-4 mb-4 rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 md:mx-5 md:mb-5"
+        className="mx-4 mb-4 rounded-xl px-3 py-2.5 md:mx-5 md:mb-5"
+        style={{
+          backgroundColor: CLAUDE.surfaceRaised,
+          boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}`,
+        }}
       >
         <div className="flex flex-wrap items-center justify-between gap-2 text-[12px]">
-          <span style={{ color: EDITORIAL.textSecondary }}>
+          <span style={{ color: CLAUDE.textSecondary }}>
             AI supports judgement → you approve deployment
           </span>
-          <span className="font-semibold" style={{ color: EDITORIAL.primaryActive }}>
+          <span className="font-semibold" style={{ color: CLAUDE.primary }}>
             Approve Policy
           </span>
         </div>
