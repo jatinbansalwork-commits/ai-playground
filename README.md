@@ -70,7 +70,7 @@ Full route map, index slider frames, and visibility rules: **[`IA.md`](./IA.md)*
 
 | Route | Content |
 |-------|---------|
-| `/` | Index — horizontal scroll slider (hero → Case Notes → Projects → Design Review → Craft → Contact → Manifest) |
+| `/` | Index — horizontal scroll slider (hero → Case Studies → Case Notes → Design Review → Craft → Contact → Manifest) |
 | `/projects` | Case study list with hover thumbnails |
 | `/projects/[slug]` | Long-form case study pages |
 | `/craft` | Motion graphics and illustration gallery (bento grid + filter chips) |

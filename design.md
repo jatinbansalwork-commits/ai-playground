@@ -63,8 +63,8 @@ The homepage is a horizontal scroll-driven frame carousel.
 | Frame | Label | Destination |
 |-------|-------|-------------|
 | Hero | JB Portfolio | — |
+| Case Studies | Case Studies | `/projects` (monogram: **Project**) |
 | Case Notes | Case Notes | `/notes/1` |
-| Projects | Projects | `/projects` |
 | Design Review | Design Review | `/craft/design-review-checklist` |
 | Craft | Craft | External — `CRAFT_EXTERNAL_URL` (`design-to-build.vercel.app`) in a new tab |
 | Contact | Contact | in-page contact sheet |
