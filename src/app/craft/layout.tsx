@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { EXPERIMENTS_PAGE } from "@/lib/experiments-registry";
-import { allProjectsSeoKeywords, buildPageMetadata } from "@/lib/seo";
+import {
+  allProjectsSeoKeywords,
+  buildPageMetadata,
+  CRAFT_SEO_DESCRIPTION,
+} from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: EXPERIMENTS_PAGE.title,
-  description: EXPERIMENTS_PAGE.description,
+  description: CRAFT_SEO_DESCRIPTION,
   path: "/craft",
   keywords: allProjectsSeoKeywords(),
 });

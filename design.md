@@ -404,11 +404,13 @@ Hand-drawn editorial illustrations (English labels). Adapted from [Ian Xiaohei I
 | Piece | Location |
 |-------|----------|
 | Meta description builder | `src/lib/seo.ts` → `buildCaseStudyMetaDescription()` |
+| Home / projects / craft blurbs | `HOME_SEO_DESCRIPTION`, `PROJECTS_SEO_DESCRIPTION`, `CRAFT_SEO_DESCRIPTION` |
 | Per-slug keywords | `CASE_STUDY_SEO_KEYWORDS` in `seo.ts` |
 | OG image | `HOVER_THUMBNAIL_OVERRIDES[slug]` in `projects-list-data.ts` |
 | Open Graph + Twitter | `buildSocialMetadata()` — `summary_large_image`, `twitter:creator` |
-| Article JSON-LD | `caseStudyArticleJsonLd()` in `projects/[slug]/layout.tsx` |
-| Sitemap priority | `sitemap.ts` — Cisco `0.95` |
+| Article JSON-LD | `caseStudyArticleJsonLd()` — breadcrumb label **Case Studies** |
+| Sitemap | `sitemap.ts` — Cisco `0.95`; drafts in `NOINDEX_PROJECT_SLUGS` omitted |
+| Robots | `robots.ts` — disallow `/api/`, `/dev/`, `/ideas` |
 
 Canonical share URL: `https://<domain>/projects/cisco-policy-copilot` (also `/recent`).
 

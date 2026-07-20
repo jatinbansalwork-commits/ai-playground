@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { FieldNotesArticlePage } from "@/components/field-notes/field-notes-article-page";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, NOTES_SEO_DESCRIPTION } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "JB's Case Notes #1",
-  description:
-    "Design field notes from Jatin Bansal — observations, sketches, and product thinking in progress.",
+  description: NOTES_SEO_DESCRIPTION,
   path: "/notes/1",
 });
 

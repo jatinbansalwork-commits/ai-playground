@@ -41,7 +41,7 @@ export async function generateMetadata({
   const description = buildCaseStudyMetaDescription(content);
 
   return buildPageMetadata({
-    title: `${displayTitle} · Projects`,
+    title: `${displayTitle} · Case Studies`,
     description,
     path: `/projects/${slug}`,
     image: caseStudyOgImage(slug),
@@ -51,7 +51,7 @@ export async function generateMetadata({
     article: {
       publishedTime: `${content.year}-01-01T00:00:00.000Z`,
       authors: [SITE_AUTHOR],
-      section: "Product Design Case Studies",
+      section: "Case Studies",
       tags: mergeSeoKeywords(
         [content.meta.client],
         content.meta.services,

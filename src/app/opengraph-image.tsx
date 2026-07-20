@@ -30,7 +30,7 @@ export default function OpenGraphImage() {
             {SITE_AUTHOR}
           </div>
           <div style={{ fontSize: 36, opacity: 0.85 }}>
-            Cybersecurity · Fintech · AI · Design Systems
+            Case Studies · Cybersecurity · AI · Design Systems
           </div>
         </div>
         <div style={{ fontSize: 24, opacity: 0.6 }}>jatinbansal.vercel.app</div>
