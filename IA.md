@@ -32,8 +32,8 @@ Scroll-driven frame carousel. Frame order matches `FRAMES` in `src/lib/constants
 | # | Frame id | Label | Destination |
 |---|----------|-------|-------------|
 | 1 | `hero` | JB Portfolio | — |
-| 2 | `archive` | Case Notes | `/notes/1` |
-| 3 | `projects` | Projects | `/projects` |
+| 2 | `projects` | Case Studies | `/projects` |
+| 3 | `archive` | Case Notes | `/notes/1` |
 | 4 | `design-review-checklist` | Design Review | `/craft/design-review-checklist` |
 | 5 | `experiments` | Craft | External `CRAFT_EXTERNAL_URL` (new tab) |
 | 6 | `contact` | Contact | In-page contact sheet |
