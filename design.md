@@ -45,6 +45,20 @@ Case study headings use editorial components in `case-study-prose.tsx` — title
 
 Prefer CSS variables over hard-coded hex when adding new chrome that uses these accents.
 
+### Content protection (soft deterrents)
+
+Site-wide client guard: `src/components/content-protection.tsx` (mounted in `layout.tsx`). CSS class `content-protection` on `<html>`.
+
+| Deterred | How |
+|----------|-----|
+| Right-click / context menu | `contextmenu` preventDefault (except inputs) |
+| Copy / cut | `copy` / `cut` + Cmd/Ctrl+C / X |
+| Select all / save / print / view-source shortcuts | Cmd/Ctrl+A / S / P / U |
+| Drag media to download | `dragstart` on img/video/svg + `-webkit-user-drag: none` |
+| Browser print | `@media print` blanks the page |
+
+**Not blocked:** OS screenshots, DevTools, browser menu View Source / Save, curl, disable-JS. Chat and form fields remain selectable and copyable.
+
 ---
 
 ## Index slider
