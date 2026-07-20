@@ -1,7 +1,20 @@
 export const SITE_NAME = "JB Portfolio";
 
-/** Platform page canvas — matches detail.design `--surface`. */
+/** Platform page canvas — matches detail.design `--surface` / CSS `--site-canvas`. */
 export const SITE_CANVAS = "#09090b";
+
+/** Soft sky accent — Manifest, chat, footer (`--brand-accent`). */
+export const BRAND_ACCENT = "#a3d9ff";
+
+/**
+ * Presence cyan — cursor label, case-study minimap beam, 404 CTA, darkroom accents.
+ * Matches CSS `--presence-accent`.
+ */
+export const PRESENCE_ACCENT = "#02BCEA";
+export const PRESENCE_ACCENT_FOREGROUND = "#0A0A0A";
+
+/** Near-black studio canvas when darkroom mode is on (`--darkroom-canvas`). */
+export const DARKROOM_CANVAS = "#050507";
 
 export const ROUTES = {
   home: "/",
@@ -22,16 +35,6 @@ export const FRAMES = [
     type: "hero" as const,
     variant: "main" as const,
     label: SITE_NAME,
-  },
-  {
-    id: "cisco-policy-copilot",
-    type: "section" as const,
-    variant: "slide" as const,
-    label: "Recent",
-    monogram: "Cisco",
-    monogramPan: true,
-    monogramPanDuration: 14,
-    href: ROUTES.ciscoPolicyCopilot,
   },
   {
     id: "archive",

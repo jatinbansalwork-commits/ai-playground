@@ -10,6 +10,7 @@ import { AiChatBall } from "@/components/ai-chat/ai-chat-ball";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
 import { JsonLd } from "@/components/seo/json-ld";
 import { WireframeProvider } from "@/context/wireframe-context";
+import { DarkroomProvider } from "@/context/darkroom-context";
 import { BLOB_CDN_ORIGIN } from "@/lib/asset-cdn";
 import { ibmPlexSans, justAnotherHand } from "@/lib/fonts";
 import { personJsonLd, ROOT_METADATA, webSiteJsonLd } from "@/lib/seo";
@@ -40,10 +41,12 @@ export default function RootLayout({
         <CacheManager />
         <ScrollToTop />
         <SiteCursor />
-        <WireframeProvider>
-          {children}
-          <AiChatBall />
-        </WireframeProvider>
+        <DarkroomProvider>
+          <WireframeProvider>
+            {children}
+            <AiChatBall />
+          </WireframeProvider>
+        </DarkroomProvider>
         <Analytics />
         <SpeedInsights />
         <SiteEntryAnalytics />

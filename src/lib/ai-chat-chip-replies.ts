@@ -35,9 +35,9 @@ const CHIP_REPLY_RULES: readonly {
 
 Firewall policy is high-stakes: one wrong rule and you break access or open risk. JB flipped the order — start with the business ask, reflect understanding, then draft. The case positions **~40% less policy-generation time**, with humans still owning Approve.
 
-**Saltbot** delivers analytics in ~5 seconds; **Piggy** cut mutual-fund support tickets by **19%**.
+**Saltbot** delivers analytics in ~5 seconds; **FreshPrints Design System** helped **4 product teams** ship faster.
 
-Want Policy Copilot, Saltbot, or Piggy next?`,
+Want Policy Copilot, Saltbot, or FreshPrints next?`,
   },
   {
     match: (t) =>
@@ -47,9 +47,9 @@ Want Policy Copilot, Saltbot, or Piggy next?`,
 1. **Start with the real ask** — business language before control panels
 2. **Prove it in product** — interactive demos, not slideware
 3. **Ship systems** — FreshPrints helped **4 product teams** ship faster
-4. **Measure impact** — Piggy −19% tickets; Kalash for **1M+** users
+4. **Measure impact** — Policy Copilot targets ~40% less generation time; Kalash serves **1M+** users
 
-Want to see that in Policy Copilot, FreshPrints, or Piggy?`,
+Want to see that in Policy Copilot, FreshPrints, or Kalash?`,
   },
   {
     match: (t) =>
@@ -129,7 +129,6 @@ Want the Design Review essay, or jump to a shipped case study?`,
 - **Conversational AI / analytics** → Saltbot
 - **Design systems** → FreshPrints Design System
 - **Generative AI tooling** → FreshPrints Image Gen AI
-- **Fintech research impact** → Piggy (−19% support tickets)
 - **Consumer gold / growth** → Kalash
 
 Tell me AI vs fintech vs systems and I'll narrow it to one.`,
@@ -232,21 +231,6 @@ Want how guardrails show up, or Cisco Policy Copilot next?`,
   },
   {
     match: (t) =>
-      includesAny(t, ["piggy reduce", "reduce support tickets", "research drove", "drove the 19", "drove piggy"]),
-    reply: () => `At **Piggy**, JB cut mutual-fund support tickets by **~19%** — not by stuffing FAQ links, but by fixing anxiety after invest.
-
-**Research:** Ticket analysis + user sessions showed confusion around unit allotment and status — people thought "processing" meant "broken."
-
-**What shipped:**
-- Pre-purchase allotment timelines (expectations before payment)
-- Clearer post-purchase status (no misleading labels)
-- **Piggy Prime Hour** for cut-off timing
-- A/B rollout so conversion stayed healthy while allotment/status tickets dropped
-
-Want another fintech story (Kalash), or how he runs research?`,
-  },
-  {
-    match: (t) =>
       includesAny(t, [
         "design system help",
         "helped teams ship",
@@ -283,13 +267,7 @@ Want how he scoped AI UX, or the design system that sped delivery across teams?`
 
 JB's work sat at growth/product: make saving feel attainable, trustworthy, and sticky for **1M+** users — clearer early value, reward loops for consistency.
 
-Want the year-end recap story, or activation / metrics thinking?`,
-  },
-  {
-    match: (t) => includesAny(t, ["year-end recap", "year end recap", "kalash year"]),
-    reply: () => `**Kalash year-end recap** turns a year of gold-saving behaviour into a personalised story — delight that nudges retention, not a generic thank-you screen.
-
-Growth + craft: make the year feel *theirs* so people come back. Want how Kalash savings works day-to-day, or another growth case?`,
+Want the activation story, or how JB thinks about growth metrics?`,
   },
   {
     match: (t) => includesAny(t, ["outcome of this project", "what is the outcome"]),
@@ -298,7 +276,7 @@ Growth + craft: make the year feel *theirs* so people come back. Want how Kalash
         ? pagePath.replace("/projects/", "").split("/")[0]
         : undefined;
       if (!slug) {
-        return `Outcomes depend on the project — Policy Copilot (~40% less policy-generation time), Piggy (−19% support tickets), FreshPrints (4 teams shipping faster), Saltbot (~5s analytics), Kalash (1M+ gold savers).
+        return `Outcomes depend on the project — Policy Copilot (~40% less policy-generation time), FreshPrints (4 teams shipping faster), Saltbot (~5s analytics), and Kalash (1M+ gold savers).
 
 Which one are you looking at?`;
       }

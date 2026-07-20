@@ -7,6 +7,12 @@ import {
   CASE_STUDY_CONTENT_TOP_PADDING_PX,
   CASE_STUDY_FOOTER_BOTTOM_PADDING_PX,
 } from "@/lib/case-study-a11y";
+import { PRESENCE_ACCENT, PRESENCE_ACCENT_FOREGROUND } from "@/lib/constants";
+import {
+  hasManifestRemixUnlocked,
+  MANIFEST_BEAM_LABEL_DEFAULT,
+  MANIFEST_BEAM_LABEL_REMIX,
+} from "@/lib/manifest-visits";
 import { springScrollLine } from "@/lib/spring";
 
 /** 1 = major tick (40px), 0 = minor tick (24px) */
@@ -17,8 +23,8 @@ const RULER_TICKS_LAYOUT = [
 ] as const;
 
 const TICK_COUNT = RULER_TICKS_LAYOUT.length;
-const BEAM_ACCENT = "#02BCEA";
-const BEAM_LABEL_TEXT = "#0A0A0A";
+const BEAM_ACCENT = PRESENCE_ACCENT;
+const BEAM_LABEL_TEXT = PRESENCE_ACCENT_FOREGROUND;
 
 /** Vertical band where the beam travels — aligned to case study body insets. */
 const CASE_STUDY_TRACK_TOP = `${CASE_STUDY_CONTENT_TOP_PADDING_PX}px`;
@@ -51,8 +57,17 @@ interface ScrollMinimapRulerProps {
 export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
   const reducedMotion = useReducedMotion();
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [beamLabel] = useState(() =>
+    typeof window === "undefined"
+      ? MANIFEST_BEAM_LABEL_DEFAULT
+      : hasManifestRemixUnlocked()
+        ? MANIFEST_BEAM_LABEL_REMIX
+        : MANIFEST_BEAM_LABEL_DEFAULT,
+  );
   const trackTop = scrollRootRef ? CASE_STUDY_TRACK_TOP : DEFAULT_TRACK_TOP;
-  const trackBottom = scrollRootRef ? CASE_STUDY_TRACK_BOTTOM : DEFAULT_TRACK_BOTTOM;
+  const trackBottom = scrollRootRef
+    ? CASE_STUDY_TRACK_BOTTOM
+    : DEFAULT_TRACK_BOTTOM;
   const progressMotion = useMotionValue(0);
   const smoothProgress = useSpring(
     progressMotion,
@@ -147,7 +162,7 @@ export function ScrollMinimapRuler({ scrollRootRef }: ScrollMinimapRulerProps) {
             className="absolute top-1/2 right-[332px] flex h-6 -translate-y-1/2 items-center rounded px-3 text-[11px] font-medium tracking-wide whitespace-nowrap"
             style={{ backgroundColor: BEAM_ACCENT, color: BEAM_LABEL_TEXT }}
           >
-            I&apos;m here
+            {beamLabel}
           </span>
         </motion.div>
       </div>

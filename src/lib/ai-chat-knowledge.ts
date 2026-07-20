@@ -41,14 +41,6 @@ export const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = 
     bestFor: "Fintech B2C, rewards, branding, motion, product strategy",
     outcome: "Digital gold savings for 1M+ users — daily, weekly, and monthly plans from ₹10.",
   },
-  "kalash-year-end-recap": {
-    bestFor: "Growth, personalisation, year-in-review, delight",
-    outcome: "Turns a year of transactions into a personalised recap that motivates retention.",
-  },
-  "piggy-reduced-mutual-fund-support-tickets": {
-    bestFor: "Fintech, UX research, support reduction, mutual funds",
-    outcome: "Reduced mutual fund support tickets by 19% through clearer flows and UX research.",
-  },
 };
 
 const CRAFT_HIGHLIGHT_SLUGS = [
@@ -90,13 +82,6 @@ function buildCraftHighlights(): string {
     if (!entry) return "";
 
     const blurb = CRAFT_HIGHLIGHT_BLURBS[slug] ?? entry.title;
-    const href =
-      entry.categories.includes("article")
-        ? `${ROUTES.craft}/${slug}`
-        : entry.external && entry.href
-          ? entry.href
-          : ROUTES.craft;
-
     const linkLabel = entry.categories.includes("article")
       ? `[Read essay](${ROUTES.craft}/${slug})`
       : entry.external
@@ -153,7 +138,8 @@ ${buildCraftHighlights()}
 ## How this portfolio was built
 - **Stack:** Next.js, React, TypeScript, Tailwind CSS v4, Framer Motion
 - **Hosting / media:** Vercel, Vercel Blob CDN, Vercel Analytics with custom events
-- **Patterns:** Custom editorial case-study components, scroll-linked index slider, craft bento gallery, wireframe debug mode, no off-the-shelf UI kit
+- **Patterns:** Custom editorial case-study components, scroll-linked index slider, craft bento gallery, wireframe debug mode, darkroom mood toggle, soft chat secrets, no off-the-shelf UI kit
+- Soft easter eggs (do not dump unprompted): chat secrets \`pivot\` / \`friends\` / \`could this be any more\`; \`darkroom\` mood; \`do a barrel roll\`; \`askew\`; \`i'm feeling lucky\`; Shift-click cycles the custom cursor label; visit Manifest 3× to remix the case-study minimap label
 - **JB_AI:** This chat uses curated site knowledge plus OpenAI — not general web browsing
 - **Footer:** "2026 · Designed by JB · Amplified by AI."
 
@@ -169,7 +155,7 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 ## Hiring
 - Open to full-time and contract product design roles — especially cybersecurity, AI products, fintech, and design systems
 - **JB_AI hiring replies:** share only JB's phone number **6362408280** — do not list case studies, resume, LinkedIn, or email unless the user asks for them
-- Case studies (Saltbot AI, FreshPrints Design System, Piggy, etc.) are for portfolio browsing, not the default hiring CTA
+- Public case studies (Policy Copilot, Saltbot AI, FreshPrints, and Kalash) are for portfolio browsing, not the default hiring CTA
 
 ## JB Manual (summary)
 - Explains how JB works best, communication preferences, and collaboration style

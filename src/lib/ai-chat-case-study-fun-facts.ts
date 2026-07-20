@@ -9,12 +9,8 @@ const CASE_STUDY_FUN_FACTS: Record<string, string> = {
     "The spacing scale almost did not ship as tokens — a frontend dev flagged inconsistent padding in review. Instead of defending mocks, JB turned it into a co-review session. Design QA time dropped after that.",
   "freshprints-image-gen-ai":
     "JB used Figma interactive components to simulate generate-and-edit states before eng built a prototype. That saved roughly a week of throwaway code — and caught a dead-end flow early.",
-  "piggy-reduced-mutual-fund-support-tickets":
-    "After a Telegram signup spike, JB interviewed users at a local chai shop — not just in-app. That is where the insight landed: people wanted a reason to *stay*, not just claim a reward.",
   "kalash-rewards":
     "The GST-to-Bitcoin story almost stayed buried in checkout copy. JB ran a two-day discovery sprint with stakeholders before touching UI — the first-transaction fee test changed activation strategy company-wide.",
-  "kalash-year-end-recap":
-    "Recap card motion was tuned to feel like unwrapping a gift, not exporting a statement. JB storyboarded the beat timings with marketing before the eng sprint kicked off.",
 };
 
 const CASE_STUDY_FUN_FACT_FALLBACK =

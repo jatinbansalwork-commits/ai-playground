@@ -8,12 +8,22 @@ import {
   getGhostSpacerSize,
 } from "@/hooks/use-index-scroll-reset";
 import { SliderProvider } from "@/context/slider-context";
+import { useDarkroom } from "@/context/darkroom-context";
 import { useWireframe } from "@/context/wireframe-context";
 import {
   FRAME_HEIGHT,
   FRAME_WIDTH,
   FRAMES,
 } from "@/lib/constants";
+import { trackManifestVisit } from "@/lib/analytics";
+import {
+  recordManifestVisit,
+} from "@/lib/manifest-visits";
+import {
+  ASKEW_EVENT,
+  BARREL_ROLL_EVENT,
+  logIndexConsoleEasterEgg,
+} from "@/lib/google-easter-eggs";
 import { springContainer } from "@/lib/spring";
 import { IndexSlideNav } from "@/components/slider/index-slide-nav";
 import { Minimap } from "@/components/slider/minimap";
@@ -40,8 +50,58 @@ function IndexCanvas() {
     [snapToIndex],
   );
   const { wireframe, toggleWireframe } = useWireframe();
+  const { darkroom } = useDarkroom();
   const reducedMotion = useReducedMotion();
   const [ghostSize, setGhostSize] = useState(getGhostSpacerSize);
+  const [barrelRolling, setBarrelRolling] = useState(false);
+  const [askew, setAskew] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.sessionStorage.getItem("jb_askew") === "1",
+  );
+  const manifestFrameIndex = FRAMES.findIndex((frame) => frame.id === "manifest");
+
+  useEffect(() => {
+    logIndexConsoleEasterEgg();
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const onBarrelRoll = () => {
+      setBarrelRolling(true);
+      window.setTimeout(() => setBarrelRolling(false), 1100);
+    };
+    const onAskew = () => {
+      setAskew(window.sessionStorage.getItem("jb_askew") === "1");
+    };
+
+    window.addEventListener(BARREL_ROLL_EVENT, onBarrelRoll);
+    window.addEventListener(ASKEW_EVENT, onAskew);
+    return () => {
+      window.removeEventListener(BARREL_ROLL_EVENT, onBarrelRoll);
+      window.removeEventListener(ASKEW_EVENT, onAskew);
+    };
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (manifestFrameIndex < 0 || typeof window === "undefined") return;
+
+    const onManifest = activeFrameIndex === manifestFrameIndex;
+    const dwellKey = "jb_manifest_dwell";
+    const alreadyDwelling = window.sessionStorage.getItem(dwellKey) === "1";
+
+    if (onManifest && !alreadyDwelling) {
+      window.sessionStorage.setItem(dwellKey, "1");
+      const count = recordManifestVisit();
+      trackManifestVisit(count);
+      return;
+    }
+
+    if (!onManifest && alreadyDwelling) {
+      window.sessionStorage.setItem(dwellKey, "0");
+    }
+  }, [activeFrameIndex, manifestFrameIndex]);
 
   useEffect(() => {
     const updateGhostSize = () => {
@@ -64,7 +124,9 @@ function IndexCanvas() {
         data-sheet="index"
         data-debug={wireframe ? "true" : undefined}
         data-cancel-animation={wireframe ? "true" : undefined}
-        className={`index-root fixed inset-0 z-10 overflow-hidden bg-background${wireframe ? " wireframe-mode" : ""}`}
+        data-darkroom={darkroom ? "true" : undefined}
+        data-askew={askew ? "true" : undefined}
+        className={`index-root fixed inset-0 z-10 overflow-hidden bg-background${wireframe ? " wireframe-mode" : ""}${darkroom ? " darkroom-mode" : ""}${askew ? " index-askew" : ""}${barrelRolling ? " index-barrel-roll" : ""}`}
         style={
           {
             "--frame-width": `${FRAME_WIDTH}px`,

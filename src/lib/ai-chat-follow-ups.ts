@@ -25,6 +25,14 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "How did JB build this portfolio?",
     "What is on the Craft page?",
   ],
+  darkroom: [
+    "What's JB's strongest project?",
+    "What is on the Craft page?",
+  ],
+  easter_secret: [
+    "What's JB's strongest project?",
+    "Tell me about Cisco Policy Copilot",
+  ],
   resume: ["I'd love to hire JB", "How do I reach him?"],
   hiring: ["Where is JB's resume?", "What's JB's strongest project?"],
   contact: [
@@ -54,7 +62,7 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
   ],
   design_process: [
     "Tell me about the FreshPrints design system",
-    "How did Piggy reduce support tickets?",
+    "How does digital gold savings work?",
     "Where has he worked?",
   ],
   project_saltbot: [
@@ -67,11 +75,6 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "What did user testing uncover?",
     "Tell me about JB's Case Notes #1",
   ],
-  project_piggy: [
-    "How did Piggy reduce support tickets?",
-    "What research drove the 19%?",
-    "What's his design process?",
-  ],
   project_freshprints: [
     "What was the design system scope?",
     "How did it help teams ship faster?",
@@ -79,7 +82,7 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
   ],
   project_kalash: [
     "How does digital gold savings work?",
-    "What is the Kalash year-end recap?",
+    "What's his design process?",
     "How do I reach him?",
   ],
   portfolio_site: [
@@ -116,7 +119,7 @@ const FOLLOW_UPS_BY_CHIP_INTENT: Record<AiChatIntentId, readonly string[]> = {
   ],
   process: [
     "Tell me about the FreshPrints design system",
-    "How did Piggy reduce support tickets?",
+    "How does digital gold savings work?",
     "Where has he worked?",
   ],
   reach: [
@@ -147,19 +150,9 @@ const FOLLOW_UPS_BY_PAGE: Record<string, readonly string[]> = {
     "How was review handled?",
     "How do I reach him?",
   ],
-  "/projects/piggy-reduced-mutual-fund-support-tickets": [
-    "How did Piggy reduce support tickets?",
-    "What research drove the 19%?",
-    "What's his design process?",
-  ],
   "/projects/kalash-rewards": [
     "How does digital gold savings work?",
-    "What is the Kalash year-end recap?",
-    "How do I reach him?",
-  ],
-  "/projects/kalash-year-end-recap": [
-    "What is the Kalash year-end recap?",
-    "How does digital gold savings work?",
+    "What's his design process?",
     "How do I reach him?",
   ],
   "/craft": [
@@ -284,9 +277,6 @@ export function resolveFollowUpPrompt(label: string): string {
   }
   if (label === "How did it help teams ship faster?") {
     return "How did the FreshPrints design system help teams ship faster?";
-  }
-  if (label === "What research drove the 19%?") {
-    return "What research drove Piggy's 19% support ticket reduction?";
   }
   if (label === "How does digital gold savings work?") {
     return "How does Kalash digital gold savings work?";

@@ -10,12 +10,15 @@ import {
   type SpringOptions,
 } from "framer-motion";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { trackCursorLabelCycle } from "@/lib/analytics";
+import { PRESENCE_ACCENT, PRESENCE_ACCENT_FOREGROUND } from "@/lib/constants";
 import { SITE_FONT_STACK } from "@/lib/fonts";
 
-const CURSOR_COLOR = "#02BCEA";
-const CURSOR_TEXT_COLOR = "#0A0A0A";
+const CURSOR_COLOR = PRESENCE_ACCENT;
+const CURSOR_TEXT_COLOR = PRESENCE_ACCENT_FOREGROUND;
 const CURSOR_SIZE = 31;
-const CURSOR_LABEL = "I'm here";
+const CURSOR_LABELS = ["I'm here", "Still here", "Hire me?"] as const;
+const CURSOR_LABEL_STORAGE_KEY = "jb_cursor_label_index";
 const PRESS_SCALE = 0.92;
 const LABEL_TILT_STRENGTH = 25;
 const Z_INDEX = 9999;
@@ -27,6 +30,14 @@ function isCoarsePointer(): boolean {
   return window.matchMedia("(pointer: coarse)").matches;
 }
 
+function readStoredLabelIndex(): number {
+  if (typeof window === "undefined") return 0;
+  const raw = window.sessionStorage.getItem(CURSOR_LABEL_STORAGE_KEY);
+  const index = Number.parseInt(raw ?? "0", 10);
+  if (!Number.isFinite(index) || index < 0) return 0;
+  return index % CURSOR_LABELS.length;
+}
+
 export function SiteCursor() {
   const reducedMotion = useReducedMotion();
 
@@ -34,6 +45,9 @@ export function SiteCursor() {
   const [visible, setVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [hoveringInteractive, setHoveringInteractive] = useState(false);
+  const [labelIndex, setLabelIndex] = useState(() =>
+    typeof window === "undefined" ? 0 : readStoredLabelIndex(),
+  );
 
   const lastSampleRef = useRef<{ x: number; y: number; t: number } | null>(null);
 
@@ -68,6 +82,7 @@ export function SiteCursor() {
 
   const labelTranslateX = useTransform(labelX, (v) => v + labelOffset.x);
   const labelTranslateY = useTransform(labelY, (v) => v + labelOffset.y);
+  const cursorLabel = CURSOR_LABELS[labelIndex] ?? CURSOR_LABELS[0];
 
   useEffect(() => {
     const target = pressed ? PRESS_SCALE : hoveringInteractive ? 1.08 : 1;
@@ -91,6 +106,15 @@ export function SiteCursor() {
     const root = document.documentElement;
     root.classList.add("site-custom-cursor");
     setEnabled(true);
+
+    const cycleLabel = () => {
+      setLabelIndex((current) => {
+        const next = (current + 1) % CURSOR_LABELS.length;
+        window.sessionStorage.setItem(CURSOR_LABEL_STORAGE_KEY, String(next));
+        trackCursorLabelCycle(CURSOR_LABELS[next] ?? CURSOR_LABELS[0]);
+        return next;
+      });
+    };
 
     const onMove = (event: MouseEvent) => {
       const x = event.clientX;
@@ -118,7 +142,15 @@ export function SiteCursor() {
       setVisible(true);
     };
 
-    const onDown = () => setPressed(true);
+    const onDown = (event: MouseEvent) => {
+      setPressed(true);
+      if (!event.shiftKey) return;
+      const target = event.target;
+      if (target instanceof Element && target.closest(INTERACTIVE_SELECTOR)) {
+        return;
+      }
+      cycleLabel();
+    };
     const onUp = () => setPressed(false);
 
     const onMouseOver = (event: MouseEvent) => {
@@ -198,7 +230,7 @@ export function SiteCursor() {
             letterSpacing: 0.1,
           }}
         >
-          {CURSOR_LABEL}
+          {cursorLabel}
         </span>
       </motion.div>
 

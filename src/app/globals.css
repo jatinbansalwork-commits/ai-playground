@@ -6,9 +6,14 @@
   --foreground: #000000;
   --frame-width: 1200px;
   --frame-height: 720px;
+  /* Soft sky — Manifest panel, chat bubbles, footer strip */
   --brand-accent: #a3d9ff;
   --brand-accent-soft: #c8e8ff;
   --brand-accent-foreground: #09090b;
+  /* Presence cyan — cursor label, case-study minimap beam, 404 CTA, darkroom accents */
+  --presence-accent: #02bcea;
+  --presence-accent-foreground: #0a0a0a;
+  --darkroom-canvas: #050507;
 }
 
 @theme inline {
@@ -17,6 +22,8 @@
   --color-brand-accent: var(--brand-accent);
   --color-brand-accent-soft: var(--brand-accent-soft);
   --color-brand-accent-foreground: var(--brand-accent-foreground);
+  --color-presence-accent: var(--presence-accent);
+  --color-presence-accent-foreground: var(--presence-accent-foreground);
   --font-sans: var(--font-ibm-plex-sans);
   --font-mono: var(--font-ibm-plex-sans);
 }
@@ -1212,6 +1219,67 @@ body {
   --background: #09090b;
   --site-canvas: #09090b;
   touch-action: none;
+}
+
+/* Darkroom easter egg — near-black studio mood with presence cyan accents. */
+html.darkroom-mode,
+html.darkroom-mode body {
+  background: var(--darkroom-canvas);
+}
+
+main.index-root.darkroom-mode,
+main.index-root[data-darkroom="true"] {
+  --background: var(--darkroom-canvas);
+  --site-canvas: var(--darkroom-canvas);
+  background: var(--darkroom-canvas) !important;
+}
+
+main.index-root.darkroom-mode .frame-label,
+main.index-root[data-darkroom="true"] .frame-label {
+  color: var(--presence-accent);
+}
+
+main.index-root.darkroom-mode .frame-panel [data-sheet],
+main.index-root[data-darkroom="true"] .frame-panel [data-sheet] {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--presence-accent) 18%, transparent);
+}
+
+main.index-root.darkroom-mode .manifest-panel,
+main.index-root[data-darkroom="true"] .manifest-panel {
+  background: var(--presence-accent);
+  color: var(--presence-accent-foreground);
+}
+
+/* Google-style easter eggs — barrel roll + askew. */
+@keyframes index-barrel-roll {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+main.index-root.index-barrel-roll .scrollable-content {
+  animation: index-barrel-roll 1s ease-in-out;
+  transform-origin: center center;
+}
+
+main.index-root.index-askew .scrollable-content,
+html.index-askew-active main.index-root .scrollable-content {
+  transform: rotate(-2deg);
+  transition: transform 400ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main.index-root.index-barrel-roll .scrollable-content {
+    animation: none;
+  }
+
+  main.index-root.index-askew .scrollable-content,
+  html.index-askew-active main.index-root .scrollable-content {
+    transform: none;
+  }
 }
 
 @media (max-width: 767px) {

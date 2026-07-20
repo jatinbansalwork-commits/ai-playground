@@ -98,7 +98,7 @@ JB spoke with users — at a local chai shop, active app users, and Telegram gro
 
 **Results:** ~15% increase in user engagement within a week; uninstalls dropped. Marketing became more sustainable by reducing churn.
 
-Case study: [Piggy — Reduced Support Tickets](/projects/piggy-reduced-mutual-fund-support-tickets).`,
+This is career background, not a published portfolio case study.`,
   },
   {
     id: "zero-to-one",
@@ -522,7 +522,7 @@ export function buildCareerKnowledgeSection(): string {
 
   return `
 ## Career & interview pointers (use when asked — never offer as starter chips)
-When visitors ask about JB's background, FreshPrints, Piggy, Kalash, process, metrics, research, collaboration, conflict, tools, or interview-style stories, answer from the narratives below. Synthesise in Friends trio voice; keep metrics accurate. Link to /projects case studies when relevant (FreshPrints Design System, Image Gen AI, Piggy, Kalash, Saltbot).
+When visitors ask about JB's background, FreshPrints, Piggy, Kalash, process, metrics, research, collaboration, conflict, tools, or interview-style stories, answer from the narratives below. Synthesise in Friends trio voice; keep metrics accurate. Only link public /projects case studies when relevant (Policy Copilot, FreshPrints Design System, Image Gen AI, Kalash Rewards, and Saltbot). Piggy may be discussed as career history, but never presented or linked as a published project.
 
 ${entries}
 `.trim();
