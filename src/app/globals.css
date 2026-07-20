@@ -3269,3 +3269,55 @@ html.site-custom-cursor [contenteditable="true"] {
     animation: none !important;
   }
 }
+
+/* Soft content deterrents — not DRM. Editable fields stay selectable. */
+html.content-protection {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html.content-protection input,
+html.content-protection textarea,
+html.content-protection select,
+html.content-protection [contenteditable=""],
+html.content-protection [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html.content-protection img,
+html.content-protection video,
+html.content-protection picture,
+html.content-protection canvas {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+@media print {
+  html.content-protection body,
+  html.content-protection-print body {
+    background: #fff !important;
+  }
+
+  html.content-protection body *,
+  html.content-protection-print body * {
+    visibility: hidden !important;
+  }
+
+  html.content-protection body::after,
+  html.content-protection-print body::after {
+    content: "Printing is disabled on this site.";
+    visibility: visible !important;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    color: #111;
+    background: #fff;
+  }
+}
+

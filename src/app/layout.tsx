@@ -6,6 +6,7 @@ import { WireframeFilters } from "@/components/wireframe-filters";
 import { SiteEntryAnalytics } from "@/components/site-entry-analytics";
 import ScrollToTop from "@/components/ScrollToTop";
 import { SiteCursor } from "@/components/site-cursor-loader";
+import { ContentProtection } from "@/components/content-protection";
 import { AiChatBall } from "@/components/ai-chat/ai-chat-ball";
 import { SkipToContentLink } from "@/components/skip-to-content-link";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -41,6 +42,7 @@ export default function RootLayout({
         <CacheManager />
         <ScrollToTop />
         <SiteCursor />
+        <ContentProtection />
         <DarkroomProvider>
           <WireframeProvider>
             {children}
