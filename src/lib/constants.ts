@@ -147,7 +147,7 @@ export const INDEX_MANIFEST_STAGE_SCALE = 1.15;
 
 export const HERO_LINES = [
   "Howdy, I'm JB.",
-  "Making security decisions clear — for 300,000+ organizations worldwide.",
+  "Designing security solutions — for 300,000+ organizations worldwide.",
 ] as const;
 
 export const HERO_COPY = HERO_LINES.join(" ");
