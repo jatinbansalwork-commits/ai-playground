@@ -147,7 +147,7 @@ export const INDEX_MANIFEST_STAGE_SCALE = 1.15;
 
 export const HERO_LINES = [
   "Howdy, I'm JB.",
-  "Designing AI products, prototyping them in code, and raising the bar for design craft at Cisco.",
+  "Making security decisions clear — for 300,000+ organizations worldwide.",
 ] as const;
 
 export const HERO_COPY = HERO_LINES.join(" ");
