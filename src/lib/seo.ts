@@ -19,6 +19,7 @@ export const SEO_KEYWORDS = [
   "UX designer",
   "UI designer",
   "portfolio",
+  "case studies",
   "case study",
   "cybersecurity UX",
   "fintech design",
@@ -29,6 +30,10 @@ export const SEO_KEYWORDS = [
   "AI copilot design",
   "network security UX",
   "firewall administrator UX",
+  "Saltbot",
+  "FreshPrints",
+  "motion graphics",
+  "design craft",
 ] as const;
 
 /** Per-slug keyword extensions merged after content-derived terms. */
@@ -54,6 +59,27 @@ export const CASE_STUDY_SEO_KEYWORDS: Partial<Record<string, readonly string[]>>
     "firewall administrator UX",
     "enterprise security AI",
     "AI firewall UX case study",
+  ],
+  "saltbot-ai-saltmine": [
+    "Saltbot",
+    "Saltmine",
+    "AI analytics UX",
+    "workplace analytics",
+    "conversational analytics",
+    "enterprise AI assistant",
+  ],
+  "freshprints-design-system": [
+    "FreshPrints",
+    "design system case study",
+    "component library",
+    "design tokens",
+    "product design system",
+  ],
+  "freshprints-image-gen-ai": [
+    "FreshPrints",
+    "Image Gen AI",
+    "generative AI UX",
+    "AI content creation",
   ],
 };
 
@@ -130,10 +156,19 @@ export function caseStudySeoKeywords(slug: string): string[] {
 }
 
 export const DEFAULT_SITE_DESCRIPTION =
-  "Jatin Bansal (JB) — product designer portfolio featuring cybersecurity, fintech, and AI product case studies, design systems, motion graphics, and interface experiments.";
+  "Jatin Bansal (JB) — product designer at Cisco. Portfolio of UX case studies in cybersecurity, AI products, fintech, and design systems, plus craft work in motion and illustration.";
 
 export const HOME_SEO_DESCRIPTION =
-  "Howdy, I'm JB. Designing AI products, prototyping them in code, and raising the bar for design craft at Cisco. Explore UX case studies including Cisco Policy Copilot—AI-assisted firewall policy design with an interactive workspace demo—plus FreshPrints, Kalash, Piggy, Saltmine, craft work, and side projects.";
+  "Howdy, I'm JB. Designing AI products, prototyping them in code, and raising the bar for design craft at Cisco. Explore case studies including Cisco Policy Copilot—AI-assisted firewall policy with an interactive demo—plus Saltbot, FreshPrints, Kalash, and craft work.";
+
+export const PROJECTS_SEO_DESCRIPTION =
+  "UX and product design case studies by Jatin Bansal — Cisco Policy Copilot firewall UX, Saltbot AI analytics, FreshPrints design systems and Image Gen AI, and Kalash rewards.";
+
+export const CRAFT_SEO_DESCRIPTION =
+  "Motion graphics, illustration, and design essays by Jatin Bansal — craft experiments, visual play, and a Design Review checklist from shipped product work.";
+
+export const NOTES_SEO_DESCRIPTION =
+  "JB's Case Notes — field notes on product design, AI craft, and working in progress from Jatin Bansal.";
 
 export const DEFAULT_OG_IMAGE_PATH = "/opengraph-image";
 
@@ -353,8 +388,7 @@ export function projectsCollectionJsonLd(
     "@id": `${SITE_URL}${ROUTES.projects}`,
     name: "Product Design Case Studies",
     url: absoluteUrl(ROUTES.projects),
-    description:
-      "Selected UX and product design case studies by Jatin Bansal across cybersecurity, fintech, design systems, and AI.",
+    description: PROJECTS_SEO_DESCRIPTION,
     author: { "@id": `${SITE_URL}/#person` },
     hasPart: projects.map((project) => ({
       "@type": "CreativeWork",
@@ -397,7 +431,7 @@ export function caseStudyArticleJsonLd(input: {
   return [
     breadcrumbJsonLd([
       { name: "Home", path: ROUTES.home },
-      { name: "Projects", path: ROUTES.projects },
+      { name: "Case Studies", path: ROUTES.projects },
       { name: input.name, path: pageUrl },
     ]),
     {

@@ -53,7 +53,7 @@ export interface ExperimentGalleryItem {
 export const EXPERIMENTS_PAGE = {
   title: "Craft",
   description:
-    "When inspiration strikes or I want to challenge myself, I design purely for fun—whether it's slide decks, illustrations, icons, or interfaces. I love learning and continually refining my craft!",
+    "Motion graphics, illustration, and design essays by Jatin Bansal — craft experiments, visual play, and essays on design review from shipped product work.",
   href: ROUTES.craft,
 } as const;
 

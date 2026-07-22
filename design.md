@@ -231,7 +231,22 @@ Infrastructure for blurring case study body copy until a case study is **publish
 
 | Slug | Mode | Status |
 |------|------|--------|
-| — | — | No slugs gated — `CASE_STUDY_REVEAL_SCHEDULE` is `{}` |
+| — | — | No countdown-gated slugs — `CASE_STUDY_REVEAL_SCHEDULE` is `{}` |
+
+### Password gate (Cisco)
+
+Soft access unlock for pre-release case studies — hero + meta stay readable; **full body content** stays in place with `blur-xl`; access card is a sticky band on top of that blur.
+
+| Piece | Location |
+|-------|----------|
+| Gate config | `src/lib/case-study-password-gate.ts` → `CASE_STUDY_ACCESS_GATED_SLUGS` |
+| Overlay UI | `src/components/case-studies/case-study-password-gate.tsx` |
+| Wired on | `CiscoPolicyCopilot.tsx` |
+| Flow | Enter email → button becomes **Press 3 times to unlock** → unlock |
+| Email log | `POST /api/case-study-access` → same Google Sheet webhook as JB_AI (`Email: …`) |
+| Persistence | `sessionStorage` (`jb_case_unlock_<slug>`) |
+
+Analytics: `case_study_access_request`, `case_study_access_unlock` with `slug`.
 
 Rules: `.cursor/rules/case-study-reveal-timer.mdc`
 
@@ -267,6 +282,8 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `cursor_label_cycle` | `label` | Shift-click cycles custom cursor label |
 | `manifest_visit` | `count` | Manifest slide becomes active |
 | `google_easter_egg` | `kind` | Barrel roll, askew, or I'm Feeling Lucky |
+| `case_study_access_request` | `slug` | Email captured for gated case study |
+| `case_study_access_unlock` | `slug` | Triple-press unlock completed |
 | `index_frame_view` | `frame_id`, `frame_label`, `index` | Index frame enters view |
 | `index_frame_navigate` | `from`, `to`, `method` | Index frame change (scroll, nav, keyboard, minimap) |
 | `project_list_click` | `slug` | Projects index row click |
@@ -404,11 +421,13 @@ Hand-drawn editorial illustrations (English labels). Adapted from [Ian Xiaohei I
 | Piece | Location |
 |-------|----------|
 | Meta description builder | `src/lib/seo.ts` → `buildCaseStudyMetaDescription()` |
+| Home / projects / craft blurbs | `HOME_SEO_DESCRIPTION`, `PROJECTS_SEO_DESCRIPTION`, `CRAFT_SEO_DESCRIPTION` |
 | Per-slug keywords | `CASE_STUDY_SEO_KEYWORDS` in `seo.ts` |
 | OG image | `HOVER_THUMBNAIL_OVERRIDES[slug]` in `projects-list-data.ts` |
 | Open Graph + Twitter | `buildSocialMetadata()` — `summary_large_image`, `twitter:creator` |
-| Article JSON-LD | `caseStudyArticleJsonLd()` in `projects/[slug]/layout.tsx` |
-| Sitemap priority | `sitemap.ts` — Cisco `0.95` |
+| Article JSON-LD | `caseStudyArticleJsonLd()` — breadcrumb label **Case Studies** |
+| Sitemap | `sitemap.ts` — Cisco `0.95`; drafts in `NOINDEX_PROJECT_SLUGS` omitted |
+| Robots | `robots.ts` — disallow `/api/`, `/dev/`, `/ideas` |
 
 Canonical share URL: `https://<domain>/projects/cisco-policy-copilot` (also `/recent`).
 

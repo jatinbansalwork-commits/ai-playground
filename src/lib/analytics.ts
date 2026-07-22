@@ -269,6 +269,18 @@ export function trackManifestVisit(count: number): void {
   track("manifest_visit", { count: String(count) });
 }
 
+export function trackCaseStudyPasswordUnlock(slug: string): void {
+  track("case_study_password_unlock", { slug: slug.slice(0, 80) });
+}
+
+export function trackCaseStudyAccessRequest(slug: string): void {
+  track("case_study_access_request", { slug: slug.slice(0, 80) });
+}
+
+export function trackCaseStudyAccessUnlock(slug: string): void {
+  track("case_study_access_unlock", { slug: slug.slice(0, 80) });
+}
+
 export function trackAiChatGif(giphyId?: string): void {
   track("ai_chat_gif", {
     ...(giphyId ? { giphy_id: giphyId } : {}),

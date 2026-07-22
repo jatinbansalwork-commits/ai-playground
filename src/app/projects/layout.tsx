@@ -8,12 +8,13 @@ import {
   buildCaseStudyMetaDescription,
   buildPageMetadata,
   caseStudyPageTitle,
+  PROJECTS_SEO_DESCRIPTION,
   projectsCollectionJsonLd,
 } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: PROJECTS_PAGE.title,
-  description: PROJECTS_PAGE.description,
+  description: PROJECTS_SEO_DESCRIPTION,
   path: "/projects",
   keywords: allProjectsSeoKeywords(),
 });

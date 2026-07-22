@@ -65,6 +65,8 @@ const HIDDEN_PROJECT_SLUGS = new Set([
 /** Draft case studies — excluded from sitemap and marked noindex. */
 const NOINDEX_PROJECT_SLUGS = new Set([
   "freshprints-heal-tool",
+  "kalash-year-end-recap",
+  "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
   "saltmine-sync",
 ]);

@@ -60,8 +60,8 @@ Modes & easter eggs (wireframe, darkroom, askew, barrel roll, Manifest visit rem
 | Rule | Slugs / behaviour |
 |------|-------------------|
 | On `/projects` index | All case studies except `HIDDEN_PROJECT_SLUGS` |
-| Hidden from index | `freshprints-heal-tool`, `piggy-personalised-mutual-fund-recommendation`, `saltmine-sync` |
-| `noindex` (sitemap) | Same three drafts — see `getIndexableCaseStudySlugs()` |
+| Hidden from index | `freshprints-heal-tool`, `kalash-year-end-recap`, `piggy-reduced-mutual-fund-support-tickets`, `piggy-personalised-mutual-fund-recommendation`, `saltmine-sync` |
+| `noindex` (sitemap) | Same drafts — see `getIndexableCaseStudySlugs()` / `NOINDEX_PROJECT_SLUGS` |
 | Flagship case study | `cisco-policy-copilot` — published, indexable, sitemap priority `0.95`, interactive Policy Copilot demo in hero |
 | Legacy alias | `/recent` → `/projects/cisco-policy-copilot` |
 

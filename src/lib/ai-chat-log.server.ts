@@ -44,12 +44,19 @@ function countUserTurns(messages: readonly { role: string }[]): number {
 }
 
 /** Fire-and-forget — append a row to your spreadsheet webhook (Google Apps Script). */
-export function recordChatQuestion(
+export async function recordChatQuestion(
   request: Request,
   messages: readonly { role: string; content?: string }[],
   entry: ChatQuestionLogEntry,
-): Promise<void> {
-  if (!isChatQuestionLogEnabled()) return Promise.resolve();
+): Promise<"logged" | "disabled" | "failed"> {
+  if (!isChatQuestionLogEnabled()) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn(
+        "[ai-chat-log] Skipped — set AI_CHAT_LOG_WEBHOOK_URL in .env.local (see scripts/jbai-chat-log-apps-script.js).",
+      );
+    }
+    return "disabled";
+  }
 
   const webhookUrl = process.env.AI_CHAT_LOG_WEBHOOK_URL!.trim();
   const secret = process.env.AI_CHAT_LOG_SECRET?.trim();
@@ -72,22 +79,54 @@ export function recordChatQuestion(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), LOG_TIMEOUT_MS);
 
-  return fetch(webhookUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-    signal: controller.signal,
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Chat log webhook returned ${response.status}.`);
-      }
-    })
-    .finally(() => {
-      clearTimeout(timeout);
+  try {
+    // Google Apps Script web apps respond with 302 to an echo URL that holds
+    // the real JSON body. Follow that second hop with GET (not POST).
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      redirect: "manual",
     });
+
+    const status = response.status;
+    if (status >= 300 && status < 400) {
+      const location = response.headers.get("location");
+      if (!location) {
+        throw new Error(`Chat log webhook returned ${status} without Location.`);
+      }
+      const echo = await fetch(location, { method: "GET", signal: controller.signal });
+      const text = await echo.text();
+      let parsed: { ok?: boolean; error?: string } | null = null;
+      try {
+        parsed = JSON.parse(text) as { ok?: boolean; error?: string };
+      } catch {
+        throw new Error(`Chat log webhook echo was not JSON (${echo.status}).`);
+      }
+      if (!echo.ok || parsed?.ok !== true) {
+        throw new Error(
+          parsed?.error || `Chat log webhook echo failed (${echo.status}).`,
+        );
+      }
+      return "logged";
+    }
+
+    if (status >= 200 && status < 300) {
+      return "logged";
+    }
+
+    throw new Error(`Chat log webhook returned ${status}.`);
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[ai-chat-log] Webhook failed:", error);
+    }
+    return "failed";
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export function queueChatQuestionLog(
@@ -95,9 +134,16 @@ export function queueChatQuestionLog(
   messages: readonly { role: string; content?: string }[],
   entry: ChatQuestionLogEntry,
 ): void {
-  void recordChatQuestion(request, messages, entry).catch(() => {
-    // Logging must never affect chat replies.
-  });
+  void recordChatQuestion(request, messages, entry);
+}
+
+/** Awaitable variant for routes that want to report log status. */
+export function recordChatQuestionLog(
+  request: Request,
+  messages: readonly { role: string; content?: string }[],
+  entry: ChatQuestionLogEntry,
+): Promise<"logged" | "disabled" | "failed"> {
+  return recordChatQuestion(request, messages, entry);
 }
 
 export function inferChatInputType(intentId?: string): "chip" | "typed" {

@@ -1,12 +1,14 @@
 ---
 description: Case study reveal timer — daily IST reset until explicit publish
-globs: src/lib/case-study-reveal-schedule.ts,src/hooks/use-case-study-reveal-countdown.ts,src/components/case-studies/case-study-reveal-countdown.tsx,src/components/case-studies/CiscoPolicyCopilot.tsx,src/lib/project-content.ts
+globs: src/lib/case-study-reveal-schedule.ts,src/hooks/use-case-study-reveal-countdown.ts,src/components/case-studies/case-study-reveal-countdown.tsx,src/components/case-studies/CiscoPolicyCopilot.tsx,src/lib/project-content.ts,src/lib/case-study-password-gate.ts,src/components/case-studies/case-study-password-gate.tsx
 alwaysApply: false
 ---
 
 # Case study reveal timer
 
-Pre-launch case studies use a **worldwide countdown** (anchored to **IST / Asia/Kolkata**) and blur gate — not per-user `localStorage`.
+Pre-launch case studies can use a **worldwide countdown** (anchored to **IST / Asia/Kolkata**) and blur gate — not per-user `localStorage`.
+
+**Cisco Policy Copilot** currently uses the **email + triple-press access gate** (`case-study-password-gate`) — do not put it back on the IST countdown schedule unless the user asks.
 
 ## Source of truth
 
@@ -16,28 +18,43 @@ Pre-launch case studies use a **worldwide countdown** (anchored to **IST / Asia/
 |-------|---------|
 | `mode: "daily-reset"` | Countdown runs until **IST midnight (00:00 Asia/Kolkata)**, then resets. Body **stays blurred** — the timer never unlocks content on its own. |
 | `mode: "fixed"` | Legacy one-shot window from `startsAtUtc` + 24 hours. |
-| Slug absent from schedule | Case study is **published** — no blur, no countdown. |
+| Slug absent from schedule | Case study is **published** for the timer system — may still use an access gate. |
 
-## Daily reset (default for drafts)
+## Access gate (Cisco)
 
-`cisco-policy-copilot` uses `daily-reset`. Do **not** bump `startsAtUtc` manually — the countdown resets automatically every IST day.
+| Piece | Location |
+|-------|----------|
+| Gated slugs | `CASE_STUDY_ACCESS_GATED_SLUGS` in `case-study-password-gate.ts` |
+| UI | `CaseStudyPasswordGate` |
+| Flow | Email → log via `/api/case-study-access` → press unlock **3 times** |
+| Presses | `CASE_STUDY_ACCESS_PRESS_TARGET` (3) |
+
+Remove the access gate **only** when the user explicitly says the case study is ready to publish.
+
+### Publish checklist (access-gated)
+
+1. Remove the slug from `CASE_STUDY_ACCESS_GATED_SLUGS`.
+2. Remove `<CaseStudyPasswordGate>` wrapping from the case study component.
+3. Update `design.md` (§ Password gate / access gate).
+
+## Daily reset (default for timer drafts)
+
+Do **not** bump `startsAtUtc` manually for `daily-reset` — the countdown resets automatically every IST day.
 
 ## Publish only when the user says so
 
-Remove the gate **only** when the user explicitly says the case study is ready to publish, e.g.:
+Remove timer or password gates **only** when the user explicitly says the case study is ready to publish, e.g.:
 
 - “this case study is ready”
 - “let’s publish this”
 - “publish the case study”
 
-Until then, keep `daily-reset` active.
-
-### Publish checklist
+### Publish checklist (timer-gated)
 
 1. Remove the slug from `CASE_STUDY_REVEAL_SCHEDULE`.
 2. Remove `<CaseStudyRevealCountdown />` from the case study hero `metaBottom`.
 3. Remove the `blur-xl` wrapper and `useCaseStudyRevealCountdownForSlug` gate in the case study component.
-4. Remove the `⏳` prefix from the title in `src/lib/project-content.ts`.
+4. Remove the `⏳` prefix from the title in `src/lib/project-content.ts` if present.
 5. Update the schedule table in `design.md` (§ Pre-launch reveal gate).
 
 ## Wiring
@@ -45,9 +62,10 @@ Until then, keep `daily-reset` active.
 - Hook: `useCaseStudyRevealCountdownForSlug(slug)`
 - UI: `<CaseStudyRevealCountdown slug="your-slug" />` in hero `metaBottom`
 - Blur gate: `isRevealed` from the same hook — always `false` while `daily-reset` is active
+- Password: `<CaseStudyPasswordGate slug="…" title="…">…</CaseStudyPasswordGate>`
 
 ## Do not
 
 - Manually reset `startsAtUtc` for `daily-reset` slugs
-- Per-browser countdown (`localStorage`)
-- Remove the blur gate without an explicit publish request from the user
+- Per-browser countdown (`localStorage`) for the IST timer
+- Remove the blur / password gate without an explicit publish request from the user
