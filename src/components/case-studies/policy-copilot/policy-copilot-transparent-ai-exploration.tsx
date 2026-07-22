@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 import { ConfidenceRing } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
-import { EDITORIAL as CLAUDE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { CLAUDE, LIVING_MOTION } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 
 const ILLUSTRATION_ARIA_LABEL =
@@ -20,29 +20,37 @@ function SectionBand({
   accent: "primary" | "risk";
   children: ReactNode;
 }) {
-  const accentColor = accent === "primary" ? CLAUDE.primary : "#c64545";
-  const accentMuted = accent === "primary" ? CLAUDE.primaryMuted : "rgb(198 69 69 / 0.08)";
+  const accentColor = accent === "primary" ? CLAUDE.primary : CLAUDE.risk;
+  const accentMuted = accent === "primary" ? CLAUDE.primaryMuted : CLAUDE.riskMuted;
 
   return (
     <section
       className="rounded-2xl border p-4 sm:p-5"
       style={{
-        borderColor: accent === "primary" ? CLAUDE.primaryBorder : "rgb(198 69 69 / 0.22)",
+        borderColor: accent === "primary" ? CLAUDE.primaryBorder : "rgb(198 69 69 / 0.35)",
         backgroundColor: accentMuted,
         boxShadow: `inset 3px 0 0 0 ${accentColor}`,
       }}
     >
       <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-[13px] font-medium text-neutral-800">{title}</p>
+          <p className="text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+            {title}
+          </p>
           {subtitle ? (
-            <p className="mt-1 max-w-xl text-[12px] leading-relaxed text-neutral-600">{subtitle}</p>
+            <p
+              className="mt-1 max-w-xl text-[12px] leading-relaxed"
+              style={{ color: CLAUDE.textSecondary }}
+            >
+              {subtitle}
+            </p>
           ) : null}
         </div>
         <span
           className="rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
           style={{
-            backgroundColor: accent === "primary" ? CLAUDE.validatedMuted : "rgb(185 28 28 / 0.12)",
+            backgroundColor:
+              accent === "primary" ? CLAUDE.validatedMuted : CLAUDE.riskMuted,
             color: accent === "primary" ? CLAUDE.validated : CLAUDE.risk,
           }}
         >
@@ -75,11 +83,16 @@ function Tile({
       transition={{ ...LIVING_MOTION.discover, delay }}
       className={cn("flex flex-col rounded-xl p-3.5", className)}
       style={{
-        backgroundColor: "#FFFFFF",
+        backgroundColor: CLAUDE.surfaceRaised,
         boxShadow: `inset 0 0 0 1px ${CLAUDE.hairline}`,
       }}
     >
-      <p className="mb-2.5 text-[10px] font-medium tracking-wide text-neutral-500">{label}</p>
+      <p
+        className="mb-2.5 text-[10px] font-medium tracking-wide"
+        style={{ color: CLAUDE.textMuted }}
+      >
+        {label}
+      </p>
       <div className="min-h-0 flex-1">{children}</div>
     </motion.div>
   );
@@ -95,17 +108,41 @@ function EntityChipMini({
   inferred?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2.5">
+    <div
+      className="flex flex-col gap-2 rounded-xl border px-3 py-2.5"
+      style={{
+        borderColor: CLAUDE.border,
+        backgroundColor: CLAUDE.surface,
+      }}
+    >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-[9px] font-medium uppercase tracking-wide text-neutral-500">{term}</p>
-          <p className="mt-1 truncate text-[12px] font-semibold text-neutral-900">{value}</p>
+          <p
+            className="text-[9px] font-medium uppercase tracking-wide"
+            style={{ color: CLAUDE.textMuted }}
+          >
+            {term}
+          </p>
+          <p
+            className="mt-1 truncate text-[12px] font-semibold"
+            style={{ color: CLAUDE.text }}
+          >
+            {value}
+          </p>
         </div>
         <div className="flex shrink-0 gap-1">
-          <span className="rounded-md border border-neutral-200 px-1.5 py-0.5 text-[9px] font-medium text-neutral-600">
+          <span
+            className="rounded-md border px-1.5 py-0.5 text-[9px] font-medium"
+            style={{ borderColor: CLAUDE.borderStrong, color: CLAUDE.textSecondary }}
+          >
             Edit
           </span>
-          <span className="rounded-md px-1.5 py-0.5 text-[9px] font-semibold text-sky-700">Why?</span>
+          <span
+            className="rounded-md px-1.5 py-0.5 text-[9px] font-semibold"
+            style={{ color: CLAUDE.primary }}
+          >
+            Why?
+          </span>
         </div>
       </div>
       {inferred ? (
@@ -126,16 +163,27 @@ export function PolicyCopilotTransparentAiExploration() {
   return (
     <figure>
       <div
-        className="overflow-hidden rounded-lg border border-neutral-200 px-4 py-7 sm:px-7 md:py-9 case-study-light-panel"
-        style={{ backgroundColor: "#FFFFFF" }}
+        className="overflow-hidden rounded-lg border px-4 py-7 sm:px-7 md:py-9 case-study-dark-panel"
+        style={{
+          backgroundColor: CLAUDE.surface,
+          borderColor: CLAUDE.border,
+        }}
         aria-label={ILLUSTRATION_ARIA_LABEL}
       >
         <header className="mx-auto max-w-2xl text-center">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-neutral-500">
+          <p
+            className="text-[10px] font-medium uppercase tracking-[0.24em]"
+            style={{ color: CLAUDE.textMuted }}
+          >
             Component Exploration
           </p>
-          <p className="mt-2 text-base font-semibold text-neutral-900">Transparent AI</p>
-          <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
+          <p className="mt-2 text-base font-semibold" style={{ color: CLAUDE.text }}>
+            Transparent AI
+          </p>
+          <p
+            className="mt-2 text-[13px] leading-relaxed"
+            style={{ color: CLAUDE.textSecondary }}
+          >
             Patterns that made thinking visible in the workspace.
           </p>
         </header>
@@ -158,18 +206,28 @@ export function PolicyCopilotTransparentAiExploration() {
                 <div className="flex items-center gap-3.5">
                   <ConfidenceRing phase="draft" value={62} />
                   <div className="min-w-0">
-                    <p className="text-[12px] font-semibold text-neutral-900">Mapping complete</p>
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-200">
+                    <p className="text-[12px] font-semibold" style={{ color: CLAUDE.text }}>
+                      Mapping complete
+                    </p>
+                    <div
+                      className="mt-2 h-1.5 overflow-hidden rounded-full"
+                      style={{ backgroundColor: CLAUDE.surfaceOverlay }}
+                    >
                       <motion.div
                         className="h-full rounded-full"
-                        style={{ background: `linear-gradient(90deg, ${CLAUDE.primary}, #6366F1)` }}
+                        style={{
+                          background: `linear-gradient(90deg, ${CLAUDE.primary}, ${CLAUDE.accentTeal})`,
+                        }}
                         initial={reduced ? false : { width: 0 }}
                         whileInView={{ width: "62%" }}
                         viewport={{ once: true }}
                         transition={LIVING_MOTION.confidence}
                       />
                     </div>
-                    <p className="mt-2 text-[10px] leading-snug text-neutral-600">
+                    <p
+                      className="mt-2 text-[10px] leading-snug"
+                      style={{ color: CLAUDE.textMuted }}
+                    >
                       Confirm understanding before safety checks run.
                     </p>
                   </div>
@@ -184,9 +242,18 @@ export function PolicyCopilotTransparentAiExploration() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-2 rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-2 text-[11px] leading-snug text-neutral-800"
+                      className="flex items-start gap-2 rounded-lg border px-2.5 py-2 text-[11px] leading-snug"
+                      style={{
+                        borderColor: CLAUDE.border,
+                        backgroundColor: CLAUDE.surfaceOverlay,
+                        color: CLAUDE.textSecondary,
+                      }}
                     >
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-orange-500" aria-hidden />
+                      <span
+                        className="mt-1.5 h-1 w-1 shrink-0 rounded-full"
+                        style={{ backgroundColor: CLAUDE.warning }}
+                        aria-hidden
+                      />
                       {item}
                     </li>
                   ))}
@@ -194,13 +261,29 @@ export function PolicyCopilotTransparentAiExploration() {
               </Tile>
 
               <Tile label="Explanation tooltip" className="md:col-span-2" delay={0.1}>
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-2.5 py-2 text-[11px] text-neutral-800">
+                <div
+                  className="rounded-lg border px-2.5 py-2 text-[11px]"
+                  style={{
+                    borderColor: CLAUDE.border,
+                    backgroundColor: CLAUDE.surfaceOverlay,
+                    color: CLAUDE.textSecondary,
+                  }}
+                >
                   Nurses-AD-Group
-                  <span className="ml-1.5 text-[10px] font-semibold text-sky-700">Why?</span>
+                  <span
+                    className="ml-1.5 text-[10px] font-semibold"
+                    style={{ color: CLAUDE.primary }}
+                  >
+                    Why?
+                  </span>
                 </div>
                 <div
-                  className="mt-2 rounded-lg border px-2.5 py-2 text-[10px] leading-relaxed text-neutral-700"
-                  style={{ borderColor: CLAUDE.primaryBorder, backgroundColor: CLAUDE.primaryMuted }}
+                  className="mt-2 rounded-lg border px-2.5 py-2 text-[10px] leading-relaxed"
+                  style={{
+                    borderColor: CLAUDE.primaryBorder,
+                    backgroundColor: CLAUDE.primaryMuted,
+                    color: CLAUDE.textSecondary,
+                  }}
                 >
                   Locum groups are a common gap when only doctors are named in hospital policies.
                 </div>
@@ -208,28 +291,37 @@ export function PolicyCopilotTransparentAiExploration() {
 
               <Tile label="Inline suggestions" className="md:col-span-2" delay={0.12}>
                 <div className="flex flex-wrap gap-1.5">
-                  {["Allow nurses read-only", "Include locum doctors", "Keep full block"].map((label, i) => (
-                    <span
-                      key={label}
-                      className="rounded-full border px-2.5 py-1 text-[10px] font-medium"
-                      style={{
-                        backgroundColor: i === 0 ? CLAUDE.primaryMuted : "#FFFFFF",
-                        borderColor: i === 0 ? CLAUDE.primaryBorder : CLAUDE.borderStrong,
-                        color: i === 0 ? CLAUDE.primaryActive : CLAUDE.textSecondary,
-                      }}
-                    >
-                      {label}
-                    </span>
-                  ))}
+                  {["Allow nurses read-only", "Include locum doctors", "Keep full block"].map(
+                    (label, i) => (
+                      <span
+                        key={label}
+                        className="rounded-full border px-2.5 py-1 text-[10px] font-medium"
+                        style={{
+                          backgroundColor:
+                            i === 0 ? CLAUDE.primaryMuted : CLAUDE.surface,
+                          borderColor:
+                            i === 0 ? CLAUDE.primaryBorder : CLAUDE.borderStrong,
+                          color: i === 0 ? CLAUDE.primary : CLAUDE.textSecondary,
+                        }}
+                      >
+                        {label}
+                      </span>
+                    ),
+                  )}
                 </div>
               </Tile>
 
               <Tile label="Reasoning panel" className="md:col-span-3" delay={0.14}>
-                <p className="text-[11px] leading-relaxed text-neutral-700">
+                <p
+                  className="text-[11px] leading-relaxed"
+                  style={{ color: CLAUDE.textSecondary }}
+                >
                   Doctors need EHR from managed devices only — nurses blocked unless you add a
                   break-glass path.
                 </p>
-                <p className="mt-2 text-[10px] text-neutral-500">Source · intent + Doctors-AD-Group inventory</p>
+                <p className="mt-2 text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                  Source · intent + Doctors-AD-Group inventory
+                </p>
               </Tile>
 
               <Tile label="Policy preview cards" className="md:col-span-3" delay={0.16}>
@@ -238,25 +330,29 @@ export function PolicyCopilotTransparentAiExploration() {
                     className="rounded-xl border px-3 py-2.5"
                     style={{
                       backgroundColor: CLAUDE.validatedMuted,
-                      borderColor: "rgb(21 128 61 / 0.28)",
+                      borderColor: "rgb(93 184 114 / 0.35)",
                     }}
                   >
                     <p className="text-[11px] font-semibold" style={{ color: CLAUDE.validated }}>
                       Allow · doctors → EHR
                     </p>
-                    <p className="mt-1 text-[10px] text-neutral-600">Hospital-managed devices only</p>
+                    <p className="mt-1 text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                      Hospital-managed devices only
+                    </p>
                   </div>
                   <div
                     className="rounded-xl border px-3 py-2.5"
                     style={{
                       backgroundColor: CLAUDE.riskMuted,
-                      borderColor: "rgb(185 28 28 / 0.28)",
+                      borderColor: "rgb(198 69 69 / 0.35)",
                     }}
                   >
                     <p className="text-[11px] font-semibold" style={{ color: CLAUDE.risk }}>
                       Deny · nurses → EHR
                     </p>
-                    <p className="mt-1 text-[10px] text-neutral-600">Clinical role separation</p>
+                    <p className="mt-1 text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                      Clinical role separation
+                    </p>
                   </div>
                 </div>
               </Tile>
