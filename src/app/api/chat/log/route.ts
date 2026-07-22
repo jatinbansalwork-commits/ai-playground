@@ -4,7 +4,7 @@ import {
 } from "@/lib/ai-chat-question-intent";
 import {
   inferChatInputType,
-  queueChatQuestionLog,
+  recordChatQuestionLog,
 } from "@/lib/ai-chat-log.server";
 import type { AiChatIntentId } from "@/lib/ai-chat-intents";
 import type { ChatReplySource } from "@/lib/ai-chat-types";
@@ -38,7 +38,7 @@ export async function POST(request: Request): Promise<Response> {
   const pagePath = body.pagePath?.trim() || undefined;
   const detected = detectQuestionIntent(question, pagePath);
 
-  queueChatQuestionLog(request, [], {
+  const logStatus = await recordChatQuestionLog(request, [], {
     question,
     reply,
     pagePath,
@@ -50,5 +50,9 @@ export async function POST(request: Request): Promise<Response> {
     turn: body.turn ?? 1,
   });
 
-  return Response.json({ ok: true });
+  return Response.json({
+    ok: true,
+    logged: logStatus === "logged",
+    logStatus,
+  });
 }
