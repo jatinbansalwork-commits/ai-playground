@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import {
-  EDITORIAL,
+  CLAUDE,
   COPILOT_TYPE,
   LIVING_MOTION,
 } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
@@ -45,17 +45,20 @@ function ImpactStat({
   value: string;
   tone: "business" | "security";
 }) {
-  const accent = tone === "business" ? EDITORIAL.accentTeal : EDITORIAL.primary;
+  const accent = tone === "business" ? CLAUDE.accentTeal : CLAUDE.primary;
 
   return (
     <div
-      className="rounded-xl bg-white px-3 py-2.5"
-      style={{ boxShadow: `inset 0 0 0 1px ${accent}40` }}
+      className="rounded-xl px-3 py-2.5"
+      style={{
+        backgroundColor: CLAUDE.surfaceRaised,
+        boxShadow: `inset 0 0 0 1px ${accent}55`,
+      }}
     >
-      <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: EDITORIAL.textMuted }}>
+      <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
         {label}
       </p>
-      <p className="mt-1 text-[12px] leading-relaxed" style={{ color: EDITORIAL.text }}>
+      <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {value}
       </p>
     </div>
@@ -77,22 +80,25 @@ function WhySection({
 }) {
   return (
     <div
-      className="rounded-xl bg-white"
-      style={{ boxShadow: `inset 0 0 0 1px ${EDITORIAL.borderStrong}` }}
+      className="rounded-xl"
+      style={{
+        backgroundColor: CLAUDE.surfaceRaised,
+        boxShadow: `inset 0 0 0 1px ${CLAUDE.borderStrong}`,
+      }}
     >
       <button
         type="button"
         onClick={onToggle}
-        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3.5 py-2.5 text-left hover:bg-neutral-50"
+        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3.5 py-2.5 text-left transition-colors hover:bg-white/[0.03]"
         aria-expanded={expanded}
         aria-controls={`recommendation-why-${id}`}
       >
-        <span className="text-[12px] font-medium leading-none" style={{ color: EDITORIAL.text }}>
+        <span className="text-[12px] font-medium leading-none" style={{ color: CLAUDE.text }}>
           {label}
         </span>
         <span
           className="text-[10px] font-medium leading-none"
-          style={{ color: EDITORIAL.primaryActive }}
+          style={{ color: CLAUDE.primary }}
         >
           {expanded ? "Hide" : "Why?"}
         </span>
@@ -109,7 +115,7 @@ function WhySection({
           >
             <p
               className="border-t px-3.5 py-2.5 text-[12px] leading-relaxed"
-              style={{ borderColor: EDITORIAL.hairline, color: EDITORIAL.textSecondary }}
+              style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textSecondary }}
             >
               {body}
             </p>
@@ -126,22 +132,22 @@ export function PolicyCopilotRecommendationCards() {
 
   return (
     <figure
-      className="overflow-hidden rounded-xl border border-neutral-200 case-study-light-panel"
-      style={{ backgroundColor: EDITORIAL.bg }}
+      className="overflow-hidden rounded-xl border case-study-dark-panel"
+      style={{ backgroundColor: CLAUDE.surface, borderColor: CLAUDE.border }}
       aria-label={ILLUSTRATION_ARIA_LABEL}
     >
-      <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: EDITORIAL.hairline }}>
+      <div className="border-b px-4 py-4 md:px-5 md:py-5" style={{ borderColor: CLAUDE.hairline }}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p
               className={COPILOT_TYPE.titleLg}
-              style={{ fontFamily: EDITORIAL.fontDisplay, color: EDITORIAL.text }}
+              style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
             >
               Recommendations
             </p>
             <p
               className="mt-1 max-w-2xl text-[13px] leading-relaxed"
-              style={{ color: EDITORIAL.textSecondary }}
+              style={{ color: CLAUDE.textSecondary }}
             >
               Suggested improvements with supporting evidence and expected impact — compare, apply, or
               dismiss each one.
@@ -150,9 +156,9 @@ export function PolicyCopilotRecommendationCards() {
           <span
             className="rounded-full border px-2.5 py-1 text-[11px] font-medium tabular-nums"
             style={{
-              borderColor: EDITORIAL.primaryBorder,
-              backgroundColor: EDITORIAL.primaryMuted,
-              color: EDITORIAL.primaryActive,
+              borderColor: CLAUDE.primaryBorder,
+              backgroundColor: CLAUDE.primaryMuted,
+              color: CLAUDE.primary,
             }}
           >
             Confidence · 84%
@@ -160,40 +166,41 @@ export function PolicyCopilotRecommendationCards() {
         </div>
       </div>
 
-      <div className="space-y-4 p-4 md:p-5">
+      <div className="space-y-4 p-4 md:p-5" style={{ backgroundColor: CLAUDE.bg }}>
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ ...LIVING_MOTION.discover }}
-          className="rounded-2xl border bg-white p-4 md:p-5"
+          className="rounded-2xl border p-4 md:p-5"
           style={{
-            borderColor: EDITORIAL.primaryBorder,
-            boxShadow: `inset 3px 0 0 0 ${EDITORIAL.primary}`,
+            backgroundColor: CLAUDE.surfaceRaised,
+            borderColor: CLAUDE.primaryBorder,
+            boxShadow: `inset 3px 0 0 0 ${CLAUDE.primary}`,
           }}
         >
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: EDITORIAL.textMuted }}>
+              <p className={cn(COPILOT_TYPE.eyebrow)} style={{ color: CLAUDE.textMuted }}>
                 Suggested change
               </p>
               <p
                 className="mt-1 text-[15px] font-medium leading-snug"
-                style={{ fontFamily: EDITORIAL.fontDisplay, color: EDITORIAL.text }}
+                style={{ fontFamily: CLAUDE.fontDisplay, color: CLAUDE.text }}
               >
                 Enable audit logging on the EHR allow path
               </p>
             </div>
             <span
               className="rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide"
-              style={{ backgroundColor: EDITORIAL.warningMuted, color: EDITORIAL.warning }}
+              style={{ backgroundColor: CLAUDE.warningMuted, color: CLAUDE.warning }}
             >
               Recommended
             </span>
           </div>
 
           <div className="mt-4">
-            <p className={cn(COPILOT_TYPE.eyebrow, "mb-2")} style={{ color: EDITORIAL.textMuted }}>
+            <p className={cn(COPILOT_TYPE.eyebrow, "mb-2")} style={{ color: CLAUDE.textMuted }}>
               Supporting evidence
             </p>
             <ul className="flex flex-wrap gap-2">
@@ -206,7 +213,12 @@ export function PolicyCopilotRecommendationCards() {
                   transition={{ duration: 0.25, delay: index * 0.05 }}
                 >
                   <span
-                    className="inline-flex max-w-full rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] leading-snug text-neutral-800"
+                    className="inline-flex max-w-full rounded-full border px-2.5 py-1 text-[11px] leading-snug"
+                    style={{
+                      borderColor: CLAUDE.borderStrong,
+                      backgroundColor: CLAUDE.surfaceOverlay,
+                      color: CLAUDE.textSecondary,
+                    }}
                   >
                     {item}
                   </span>
@@ -245,22 +257,28 @@ export function PolicyCopilotRecommendationCards() {
             <button
               type="button"
               tabIndex={-1}
-              className="rounded-full border border-neutral-300 bg-white px-3 py-1.5 text-[12px] font-medium text-neutral-800"
+              className="rounded-full border px-3 py-1.5 text-[12px] font-medium"
+              style={{
+                borderColor: CLAUDE.borderStrong,
+                backgroundColor: CLAUDE.surface,
+                color: CLAUDE.textSecondary,
+              }}
             >
               Compare
             </button>
             <button
               type="button"
               tabIndex={-1}
-              className="rounded-full px-3.5 py-1.5 text-[12px] font-medium text-white"
-              style={{ backgroundColor: EDITORIAL.primary }}
+              className="rounded-full px-3.5 py-1.5 text-[12px] font-medium"
+              style={{ backgroundColor: CLAUDE.primary, color: CLAUDE.bg }}
             >
               Apply
             </button>
             <button
               type="button"
               tabIndex={-1}
-              className="rounded-full px-3 py-1.5 text-[12px] font-medium text-neutral-600"
+              className="rounded-full px-3 py-1.5 text-[12px] font-medium"
+              style={{ color: CLAUDE.textMuted }}
             >
               Dismiss
             </button>
@@ -269,8 +287,8 @@ export function PolicyCopilotRecommendationCards() {
       </div>
 
       <p
-        className="border-t px-4 py-3 text-center text-[11px] leading-relaxed text-neutral-500 md:px-5"
-        style={{ borderColor: EDITORIAL.hairline }}
+        className="border-t px-4 py-3 text-center text-[11px] leading-relaxed md:px-5"
+        style={{ borderColor: CLAUDE.hairline, color: CLAUDE.textMuted }}
       >
         Explain the recommendation, not just the result.
       </p>
