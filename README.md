@@ -219,6 +219,7 @@ In the Vercel dashboard: **Project → Analytics → Production**
 | Index frame views | Events → `index_frame_view` |
 | Index frame navigation | Events → `index_frame_navigate` |
 | Projects list clicks | Events → `project_list_click` (filter `slug`) |
+| Portfolio 1.0 CTA | Events → `portfolio_1_click` |
 | Case study opens | Events → `project_open` (filter `slug`, `source`) |
 | Case study scroll depth | Events → `case_study_scroll_depth` (filter `slug`, `depth`) |
 | Policy Copilot demo funnel | Events → `policy_copilot_demo` (filter `action`, `scenario_id`) |

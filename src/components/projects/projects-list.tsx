@@ -6,7 +6,7 @@ import { ProjectsHoverPreview } from "@/components/projects/projects-hover-previ
 import { useProjectsPageAnalytics } from "@/hooks/use-projects-page-analytics";
 import type { ProjectRowItem } from "@/lib/projects-list-data";
 import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
-import { trackProjectListClick } from "@/lib/analytics";
+import { trackPortfolio1Click, trackProjectListClick } from "@/lib/analytics";
 import {
   backContextForProjectsListNavigation,
   saveSessionBackContext,
@@ -97,6 +97,9 @@ export function ProjectsList({ projects }: ProjectsListProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3291ff]"
+                  onClick={() =>
+                    trackPortfolio1Click("https://itsjatin.framer.website/")
+                  }
                 >
                   Interested in portfolio 1.0? 👉
                 </a>

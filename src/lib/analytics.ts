@@ -35,6 +35,11 @@ export function trackProjectListClick(properties: {
   track("project_list_click", properties);
 }
 
+/** Projects index CTA — external Framer portfolio 1.0. */
+export function trackPortfolio1Click(url: string): void {
+  track("portfolio_1_click", { url: url.slice(0, 200) });
+}
+
 export function trackProjectOpen(
   slug: string,
   source: ProjectOpenSource,
