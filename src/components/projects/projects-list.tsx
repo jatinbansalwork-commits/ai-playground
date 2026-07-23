@@ -84,12 +84,25 @@ export function ProjectsList({ projects }: ProjectsListProps) {
 
       <nav className="flex w-full flex-col space-y-8" aria-label="Projects">
         {projects.map((project) => (
-          <ProjectRow
-            key={project.id}
-            project={project}
-            onHoverStart={setHoveredProject}
-            onHoverEnd={() => setHoveredProject(null)}
-          />
+          <div key={project.id} className="flex w-full flex-col">
+            <ProjectRow
+              project={project}
+              onHoverStart={setHoveredProject}
+              onHoverEnd={() => setHoveredProject(null)}
+            />
+            {project.slug === "kalash-rewards" ? (
+              <h2 className="mt-8 text-4xl font-medium tracking-tight text-neutral-900">
+                <a
+                  href="https://itsjatin.framer.website/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3291ff]"
+                >
+                  Interested in portfolio 1.0? 👉
+                </a>
+              </h2>
+            ) : null}
+          </div>
         ))}
       </nav>
     </div>
