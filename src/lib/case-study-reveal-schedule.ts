@@ -19,10 +19,8 @@ export interface CaseStudyRevealScheduleEntry {
 
 /**
  * Pre-launch blur schedules — keyed by project slug.
- * Remove a slug (or omit it) to publish and drop the gate.
- *
- * Cisco Policy Copilot uses the password gate instead
- * (`src/lib/case-study-password-gate.ts`) — keep it out of this schedule.
+ * Remove a slug (or omit it) to publish and drop the timer gate.
+ * Email access unlocks (if any) live in `src/lib/case-study-password-gate.ts`.
  */
 export const CASE_STUDY_REVEAL_SCHEDULE: Record<string, CaseStudyRevealScheduleEntry> =
   {};
