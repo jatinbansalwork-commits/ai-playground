@@ -40,7 +40,7 @@ export function PolicyCopilotWorkspace({
                 : presentation === "continuous-validation"
                   ? "Policy Copilot continuous validation — safety checks running in the workspace with author panel and compliance results, read-only"
                   : presentation === "simulation-impact"
-                    ? "Policy Copilot simulation and impact — blast radius preview and pre-deploy simulation in the workspace, read-only"
+                    ? "Policy Copilot simulation and impact — impact preview and pre-deploy simulation in the workspace, read-only"
                     : "Policy Copilot workspace preview, read-only"
           : "Policy Copilot living workspace"
       }

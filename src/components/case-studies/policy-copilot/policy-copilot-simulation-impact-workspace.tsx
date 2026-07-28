@@ -4,7 +4,7 @@ import { PolicyCopilotWorkspace } from "@/components/case-studies/policy-copilot
 import { WORKSPACE_EMBED_SHELL, WORKSPACE_HOST_BREAKOUT } from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
 
 const ILLUSTRATION_ARIA_LABEL =
-  "Simulation and impact — blast radius preview, pre-deploy simulation strip, and deployment readiness in the Policy Copilot workspace.";
+  "Simulation and impact — impact preview, pre-deploy simulation strip, and deployment readiness in the Policy Copilot workspace.";
 
 export function PolicyCopilotSimulationImpactWorkspace() {
   return (

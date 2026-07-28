@@ -149,6 +149,41 @@ const EVIDENCE: Record<string, {
       { id: "personal", text: "Why block personal accounts?", reply: "Corporate identity only — reduces credential sprawl and data-exfil risk." },
     ],
   },
+  tiktok: {
+    scope: {
+      accessScope: "Intern accounts blocked from TikTok during business hours",
+      controlAlignment: "Deny window Mon–Fri 09:00–18:00 · FTE unaffected",
+      logging: "Web filtering logs enabled · SIEM tags on deny",
+    },
+    compliance: {
+      bullets: [
+        "Acceptable-use policy alignment verified",
+        "No FTE surprise blocks detected",
+        "Time window matches productivity guidance",
+      ],
+    },
+    reasoning: {
+      whyProposed: [
+        "Matches intern productivity denies used across 11 similar SaaS paths",
+        "TikTok-SaaS-App classified under Internet-SaaS destination",
+        "Schedule keeps after-hours optional unless you extend the deny",
+      ],
+      sources: [
+        { label: "People ops request", detail: "Intern productivity · business hours" },
+        { label: "Compliance", detail: "Acceptable use · web filtering" },
+      ],
+      confidence: 86,
+    },
+    construction: [
+      { component: "SaaS application", status: "Applied", details: "TikTok-SaaS-App" },
+      { component: "Time schedule", status: "Applied", details: "Mon–Fri 09:00–18:00 deny" },
+      { component: "Identity scope", status: "Applied", details: "Intern-Accounts only" },
+    ],
+    learningPills: [
+      { id: "after-hours", text: "What about after hours?", reply: "After-hours stays open unless you switch to always-block." },
+      { id: "fte", text: "Are employees affected?", reply: "No — FTE paths stay out of this deny rule." },
+    ],
+  },
   contractors: {
     scope: {
       accessScope: "Contractors blocked from all production workloads",

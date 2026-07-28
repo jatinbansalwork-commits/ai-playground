@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ShieldCheckIcon } from "@/components/case-studies/policy-copilot/policy-copilot-icons";
+import { ConfidenceRing } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
 import {
   CLAUDE,
   COPILOT_FOCUS,
@@ -22,20 +23,20 @@ const SUMMARY_SECTIONS = [
     id: "interpretation",
     label: "AI interpretation",
     value: "Doctors-AD-Group → EHR-Application · HTTPS 443 · session logging on allow path",
-    status: "94% match",
+    status: "Ready",
     tone: "primary" as const,
   },
   {
     id: "validation",
     label: "Validation results",
-    value: "6 checks passed — compliance, duplicates, segmentation, and blast radius clear",
+    value: "6 checks passed — compliance, duplicates, segmentation, and impact clear",
     status: "All clear",
     tone: "success" as const,
   },
   {
     id: "simulation",
     label: "Simulation insights",
-    value: "240 doctors in scope · 2 applications reachable · low blast radius",
+    value: "240 doctors in scope · 2 applications reachable · low impact",
     status: "Ready",
     tone: "success" as const,
   },
@@ -175,28 +176,16 @@ export function PolicyCopilotFinalApproval() {
           </div>
 
           <div className="mt-5">
-            <div className="flex items-end justify-between gap-2">
-              <p
-                className="text-[28px] font-semibold leading-none tabular-nums"
-                style={{ color: CLAUDE.text }}
-              >
-                94%
-              </p>
-              <p className="text-[12px] font-medium" style={{ color: CLAUDE.validated }}>
-                Confidence at ready
-              </p>
-            </div>
-            <div
-              className="mt-3 h-2 overflow-hidden rounded-full"
-              style={{ backgroundColor: CLAUDE.surfaceOverlay }}
-            >
-              <motion.div
-                className="h-full rounded-full"
-                style={{ backgroundColor: CLAUDE.validated }}
-                initial={reduced ? false : { width: "0%" }}
-                animate={{ width: "94%" }}
-                transition={{ duration: 0.8, ease: LIVING_MOTION.confidence.ease }}
-              />
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-[12px] font-medium" style={{ color: CLAUDE.textMuted }}>
+                  Ready to approve
+                </p>
+                <p className="mt-1 text-[13px] leading-snug" style={{ color: CLAUDE.textSecondary }}>
+                  Checks passed · impact reviewed · human decision required
+                </p>
+              </div>
+              <ConfidenceRing phase="approve" value={94} checksPassed mappingDone />
             </div>
           </div>
 

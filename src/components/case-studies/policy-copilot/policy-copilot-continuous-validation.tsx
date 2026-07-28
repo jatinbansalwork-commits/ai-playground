@@ -53,8 +53,8 @@ const CHECKS: ValidationCheck[] = [
   },
   {
     id: "blast",
-    label: "Potential blast radius",
-    explanation: "~240 doctors affected · nurses and contractors excluded unless scope expands.",
+    label: "Who is affected",
+    explanation: "~240 doctors in scope · nurses and contractors stay excluded.",
     activatesAtMilestone: 2,
   },
 ];

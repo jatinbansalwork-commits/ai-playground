@@ -685,7 +685,7 @@ const SCENARIOS: ScenarioCore[] = [
       },
       {
         id: "blast",
-        title: "Blast radius",
+        title: "Who is affected",
         status: "attention",
         explanation: "Broad doctor group increases exposure.",
         action: "Consider sub-groups",
@@ -1202,6 +1202,56 @@ export function resolveScenario(requestText: string): PolicyScenario {
           title: "Controls",
           fields: [
             { id: "hours", label: "Access window", value: "Business hours" },
+            { id: "logging", label: "Logging", value: "URL filtering + audit" },
+          ],
+        },
+      ],
+    };
+  } else if (
+    lower.includes("tiktok") ||
+    (lower.includes("intern") &&
+      (lower.includes("block") || lower.includes("business hours") || lower.includes("saas")))
+  ) {
+    core = {
+      ...SCENARIOS.find((s) => s.id === "finance-sap")!,
+      id: "tiktok",
+      intentSummary:
+        "Block intern accounts from TikTok during business hours with acceptable-use controls.",
+      understanding: [
+        { label: "Users", value: "Intern accounts" },
+        { label: "Application", value: "TikTok (SaaS)" },
+        { label: "Action", value: "Deny during business hours" },
+        { label: "Destination", value: "Internet · SaaS" },
+        { label: "Direction", value: "Outbound deny" },
+      ],
+      missingInfo: ["After-hours access?", "Contractor interns included?"],
+      baseConfidence: 78,
+      clarifications: [
+        {
+          id: "hours",
+          question: "Business hours only, or block TikTok at all times?",
+          options: ["Business hours", "Always block", "Allow after hours"],
+        },
+        {
+          id: "scope",
+          question: "Interns only, or all non-FTE accounts?",
+          options: ["Interns only", "All contractors", "All non-FTE"],
+        },
+      ],
+      policySections: [
+        {
+          title: "Web deny rule",
+          fields: [
+            { id: "users", label: "Identity", value: "Intern-Accounts" },
+            { id: "apps", label: "Application", value: "TikTok SaaS" },
+            { id: "source", label: "Source", value: "Corp-Workstations" },
+            { id: "dest", label: "Destination", value: "Internet-SaaS" },
+          ],
+        },
+        {
+          title: "Controls",
+          fields: [
+            { id: "hours", label: "Deny window", value: "Business hours" },
             { id: "logging", label: "Logging", value: "URL filtering + audit" },
           ],
         },

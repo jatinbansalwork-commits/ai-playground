@@ -112,7 +112,7 @@ export function JourneySkillProgressBar({
 
 export function JourneyStepIndicatorRich({
   activeSkill,
-  showProgress = true,
+  showProgress = false,
   caseStudyStep,
   currentJourneyStep,
 }: {

@@ -210,6 +210,62 @@ const LIVING_PRESETS: Record<string, LivingScenarioPreset> = {
       },
     ],
   },
+  tiktok: {
+    id: "tiktok",
+    insightLine: "SaaS deny for interns — I'll align this with acceptable-use and time windows.",
+    entityMappings: [
+      { term: "interns", resolved: "Intern-Accounts group", type: "Identity (LDAP)" },
+      { term: "TikTok", resolved: "TikTok-SaaS-App", type: "SaaS application" },
+      { term: "business hours", resolved: "Mon–Fri 09:00–18:00", type: "Time schedule" },
+      { term: "corporate workstations", resolved: "Corp-Workstations", type: "Source zone" },
+      { term: "internet SaaS", resolved: "Internet-SaaS", type: "Destination" },
+    ],
+    ruleReasoning:
+      "Intern accounts cannot reach TikTok during business hours from corporate devices. Attempts are logged. After-hours stays open unless you extend the deny.",
+    complianceCheck: { label: "Acceptable use", detail: "Web filtering deny window applied" },
+    blastRadius: "18 intern accounts · TikTok denied in business hours · 0 FTE impact",
+    riskDetail: "No collateral deny on FTE or adjacent SaaS apps",
+    contextLine: "Interns → TikTok blocked · business hours",
+    mfaTitle: "Alert on repeated deny attempts",
+    mfaWhy: "Repeated TikTok probes may signal policy confusion or shadow accounts.",
+    mfaTradeoff: "SIEM noise if interns refresh blocked pages often.",
+    driftRec: {
+      rule: "Intern-Social-Media-Exception",
+      flag: "Old allow for social media still open for 3 interns. Close it?",
+    },
+    approval: {
+      authorName: "Alex (IT)",
+      reviewSchedule: "Review every 90 days",
+      justification: "Acceptable-use deny for intern productivity during business hours.",
+    },
+    lifecycleTimeline: [
+      {
+        stage: "Request captured",
+        time: "11:05 AM",
+        evidence: "Intern TikTok deny with business-hours intent",
+      },
+      {
+        stage: "Rules drafted",
+        time: "11:06 AM",
+        evidence: "TikTok deny rule for Intern-Accounts with schedule",
+      },
+      {
+        stage: "Checks passed",
+        time: "11:08 AM",
+        evidence: "18 interns · acceptable-use tags · no FTE surprise blocks",
+      },
+      {
+        stage: "Approved",
+        time: "11:10 AM",
+        evidence: "People ops and security sign-off recorded",
+      },
+      {
+        stage: "Live",
+        time: "11:25 AM",
+        evidence: "Active in 3 regions · 41 blocked attempts logged in first day",
+      },
+    ],
+  },
   "vendor-vpn": {
     id: "vendor-vpn",
     insightLine: "Vendor VPN access — I'll scope this to staging with a time limit.",

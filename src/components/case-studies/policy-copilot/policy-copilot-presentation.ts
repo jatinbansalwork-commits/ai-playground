@@ -272,13 +272,13 @@ export function createSimulationImpactPresentationState(): SimulationImpactPrese
       {
         id: "simulation-impact-copilot-checks",
         role: "copilot",
-        text: "Compliance check completed successfully. Scope and compliance summaries are on the canvas — review blast radius before you approve.",
+        text: "Compliance check completed successfully. Scope and compliance summaries are on the canvas — review who is affected before you approve.",
         time: "Now",
       },
       {
         id: "simulation-impact-copilot-simulate",
         role: "copilot",
-        text: "Run a dry-run simulation to see who gains access, which applications become reachable, and the blast radius if you approve.",
+        text: "Run a dry-run simulation to see who gains access, which applications become reachable, and the impact if you approve.",
         time: "Now",
       },
     ],

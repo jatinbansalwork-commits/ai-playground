@@ -310,7 +310,9 @@ export type PolicyCopilotDemoAction =
   | "recommendation_dismiss"
   | "approve"
   | "reset"
-  | "dashboard_stat";
+  | "dashboard_stat"
+  | "save_draft"
+  | "share_review";
 
 export function trackPolicyCopilotDemo(properties: {
   action: PolicyCopilotDemoAction;

@@ -9,7 +9,6 @@ import {
 } from "@/components/case-studies/policy-copilot/policy-copilot-data";
 import {
   inferPolicyStatus,
-  scenarioIconFromPrompt,
   STATUS_DOT,
   STATUS_LEGEND,
 } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
@@ -69,14 +68,15 @@ export function WorkspaceAtmosphere() {
 export function FlowProgress({
   step,
   total,
-  progress,
+  progress: _progress,
   label,
   status,
   compact = false,
 }: {
   step: number;
   total: number;
-  progress: number;
+  /** @deprecated Ignored — progress % removed; keep for call-site compatibility */
+  progress?: number;
   label: string;
   status?: string;
   compact?: boolean;
@@ -91,45 +91,17 @@ export function FlowProgress({
         >
           {step > 0 ? `Step ${step}/${total}` : "Getting started"}
         </p>
-        <div className="flex items-center gap-2">
-          {status ? (
-            <motion.span
-              key={status}
-              initial={reduced ? false : { opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-[11px]"
-              style={{ color: CLAUDE.textSoft }}
-            >
-              {status}
-            </motion.span>
-          ) : null}
-          {step > 0 ? (
-            <motion.p
-              key={progress}
-              initial={reduced ? false : { opacity: 0.6, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className={cn("tabular-nums font-medium", compact ? "text-[13px]" : "text-[12px]")}
-              style={{ color: CLAUDE.primary }}
-            >
-              {progress}%
-            </motion.p>
-          ) : null}
-        </div>
-      </div>
-      <div
-        className={cn("overflow-hidden rounded-full", compact ? "mt-1 h-0.5" : "mt-2 h-1")}
-        style={{ backgroundColor: CLAUDE.hairline }}
-      >
-        <motion.div
-          className="h-full rounded-full"
-          style={{
-            backgroundColor: CLAUDE.primary,
-            boxShadow: `0 0 12px ${CLAUDE.primaryMuted}`,
-          }}
-          initial={{ width: 0 }}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.65, ease: [0.25, 0.1, 0.25, 1] }}
-        />
+        {status ? (
+          <motion.span
+            key={status}
+            initial={reduced ? false : { opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[11px]"
+            style={{ color: CLAUDE.textSoft }}
+          >
+            {status}
+          </motion.span>
+        ) : null}
       </div>
       <motion.p
         layout
@@ -192,7 +164,6 @@ function RecentList({
             {group.items.map((item) => {
               const isActive = activeLabel === item.label;
               const status = inferPolicyStatus(item.prompt, item.flowMode);
-              const icon = scenarioIconFromPrompt(item.prompt);
               const statusTip = STATUS_LEGEND.find((l) => l.tone === status)?.tip;
               return (
                 <li key={item.label} className="min-w-0">
@@ -215,9 +186,6 @@ function RecentList({
                       title={statusTip}
                       aria-label={statusTip ?? status}
                     />
-                    <span className={SIDEBAR_ICON_SLOT} aria-hidden>
-                      <span className="text-[12px] leading-none">{icon}</span>
-                    </span>
                     <span className="min-w-0 flex-1 truncate">{item.label}</span>
                   </button>
                 </li>

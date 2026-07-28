@@ -291,6 +291,144 @@ const CLARIFICATION_BY_SCENARIO: Record<string, IntentClarificationConfig> = {
       { id: "s3", title: "Strict marketing only", outcome: "Original scope · no adjacent teams." },
     ],
   },
+  tiktok: {
+    intentSummary:
+      "Block intern accounts from TikTok during business hours with acceptable-use controls.",
+    understandingReflection: {
+      lead: "Before I generate a draft, here is how I understood your request. Nothing is written to policy until you confirm.",
+      users: [
+        {
+          fieldId: "users-primary",
+          label: "Users",
+          value: "Intern accounts (Intern-Accounts)",
+          certainty: "explicit",
+          why: "You named intern accounts explicitly. I mapped them to Intern-Accounts — the standard non-FTE identity pool in your directory.",
+        },
+        {
+          fieldId: "users-excluded",
+          label: "Not in scope unless you add them",
+          value: "FTE employees, contractors, agency partners",
+          certainty: "inferred",
+          why: "You asked to block interns only. FTE and contractor groups stay unaffected unless you widen the deny.",
+        },
+      ],
+      application: {
+        fieldId: "application",
+        label: "Application",
+        value: "TikTok (TikTok-SaaS-App)",
+        certainty: "explicit",
+        why: "TikTok in your request maps to the TikTok SaaS object already in the web-filtering catalogue.",
+      },
+      devices: {
+        fieldId: "devices",
+        label: "Devices",
+        value: "Corporate workstations (Corp-Workstations)",
+        certainty: "inferred",
+        why: "You did not name a device scope. I inferred corporate workstations from similar intern SaaS denies — confirm or edit before I draft.",
+      },
+      networkZones: {
+        fieldId: "network-zones",
+        label: "Network zones",
+        value: "Corp user segment → Internet SaaS egress",
+        certainty: "inferred",
+        why: "Outbound SaaS denies typically sit on the Internet-SaaS destination — confirm if mobile or guest networks should be included.",
+      },
+      assumptions: [
+        "Deny applies during business hours (Mon–Fri 09:00–18:00) unless you say always",
+        "Acceptable-use / web-filtering controls apply",
+        "FTE employees are not blocked",
+        "Blocked attempts are logged for review",
+      ],
+      uncertainties: [
+        {
+          id: "always-block",
+          question: "Block TikTok only during business hours, or at all times for interns?",
+          detail: "Your request mentions business hours — after-hours access may still be allowed.",
+        },
+        {
+          id: "contractor-interns",
+          question: "Should contractor interns or agency juniors be included?",
+          detail: "Only intern accounts were named — adjacent non-FTE groups are a common gap.",
+        },
+        {
+          id: "other-social",
+          question: "Should this deny extend to Instagram or other short-form apps?",
+          detail: "Similar requests often expand to a social-media category after the first TikTok block.",
+        },
+      ],
+      confirmPrompt:
+        "If this matches your intent, confirm and I'll map objects and prepare a draft for review — not deploy.",
+    },
+    whatIfPrompt:
+      "You're denying TikTok for interns during business hours. Want to tighten or widen the scope?",
+    whatIfOptions: [
+      {
+        id: "always-block",
+        label: "Block at all times",
+        reply: "Deny window extended to 24/7 for Intern-Accounts → TikTok.",
+        insight: "Removes after-hours loopholes — common when productivity policy is firm.",
+      },
+      {
+        id: "include-contractors",
+        label: "Include contractor juniors",
+        reply: "Contractor-Juniors group added to the same TikTok deny path.",
+      },
+      {
+        id: "interns-only",
+        label: "Keep interns only",
+        reply: "Scope stays on Intern-Accounts — no adjacent groups added.",
+      },
+    ],
+    clarifyQuestion:
+      "Does this understanding look right? Confirm before I generate a draft.",
+    clarifyChips: [
+      {
+        id: "biz-hours-deny",
+        label: "Business hours only",
+        reply: "Deny limited to Mon–Fri 09:00–18:00 — after-hours stays open.",
+      },
+      {
+        id: "always-deny",
+        label: "Always block TikTok",
+        reply: "24/7 deny applied for Intern-Accounts → TikTok.",
+      },
+      {
+        id: "log-attempts",
+        label: "Log every attempt",
+        reply: "URL filtering + SIEM tags armed on every deny.",
+      },
+    ],
+    relatedRoles: [
+      { id: "contractors", label: "Contractor juniors", hint: "Often share the same productivity policy" },
+      { id: "apprentices", label: "Apprentices", hint: "Sometimes sit outside Intern-Accounts" },
+      { id: "fte", label: "FTE employees", hint: "Usually excluded from this deny" },
+    ],
+    riskInsight: {
+      body: "A hard TikTok deny can push interns onto personal phones on guest Wi‑Fi, where you lose visibility. Logging blocked attempts on corp networks still helps measure demand.",
+      actions: [
+        {
+          id: "guest-note",
+          label: "Note guest Wi‑Fi gap",
+          reply: "Added a review note — guest and mobile paths stay out of scope for this rule.",
+        },
+        {
+          id: "risk-continue",
+          label: "Continue without changes",
+          reply: "Keeping intern-only TikTok deny as stated.",
+        },
+      ],
+    },
+    interpretationScope: {
+      body: "I'll use only what you explicitly mentioned. I won't assume extra roles, apps, or conditions unless you approve them.",
+      learnMore:
+        "Web deny rules use application identification, not just URLs. Time schedules are enforced at the firewall.",
+    },
+    scenarioPreviews: [
+      { id: "s1", title: "Interns → TikTok hours", outcome: "18 interns · business-hours deny · FTE unaffected." },
+      { id: "s2", title: "Always-on TikTok deny", outcome: "24/7 block · stronger productivity stance." },
+      { id: "s3", title: "Interns + contractor juniors", outcome: "Wider non-FTE pool · same SaaS deny." },
+    ],
+  },
   contractors: {
     intentSummary: "Contractors are blocked from production. Everyone else unchanged.",
     whatIfPrompt:

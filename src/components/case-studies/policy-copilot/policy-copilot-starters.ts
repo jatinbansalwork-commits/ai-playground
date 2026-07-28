@@ -1,5 +1,3 @@
-import { scenarioIconFromPrompt } from "@/components/case-studies/policy-copilot/policy-copilot-design-system";
-
 export type StarterCategory = "clinical" | "finance" | "access" | "vendor" | "saas";
 
 export interface PolicyStarterTemplate {
@@ -83,7 +81,3 @@ export const POLICY_STARTER_SUGGESTIONS = [
     hint: "SaaS deny pattern",
   },
 ] as const;
-
-export function starterIcon(prompt: string): string {
-  return scenarioIconFromPrompt(prompt);
-}

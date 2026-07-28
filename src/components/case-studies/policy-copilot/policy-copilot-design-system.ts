@@ -45,14 +45,14 @@ export const SKILL_STEP_TOOLTIPS: Record<CopilotSkillId, { active: string; next:
   },
   author: {
     active: "Mapping inventory objects and drafting rules for your review.",
-    next: "Validate runs blast-radius and compliance checks.",
+    next: "Validate runs impact and compliance checks.",
   },
   validate: {
     active: "Running safety checks — each pass should reduce uncertainty.",
     next: "Optimise optional improvements, then approve to deploy.",
   },
   deploy: {
-    active: "Approval gate — review scope, compliance, and blast radius.",
+    active: "Approval gate — review scope, compliance, and impact.",
     next: "Govern keeps the audit trail and memory after go-live.",
   },
   optimize: {
@@ -130,7 +130,7 @@ export const CANVAS_PREVIEW_COPY: Record<
   },
   [CANVAS_SECTION_IDS.checks]: {
     title: "Safety checks",
-    hint: "Compliance, blast radius, and conflict validation.",
+    hint: "Compliance, impact, and conflict validation.",
   },
   [CANVAS_SECTION_IDS.reasoning]: {
     title: "Reasoning",
@@ -239,7 +239,7 @@ export const GOVERN_TAB_META: Record<
   overview: {
     recordId: "gov-rec-overview",
     lastChanged: "2 days ago",
-    tip: "Live posture, owner, and blast-radius summary.",
+    tip: "Live posture, owner, and impact summary.",
   },
   rules: {
     recordId: "gov-rec-rules",
@@ -283,7 +283,7 @@ export function confidenceTooltip(phase: LivingPhase, value: number): string {
   const blocker = confidenceBlocker(phase, value);
   if (blocker) return blocker;
   if (value < 30) return "Intent recognised — confirm understanding to raise confidence.";
-  if (value < 60) return "Objects mapped — run safety checks to validate blast radius.";
+  if (value < 60) return "Objects mapped — run safety checks to validate impact.";
   if (value < 85) return "Checks passed — review optional optimisations before deploy.";
   if (phase === "done") return "Policy live — full audit trail available in Govern.";
   return "Ready for approval — deploy will push to production regions.";
@@ -301,7 +301,7 @@ export function confidenceBlocker(
     return "Blocker: finish mapping inventory objects.";
   }
   if (phase === "draft" && value < 65) {
-    return "Blocker: run safety checks to validate blast radius.";
+    return "Blocker: run safety checks to validate impact.";
   }
   if (phase === "check" && !opts?.checksPassed) {
     return "Blocker: safety checks still running — wait for all passes.";
@@ -310,7 +310,7 @@ export function confidenceBlocker(
     return "Blocker: review optional optimisations or proceed to approve.";
   }
   if (phase === "approve" && value < 94) {
-    return "Blocker: confirm blast radius and compliance on the canvas.";
+    return "Blocker: confirm impact and compliance on the canvas.";
   }
   return null;
 }
@@ -341,20 +341,6 @@ export function resolveEntityProvenance(resolved: string, type: string): EntityP
   return { ...base, objectId: slug || "object" };
 }
 
-export const FRAMEWORK_ICONS: Record<string, string> = {
-  HIPAA: "🏥",
-  SOX: "📊",
-  "SOC 2": "🔒",
-  "ISO 27001": "🌐",
-  PCI: "💳",
-  "Acceptable use": "📋",
-  "Golden config": "⚙️",
-};
-
-export function frameworkIcon(framework: string): string {
-  return FRAMEWORK_ICONS[framework] ?? "✓";
-}
-
 export type PolicyStatusTone = "live" | "pending" | "deploying" | "draft";
 
 export const STATUS_DOT: Record<PolicyStatusTone, string> = {
@@ -370,16 +356,6 @@ export const STATUS_LEGEND: { tone: PolicyStatusTone; label: string; tip: string
   { tone: "deploying", label: "Deploying", tip: "Rollout in progress — rollback armed" },
   { tone: "draft", label: "Draft", tip: "In progress — nothing deployed yet" },
 ];
-
-export function scenarioIconFromPrompt(prompt: string): string {
-  const p = prompt.toLowerCase();
-  if (p.includes("ehr") || p.includes("doctor") || p.includes("health")) return "🏥";
-  if (p.includes("finance") || p.includes("sap") || p.includes("sql")) return "📊";
-  if (p.includes("marketing") || p.includes("linkedin")) return "📣";
-  if (p.includes("contractor") || p.includes("production")) return "🛡️";
-  if (p.includes("vendor") || p.includes("vpn") || p.includes("staging")) return "🔗";
-  return "📄";
-}
 
 export function inferPolicyStatus(prompt: string, flowMode?: string): PolicyStatusTone {
   if (flowMode === "review") return "pending";

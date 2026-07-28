@@ -85,13 +85,11 @@ import { CANVAS_SECTION_IDS, resolveWhyAnnotation, resolveWhyCanvasSections, SKI
 import {
   AgentStatusBar,
   CanvasSectionAnchor,
-  ConfidenceRing,
   DeploySimulateStrip,
   EnforcementWatermark,
   GovernExportButton,
   GovernPolicyPassport,
   JourneyStepIndicatorRich,
-  JourneySkillProgressBar,
   scrollToCanvasSection,
   scrollToFirstCanvasSection,
 } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
@@ -120,6 +118,9 @@ import {
   SafetyCheckQueue,
   SafetyChecksSummary,
   ScenarioPreviewPanel,
+  StakeholderPresence,
+  StakeholderShareFlow,
+  type ShareFlowStep,
   ThreadCanvasHandoffPulse,
   ThreadMessage,
   ThreadSuggestions,
@@ -234,13 +235,6 @@ function blastRadiusGroupsFor(preset: LivingScenarioPreset) {
       tone: "deny" as const,
     },
   ];
-}
-
-function parsePeopleFromBlastRadius(text: string) {
-  const inScope = Number.parseInt(text.match(/(\d+)\s+people/)?.[1] ?? "0", 10);
-  const blocked = Number.parseInt(text.match(/(\d+)\s+\w+\s+blocked/)?.[1] ?? "0", 10);
-  const surprise = Number.parseInt(text.match(/(\d+)\s+surprise/)?.[1] ?? "0", 10);
-  return { inScope, blocked, surprise };
 }
 
 function enforcementWatermarkMode(
@@ -391,6 +385,12 @@ export function PolicyCopilotLiving({
   );
   const [whyAnnotation, setWhyAnnotation] = useState<{ section: CanvasSectionId; text: string } | null>(null);
   const [handoffPulse, setHandoffPulse] = useState(false);
+  const [sharePanelOpen, setSharePanelOpen] = useState(false);
+  const [shareMode, setShareMode] = useState<"progress" | "approval" | null>(null);
+  const [shareFlowStep, setShareFlowStep] = useState<ShareFlowStep>("who");
+  const [shareKindDraft, setShareKindDraft] = useState<"progress" | "approval">("progress");
+  const [shareRequesterId, setShareRequesterId] = useState("primary");
+  const [draftSavedFlash, setDraftSavedFlash] = useState(false);
   const [checkElapsed, setCheckElapsed] = useState(0);
   const [approvalReviewReady, setApprovalReviewReady] = useState(false);
   const [reflectionFieldOverrides, setReflectionFieldOverrides] = useState<Record<string, string>>({});
@@ -418,16 +418,15 @@ export function PolicyCopilotLiving({
     if (phase === "clarify") return scenarioPreset.insightLine;
     if (phase === "sense") return `Mapping ${scenarioPreset.entityMappings.map((m) => m.term).slice(0, 3).join(", ")}…`;
     if (phase === "draft") return "Draft ready — checking whether this breaks compliance or creates surprise blocks";
-    if (phase === "check") return `Checking ${scenarioPreset.complianceCheck.label.toLowerCase()}, blast radius, and conflicts`;
+    if (phase === "check") return `Checking ${scenarioPreset.complianceCheck.label.toLowerCase()}, impact, and conflicts`;
     if (phase === "refine") return "Checks passed — review optional optimisations before deploy";
-    if (phase === "approve") return "Approve when scope, compliance, and blast radius look right";
+    if (phase === "approve") return "Approve when scope, compliance, and impact look right";
     if (phase === "ship") return "Shipping to production regions with rollback armed";
     return "";
   }, [phase, scenarioPreset]);
 
   const activeSkill = skillForPhase(phase, flowMode);
   const skillTokens = SKILL_TOKENS[activeSkill];
-  const mappingDone = entityReveal >= entityMappings.length;
   const canvasDesaturated =
     flowMode === "author" &&
     inLifecycle &&
@@ -457,7 +456,14 @@ export function PolicyCopilotLiving({
   useEffect(() => {
     if (isPresentation) return;
     if (!inLifecycle || flowMode !== "author") return;
-    if (phase === "draft" || phase === "check" || phase === "refine") {
+    if (
+      phase === "clarify" ||
+      phase === "sense" ||
+      phase === "draft" ||
+      phase === "check" ||
+      phase === "refine" ||
+      phase === "approve"
+    ) {
       saveDraftCheckpoint({
         prompt: intent,
         label: activeRecentLabel ?? scenarioPreset.contextLine.split("·")[0]?.trim() ?? "Draft policy",
@@ -680,6 +686,98 @@ export function PolicyCopilotLiving({
     resumeFromDraft(checkpoint);
   }
 
+  function handleSaveAsDraft() {
+    if (!intent.trim()) return;
+    saveDraftCheckpoint({
+      prompt: intent,
+      label: activeRecentLabel ?? scenarioPreset.contextLine.split("·")[0]?.trim() ?? "Draft policy",
+      phase,
+      entityReveal,
+      checkStatus,
+      mfaApplied,
+      savedAt: Date.now(),
+    });
+    setDraftSavedFlash(true);
+    window.setTimeout(() => setDraftSavedFlash(false), 1800);
+    trackPolicyCopilotDemo({
+      action: "save_draft",
+      scenario_id: scenarioPreset.id,
+      prompt: intent,
+    });
+  }
+
+  const shareRequesterOptions = useMemo(() => {
+    const primaryName = scenarioPreset.approval.authorName;
+    const namePart = primaryName.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    const rolePart = primaryName.match(/\(([^)]+)\)/)?.[1] ?? "Requester";
+    return [
+      { id: "primary", name: namePart, role: rolePart },
+      { id: "manager", name: "Alex Rivera", role: "Requesting manager" },
+      { id: "secops", name: "Morgan Lee", role: "SecOps reviewer" },
+    ];
+  }, [scenarioPreset.approval.authorName]);
+
+  const selectedShareRequester = useMemo(() => {
+    const option =
+      shareRequesterOptions.find((r) => r.id === shareRequesterId) ?? shareRequesterOptions[0];
+    return option ? `${option.role} · ${option.name}` : "Requester";
+  }, [shareRequesterId, shareRequesterOptions]);
+
+  const selectedShareRequesterOption = useMemo(
+    () => shareRequesterOptions.find((r) => r.id === shareRequesterId) ?? shareRequesterOptions[0],
+    [shareRequesterId, shareRequesterOptions],
+  );
+
+  function openShareFlow(approvalReady: boolean, options?: { scroll?: boolean }) {
+    setShareFlowStep("who");
+    setShareKindDraft(approvalReady && shareMode === "approval" ? "approval" : "progress");
+    setSharePanelOpen(true);
+    if (options?.scroll !== false) {
+      schedule(() => scrollCanvasToEnd({ force: true }), 80);
+    }
+  }
+
+  function handleStopSharing() {
+    setShareMode(null);
+    setSharePanelOpen(false);
+    setShareFlowStep("who");
+  }
+
+  function handlePresenceRequestApproval() {
+    setShareMode("approval");
+    setSharePanelOpen(false);
+  }
+
+  function handlePresenceShareProgress() {
+    setShareMode("progress");
+    setSharePanelOpen(false);
+  }
+
+  function handleConfirmShare() {
+    const kind = shareKindDraft;
+    setShareMode(kind);
+    setSharePanelOpen(false);
+    setShareFlowStep("who");
+    if (kind === "approval") {
+      pushThread({
+        role: "copilot",
+        text: `Approval requested from ${selectedShareRequester}. They can review impact and evidence on this same request — you still own deploy.`,
+        time: "Now",
+      });
+    } else {
+      pushThread({
+        role: "copilot",
+        text: `Shared with ${selectedShareRequester}. They can follow progress on this live request while you finish setup — no dead-end ticket.`,
+        time: "Now",
+      });
+    }
+    trackPolicyCopilotDemo({
+      action: "share_review",
+      scenario_id: scenarioPreset.id,
+      prompt: intent,
+    });
+  }
+
   function resetFlowState() {
     setPhase("invite");
     setDraft("");
@@ -709,6 +807,12 @@ export function PolicyCopilotLiving({
     setUnderstandingConfirmed(false);
     setWhyAnnotation(null);
     setHandoffPulse(false);
+    setSharePanelOpen(false);
+    setShareMode(null);
+    setShareFlowStep("who");
+    setShareKindDraft("progress");
+    setShareRequesterId("primary");
+    setDraftSavedFlash(false);
     setCheckElapsed(0);
     setResumeSummary(null);
     setApprovalReviewReady(false);
@@ -1330,6 +1434,19 @@ export function PolicyCopilotLiving({
   const isJourneyComplete = inLifecycle && phase === "done" && policyEntry === "journey";
   const hasCheckWarnings = safetyChecks.some((c) => checkStatus[c.id] === "warn");
   const allChecksPassed = safetyChecks.every((c) => checkStatus[c.id] === "pass");
+  const showFlowSecondaryChrome =
+    inLifecycle &&
+    flowMode === "author" &&
+    !isGovernView &&
+    !isJourneyComplete &&
+    phase !== "invite" &&
+    phase !== "understand" &&
+    phase !== "ship" &&
+    phase !== "done";
+  const showFlowSecondary = showFlowSecondaryChrome && !isPresentation;
+  const canRequestStakeholderApproval =
+    (phase === "refine" || phase === "approve") && allChecksPassed;
+  const shareStatusLabel = phaseDisplayLabel(phase);
 
   const journeyStep = useMemo(
     () =>
@@ -1364,7 +1481,7 @@ export function PolicyCopilotLiving({
           ? flowMode === "review"
             ? "Retire rule"
             : !simulateAcknowledged
-              ? "Review blast radius"
+              ? "Review impact"
               : !approvalReviewReady
                 ? "Open approval summary"
                 : null
@@ -1536,21 +1653,34 @@ export function PolicyCopilotLiving({
           )}
           style={{ borderColor: CLAUDE.hairline }}
         >
-          <div className="flex items-center gap-3 md:gap-4">
+            <div className="flex items-center gap-3 md:gap-4">
             <JourneyStepIndicatorRich
               activeSkill={activeSkill}
-              showProgress={false}
               caseStudyStep={journeyStepLabel(journeyStep)}
               currentJourneyStep={journeyStep.step}
             />
-            <ConfidenceRing
-              phase={phase}
-              value={confidence}
-              checksPassed={allChecksPassed}
-              mappingDone={mappingDone}
-            />
+            {shareMode &&
+            inLifecycle &&
+            flowMode === "author" &&
+            !isGovernView &&
+            !isJourneyComplete &&
+            selectedShareRequesterOption ? (
+              <div className="ml-auto flex shrink-0 items-center gap-2">
+                <StakeholderPresence
+                  mode={shareMode}
+                  statusLabel={shareStatusLabel}
+                  requesterName={selectedShareRequesterOption.name}
+                  requesterRole={selectedShareRequesterOption.role}
+                  canRequestApproval={canRequestStakeholderApproval}
+                  onStopSharing={isPresentation ? undefined : handleStopSharing}
+                  onRequestApproval={
+                    isPresentation ? undefined : handlePresenceRequestApproval
+                  }
+                  onShareProgress={isPresentation ? undefined : handlePresenceShareProgress}
+                />
+              </div>
+            ) : null}
           </div>
-          <JourneySkillProgressBar currentStep={journeyStep.step} />
         </header>
         ) : null}
 
@@ -2153,7 +2283,6 @@ export function PolicyCopilotLiving({
                       <BlastRadiusPreview
                         summary={scenarioPreset.blastRadius}
                         groups={blastRadiusGroupsFor(scenarioPreset)}
-                        people={parsePeopleFromBlastRadius(scenarioPreset.blastRadius)}
                         delay={0.12}
                       />
                     ) : null}
@@ -2165,16 +2294,15 @@ export function PolicyCopilotLiving({
                 <BlastRadiusPreview
                   summary={scenarioPreset.blastRadius}
                   groups={blastRadiusGroupsFor(scenarioPreset)}
-                  people={parsePeopleFromBlastRadius(scenarioPreset.blastRadius)}
                   delay={0.12}
                 />
               ) : null}
 
               {phase === "approve" && flowMode === "author" && !riskDismissed ? (
                 <RiskInsightCard
-                  body={`If credentials leak, ${scenarioPreset.riskDetail.toLowerCase()} — review blast radius before you ship.`}
+                  body={`If credentials leak, ${scenarioPreset.riskDetail.toLowerCase()} — review who is affected before you ship.`}
                   actions={[
-                    { id: "risk-review", label: "Review blast radius" },
+                    { id: "risk-review", label: "Review impact" },
                     { id: "risk-continue", label: "Looks right — continue" },
                   ]}
                   dismissed={riskDismissed}
@@ -2291,6 +2419,26 @@ export function PolicyCopilotLiving({
               ) : null}
                 </>
               )}
+
+              {sharePanelOpen && showFlowSecondary ? (
+                <StakeholderShareFlow
+                  statusLabel={shareStatusLabel}
+                  intentSummary={intentClarification.intentSummary}
+                  requesterOptions={shareRequesterOptions}
+                  selectedRequesterId={shareRequesterId}
+                  onSelectRequester={setShareRequesterId}
+                  shareKind={shareKindDraft}
+                  onShareKindChange={setShareKindDraft}
+                  canRequestApproval={canRequestStakeholderApproval}
+                  step={shareFlowStep}
+                  onStepChange={setShareFlowStep}
+                  onConfirm={handleConfirmShare}
+                  onDismiss={() => {
+                    setSharePanelOpen(false);
+                    setShareFlowStep("who");
+                  }}
+                />
+              ) : null}
               <div ref={canvasEndRef} className="h-px shrink-0" aria-hidden />
               </div>
             </div>
@@ -2381,8 +2529,55 @@ export function PolicyCopilotLiving({
               Start new policy
             </motion.button>
           </div>
-          ) : primaryLabel || phase === "refine" ? (
-          <div className="flex items-center gap-3 px-4 py-3 md:px-5">
+          ) : showFlowSecondaryChrome || primaryLabel || phase === "refine" ? (
+          <div className="flex flex-wrap items-center gap-2 px-4 py-3 md:gap-3 md:px-5">
+            {showFlowSecondaryChrome ? (
+              <>
+                <button
+                  type="button"
+                  onClick={isPresentation ? undefined : handleSaveAsDraft}
+                  disabled={isPresentation}
+                  className={cn(
+                    COPILOT_FOCUS,
+                    COPILOT_TARGET.chip,
+                    "shrink-0 rounded-full border px-4 text-[12px] font-medium disabled:opacity-80",
+                  )}
+                  style={{
+                    borderColor: CLAUDE.border,
+                    color: draftSavedFlash ? CLAUDE.validated : CLAUDE.textMuted,
+                  }}
+                >
+                  {draftSavedFlash ? "Draft saved" : "Save as draft"}
+                </button>
+                <button
+                  type="button"
+                  onClick={
+                    isPresentation
+                      ? undefined
+                      : () =>
+                          openShareFlow(canRequestStakeholderApproval, {
+                            scroll: !shareMode,
+                          })
+                  }
+                  disabled={isPresentation}
+                  className={cn(
+                    COPILOT_FOCUS,
+                    COPILOT_TARGET.chip,
+                    "shrink-0 rounded-full border px-4 text-[12px] font-medium disabled:opacity-80",
+                  )}
+                  style={{
+                    borderColor: shareMode || sharePanelOpen ? CLAUDE.primaryBorder : CLAUDE.border,
+                    backgroundColor:
+                      shareMode || sharePanelOpen ? CLAUDE.primaryMuted : "transparent",
+                    color: shareMode || sharePanelOpen ? CLAUDE.text : CLAUDE.textMuted,
+                  }}
+                >
+                  {shareMode ? "Manage share" : "Share for review"}
+                </button>
+              </>
+            ) : null}
+            {primaryLabel || phase === "refine" ? (
+              <>
             <input
               type="text"
               value={adminNote}
@@ -2441,6 +2636,8 @@ export function PolicyCopilotLiving({
                 primaryLabel
               )}
             </motion.button>
+            ) : null}
+              </>
             ) : null}
           </div>
           ) : null}

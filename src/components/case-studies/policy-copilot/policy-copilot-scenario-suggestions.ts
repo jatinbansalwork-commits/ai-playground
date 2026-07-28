@@ -49,7 +49,7 @@ const DRAFT_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       id: "run-checks",
       text: "Run HIPAA safety checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and conflict checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and conflict checks now.`,
       action: "runChecks",
     },
     {
@@ -77,7 +77,7 @@ const DRAFT_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       id: "run-checks",
       text: "Run SOX safety checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and conflict checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and conflict checks now.`,
       action: "runChecks",
     },
     {
@@ -104,7 +104,7 @@ const DRAFT_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       id: "run-checks",
       text: "Run acceptable-use checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and shadow-IT checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and shadow-IT checks now.`,
       action: "runChecks",
     },
     {
@@ -126,12 +126,39 @@ const DRAFT_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       action: "applyMfa",
     },
   ],
+  tiktok: (preset) => [
+    {
+      id: "run-checks",
+      text: "Run acceptable-use checks",
+      primary: true,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and FTE-impact checks now.`,
+      action: "runChecks",
+    },
+    {
+      id: "business-hours",
+      text: "Keep business-hours deny",
+      reply: "Mon–Fri 09:00–18:00 deny applied — after-hours TikTok stays open for interns.",
+      insight: "Matches 11 similar intern SaaS productivity denies.",
+    },
+    {
+      id: "always-block",
+      text: "Block TikTok at all times",
+      reply: "Deny extended to 24/7 for Intern-Accounts → TikTok.",
+    },
+    {
+      id: "add-alert",
+      text: preset.mfaTitle,
+      reply: `${preset.mfaTitle} — ${preset.mfaWhy}`,
+      insight: preset.mfaTradeoff,
+      action: "applyMfa",
+    },
+  ],
   contractors: (preset) => [
     {
       id: "run-checks",
       text: "Run production isolation checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and golden-config checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and golden-config checks now.`,
       action: "runChecks",
     },
     {
@@ -157,7 +184,7 @@ const DRAFT_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       id: "run-checks",
       text: "Run vendor risk checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and sandbox isolation checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and sandbox isolation checks now.`,
       action: "runChecks",
     },
     {
@@ -220,6 +247,18 @@ const SENSE_SUGGESTIONS: Record<string, SuggestionBuilder> = {
       reply: "DLP upload scan enabled for LinkedIn-SaaS-App traffic.",
     },
   ],
+  tiktok: () => [
+    {
+      id: "confirm-deny",
+      text: "Confirm intern-only scope",
+      reply: "Deny limited to Intern-Accounts — FTE social paths stay open.",
+    },
+    {
+      id: "audit-all",
+      text: "Log every deny attempt",
+      reply: "URL filter + SIEM tags armed on Intern-Accounts → TikTok denies.",
+    },
+  ],
   contractors: () => [
     {
       id: "confirm-deny",
@@ -252,7 +291,7 @@ function fallbackDraftSuggestions(preset: LivingScenarioPreset): ThreadSuggestio
       id: "run-checks",
       text: "Run safety checks",
       primary: true,
-      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, blast radius, and conflict checks now.`,
+      reply: `On it — running ${preset.complianceCheck.label.toLowerCase()}, impact, and conflict checks now.`,
       action: "runChecks",
     },
     {
@@ -341,7 +380,7 @@ export function resolveScenarioThreadSuggestions({
         },
         {
           id: "preview-impact",
-          text: "Preview blast radius",
+          text: "Preview impact",
           reply: preset.blastRadius,
           insight: preset.contextLine,
           consequence: preset.blastRadius,

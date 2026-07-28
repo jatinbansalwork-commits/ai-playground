@@ -314,7 +314,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `ai_chat_wireframe_toggle` | `enabled` | Wireframe mode toggle |
 | `ai_chat_gif` | `giphy_id?` | Reaction GIF shown |
 | `ai_chat_error` | `reason` | Chat stream or network error |
-| `policy_copilot_demo` | `action`, `slug`, `scenario_id?`, `prompt?`, `confidence?` | Cisco hero workspace — intent, clarifications, draft, validation, simulation, recommendations, approve, reset |
+| `policy_copilot_demo` | `action`, `slug`, `scenario_id?`, `prompt?`, `confidence?` | Cisco hero workspace — intent, clarifications, draft, validation, simulation, recommendations, approve, reset, save_draft, share_review |
 
 ### Page-wise tracking
 
@@ -333,7 +333,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | All pages | `site-entry-analytics.tsx` | `site_entry` (once per session) |
 | JBAI chat | `ai-chat/*` | `ai_chat_*` events, `google_easter_egg` |
 
-**`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset`
+**`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset` · `save_draft` · `share_review`
 
 Dashboard quick reference: [`README.md` § Vercel Web Analytics](./README.md#vercel-web-analytics-traffic-and-behaviour).
 

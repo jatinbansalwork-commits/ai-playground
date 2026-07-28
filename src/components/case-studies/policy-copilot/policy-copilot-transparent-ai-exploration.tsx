@@ -204,28 +204,23 @@ export function PolicyCopilotTransparentAiExploration() {
 
               <Tile label="Confidence indicator" className="md:col-span-3" delay={0.04}>
                 <div className="flex items-center gap-3.5">
-                  <ConfidenceRing phase="draft" value={62} />
+                  <ConfidenceRing phase="draft" value={62} mappingDone />
                   <div className="min-w-0">
-                    <p className="text-[12px] font-semibold" style={{ color: CLAUDE.text }}>
+                    <span
+                      className="inline-flex rounded-full border px-2 py-0.5 text-[10px] font-medium tabular-nums"
+                      style={{
+                        borderColor: CLAUDE.primaryBorder,
+                        backgroundColor: CLAUDE.primaryMuted,
+                        color: CLAUDE.text,
+                      }}
+                    >
+                      Confidence · 62%
+                    </span>
+                    <p className="mt-2 text-[12px] font-semibold" style={{ color: CLAUDE.text }}>
                       Mapping complete
                     </p>
-                    <div
-                      className="mt-2 h-1.5 overflow-hidden rounded-full"
-                      style={{ backgroundColor: CLAUDE.surfaceOverlay }}
-                    >
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{
-                          background: `linear-gradient(90deg, ${CLAUDE.primary}, ${CLAUDE.accentTeal})`,
-                        }}
-                        initial={reduced ? false : { width: 0 }}
-                        whileInView={{ width: "62%" }}
-                        viewport={{ once: true }}
-                        transition={LIVING_MOTION.confidence}
-                      />
-                    </div>
                     <p
-                      className="mt-2 text-[10px] leading-snug"
+                      className="mt-1 text-[10px] leading-snug"
                       style={{ color: CLAUDE.textMuted }}
                     >
                       Confirm understanding before safety checks run.
