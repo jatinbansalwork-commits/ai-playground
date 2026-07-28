@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   entityTypeKey,
   ENTITY_TYPE_TOKENS,
@@ -16,7 +16,6 @@ import {
   POLICY_STARTER_SUGGESTIONS,
   POLICY_STARTER_TEMPLATES,
   STARTER_CATEGORY_LABEL,
-  starterIcon,
 } from "@/components/case-studies/policy-copilot/policy-copilot-starters";
 import { CopilotMark } from "@/components/case-studies/policy-copilot/policy-copilot-shell";
 import { EnforcementWatermark } from "@/components/case-studies/policy-copilot/policy-copilot-polish-ui";
@@ -440,7 +439,7 @@ export function SafetyCheckQueue({
   return (
     <LivingCard
       title="Safety checks"
-      subtitle={allPassed ? "All clear — review optimisations next" : "Validating blast radius and compliance posture"}
+      subtitle={allPassed ? "All clear — review optimisations next" : "Validating impact and compliance posture"}
       delay={0.12}
       accent={allPassed ? "success" : "default"}
       badge={<EnforcementWatermark mode="draft" />}
@@ -712,7 +711,7 @@ export function SafetyChecksSummary({ count, lastRunSec }: { count: number; last
           {count} safety checks passed
         </p>
         <p className="text-[12px]" style={{ color: CLAUDE.textSecondary }}>
-          HIPAA · blast radius · conflicts · privilege paths
+          HIPAA · impact · conflicts · privilege paths
         </p>
       </div>
       </div>
@@ -1572,38 +1571,29 @@ export function InviteStarterPanel({
                 boxShadow: template.featured ? undefined : `inset 0 0 0 1px ${CLAUDE.hairline}`,
               }}
             >
-              <div className="flex items-start gap-2.5">
-                <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[15px]"
-                  style={{ backgroundColor: CLAUDE.surfaceOverlay }}
-                  aria-hidden
-                >
-                  {starterIcon(template.prompt)}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
-                    {template.title}
-                  </p>
-                  <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-                    {template.description}
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-1">
+              <div className="min-w-0">
+                <p className="text-[13px] font-medium leading-snug" style={{ color: CLAUDE.text }}>
+                  {template.title}
+                </p>
+                <p className="mt-1 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                  {template.description}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1">
+                  <span
+                    className={cn(COPILOT_TYPE.caption, "rounded px-1.5 py-0.5 font-medium")}
+                    style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textSoft }}
+                  >
+                    {STARTER_CATEGORY_LABEL[template.category]}
+                  </span>
+                  {template.tags.slice(0, 2).map((tag) => (
                     <span
-                      className={cn(COPILOT_TYPE.caption, "rounded px-1.5 py-0.5 font-medium")}
-                      style={{ backgroundColor: CLAUDE.surfaceOverlay, color: CLAUDE.textSoft }}
+                      key={tag}
+                      className={cn(COPILOT_TYPE.caption, "rounded px-1.5 py-0.5")}
+                      style={{ color: CLAUDE.textMuted }}
                     >
-                      {STARTER_CATEGORY_LABEL[template.category]}
+                      {tag}
                     </span>
-                    {template.tags.slice(0, 2).map((tag) => (
-                      <span
-                        key={tag}
-                        className={cn(COPILOT_TYPE.caption, "rounded px-1.5 py-0.5")}
-                        style={{ color: CLAUDE.textMuted }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.button>
@@ -2431,126 +2421,579 @@ export function RelatedRolesPanel({
   );
 }
 
+/** Figma-style presence — avatar stack in the header; click opens a local popover (no canvas jump). */
+export function StakeholderPresence({
+  mode,
+  statusLabel,
+  requesterName,
+  requesterRole,
+  canRequestApproval = false,
+  onStopSharing,
+  onRequestApproval,
+  onShareProgress,
+}: {
+  mode: "progress" | "approval";
+  statusLabel: string;
+  requesterName: string;
+  requesterRole: string;
+  canRequestApproval?: boolean;
+  onStopSharing?: () => void;
+  onRequestApproval?: () => void;
+  onShareProgress?: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  const initials = requesterName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+
+  const ariaLabel =
+    mode === "approval"
+      ? `Shared with ${requesterName} — approval requested`
+      : `Shared with ${requesterName} — progress visible`;
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const interactive = Boolean(onStopSharing || onRequestApproval || onShareProgress);
+
+  return (
+    <div ref={rootRef} className="relative shrink-0">
+      <button
+        type="button"
+        onClick={() => {
+          if (!interactive) return;
+          setOpen((v) => !v);
+        }}
+        className={cn(
+          "group/presence relative flex items-center gap-1.5 rounded-full border py-0.5 pl-0.5 pr-2",
+          interactive && COPILOT_FOCUS,
+        )}
+        style={{
+          borderColor: open ? CLAUDE.primaryBorder : CLAUDE.hairline,
+          backgroundColor: open ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
+        }}
+        aria-label={ariaLabel}
+        aria-expanded={interactive ? open : undefined}
+        aria-haspopup={interactive ? "dialog" : undefined}
+      >
+        <span className="flex items-center" aria-hidden>
+          <span
+            className="relative z-[1] flex h-6 w-6 items-center justify-center rounded-full border text-[9px] font-semibold"
+            style={{
+              borderColor: CLAUDE.bg,
+              backgroundColor: CLAUDE.primaryMuted,
+              color: CLAUDE.primary,
+            }}
+          >
+            Me
+          </span>
+          <span
+            className="relative -ml-1.5 flex h-6 w-6 items-center justify-center rounded-full border text-[9px] font-semibold"
+            style={{
+              borderColor: CLAUDE.bg,
+              backgroundColor: mode === "approval" ? CLAUDE.warningMuted : CLAUDE.validatedMuted,
+              color: mode === "approval" ? CLAUDE.warning : CLAUDE.validated,
+            }}
+          >
+            {initials || "?"}
+            <span
+              className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border"
+              style={{
+                borderColor: CLAUDE.bg,
+                backgroundColor: mode === "approval" ? CLAUDE.warning : CLAUDE.validated,
+              }}
+            />
+          </span>
+        </span>
+        <span className="hidden min-w-0 sm:block">
+          <span
+            className="block max-w-[5.5rem] truncate text-[10px] font-medium leading-tight"
+            style={{ color: CLAUDE.text }}
+          >
+            {requesterName.split(/\s+/)[0]}
+          </span>
+          <span className="block text-[9px] leading-tight" style={{ color: CLAUDE.textMuted }}>
+            {mode === "approval" ? "Reviewing" : "Online"}
+          </span>
+        </span>
+      </button>
+
+      {open && interactive ? (
+        <div
+          role="dialog"
+          aria-label="People with access"
+          className="absolute right-0 top-full z-40 mt-2 w-64 overflow-hidden rounded-xl border shadow-[0_12px_40px_rgb(0_0_0_/_0.45)]"
+          style={{
+            borderColor: CLAUDE.hairline,
+            backgroundColor: CLAUDE.surfaceRaised,
+          }}
+        >
+          <div className="border-b px-3 py-2.5" style={{ borderColor: CLAUDE.hairline }}>
+            <p className="text-[11px] font-medium" style={{ color: CLAUDE.text }}>
+              People with access
+            </p>
+            <p className="mt-0.5 text-[10px]" style={{ color: CLAUDE.textMuted }}>
+              {mode === "approval"
+                ? "Approval requested — you still own deploy"
+                : `Following live · ${statusLabel}`}
+            </p>
+          </div>
+
+          <ul className="px-2 py-2">
+            <li className="flex items-center gap-2.5 rounded-lg px-2 py-1.5">
+              <span
+                className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-semibold"
+                style={{ backgroundColor: CLAUDE.primaryMuted, color: CLAUDE.primary }}
+              >
+                Me
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+                  You
+                </span>
+                <span className="block text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                  Owner · editing
+                </span>
+              </span>
+            </li>
+            <li className="flex items-center gap-2.5 rounded-lg px-2 py-1.5">
+              <span className="relative">
+                <span
+                  className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-semibold"
+                  style={{
+                    backgroundColor:
+                      mode === "approval" ? CLAUDE.warningMuted : CLAUDE.validatedMuted,
+                    color: mode === "approval" ? CLAUDE.warning : CLAUDE.validated,
+                  }}
+                >
+                  {initials || "?"}
+                </span>
+                <span
+                  className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border"
+                  style={{
+                    borderColor: CLAUDE.surfaceRaised,
+                    backgroundColor: mode === "approval" ? CLAUDE.warning : CLAUDE.validated,
+                  }}
+                />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+                  {requesterName}
+                </span>
+                <span className="block text-[10px]" style={{ color: CLAUDE.textMuted }}>
+                  {requesterRole} · {mode === "approval" ? "can approve" : "can view"}
+                </span>
+              </span>
+            </li>
+          </ul>
+
+          <div className="space-y-1 border-t px-2 py-2" style={{ borderColor: CLAUDE.hairline }}>
+            {mode === "progress" && canRequestApproval && onRequestApproval ? (
+              <button
+                type="button"
+                onClick={() => {
+                  onRequestApproval();
+                  setOpen(false);
+                }}
+                className={cn(
+                  COPILOT_FOCUS,
+                  "w-full rounded-lg px-2.5 py-2 text-left text-[12px] font-medium",
+                )}
+                style={{ color: CLAUDE.text }}
+              >
+                Request approval
+              </button>
+            ) : null}
+            {mode === "approval" && onShareProgress ? (
+              <button
+                type="button"
+                onClick={() => {
+                  onShareProgress();
+                  setOpen(false);
+                }}
+                className={cn(
+                  COPILOT_FOCUS,
+                  "w-full rounded-lg px-2.5 py-2 text-left text-[12px] font-medium",
+                )}
+                style={{ color: CLAUDE.text }}
+              >
+                Switch to view-only
+              </button>
+            ) : null}
+            {onStopSharing ? (
+              <button
+                type="button"
+                onClick={() => {
+                  onStopSharing();
+                  setOpen(false);
+                }}
+                className={cn(
+                  COPILOT_FOCUS,
+                  "w-full rounded-lg px-2.5 py-2 text-left text-[12px] font-medium",
+                )}
+                style={{ color: CLAUDE.risk }}
+              >
+                Stop sharing
+              </button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export type ShareFlowStep = "who" | "what" | "preview";
+
+const SHARE_STEPS: { id: ShareFlowStep; label: string }[] = [
+  { id: "who", label: "Who" },
+  { id: "what", label: "What they see" },
+  { id: "preview", label: "Confirm" },
+];
+
+/** Stepped handoff: pick requester → choose visibility → confirm share. */
+export function StakeholderShareFlow({
+  statusLabel,
+  intentSummary,
+  requesterOptions,
+  selectedRequesterId,
+  onSelectRequester,
+  shareKind,
+  onShareKindChange,
+  canRequestApproval,
+  step,
+  onStepChange,
+  onConfirm,
+  onDismiss,
+}: {
+  statusLabel: string;
+  intentSummary: string;
+  requesterOptions: { id: string; name: string; role: string }[];
+  selectedRequesterId: string;
+  onSelectRequester: (id: string) => void;
+  shareKind: "progress" | "approval";
+  onShareKindChange: (kind: "progress" | "approval") => void;
+  canRequestApproval: boolean;
+  step: ShareFlowStep;
+  onStepChange: (step: ShareFlowStep) => void;
+  onConfirm: () => void;
+  onDismiss: () => void;
+}) {
+  const stepIndex = SHARE_STEPS.findIndex((s) => s.id === step);
+  const selected = requesterOptions.find((r) => r.id === selectedRequesterId) ?? requesterOptions[0];
+  const requesterLabel = selected ? `${selected.role} · ${selected.name}` : "Requester";
+
+  return (
+    <LivingCard
+      title="Share for review"
+      subtitle="Handoff with visibility — not a dead-end ticket"
+      accent="insight"
+      delay={0}
+      badge={
+        <button
+          type="button"
+          onClick={onDismiss}
+          className={cn(COPILOT_FOCUS, "rounded-full px-2 py-0.5 text-[11px]")}
+          style={{ color: CLAUDE.textMuted }}
+        >
+          Close
+        </button>
+      }
+    >
+      <div className="mb-4 flex flex-wrap gap-1.5" aria-label="Share steps">
+        {SHARE_STEPS.map((s, i) => {
+          const active = s.id === step;
+          const done = i < stepIndex;
+          return (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => {
+                if (i <= stepIndex) onStepChange(s.id);
+              }}
+              className={cn(COPILOT_FOCUS, "rounded-full px-2.5 py-1 text-[10px] font-medium")}
+              style={{
+                backgroundColor: active || done ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
+                color: active || done ? CLAUDE.text : CLAUDE.textSoft,
+              }}
+            >
+              {i + 1}. {s.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {step === "who" ? (
+        <div className="space-y-3">
+          <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            Who raised this requirement? They&rsquo;ll follow the live request while you keep building.
+          </p>
+          <ul className="space-y-1.5">
+            {requesterOptions.map((option) => {
+              const active = option.id === selectedRequesterId;
+              return (
+                <li key={option.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectRequester(option.id)}
+                    className={cn(
+                      COPILOT_FOCUS,
+                      "flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left",
+                    )}
+                    style={{
+                      borderColor: active ? CLAUDE.primaryBorder : CLAUDE.hairline,
+                      backgroundColor: active ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
+                    }}
+                  >
+                    <span>
+                      <span className="block text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+                        {option.name}
+                      </span>
+                      <span className="block text-[11px]" style={{ color: CLAUDE.textMuted }}>
+                        {option.role}
+                      </span>
+                    </span>
+                    {active ? (
+                      <span className="text-[10px] font-medium" style={{ color: CLAUDE.primary }}>
+                        Selected
+                      </span>
+                    ) : null}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="flex justify-end pt-1">
+            <button
+              type="button"
+              onClick={() => onStepChange("what")}
+              className={cn(
+                COPILOT_FOCUS,
+                COPILOT_TARGET.chip,
+                "rounded-full px-4 text-[12px] font-medium text-white",
+              )}
+              style={{ backgroundColor: CLAUDE.primary }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {step === "what" ? (
+        <div className="space-y-3">
+          <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            Choose what {selected?.name ?? "they"} can see. You keep authoring either way.
+          </p>
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() => onShareKindChange("progress")}
+              className={cn(
+                COPILOT_FOCUS,
+                "w-full rounded-xl border px-3 py-3 text-left",
+              )}
+              style={{
+                borderColor: shareKind === "progress" ? CLAUDE.primaryBorder : CLAUDE.hairline,
+                backgroundColor: shareKind === "progress" ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
+              }}
+            >
+              <span className="block text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+                Share progress
+              </span>
+              <span className="mt-1 block text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                They follow status as you clarify, map, and draft — no approval yet.
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (canRequestApproval) onShareKindChange("approval");
+              }}
+              disabled={!canRequestApproval}
+              title={
+                canRequestApproval
+                  ? "Requester reviews impact and evidence before you deploy"
+                  : "Finish draft and safety checks before requesting approval"
+              }
+              className={cn(
+                COPILOT_FOCUS,
+                "w-full rounded-xl border px-3 py-3 text-left disabled:cursor-not-allowed disabled:opacity-45",
+              )}
+              style={{
+                borderColor: shareKind === "approval" ? CLAUDE.primaryBorder : CLAUDE.hairline,
+                backgroundColor: shareKind === "approval" ? CLAUDE.primaryMuted : CLAUDE.surfaceOverlay,
+              }}
+            >
+              <span className="block text-[13px] font-medium" style={{ color: CLAUDE.text }}>
+                Request approval
+              </span>
+              <span className="mt-1 block text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+                {canRequestApproval
+                  ? "They review impact and evidence. You still own deploy."
+                  : "Available after draft and safety checks pass."}
+              </span>
+            </button>
+          </div>
+          <div className="flex justify-between gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => onStepChange("who")}
+              className={cn(COPILOT_FOCUS, "rounded-full px-3 py-1.5 text-[12px]")}
+              style={{ color: CLAUDE.textMuted }}
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={() => onStepChange("preview")}
+              className={cn(
+                COPILOT_FOCUS,
+                COPILOT_TARGET.chip,
+                "rounded-full px-4 text-[12px] font-medium text-white",
+              )}
+              style={{ backgroundColor: CLAUDE.primary }}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {step === "preview" ? (
+        <div className="space-y-3">
+          <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+            {requesterLabel} will open the same request — not a separate ticket.
+          </p>
+          <div
+            className="rounded-xl border px-3 py-3"
+            style={{ borderColor: CLAUDE.hairline, backgroundColor: CLAUDE.surfaceOverlay }}
+          >
+            <p className={cn(COPILOT_TYPE.eyebrow, "mb-2")} style={{ color: CLAUDE.textMuted }}>
+              Their view
+            </p>
+            <p className="text-[12px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
+              &ldquo;{intentSummary}&rdquo;
+            </p>
+            <ul className="mt-3 space-y-1.5 text-[12px]" style={{ color: CLAUDE.textMuted }}>
+              <li className="flex gap-2">
+                <span style={{ color: CLAUDE.primary }} aria-hidden>
+                  ·
+                </span>
+                Current status · {statusLabel}
+              </li>
+              <li className="flex gap-2">
+                <span style={{ color: CLAUDE.primary }} aria-hidden>
+                  ·
+                </span>
+                {shareKind === "progress"
+                  ? "Live updates as you map objects and prepare the draft"
+                  : "Impact summary and evidence — deploy stays with you"}
+              </li>
+              <li className="flex gap-2">
+                <span style={{ color: CLAUDE.primary }} aria-hidden>
+                  ·
+                </span>
+                They can comment; they cannot push to production
+              </li>
+            </ul>
+          </div>
+          <div className="flex justify-between gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => onStepChange("what")}
+              className={cn(COPILOT_FOCUS, "rounded-full px-3 py-1.5 text-[12px]")}
+              style={{ color: CLAUDE.textMuted }}
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={onConfirm}
+              className={cn(
+                COPILOT_FOCUS,
+                COPILOT_TARGET.chip,
+                "rounded-full px-4 text-[12px] font-medium text-white",
+              )}
+              style={{ backgroundColor: CLAUDE.primary }}
+            >
+              {shareKind === "approval" ? "Send approval request" : "Share progress"}
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </LivingCard>
+  );
+}
+
 export function BlastRadiusPreview({
   summary,
   groups,
   delay = 0,
-  people,
 }: {
   summary: string;
   groups: { label: string; impact: string; tone?: "allow" | "deny" | "warn" }[];
   delay?: number;
+  /** @deprecated Ignored — kept for call-site compatibility */
   people?: { inScope: number; blocked: number; surprise: number };
 }) {
   const reduced = useReducedMotion();
   const toneColor = (tone?: "allow" | "deny" | "warn") =>
     tone === "allow" ? CLAUDE.validated : tone === "warn" ? CLAUDE.warning : CLAUDE.risk;
 
-  const heatSegments = groups.map((g) => ({
-    tone: g.tone ?? "warn",
-    color: toneColor(g.tone),
-  }));
-
-  const stacks = people
-    ? [
-        { label: "In scope", count: people.inScope, tone: "allow" as const },
-        { label: "Blocked as planned", count: people.blocked, tone: "deny" as const },
-        { label: "Surprise blocks", count: people.surprise, tone: "warn" as const },
-      ]
-    : [];
+  const rows = groups.slice(0, 3);
 
   return (
-    <LivingCard title="Blast Radius" subtitle="Who gains or loses access if you approve" accent="warning" delay={delay}>
-      {people ? (
-        <div className="mb-4 flex flex-wrap gap-4">
-          {stacks.map((stack) => (
-            <div key={stack.label} className="group/stack relative min-w-[5.5rem]">
-              <div className="flex items-center">
-                {Array.from({ length: Math.min(stack.count, 5) }).map((_, i) => (
-                  <span
-                    key={i}
-                    className="-ml-1.5 flex h-7 w-7 items-center justify-center rounded-full border text-[9px] font-medium first:ml-0"
-                    style={{
-                      backgroundColor: CLAUDE.surfaceRaised,
-                      borderColor: toneColor(stack.tone),
-                      color: toneColor(stack.tone),
-                      zIndex: 5 - i,
-                    }}
-                  >
-                    {i === 0 ? stack.count : ""}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-1.5 text-[11px] font-medium" style={{ color: CLAUDE.text }}>
-                {stack.count}
-              </p>
-              <p className="text-[10px]" style={{ color: CLAUDE.textMuted }}>
-                {stack.label}
-              </p>
-              <span
-                className="pointer-events-none absolute -top-1 left-0 z-10 hidden w-40 rounded-lg px-2 py-1.5 text-[10px] group-hover/stack:block"
-                style={{ backgroundColor: CLAUDE.surfaceRaised, boxShadow: `0 0 0 1px ${CLAUDE.hairline}` }}
-                role="tooltip"
-              >
-                {stack.count} {stack.label.toLowerCase()} — {summary.split("·")[0]?.trim()}
-              </span>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      <div className="mb-3 flex h-2 overflow-hidden rounded-full" aria-label="Risk heat scale">
-        {heatSegments.map((seg, i) => (
-          <div
-            key={i}
-            className="flex-1 transition-opacity"
-            style={{ backgroundColor: seg.color, opacity: seg.tone === "deny" ? 0.85 : seg.tone === "warn" ? 0.65 : 0.45 }}
-            title={groups[i]?.label}
-          />
-        ))}
-      </div>
-      <div className="mb-2 flex gap-3 text-[9px]" style={{ color: CLAUDE.textSoft }}>
-        <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.validated }} />
-          Allow
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.warning }} />
-          Warn
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: CLAUDE.risk }} />
-          Deny
-        </span>
-      </div>
+    <LivingCard
+      title="Impact preview"
+      subtitle="Who is affected if you approve — plain language"
+      accent="warning"
+      delay={delay}
+    >
       <p className="text-[13px] leading-relaxed" style={{ color: CLAUDE.textSecondary }}>
         {summary}
       </p>
-      <div className="mt-3 space-y-2">
-        {groups.map((group, i) => (
-          <motion.div
+      <ul className="mt-3 space-y-2">
+        {rows.map((group, i) => (
+          <motion.li
             key={group.label}
-            initial={reduced ? false : { opacity: 0, x: 8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ ...LIVING_MOTION.discover, delay: delay + i * 0.05 }}
-            className="flex items-start gap-2 rounded-lg px-2.5 py-2"
+            initial={reduced ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ ...LIVING_MOTION.discover, delay: delay + i * 0.04 }}
+            className="rounded-xl border px-3 py-2.5"
             style={{
+              borderColor: CLAUDE.hairline,
               backgroundColor: CLAUDE.surfaceOverlay,
               boxShadow: `inset 3px 0 0 0 ${toneColor(group.tone)}`,
-              color: toneColor(group.tone),
             }}
           >
-            <BlastRadiusIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            <div className="min-w-0">
-              <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
-                {group.label}
-              </p>
-              <p className="mt-0.5 text-[11px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
-                {group.impact}
-              </p>
-            </div>
-          </motion.div>
+            <p className="text-[12px] font-medium" style={{ color: CLAUDE.text }}>
+              {group.label}
+            </p>
+            <p className="mt-0.5 text-[12px] leading-relaxed" style={{ color: CLAUDE.textMuted }}>
+              {group.impact}
+            </p>
+          </motion.li>
         ))}
-      </div>
+      </ul>
     </LivingCard>
   );
 }

@@ -33,7 +33,7 @@ const IMPACT_LAYERS = [
   },
   {
     id: "blast",
-    label: "Blast radius",
+    label: "Who is affected",
     value: "Low impact",
     detail: "Nurses and contractors excluded · no lateral movement",
     tone: "warn" as const,
@@ -42,7 +42,7 @@ const IMPACT_LAYERS = [
 ] as const;
 
 const ILLUSTRATION_ARIA_LABEL =
-  "Simulation and impact analysis — network visualisation of affected users, applications, traffic paths, and blast radius before deployment.";
+  "Simulation and impact analysis — network visualisation of affected users, applications, traffic paths, and who is affected before deployment.";
 
 function toneStyles(tone: "allow" | "warn" | "neutral") {
   if (tone === "allow") {
@@ -186,7 +186,7 @@ export function PolicyCopilotSimulationImpact() {
         ? "EHR application object and audit logging destination become reachable on approve."
         : focus === "paths"
           ? "Two allow paths light up — identity to firewall, firewall to application tier."
-          : "Blast radius stays narrow — 240 in scope, nurses and contractors unchanged.";
+          : "Impact stays narrow — 240 in scope, nurses and contractors unchanged.";
 
   return (
     <figure
@@ -206,8 +206,7 @@ export function PolicyCopilotSimulationImpact() {
         </p>
         <p className="mt-1 max-w-3xl text-[13px] leading-relaxed text-neutral-600">
           A modern network visualisation highlighting affected users, applications, traffic paths,
-          impacted assets, and blast radius — visual and easy to understand instead of dense technical
-          tables.
+          and who is impacted — visual and easy to understand instead of dense technical tables.
         </p>
       </div>
 
@@ -362,7 +361,7 @@ export function PolicyCopilotSimulationImpact() {
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
           <span className="text-neutral-600">Configuration hidden → impact surfaced</span>
           <span className="font-semibold tabular-nums" style={{ color: CLAUDE.validated }}>
-            240 users · 2 apps · low blast radius
+            240 users · 2 apps · low impact
           </span>
         </div>
       </div>

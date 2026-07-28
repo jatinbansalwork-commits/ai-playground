@@ -287,6 +287,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `index_frame_view` | `frame_id`, `frame_label`, `index` | Index frame enters view |
 | `index_frame_navigate` | `from`, `to`, `method` | Index frame change (scroll, nav, keyboard, minimap) |
 | `project_list_click` | `slug` | Projects index row click |
+| `portfolio_1_click` | `url` | Projects index “Interested in portfolio 1.0?” CTA |
 | `project_open` | `slug`, `source` | Case study page load |
 | `case_study_scroll_depth` | `slug`, `depth` | 25 / 50 / 75 / 100 % scroll milestones |
 | `projects_view` | — | `/projects` page load |
@@ -313,7 +314,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | `ai_chat_wireframe_toggle` | `enabled` | Wireframe mode toggle |
 | `ai_chat_gif` | `giphy_id?` | Reaction GIF shown |
 | `ai_chat_error` | `reason` | Chat stream or network error |
-| `policy_copilot_demo` | `action`, `slug`, `scenario_id?`, `prompt?`, `confidence?` | Cisco hero workspace — intent, clarifications, draft, validation, simulation, recommendations, approve, reset |
+| `policy_copilot_demo` | `action`, `slug`, `scenario_id?`, `prompt?`, `confidence?` | Cisco hero workspace — intent, clarifications, draft, validation, simulation, recommendations, approve, reset, save_draft, share_review |
 
 ### Page-wise tracking
 
@@ -321,7 +322,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 |-------|------------------|----------|
 | `/` | `use-scroll-slider.ts`, `index-experience.tsx` | `index_frame_view`, `index_frame_navigate`, `index_slide_click`, `manifest_visit`, barrel/askew listeners |
 | `/projects` | `use-projects-page-analytics.ts` | `projects_view` |
-| `/projects` rows | `projects-list.tsx` | `project_list_click` |
+| `/projects` rows | `projects-list.tsx` | `project_list_click`, `portfolio_1_click` |
 | `/projects/[slug]` | `case-study-page-shell.tsx` → `use-case-study-page-analytics.ts` | `project_open`, `case_study_scroll_depth` (25 / 50 / 75 / 100 %) |
 | `/projects/cisco-policy-copilot` | `policy-copilot-workspace.tsx`, `CiscoPolicyCopilot.tsx` | `policy_copilot_demo` — see actions below |
 | `/craft` | `use-craft-page-analytics.ts` | `craft_view` |
@@ -332,7 +333,7 @@ Custom Vercel Web Analytics events in `src/lib/analytics.ts`. Fired from page sh
 | All pages | `site-entry-analytics.tsx` | `site_entry` (once per session) |
 | JBAI chat | `ai-chat/*` | `ai_chat_*` events, `google_easter_egg` |
 
-**`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset`
+**`policy_copilot_demo` actions:** `prompt_select` · `understand_intent` · `clarification_answer` · `draft_revealed` · `validation_complete` · `simulation_visible` · `recommendation_apply` · `recommendation_dismiss` · `approve` · `reset` · `save_draft` · `share_review`
 
 Dashboard quick reference: [`README.md` § Vercel Web Analytics](./README.md#vercel-web-analytics-traffic-and-behaviour).
 

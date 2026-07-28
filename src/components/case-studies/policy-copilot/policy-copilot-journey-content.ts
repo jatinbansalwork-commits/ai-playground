@@ -167,6 +167,47 @@ const JOURNEY_BY_ID: Record<string, ScenarioJourneyContent> = {
     ],
     deploySummary: ["Business-hours schedule", "Upload scan on", "180-day review cadence"],
   },
+  tiktok: {
+    interpretations: [
+      { kind: "deny", text: "Deny intern accounts from TikTok during business hours" },
+      { kind: "neutral", text: "Log every blocked attempt" },
+      { kind: "allow", text: "Leave FTE employees unaffected" },
+      { kind: "deny", text: "Enforce Mon–Fri 09:00–18:00 deny window" },
+    ],
+    rules: [
+      { kind: "deny", label: "Deny Intern-Accounts → TikTok", detail: "Business hours · corporate devices" },
+      { kind: "deny", label: "Deny TikTok category mirrors", detail: "App ID + URL filter" },
+      { kind: "allow", label: "Allow FTE social paths", detail: "Out of scope for this rule" },
+    ],
+    stats: { groups: 1, resources: 1, rules: 3 },
+    context: {
+      objects: [
+        { name: "Intern-Accounts group", type: "Identity" },
+        { name: "TikTok-SaaS-App", type: "SaaS" },
+        { name: "Internet-SaaS", type: "Destination" },
+      ],
+      compliance: [
+        { framework: "Acceptable use", status: "Deny window applied" },
+        { framework: "SOC 2", status: "Attempt logging enabled" },
+      ],
+      patterns: [
+        { name: "Intern SaaS denies", count: 11 },
+        { name: "Social media productivity blocks", count: 9 },
+      ],
+      businessContext: "Productivity deny for interns — FTE and after-hours stay open unless widened.",
+    },
+    evidenceRecs: [
+      {
+        id: "alert",
+        title: "Alert on repeated deny attempts",
+        why: "11 similar intern SaaS denies arm SIEM when users hammer blocked apps.",
+        tradeoff: "Noise if interns refresh blocked pages often.",
+        frameworks: ["Acceptable use"],
+        patternCount: 11,
+      },
+    ],
+    deploySummary: ["Business-hours deny", "Interns only", "Attempt logging on"],
+  },
   contractors: {
     interpretations: [
       { kind: "deny", text: "Deny contractors from all production workloads" },

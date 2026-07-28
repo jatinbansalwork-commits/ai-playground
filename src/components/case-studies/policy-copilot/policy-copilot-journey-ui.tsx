@@ -664,7 +664,7 @@ export function GovernPolicyOverview({
         </div>
         <div>
           <dt className={cn(COPILOT_TYPE.caption, "font-medium uppercase tracking-[0.08em]")} style={{ color: CLAUDE.textSoft }}>
-            Blast radius
+            Impact
           </dt>
           <dd className="mt-0.5 text-[13px]" style={{ color: CLAUDE.textSecondary }}>
             {blastRadius}

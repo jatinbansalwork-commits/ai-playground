@@ -402,7 +402,7 @@ export default function CiscoPolicyCopilotContent() {
             "Security standards",
             "Duplicate rules",
             "Network segmentation",
-            "Potential blast radius",
+            "Potential impact",
           ]}
         />
         <CaseStudyParagraph>
@@ -473,7 +473,7 @@ export default function CiscoPolicyCopilotContent() {
             "Who gains access",
             "Which applications become reachable",
             "How traffic paths change",
-            "The potential blast radius",
+            "The potential impact",
           ]}
         />
         <CaseStudyParagraph>Administrators stopped reviewing configuration.</CaseStudyParagraph>
@@ -483,7 +483,7 @@ export default function CiscoPolicyCopilotContent() {
             aspect="natural"
             shellBackground="#FFFFFF"
             src={getJbIllustration("policy-copilot-simulation-impact")}
-            alt="Simulation and impact analysis — who gains access, reachable applications, traffic paths, and blast radius instead of dense firewall configuration"
+            alt="Simulation and impact analysis — who gains access, reachable applications, traffic paths, and who is affected instead of dense firewall configuration"
           />
         </CaseStudyWide>
         <CaseStudyH2>Human Approval Was Never Optional</CaseStudyH2>
