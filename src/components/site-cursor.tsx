@@ -29,9 +29,15 @@ const INTERACTIVE_SELECTOR =
 const CURSOR_LABEL_ATTR = "data-cursor-label";
 const CURSOR_LABEL_OVERRIDE_SELECTOR = `[${CURSOR_LABEL_ATTR}]`;
 
-function readCursorLabelOverride(target: Element | null): string | null {
-  if (!target) return null;
-  const host = target.closest(CURSOR_LABEL_OVERRIDE_SELECTOR);
+function readCursorLabelOverride(target: EventTarget | null): string | null {
+  const element =
+    target instanceof Element
+      ? target
+      : target instanceof Node
+        ? target.parentElement
+        : null;
+  if (!element) return null;
+  const host = element.closest(CURSOR_LABEL_OVERRIDE_SELECTOR);
   if (!(host instanceof HTMLElement)) return null;
   const label = host.getAttribute(CURSOR_LABEL_ATTR)?.trim();
   return label ? label : null;
@@ -62,6 +68,7 @@ export function SiteCursor() {
   );
 
   const lastSampleRef = useRef<{ x: number; y: number; t: number } | null>(null);
+  const labelOverrideRef = useRef<string | null>(null);
 
   const arrowSpring = useMemo<SpringOptions>(
     () => ({ stiffness: 380, damping: 32, mass: 0.6 }),
@@ -128,6 +135,12 @@ export function SiteCursor() {
       });
     };
 
+    const applyLabelOverride = (next: string | null) => {
+      if (labelOverrideRef.current === next) return;
+      labelOverrideRef.current = next;
+      setLabelOverride(next);
+    };
+
     const onMove = (event: MouseEvent) => {
       const x = event.clientX;
       const y = event.clientY;
@@ -151,6 +164,7 @@ export function SiteCursor() {
       const sign = vx === 0 ? 0 : vx > 0 ? 1 : -1;
       labelTiltTarget.set(sign * norm * LABEL_TILT_STRENGTH);
 
+      applyLabelOverride(readCursorLabelOverride(event.target));
       setVisible(true);
     };
 
@@ -167,15 +181,21 @@ export function SiteCursor() {
 
     const onMouseOver = (event: MouseEvent) => {
       const target = event.target;
-      if (!(target instanceof Element)) return;
-      setHoveringInteractive(Boolean(target.closest(INTERACTIVE_SELECTOR)));
-      setLabelOverride(readCursorLabelOverride(target));
+      const element =
+        target instanceof Element
+          ? target
+          : target instanceof Node
+            ? target.parentElement
+            : null;
+      if (!element) return;
+      setHoveringInteractive(Boolean(element.closest(INTERACTIVE_SELECTOR)));
+      applyLabelOverride(readCursorLabelOverride(target));
     };
 
     const onLeave = () => {
       setVisible(false);
       setPressed(false);
-      setLabelOverride(null);
+      applyLabelOverride(null);
       lastSampleRef.current = null;
       labelTiltTarget.set(0);
     };

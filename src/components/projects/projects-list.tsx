@@ -59,7 +59,7 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
         className={`${PROJECTS_ROW_LINK_CLASS} cursor-default`}
         title={overview}
         aria-label={`${project.title} — coming soon`}
-        data-cursor-label="Coming soon"
+        data-cursor-label="Coming Soon"
       >
         <ProjectRowContent project={project} />
       </div>
