@@ -59,7 +59,7 @@ export const BACK_LINK_CLASS =
  * Hit area padded to 44×44 while label remains text-sized (2.5.8).
  */
 export const NAV_BACK_LINK_CLASS =
-  `nav-back-link ${SITE_BACK_TYPEFACE} fixed top-8 left-8 z-50 ${TARGET_HIT_AREA} pr-3 text-sm text-neutral-400 transition-colors hover:text-white touch-manipulation ${FOCUS_RING}`;
+  `nav-back-link ${SITE_BACK_TYPEFACE} fixed top-8 left-8 z-50 ${TARGET_HIT_AREA} pr-3 text-sm text-neutral-500 transition-colors hover:text-neutral-900 touch-manipulation ${FOCUS_RING}`;
 
 /** Full-width list row — 44px min height for pointer targets (2.5.8). */
 export const PROJECTS_ROW_LINK_CLASS =

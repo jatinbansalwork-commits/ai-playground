@@ -5,9 +5,11 @@ import { useRef } from "react";
 import { CraftArticlePageAnalytics } from "@/components/craft/craft-article-page-analytics";
 import { ArticleSectionContent } from "@/components/craft/article-section-content";
 import { ScrollMinimapRuler } from "@/components/models/scroll-minimap-ruler";
+import { NavBackLink } from "@/components/navigation/nav-back-link";
 import { CASE_STUDY_EDITORIAL_CLASS } from "@/components/case-studies/case-study-editorial-fonts";
 import type { CraftArticle, CraftSection } from "@/lib/craft-content";
 import { getArticleSectionBlocks } from "@/lib/craft-content";
+import { BACK_HOME } from "@/lib/session-navigation";
 
 interface ArticleLayoutProps {
   section: CraftSection;
@@ -34,6 +36,7 @@ export function ArticleLayout({
         className="case-study-main craft-page no-scrollbar fixed inset-0 z-10 h-screen w-full overflow-y-auto overflow-x-hidden bg-white text-neutral-900"
         tabIndex={-1}
       >
+        <NavBackLink href={BACK_HOME.href} destination="home" />
         <CraftArticlePageAnalytics slug={article.slug} />
 
         <div className="case-study-body mx-auto w-full max-w-5xl px-4 pb-24 sm:px-8">
