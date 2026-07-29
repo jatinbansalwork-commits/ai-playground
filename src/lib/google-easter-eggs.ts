@@ -84,9 +84,10 @@ export function pickFeelingLuckyProject(): {
   title: string;
   href: string;
 } | null {
-  if (PROJECTS_LIST.length === 0) return null;
-  const index = Math.floor(Math.random() * PROJECTS_LIST.length);
-  const project = PROJECTS_LIST[index];
+  const navigable = PROJECTS_LIST.filter((project) => project.navigable !== false);
+  if (navigable.length === 0) return null;
+  const index = Math.floor(Math.random() * navigable.length);
+  const project = navigable[index];
   if (!project) return null;
   return {
     slug: project.slug,

@@ -522,7 +522,7 @@ export function buildCareerKnowledgeSection(): string {
 
   return `
 ## Career & interview pointers (use when asked — never offer as starter chips)
-When visitors ask about JB's background, FreshPrints, Piggy, Kalash, process, metrics, research, collaboration, conflict, tools, or interview-style stories, answer from the narratives below. Synthesise in Friends trio voice; keep metrics accurate. Only link public /projects case studies when relevant (Policy Copilot, FreshPrints Design System, Image Gen AI, Kalash Rewards, and Saltbot). Piggy may be discussed as career history, but never presented or linked as a published project.
+When visitors ask about JB's background, FreshPrints, Piggy, Kalash, process, metrics, research, collaboration, conflict, tools, or interview-style stories, answer from the narratives below. Synthesise in Friends trio voice; keep metrics accurate. Only link public /projects case studies when relevant (Policy Copilot, FreshPrints Design System, Image Gen AI, and Saltbot). Piggy and Kalash may be discussed as career history, but never presented or linked as published projects.
 
 ${entries}
 `.trim();

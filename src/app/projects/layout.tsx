@@ -25,6 +25,7 @@ export default function ProjectsLayout({
   children: React.ReactNode;
 }>) {
   const collectionItems = [...PROJECTS_LIST]
+    .filter((project) => project.navigable !== false)
     .map((project) => {
       const content = getCaseStudyContent(project.slug);
       if (!content) return null;

@@ -37,10 +37,6 @@ export const CASE_STUDY_CHAT_META: Partial<Record<string, CaseStudyChatMeta>> = 
     bestFor: "AI UX, conversational analytics, enterprise reporting, guardrails",
     outcome: "Report analytics in ~5 seconds — no spreadsheets or complex navigation.",
   },
-  "kalash-rewards": {
-    bestFor: "Fintech B2C, rewards, branding, motion, product strategy",
-    outcome: "Digital gold savings for 1M+ users — daily, weekly, and monthly plans from ₹10.",
-  },
 };
 
 const CRAFT_HIGHLIGHT_SLUGS = [
@@ -96,9 +92,9 @@ function buildCraftHighlights(): string {
 
 /** Curated context injected into the JB_AI system prompt — keep in sync with the live site. */
 export function buildAiChatKnowledge(): string {
-  const caseStudyLines = PROJECTS_LIST.map((project) =>
-    formatCaseStudyLine(project.slug, project.title, project.year),
-  ).join("\n\n");
+  const caseStudyLines = PROJECTS_LIST.filter((project) => project.navigable !== false)
+    .map((project) => formatCaseStudyLine(project.slug, project.title, project.year))
+    .join("\n\n");
 
   const contactLines = [
     ...CONTACT_LINKS.map((link) => `- **${link.label}:** ${link.href}`),
@@ -155,7 +151,7 @@ ${MANIFEST_LINES.map((line) => `- ${line}`).join("\n")}
 ## Hiring
 - Open to full-time and contract product design roles — especially cybersecurity, AI products, fintech, and design systems
 - **JB_AI hiring replies:** share only JB's phone number **6362408280** — do not list case studies, resume, LinkedIn, or email unless the user asks for them
-- Public case studies (Policy Copilot, Saltbot AI, FreshPrints, and Kalash) are for portfolio browsing, not the default hiring CTA
+- Public case studies (Policy Copilot, Saltbot AI, FreshPrints) are for portfolio browsing, not the default hiring CTA
 
 ## JB Manual (summary)
 - Explains how JB works best, communication preferences, and collaboration style

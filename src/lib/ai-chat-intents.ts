@@ -50,17 +50,17 @@ Want the [full case](${ROUTES.ciscoPolicyCopilot}), the Case Notes, or how he th
     id: "process",
     prompt: "What's his design process?",
     instruction:
-      "If they ask about JB's process / how he works: intent-first, prototype-in-code, ship systems (FreshPrints 4 teams), measure impact (Policy Copilot ~40%, Saltbot ~5s, Kalash 1M+). Numbered steps optional. Link one public proof case study. One Friends line max.",
+      "If they ask about JB's process / how he works: intent-first, prototype-in-code, ship systems (FreshPrints 4 teams), measure impact (Policy Copilot ~40%, Saltbot ~5s). Numbered steps optional. Link one public proof case study. One Friends line max.",
     staticReply: `JB works **intent-first, prototype-in-code**. Roughly:
 
 1. **Start with the real ask** — business language before control panels ([Policy Copilot](${ROUTES.ciscoPolicyCopilot}))
 2. **Prove it in product** — interactive demos, not slideware
 3. **Ship systems** — FreshPrints design system stopped UI debates and helped **4 product teams** ship faster
-4. **Measure impact** — Policy Copilot targets ~40% less generation time; Kalash serves **1M+** gold savers
+4. **Measure impact** — Policy Copilot targets ~40% less generation time; Saltbot brings analytics down to ~5 seconds
 
 Craft sits beside the case studies — the index Craft slide opens [Design to Build](${CRAFT_EXTERNAL_URL}).
 
-Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Kalash](${ROUTES.projects}/kalash-rewards)?`,
+Want to see that in a case — [Policy Copilot](${ROUTES.ciscoPolicyCopilot}), [FreshPrints](${ROUTES.projects}/freshprints-design-system), or [Saltbot](${ROUTES.projects}/saltbot-ai-saltmine)?`,
   },
   {
     id: "reach",

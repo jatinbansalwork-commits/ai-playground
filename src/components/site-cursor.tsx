@@ -26,6 +26,17 @@ const Z_INDEX = 9999;
 const INTERACTIVE_SELECTOR =
   'a, button, [role="button"], input, textarea, select, label, summary, [tabindex]:not([tabindex="-1"]), .cursor-pointer';
 
+const CURSOR_LABEL_ATTR = "data-cursor-label";
+const CURSOR_LABEL_OVERRIDE_SELECTOR = `[${CURSOR_LABEL_ATTR}]`;
+
+function readCursorLabelOverride(target: Element | null): string | null {
+  if (!target) return null;
+  const host = target.closest(CURSOR_LABEL_OVERRIDE_SELECTOR);
+  if (!(host instanceof HTMLElement)) return null;
+  const label = host.getAttribute(CURSOR_LABEL_ATTR)?.trim();
+  return label ? label : null;
+}
+
 function isCoarsePointer(): boolean {
   return window.matchMedia("(pointer: coarse)").matches;
 }
@@ -45,6 +56,7 @@ export function SiteCursor() {
   const [visible, setVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [hoveringInteractive, setHoveringInteractive] = useState(false);
+  const [labelOverride, setLabelOverride] = useState<string | null>(null);
   const [labelIndex, setLabelIndex] = useState(() =>
     typeof window === "undefined" ? 0 : readStoredLabelIndex(),
   );
@@ -82,7 +94,7 @@ export function SiteCursor() {
 
   const labelTranslateX = useTransform(labelX, (v) => v + labelOffset.x);
   const labelTranslateY = useTransform(labelY, (v) => v + labelOffset.y);
-  const cursorLabel = CURSOR_LABELS[labelIndex] ?? CURSOR_LABELS[0];
+  const cursorLabel = labelOverride ?? CURSOR_LABELS[labelIndex] ?? CURSOR_LABELS[0];
 
   useEffect(() => {
     const target = pressed ? PRESS_SCALE : hoveringInteractive ? 1.08 : 1;
@@ -157,11 +169,13 @@ export function SiteCursor() {
       const target = event.target;
       if (!(target instanceof Element)) return;
       setHoveringInteractive(Boolean(target.closest(INTERACTIVE_SELECTOR)));
+      setLabelOverride(readCursorLabelOverride(target));
     };
 
     const onLeave = () => {
       setVisible(false);
       setPressed(false);
+      setLabelOverride(null);
       lastSampleRef.current = null;
       labelTiltTarget.set(0);
     };

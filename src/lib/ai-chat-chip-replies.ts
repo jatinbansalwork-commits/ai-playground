@@ -47,9 +47,9 @@ Want Policy Copilot, Saltbot, or FreshPrints next?`,
 1. **Start with the real ask** — business language before control panels
 2. **Prove it in product** — interactive demos, not slideware
 3. **Ship systems** — FreshPrints helped **4 product teams** ship faster
-4. **Measure impact** — Policy Copilot targets ~40% less generation time; Kalash serves **1M+** users
+4. **Measure impact** — Policy Copilot targets ~40% less generation time; Saltbot brings analytics down to ~5 seconds
 
-Want to see that in Policy Copilot, FreshPrints, or Kalash?`,
+Want to see that in Policy Copilot, FreshPrints, or Saltbot?`,
   },
   {
     match: (t) =>
@@ -129,9 +129,8 @@ Want the Design Review essay, or jump to a shipped case study?`,
 - **Conversational AI / analytics** → Saltbot
 - **Design systems** → FreshPrints Design System
 - **Generative AI tooling** → FreshPrints Image Gen AI
-- **Consumer gold / growth** → Kalash
 
-Tell me AI vs fintech vs systems and I'll narrow it to one.`,
+Tell me AI vs systems and I'll narrow it to one.`,
   },
   {
     match: (t) =>
@@ -263,11 +262,9 @@ Want how he scoped AI UX, or the design system that sped delivery across teams?`
     match: (t) =>
       includesAny(t, ["digital gold", "gold savings", "kalash"]) &&
       !includesAny(t, ["recap", "year-end", "year end"]),
-    reply: () => `**Kalash** helps people in India buy **digital gold from ₹10** — daily, weekly, or monthly — without physical-gold friction.
+    reply: () => `**Kalash** was part of JB's fintech career — helping people in India buy **digital gold from ₹10** with clearer value early in onboarding and reward loops for consistency.
 
-JB's work sat at growth/product: make saving feel attainable, trustworthy, and sticky for **1M+** users — clearer early value, reward loops for consistency.
-
-Want the activation story, or how JB thinks about growth metrics?`,
+It's career history here, not a published case study on this site. Want Policy Copilot, FreshPrints, or Saltbot instead?`,
   },
   {
     match: (t) => includesAny(t, ["outcome of this project", "what is the outcome"]),
@@ -276,7 +273,7 @@ Want the activation story, or how JB thinks about growth metrics?`,
         ? pagePath.replace("/projects/", "").split("/")[0]
         : undefined;
       if (!slug) {
-        return `Outcomes depend on the project — Policy Copilot (~40% less policy-generation time), FreshPrints (4 teams shipping faster), Saltbot (~5s analytics), and Kalash (1M+ gold savers).
+        return `Outcomes depend on the project — Policy Copilot (~40% less policy-generation time), FreshPrints (4 teams shipping faster), and Saltbot (~5s analytics).
 
 Which one are you looking at?`;
       }

@@ -81,7 +81,7 @@ const FOLLOW_UPS_BY_QUESTION_INTENT: Record<
     "What did the Image Gen AI tool do?",
   ],
   project_kalash: [
-    "How does digital gold savings work?",
+    "What's JB's strongest project?",
     "What's his design process?",
     "How do I reach him?",
   ],
