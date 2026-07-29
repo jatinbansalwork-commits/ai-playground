@@ -235,7 +235,7 @@ const INTENT_RULES: readonly IntentRule[] = [
   },
   {
     id: "project_kalash",
-    goal: "They asked about Kalash / gold rewards — explain and link the public Kalash Rewards case study.",
+    goal: "They asked about Kalash / gold rewards — explain as career history only; do not link a published case study.",
     curated: true,
     matches: (text) =>
       includesAny(text, ["kalash", "gold rewards", "digital gold", "fintech"]),
@@ -452,11 +452,9 @@ Want process notes (how he scoped AI UX), or the design-system work that sped de
 That's systems work — boring until you measure cycle time. Curious about Image Gen AI next, or how JB runs design reviews?`;
 
     case "project_kalash":
-      return `**Kalash** helps people in India buy **digital gold from ₹10** — daily, weekly, or monthly — without the friction of physical gold.
+      return `**Kalash** was part of JB's fintech career — helping people in India buy **digital gold from ₹10** with clearer value early in onboarding and reward loops that encourage consistency.
 
-JB's work sat at the growth/product layer: make saving feel attainable, trustworthy, and sticky for **1M+** users. Highlights include clearer value early in onboarding and reward loops that encourage consistency.
-
-Want the activation story, or how he thinks about growth metrics?`;
+It's career history here, not a published case study on this site. Want another public case — Policy Copilot, FreshPrints, or Saltbot?`;
 
     case "portfolio_site":
       return resolveSuggestionChipReply("How did JB build this portfolio?")!;

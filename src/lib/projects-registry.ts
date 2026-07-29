@@ -10,7 +10,7 @@ export type ProjectEntry = ProjectRowItem;
 export const PROJECTS_PAGE = {
   title: "Case Studies",
   description:
-    "Product design case studies by Jatin Bansal — cybersecurity AI, Cisco Policy Copilot firewall UX, Saltbot, FreshPrints design systems and Image Gen AI, and Kalash rewards.",
+    "Product design case studies by Jatin Bansal — cybersecurity AI, Cisco Policy Copilot firewall UX, Saltbot, and FreshPrints design systems and Image Gen AI.",
 } as const;
 
 /** Placeholder index for side projects — live at `/ideas`. */

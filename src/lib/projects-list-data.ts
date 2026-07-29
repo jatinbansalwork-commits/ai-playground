@@ -14,6 +14,11 @@ export interface ProjectRowItem {
   /** Right-hand label on the projects index; falls back to `year` when omitted. */
   listAside?: string;
   hoverThumbnail: string;
+  /**
+   * When false, the row matches the list layout but is not a link.
+   * Defaults to true for case-study rows.
+   */
+  navigable?: boolean;
 }
 
 /** Per-slug product info shown instead of the year on the projects index. */
@@ -56,6 +61,7 @@ function hoverThumbnailForSlug(slug: string): string {
 /** Hidden from the projects index until the case study is ready to promote. */
 const HIDDEN_PROJECT_SLUGS = new Set([
   "freshprints-heal-tool",
+  "kalash-rewards",
   "kalash-year-end-recap",
   "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
@@ -65,6 +71,7 @@ const HIDDEN_PROJECT_SLUGS = new Set([
 /** Draft case studies — excluded from sitemap and marked noindex. */
 const NOINDEX_PROJECT_SLUGS = new Set([
   "freshprints-heal-tool",
+  "kalash-rewards",
   "kalash-year-end-recap",
   "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
@@ -87,7 +94,7 @@ export function getIndexableCaseStudySlugs(): string[] {
 }
 
 /** Canonical projects index dataset — titles/years sync from `project-content.ts`. */
-export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
+const LIVE_PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
   .filter((study) => !HIDDEN_PROJECT_SLUGS.has(study.slug))
   .map((study, index) => ({
     id: String(index + 1),
@@ -96,4 +103,46 @@ export const PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
     year: study.year,
     listAside: LIST_ASIDE_OVERRIDES[study.slug],
     hoverThumbnail: hoverThumbnailForSlug(study.slug),
+    navigable: true,
   }));
+
+/**
+ * Display-only rows — same visual as case-study rows, no navigation.
+ * Inserted after `afterSlug` when present; otherwise appended.
+ */
+const DISPLAY_ONLY_PROJECT_ROWS: {
+  afterSlug: string;
+  row: Omit<ProjectRowItem, "id" | "navigable">;
+}[] = [
+  {
+    afterSlug: "freshprints-design-system",
+    row: {
+      slug: "freshprints-display",
+      title: "FreshPrints",
+      year: "2025",
+      listAside:
+        "Increased engagement of the Heal Tool by 15% through a Gen AI feature",
+      hoverThumbnail: HOVER_THUMBNAIL_PLACEHOLDER,
+    },
+  },
+];
+
+function withDisplayOnlyRows(projects: ProjectRowItem[]): ProjectRowItem[] {
+  const next = [...projects];
+  for (const entry of DISPLAY_ONLY_PROJECT_ROWS) {
+    const insertAt = next.findIndex((project) => project.slug === entry.afterSlug);
+    const row: ProjectRowItem = {
+      ...entry.row,
+      id: `display-${entry.row.slug}`,
+      navigable: false,
+    };
+    if (insertAt === -1) {
+      next.push(row);
+    } else {
+      next.splice(insertAt + 1, 0, row);
+    }
+  }
+  return next.map((project, index) => ({ ...project, id: String(index + 1) }));
+}
+
+export const PROJECTS_LIST: ProjectRowItem[] = withDisplayOnlyRows(LIVE_PROJECTS_LIST);

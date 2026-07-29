@@ -194,7 +194,7 @@ Floating assistant (`JB_AI`) on all pages.
 
 Reply path: client commands / secrets → detect intent → static chip reply or OpenAI stream → optional GIPHY GIF → follow-up suggestions. After the OpenAI session budget is used, curated fallback replies still respond without an API call.
 
-Promote **public** case studies only (Policy Copilot, Saltbot, FreshPrints, Kalash, etc.) — do not surface hidden / unpublished project URLs.
+Promote **public** case studies only (Policy Copilot, Saltbot, FreshPrints, etc.) — do not surface hidden / unpublished project URLs.
 
 ---
 

@@ -159,10 +159,10 @@ export const DEFAULT_SITE_DESCRIPTION =
   "Jatin Bansal (JB) — product designer at Cisco. Portfolio of UX case studies in cybersecurity, AI products, fintech, and design systems, plus craft work in motion and illustration.";
 
 export const HOME_SEO_DESCRIPTION =
-  "Howdy, I'm JB. Designing security solutions — for 300,000+ organizations worldwide. Explore case studies including Cisco Policy Copilot—AI-assisted firewall policy with an interactive demo—plus Saltbot, FreshPrints, Kalash, and craft work.";
+  "Howdy, I'm JB. Designing security solutions — for 300,000+ organizations worldwide. Explore case studies including Cisco Policy Copilot—AI-assisted firewall policy with an interactive demo—plus Saltbot, FreshPrints, and craft work.";
 
 export const PROJECTS_SEO_DESCRIPTION =
-  "UX and product design case studies by Jatin Bansal — Cisco Policy Copilot firewall UX, Saltbot AI analytics, FreshPrints design systems and Image Gen AI, and Kalash rewards.";
+  "UX and product design case studies by Jatin Bansal — Cisco Policy Copilot firewall UX, Saltbot AI analytics, and FreshPrints design systems and Image Gen AI.";
 
 export const CRAFT_SEO_DESCRIPTION =
   "Motion graphics, illustration, and design essays by Jatin Bansal — craft experiments, visual play, and a Design Review checklist from shipped product work.";
