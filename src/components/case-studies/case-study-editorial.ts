@@ -103,7 +103,7 @@ export const CASE_STUDY_H3 =
   "text-lg md:text-xl font-semibold tracking-tight text-neutral-900";
 
 export const CASE_STUDY_H4 =
-  "text-base md:text-lg font-semibold tracking-tight text-neutral-800";
+  "text-base md:text-lg font-normal tracking-tight text-neutral-800";
 
 export const CASE_STUDY_LIST =
   "list-disc list-outside pl-5 space-y-1.5 text-neutral-700 antialiased";

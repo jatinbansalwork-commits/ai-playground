@@ -3,8 +3,10 @@
 export const CASE_STUDY_ACCESS_STORAGE_PREFIX = "jb_case_unlock_";
 export const CASE_STUDY_ACCESS_PRESS_TARGET = 3;
 
-/** Slugs that require email + triple-press unlock. Empty = all case studies open. */
-export const CASE_STUDY_ACCESS_GATED_SLUGS = [] as const;
+/** Slugs that require email + triple-press unlock. */
+export const CASE_STUDY_ACCESS_GATED_SLUGS = [
+  "cisco-policy-copilot",
+] as const;
 
 export type CaseStudyAccessSlug = (typeof CASE_STUDY_ACCESS_GATED_SLUGS)[number];
 

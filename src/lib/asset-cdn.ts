@@ -201,7 +201,7 @@ export const CASE_STUDY_CDN_MEDIA = {
   "freshprints-image-gen-01": cdnAsset("/FreshPrints%20Ai/user%20skip"),
   "freshprints-image-gen-02": cdnAsset("/FreshPrints%20Ai/problem"),
   "freshprints-image-gen-03": cdnAsset("/Freshprints/image-gen-03.png"),
-  "freshprints-image-gen-04": cdnAsset("/FreshPrints%20Ai/task"),
+  "freshprints-image-gen-04": cdnAsset("/task.png"),
   "freshprints-image-gen-05": cdnAsset("/FreshPrints%20Ai/Prompt"),
   "freshprints-image-gen-06": cdnAsset("/FreshPrints%20Ai/mobile.png"),
   "freshprints-image-gen-07": cdnAsset("/Freshprints/image-gen-07.png"),

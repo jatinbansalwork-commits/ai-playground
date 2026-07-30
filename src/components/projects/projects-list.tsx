@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { ProjectsHoverPreview } from "@/components/projects/projects-hover-preview";
 import { useProjectsPageAnalytics } from "@/hooks/use-projects-page-analytics";
-import type { ProjectRowItem } from "@/lib/projects-list-data";
-import { PROJECTS_ROW_LINK_CLASS } from "@/lib/a11y";
+import { resolveAssetUrl } from "@/lib/asset-cdn";
+import {
+  HOVER_THUMBNAIL_PLACEHOLDER,
+  type ProjectRowItem,
+} from "@/lib/projects-list-data";
+import { FOCUS_RING } from "@/lib/a11y";
 import { trackPortfolio1Click, trackProjectListClick } from "@/lib/analytics";
 import {
   backContextForProjectsListNavigation,
@@ -15,53 +17,102 @@ import { useSubpageScrollReset } from "@/hooks/use-index-scroll-reset";
 import { getProjectCaseStudyHref } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
 
-interface ProjectRowProps {
-  project: ProjectRowItem;
-  onHoverStart: (project: ProjectRowItem) => void;
-  onHoverEnd: () => void;
+const PROJECTS_CARD_CLASS = [
+  "projects-card group relative flex w-full flex-col overflow-hidden sm:flex-row sm:items-stretch",
+  "text-neutral-900 transition-[filter] duration-150",
+  FOCUS_RING,
+].join(" ");
+
+function ProjectCardChevron() {
+  return (
+    <span className="projects-card__cta" aria-hidden>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </span>
+  );
 }
 
-function ProjectRowContent({ project }: { project: ProjectRowItem }) {
+function ProjectCardContent({ project }: { project: ProjectRowItem }) {
+  const navigable = project.navigable !== false;
+  const description = project.listAside ?? project.year;
+  const tag =
+    project.listTag ?? (navigable ? "Case Study" : "Coming Soon");
+  const hasThumbnail =
+    Boolean(project.hoverThumbnail) &&
+    project.hoverThumbnail !== HOVER_THUMBNAIL_PLACEHOLDER;
+
   return (
     <>
-      <span className="projects-row-leading">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={project.hoverThumbnail}
-          alt=""
-          className="projects-row-thumb"
-          loading="lazy"
-          decoding="async"
-        />
-        <span className="projects-row-title">{project.title}</span>
-      </span>
-      <span className="projects-row-spacer" aria-hidden />
-      {project.listAside ? (
-        <span className="projects-row-year projects-row-aside">
-          {project.listAside}
-        </span>
-      ) : (
-        <time className="projects-row-year" dateTime={project.year}>
-          {project.year}
-        </time>
-      )}
+      <div className="projects-card__media">
+        <div className="projects-card__phone">
+          {hasThumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Blob SVG card media
+            <img
+              src={resolveAssetUrl(project.hoverThumbnail)}
+              alt=""
+              className={
+                project.thumbZoom != null
+                  ? "projects-card__thumb projects-card__thumb--zoom"
+                  : "projects-card__thumb"
+              }
+              style={
+                project.thumbZoom != null
+                  ? {
+                      transform: `scale(${project.thumbZoom})`,
+                      transformOrigin: "center center",
+                    }
+                  : undefined
+              }
+              decoding="async"
+              draggable={false}
+            />
+          ) : (
+            <div className="projects-card__placeholder" aria-hidden>
+              <span className="projects-card__placeholder-label">Image later</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="projects-card__body">
+        <div className="projects-card__copy">
+          <h2 className="projects-card__title">{project.title}</h2>
+          <p className="projects-card__description">{description}</p>
+          <span className="projects-card__tag">{tag}</span>
+        </div>
+        <ProjectCardChevron />
+      </div>
     </>
   );
 }
 
-function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
+interface ProjectCardProps {
+  project: ProjectRowItem;
+}
+
+function ProjectCard({ project }: ProjectCardProps) {
   const overview = getCaseStudyContent(project.slug)?.overviewText;
   const navigable = project.navigable !== false;
 
   if (!navigable) {
     return (
       <div
-        className={`${PROJECTS_ROW_LINK_CLASS} cursor-default`}
+        className={`${PROJECTS_CARD_CLASS} cursor-default`}
         title={overview}
         aria-label={`${project.title} — coming soon`}
         data-cursor-label="Coming Soon"
       >
-        <ProjectRowContent project={project} />
+        <ProjectCardContent project={project} />
       </div>
     );
   }
@@ -69,7 +120,7 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
   return (
     <Link
       href={getProjectCaseStudyHref(project.slug)}
-      className={PROJECTS_ROW_LINK_CLASS}
+      className={PROJECTS_CARD_CLASS}
       title={overview}
       onClick={() => {
         saveSessionBackContext(backContextForProjectsListNavigation());
@@ -79,12 +130,8 @@ function ProjectRow({ project, onHoverStart, onHoverEnd }: ProjectRowProps) {
           year: project.year,
         });
       }}
-      onMouseEnter={() => onHoverStart(project)}
-      onMouseLeave={onHoverEnd}
-      onFocus={() => onHoverStart(project)}
-      onBlur={onHoverEnd}
     >
-      <ProjectRowContent project={project} />
+      <ProjectCardContent project={project} />
     </Link>
   );
 }
@@ -96,25 +143,14 @@ interface ProjectsListProps {
 export function ProjectsList({ projects }: ProjectsListProps) {
   useSubpageScrollReset();
   useProjectsPageAnalytics();
-  const [hoveredProject, setHoveredProject] = useState<ProjectRowItem | null>(
-    null,
-  );
 
   return (
     <div className="projects-list-shell relative w-full">
-      <ProjectsHoverPreview project={hoveredProject} />
-
-      <nav className="flex w-full flex-col space-y-8" aria-label="Projects">
+      <nav className="flex w-full flex-col gap-4" aria-label="Projects">
         {projects.map((project) => (
-          <div key={project.id} className="flex w-full flex-col">
-            <ProjectRow
-              project={project}
-              onHoverStart={setHoveredProject}
-              onHoverEnd={() => setHoveredProject(null)}
-            />
-          </div>
+          <ProjectCard key={project.id} project={project} />
         ))}
-        <h2 className="text-4xl font-medium tracking-tight text-neutral-900">
+        <h2 className="pt-4 text-4xl font-medium tracking-tight text-neutral-900">
           <a
             href="https://itsjatin.framer.website/"
             target="_blank"

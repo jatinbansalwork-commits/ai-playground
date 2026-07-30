@@ -1,11 +1,18 @@
 interface ImpactStat {
   value: string;
   label: string;
+  /** Quieter supporting context under the label. */
+  note?: string;
 }
 
 interface CaseStudyImpactStatsProps {
   items: ImpactStat[];
   className?: string;
+  /**
+   * `down` — emerald decrease cue (Key Impacts / ticket reductions).
+   * `none` — plain display figures (counts, baselines).
+   */
+  trend?: "down" | "none";
 }
 
 function TrendDownIcon() {
@@ -32,23 +39,33 @@ function TrendDownIcon() {
 export function CaseStudyImpactStats({
   items,
   className = "",
+  trend = "down",
 }: CaseStudyImpactStatsProps) {
   return (
     <dl
-      className={`grid grid-cols-1 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-6 sm:grid-cols-2 sm:gap-8 sm:p-8 ${className}`.trim()}
+      className={`grid grid-cols-1 gap-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 sm:grid-cols-2 sm:gap-10 sm:p-8 ${className}`.trim()}
     >
       {items.map((item) => (
         <div key={item.label} className="flex flex-col gap-2">
-          <dt className="order-2 text-sm leading-relaxed text-neutral-500 md:text-base">
+          <dt className="order-2 text-sm leading-snug text-neutral-600 md:text-base">
             {item.label}
           </dt>
           <dd className="order-1 m-0 flex items-center gap-2">
-            <TrendDownIcon />
-            <span className="text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
-              <span className="sr-only">Decrease: </span>
+            {trend === "down" ? (
+              <>
+                <TrendDownIcon />
+                <span className="sr-only">Decrease: </span>
+              </>
+            ) : null}
+            <span className="text-4xl font-semibold tracking-tight tabular-nums text-neutral-900 md:text-5xl">
               {item.value}
             </span>
           </dd>
+          {item.note ? (
+            <p className="order-3 m-0 text-xs leading-relaxed text-neutral-400 md:text-sm">
+              {item.note}
+            </p>
+          ) : null}
         </div>
       ))}
     </dl>

@@ -12,7 +12,7 @@ export default function ProjectsIndexPage() {
     >
       <NavBackLink href={BACK_HOME.href} destination="home" />
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center space-y-6 md:w-[672px]">
+      <div className="mx-auto flex w-full max-w-[741px] flex-1 flex-col justify-start space-y-6">
         <h1 className="sr-only">Projects</h1>
         <ProjectsList projects={PROJECTS_LIST} />
       </div>
