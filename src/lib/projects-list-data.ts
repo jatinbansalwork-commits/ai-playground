@@ -36,8 +36,7 @@ export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
   "freshprints-design-system":
     "A design system that stopped UI debates and helped 4 product teams ship faster",
   "kalash-mystery-box": "Bitcoin on every save",
-  "kalash-coins":
-    'Optimised "coin" to gold redemption journey to increase adoption of Kalash\'s rewards loyalty program from 10%–85%',
+  "kalash-coins": "Increase conversation with less tech/product effort",
   "kalash-rewards": "Getting India to save in gold digitally",
   "piggy-reduced-mutual-fund-support-tickets": "Reduced support tickets",
 };
@@ -46,11 +45,12 @@ export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
 export const LIST_TITLE_OVERRIDES: Partial<Record<string, string>> = {
   "cisco-policy-copilot": "Cisco - Policy Copilot",
   "freshprints-image-gen-ai": "FreshPrints - Image AI",
+  "kalash-coins": "Piggy - Mutual Fund",
 };
 
 /** Per-slug pill tag overrides on the projects index. */
 export const LIST_TAG_OVERRIDES: Partial<Record<string, string>> = {
-  "cisco-policy-copilot": "0-1 Experience",
+  "cisco-policy-copilot": "Zero to One Experience",
   "freshprints-image-gen-ai": "Product Led Growth",
   "freshprints-design-system": "Design System",
   "kalash-mystery-box": "Product Led Growth",
@@ -74,12 +74,12 @@ export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "kalash-mystery-box":
     "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%20132131506912.svg",
   "kalash-coins":
-    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%201244831617.svg",
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%201321314967.svg",
   "kalash-year-end-recap": cdnAsset("/Hover/Kalash%201%20cover.png"),
   "kalash-rewards": cdnAsset("/Hover/ticker"),
   "piggy-reduced-mutual-fund-support-tickets": cdnAsset("/Hover/intro"),
   "freshprints-display":
-    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/11.png",
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/COVER1.svg",
 };
 
 /** Per-slug hover thumb scale inside the phone frame (overflow clipped). */
@@ -183,11 +183,10 @@ const DISPLAY_ONLY_PROJECT_ROWS: {
     afterSlug: "kalash-coins",
     row: {
       slug: "freshprints-display",
-      title: "FreshPrints",
+      title: "Saltbot",
       year: "2025",
-      listAside:
-        "Increased Heal Tool engagement by 15% through a Gen AI feature",
-      listTag: "Product Led Growth",
+      listAside: "Reimagining Analytics with AI",
+      listTag: "Zero to One Experience",
       hoverThumbnail: hoverThumbnailForSlug("freshprints-display"),
     },
   },

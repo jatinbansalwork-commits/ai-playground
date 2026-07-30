@@ -56,6 +56,11 @@ export default function KalashMysteryBoxContent() {
             isn&apos;t &ldquo;copy Jar&apos;s mechanic&rdquo; — it&apos;s
             &ldquo;borrow the habit-loop thinking, skip the fatigue.&rdquo;
           </CaseStudyParagraph>
+          <CaseStudyMedia
+            aspect="video"
+            alt="Jar and Gullak competitive landscape"
+            className="max-w-4xl"
+          />
           <CaseStudyH2>We Didn&apos;t Guess — We Asked People</CaseStudyH2>
           <CaseStudyParagraph>
             Before building anything, we ran 23 usability interviews. A mix of
