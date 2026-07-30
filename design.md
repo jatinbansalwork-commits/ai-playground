@@ -233,7 +233,7 @@ Infrastructure for blurring case study body copy until a case study is **publish
 |------|------|--------|
 | — | — | No countdown-gated slugs — `CASE_STUDY_REVEAL_SCHEDULE` is `{}` |
 
-### Password gate (Cisco)
+### Password / access gate
 
 Soft access unlock for pre-release case studies — hero + meta stay readable; **full body content** stays in place with `blur-xl`; access card is a sticky band on top of that blur.
 
@@ -241,10 +241,11 @@ Soft access unlock for pre-release case studies — hero + meta stay readable; *
 |-------|----------|
 | Gate config | `src/lib/case-study-password-gate.ts` → `CASE_STUDY_ACCESS_GATED_SLUGS` |
 | Overlay UI | `src/components/case-studies/case-study-password-gate.tsx` |
-| Wired on | `CiscoPolicyCopilot.tsx` |
 | Flow | Enter email → button becomes **Press 3 times to unlock** → unlock |
 | Email log | `POST /api/case-study-access` → same Google Sheet webhook as JB_AI (`Email: …`) |
 | Persistence | `sessionStorage` (`jb_case_unlock_<slug>`) |
+
+**Cisco Policy Copilot** is published — `CASE_STUDY_ACCESS_GATED_SLUGS` is `[]` (no gated slugs). Component kept for reuse.
 
 Analytics: `case_study_access_request`, `case_study_access_unlock` with `slug`.
 

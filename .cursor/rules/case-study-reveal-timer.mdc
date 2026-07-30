@@ -8,7 +8,7 @@ alwaysApply: false
 
 Pre-launch case studies can use a **worldwide countdown** (anchored to **IST / Asia/Kolkata**) and blur gate — not per-user `localStorage`.
 
-**Cisco Policy Copilot** currently uses the **email + triple-press access gate** (`case-study-password-gate`) — do not put it back on the IST countdown schedule unless the user asks.
+**Cisco Policy Copilot** is **published** — no email/password gate and not on the IST countdown schedule. Do not re-gate unless the user asks.
 
 ## Source of truth
 
@@ -20,16 +20,16 @@ Pre-launch case studies can use a **worldwide countdown** (anchored to **IST / A
 | `mode: "fixed"` | Legacy one-shot window from `startsAtUtc` + 24 hours. |
 | Slug absent from schedule | Case study is **published** for the timer system — may still use an access gate. |
 
-## Access gate (Cisco)
+## Access gate (optional / reusable)
 
 | Piece | Location |
 |-------|----------|
-| Gated slugs | `CASE_STUDY_ACCESS_GATED_SLUGS` in `case-study-password-gate.ts` |
+| Gated slugs | `CASE_STUDY_ACCESS_GATED_SLUGS` in `case-study-password-gate.ts` (currently empty) |
 | UI | `CaseStudyPasswordGate` |
 | Flow | Email → log via `/api/case-study-access` → press unlock **3 times** |
 | Presses | `CASE_STUDY_ACCESS_PRESS_TARGET` (3) |
 
-Remove the access gate **only** when the user explicitly says the case study is ready to publish.
+Add an access gate **only** when the user explicitly asks to gate a case study. Remove it **only** when they say it is ready to publish.
 
 ### Publish checklist (access-gated)
 
