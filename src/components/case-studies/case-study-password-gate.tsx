@@ -10,7 +10,16 @@ import {
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EmojiBurstButton } from "@/components/effects/emoji-burst-button";
-import { FOCUS_RING } from "@/lib/a11y";
+import {
+  CLAUDE,
+  CLAUDE_MOTION,
+  COPILOT_FOCUS,
+  COPILOT_TARGET,
+  COPILOT_TYPE,
+  LIVING_MOTION,
+  WORKSPACE_FRAME_SHADOW,
+} from "@/components/case-studies/policy-copilot/policy-copilot-momentum";
+import { cn } from "@/components/case-studies/policy-copilot/policy-copilot-ui";
 import {
   trackCaseStudyAccessRequest,
   trackCaseStudyAccessUnlock,
@@ -24,11 +33,6 @@ import {
   queueCaseStudyAccessLog,
   readCaseStudyAccessUnlock,
 } from "@/lib/case-study-password-gate";
-import { PRESENCE_ACCENT, PRESENCE_ACCENT_FOREGROUND } from "@/lib/constants";
-
-const GATE_SURFACE = "#FFFFFF";
-const GATE_INK = "#0A0A0A";
-const GATE_MUTED = "#525252";
 
 interface CaseStudyPasswordGateProps {
   slug: string;
@@ -85,7 +89,14 @@ function LockGlyph({
 }) {
   return (
     <motion.div
-      className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_8px_24px_rgba(15,23,42,0.06)]"
+      className="relative flex h-14 w-14 items-center justify-center"
+      style={{
+        borderRadius: CLAUDE.radiusLg,
+        border: `1px solid ${CLAUDE.borderStrong}`,
+        backgroundColor: CLAUDE.surfaceRaised,
+        boxShadow: `inset 0 1px 0 rgb(250 249 245 / 0.06), 0 8px 24px rgb(0 0 0 / 0.28)`,
+        color: CLAUDE.text,
+      }}
       animate={
         reduceMotion
           ? undefined
@@ -99,26 +110,27 @@ function LockGlyph({
       }
       transition={
         open
-          ? { duration: 0.55, ease: "easeOut" }
+          ? LIVING_MOTION.confidence
           : typing
             ? { duration: 0.28 }
             : ready
-              ? { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
+              ? LIVING_MOTION.breathe
               : { duration: 0.2 }
       }
     >
       {!reduceMotion && (ready || open) ? (
         <motion.span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-2xl"
+          className="pointer-events-none absolute inset-0"
           style={{
-            boxShadow: `0 0 0 1px color-mix(in srgb, ${PRESENCE_ACCENT} 40%, transparent), 0 0 24px color-mix(in srgb, ${PRESENCE_ACCENT} 22%, transparent)`,
+            borderRadius: CLAUDE.radiusLg,
+            boxShadow: `0 0 0 1px ${CLAUDE.primaryBorder}, 0 0 28px ${CLAUDE.primaryMuted}`,
           }}
-          animate={{ opacity: open ? [0.35, 0.85, 0.5] : [0.15, 0.45, 0.15] }}
+          animate={{ opacity: open ? [0.35, 0.85, 0.5] : [0.2, 0.55, 0.2] }}
           transition={{ duration: open ? 0.7 : 2.4, repeat: open ? 0 : Infinity }}
         />
       ) : null}
-      <svg viewBox="0 0 48 48" className="relative h-10 w-10" fill="none" aria-hidden>
+      <svg viewBox="0 0 48 48" className="relative h-9 w-9" fill="none" aria-hidden>
         <motion.g
           initial={false}
           animate={{
@@ -126,12 +138,12 @@ function LockGlyph({
             x: open ? 3 : 0,
             y: open ? -2 : 0,
           }}
-          transition={{ type: "spring", stiffness: 340, damping: 18 }}
+          transition={CLAUDE_MOTION.springPop}
           style={{ transformOrigin: "34px 16px" }}
         >
           <path
             d="M16 22V16a8 8 0 0 1 16 0v6"
-            stroke={PRESENCE_ACCENT}
+            stroke={CLAUDE.primary}
             strokeWidth="2.5"
             strokeLinecap="round"
           />
@@ -144,19 +156,18 @@ function LockGlyph({
           rx="4"
           stroke="currentColor"
           strokeWidth="2.5"
-          className="text-neutral-800"
         />
         <motion.circle
           cx="24"
           cy="31"
           r="2.5"
-          fill={PRESENCE_ACCENT}
+          fill={CLAUDE.primary}
           animate={{ scale: open ? [1, 1.4, 1] : ready ? [1, 1.15, 1] : 1 }}
           transition={
             open
-              ? { duration: 0.45 }
+              ? LIVING_MOTION.pulse
               : ready
-                ? { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
+                ? LIVING_MOTION.breathe
                 : { duration: 0.2 }
           }
         />
@@ -185,16 +196,14 @@ function PressProgress({
         return (
           <motion.span
             key={index}
-            className="relative h-2.5 w-8 overflow-hidden rounded-full"
+            className="relative h-2 w-8 overflow-hidden rounded-full"
             style={{
-              backgroundColor: filled
-                ? PRESENCE_ACCENT
-                : "rgba(15,23,42,0.08)",
+              backgroundColor: filled ? CLAUDE.primary : CLAUDE.surfaceOverlay,
               boxShadow: active
-                ? `0 0 0 1px color-mix(in srgb, ${PRESENCE_ACCENT} 45%, transparent), 0 0 16px color-mix(in srgb, ${PRESENCE_ACCENT} 28%, transparent)`
+                ? `0 0 0 1px ${CLAUDE.primaryBorder}, 0 0 16px ${CLAUDE.primaryMuted}`
                 : filled
-                  ? `0 0 14px color-mix(in srgb, ${PRESENCE_ACCENT} 30%, transparent)`
-                  : undefined,
+                  ? `0 0 14px ${CLAUDE.primaryMuted}`
+                  : `inset 0 0 0 1px ${CLAUDE.border}`,
             }}
             initial={false}
             animate={
@@ -208,9 +217,9 @@ function PressProgress({
             }
             transition={
               filled
-                ? { duration: 0.35, ease: "easeOut" }
+                ? LIVING_MOTION.pulse
                 : active
-                  ? { duration: 1.25, repeat: Infinity, ease: "easeInOut" }
+                  ? LIVING_MOTION.breathe
                   : { duration: 0.2 }
             }
           />
@@ -223,6 +232,7 @@ function PressProgress({
 /**
  * Full body content stays blurred. Visitor enters email (logged), then presses
  * the unlock button three times to reveal the case study.
+ * Visual language matches Policy Copilot / Cisco demo (`CLAUDE` tokens).
  */
 export function CaseStudyPasswordGate({
   slug,
@@ -312,6 +322,8 @@ export function CaseStudyPasswordGate({
   const phaseBody = emailCaptured
     ? "This one’s under wraps. Tap the button three times to open the full case study."
     : "This one’s under wraps — the AI firewall creation experience at Cisco isn’t public yet. Drop your email and I’ll unlock it for you.";
+  const accentGlow =
+    emailCaptured ? 0.22 : emailValid ? 0.16 : inputFocused ? 0.12 : 0.08;
 
   return (
     <div className="relative isolate mt-10 md:mt-14">
@@ -333,33 +345,35 @@ export function CaseStudyPasswordGate({
             transition={
               shakeToken > 0 && !reduceMotion
                 ? { duration: 0.42, ease: "easeOut" }
-                : { type: "spring", stiffness: 280, damping: 28 }
+                : CLAUDE_MOTION.springSoft
             }
-            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-neutral-200/90 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:p-8"
+            className="relative w-full max-w-md overflow-hidden p-6 sm:p-8"
             style={{
-              background: `radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, ${PRESENCE_ACCENT} ${emailCaptured ? 20 : inputFocused || emailValid ? 14 : 9}%, white), ${GATE_SURFACE})`,
+              borderRadius: CLAUDE.radiusLg,
+              border: `1px solid ${CLAUDE.borderStrong}`,
+              background: `radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, ${CLAUDE.primary} ${Math.round(accentGlow * 100)}%, ${CLAUDE.surface}), ${CLAUDE.bg})`,
+              boxShadow: WORKSPACE_FRAME_SHADOW,
+              fontFamily: CLAUDE.fontBody,
             }}
           >
             <motion.div
               aria-hidden
               className="pointer-events-none absolute inset-x-8 top-0 h-px"
               style={{
-                background: `linear-gradient(90deg, transparent, ${PRESENCE_ACCENT}, transparent)`,
+                background: `linear-gradient(90deg, transparent, ${CLAUDE.primary}, transparent)`,
               }}
               animate={{
-                opacity: emailCaptured || emailValid ? 0.9 : 0.45,
+                opacity: emailCaptured || emailValid ? 0.9 : 0.4,
                 scaleX: emailCaptured || emailValid ? 1 : 0.72,
               }}
-              transition={{ duration: 0.35 }}
+              transition={{ duration: 0.35, ease: CLAUDE_MOTION.ease }}
             />
             <motion.div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-20 h-44 w-44 rounded-full blur-3xl"
-              style={{
-                background: `color-mix(in srgb, ${PRESENCE_ACCENT} 28%, transparent)`,
-              }}
+              style={{ background: CLAUDE.primaryMuted }}
               animate={{
-                opacity: emailCaptured ? 0.55 : emailValid ? 0.4 : inputFocused ? 0.3 : 0.18,
+                opacity: emailCaptured ? 0.7 : emailValid ? 0.5 : inputFocused ? 0.35 : 0.22,
                 scale: emailCaptured ? 1.15 : 1,
               }}
             />
@@ -382,20 +396,20 @@ export function CaseStudyPasswordGate({
                       ? undefined
                       : { opacity: 0, y: -8, filter: "blur(4px)" }
                   }
-                  transition={{ duration: 0.32, ease: "easeOut" }}
+                  transition={{ duration: 0.32, ease: CLAUDE_MOTION.ease }}
                   className="mt-5"
                 >
                   <h2
                     id={`${inputId}-heading`}
                     className="text-balance text-2xl font-medium tracking-tight sm:text-[1.75rem]"
-                    style={{ color: GATE_INK }}
+                    style={{ color: CLAUDE.text, fontFamily: CLAUDE.fontDisplay }}
                   >
                     {phaseTitle}
                   </h2>
                   <p
                     id={`${inputId}-copy`}
-                    className="mx-auto mt-2 max-w-[34ch] text-sm leading-relaxed"
-                    style={{ color: GATE_MUTED }}
+                    className={cn(COPILOT_TYPE.bodyLg, "mx-auto mt-2 max-w-[34ch]")}
+                    style={{ color: CLAUDE.textMuted }}
                   >
                     {phaseBody}
                   </p>
@@ -415,7 +429,7 @@ export function CaseStudyPasswordGate({
                         ? undefined
                         : { opacity: 0, y: -12, scale: 0.98 }
                     }
-                    transition={{ duration: 0.26 }}
+                    transition={{ duration: 0.26, ease: CLAUDE_MOTION.ease }}
                   >
                     <label htmlFor={inputId} className="sr-only">
                       Email address
@@ -429,7 +443,7 @@ export function CaseStudyPasswordGate({
                             ? { scale: [1, 1.015, 1] }
                             : { scale: 1 }
                       }
-                      transition={{ duration: 0.35 }}
+                      transition={LIVING_MOTION.pulse}
                     >
                       <input
                         id={inputId}
@@ -451,11 +465,23 @@ export function CaseStudyPasswordGate({
                         aria-describedby={
                           error ? `${inputId}-error` : `${inputId}-privacy`
                         }
-                        className={`w-full rounded-2xl border bg-neutral-50 px-4 py-3.5 pr-11 text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-[border-color,box-shadow,background-color] ${
-                          emailValid
-                            ? "border-[color:var(--presence-accent)] shadow-[0_0_0_3px_color-mix(in_srgb,var(--presence-accent)_18%,transparent)]"
-                            : "border-neutral-200 focus:border-[color:var(--presence-accent)] focus:bg-white focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--presence-accent)_20%,transparent)]"
-                        } ${FOCUS_RING}`}
+                        className={cn(
+                          COPILOT_FOCUS,
+                          "w-full px-4 py-3.5 pr-11 text-[13px] leading-relaxed outline-none transition-[border-color,box-shadow,background-color] [&::placeholder]:text-[#a8a49c]",
+                        )}
+                        style={{
+                          borderRadius: CLAUDE.radius,
+                          border: `1px solid ${
+                            emailValid ? CLAUDE.primaryBorder : CLAUDE.borderStrong
+                          }`,
+                          backgroundColor: CLAUDE.surfaceRaised,
+                          color: CLAUDE.text,
+                          boxShadow: emailValid
+                            ? `0 0 0 3px ${CLAUDE.primaryMuted}`
+                            : inputFocused
+                              ? `0 0 0 3px ${CLAUDE.primaryMuted}`
+                              : undefined,
+                        }}
                       />
                       <AnimatePresence>
                         {emailValid ? (
@@ -467,13 +493,9 @@ export function CaseStudyPasswordGate({
                             }
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.6 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 480,
-                              damping: 22,
-                            }}
+                            transition={CLAUDE_MOTION.springPop}
                             className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-sm"
-                            style={{ color: PRESENCE_ACCENT }}
+                            style={{ color: CLAUDE.validated }}
                           >
                             ✓
                           </motion.span>
@@ -482,7 +504,8 @@ export function CaseStudyPasswordGate({
                     </motion.div>
                     <p
                       id={`${inputId}-privacy`}
-                      className="mt-2.5 text-center text-xs leading-relaxed text-neutral-500"
+                      className={cn(COPILOT_TYPE.caption, "mt-2.5 text-center")}
+                      style={{ color: CLAUDE.textSoft }}
                     >
                       No newsletter, no spam — just this unlock.
                     </p>
@@ -495,18 +518,29 @@ export function CaseStudyPasswordGate({
                     }
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={reduceMotion ? undefined : { opacity: 0 }}
-                    transition={{ type: "spring", stiffness: 380, damping: 24 }}
-                    className="rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-center"
+                    transition={LIVING_MOTION.confirm}
+                    className="px-4 py-3 text-center"
                     style={{
+                      borderRadius: CLAUDE.radius,
+                      border: `1px solid ${
+                        justCaptured ? CLAUDE.primaryBorder : CLAUDE.border
+                      }`,
+                      backgroundColor: CLAUDE.surfaceRaised,
                       boxShadow: justCaptured
-                        ? `0 0 0 1px color-mix(in srgb, ${PRESENCE_ACCENT} 35%, transparent), 0 0 24px color-mix(in srgb, ${PRESENCE_ACCENT} 16%, transparent)`
+                        ? `0 0 0 1px ${CLAUDE.primaryBorder}, 0 0 24px ${CLAUDE.primaryMuted}`
                         : undefined,
                     }}
                   >
-                    <p className="text-[11px] tracking-[0.16em] text-neutral-500 uppercase">
+                    <p
+                      className={COPILOT_TYPE.eyebrow}
+                      style={{ color: CLAUDE.textSoft }}
+                    >
                       Unlocking for
                     </p>
-                    <p className="mt-1 truncate text-sm font-medium text-neutral-900">
+                    <p
+                      className={cn(COPILOT_TYPE.title, "mt-1 truncate")}
+                      style={{ color: CLAUDE.text }}
+                    >
                       {email}
                     </p>
                     <AnimatePresence>
@@ -515,8 +549,8 @@ export function CaseStudyPasswordGate({
                           initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0 }}
-                          className="mt-1 text-xs"
-                          style={{ color: PRESENCE_ACCENT }}
+                          className={cn(COPILOT_TYPE.caption, "mt-1")}
+                          style={{ color: CLAUDE.primary }}
                         >
                           Email saved — now the fun part.
                         </motion.p>
@@ -533,7 +567,7 @@ export function CaseStudyPasswordGate({
                     initial={reduceMotion ? false : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3, delay: 0.05 }}
+                    transition={{ duration: 0.3, delay: 0.05, ease: CLAUDE_MOTION.ease }}
                   >
                     <PressProgress
                       pressCount={pressCount}
@@ -546,7 +580,8 @@ export function CaseStudyPasswordGate({
                         initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={reduceMotion ? undefined : { opacity: 0, y: -4 }}
-                        className="mt-3 text-center text-sm text-neutral-500"
+                        className={cn(COPILOT_TYPE.body, "mt-3 text-center")}
+                        style={{ color: CLAUDE.textMuted }}
                         aria-live="polite"
                       >
                         {unlockBeat.hint}
@@ -559,7 +594,8 @@ export function CaseStudyPasswordGate({
               {error ? (
                 <motion.p
                   id={`${inputId}-error`}
-                  className="mt-3 text-center text-sm text-red-600"
+                  className={cn(COPILOT_TYPE.body, "mt-3 text-center")}
+                  style={{ color: CLAUDE.risk }}
                   role="alert"
                   initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -569,6 +605,7 @@ export function CaseStudyPasswordGate({
               ) : null}
 
               <motion.div
+                className="mt-5"
                 animate={
                   reduceMotion
                     ? undefined
@@ -576,7 +613,7 @@ export function CaseStudyPasswordGate({
                       ? { y: 0, opacity: 1, scale: 1 }
                       : { y: 0, opacity: 0.72, scale: 0.985 }
                 }
-                transition={{ type: "spring", stiffness: 320, damping: 24 }}
+                transition={CLAUDE_MOTION.spring}
               >
                 <EmojiBurstButton
                   type="submit"
@@ -590,12 +627,15 @@ export function CaseStudyPasswordGate({
                   emojiSize={unlockBeat.emojiSize}
                   shakeIntensity={unlockBeat.shakeIntensity}
                   hapticPattern={[...unlockBeat.hapticPattern]}
-                  className={`relative z-0 inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 text-sm font-semibold tracking-tight transition-[opacity,transform,box-shadow] enabled:hover:brightness-110 enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-35 ${FOCUS_RING}`}
+                  className={cn(
+                    COPILOT_FOCUS,
+                    COPILOT_TARGET.button,
+                    "relative z-0 w-full rounded-full px-5 text-[13px] font-medium tracking-tight text-white transition-[opacity,transform,box-shadow,filter] enabled:hover:brightness-110 enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-35",
+                  )}
                   style={{
-                    background: PRESENCE_ACCENT,
-                    color: PRESENCE_ACCENT_FOREGROUND,
+                    backgroundColor: CLAUDE.primary,
                     boxShadow: canSubmit
-                      ? `0 12px 40px color-mix(in srgb, ${PRESENCE_ACCENT} ${emailCaptured ? 45 : 32}%, transparent)`
+                      ? `0 12px 40px color-mix(in srgb, ${CLAUDE.primary} ${emailCaptured ? 45 : 32}%, transparent)`
                       : undefined,
                   }}
                 >
@@ -605,7 +645,7 @@ export function CaseStudyPasswordGate({
                       initial={reduceMotion ? false : { opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
-                      transition={{ duration: 0.18 }}
+                      transition={{ duration: 0.18, ease: CLAUDE_MOTION.ease }}
                     >
                       {buttonLabel}
                     </motion.span>

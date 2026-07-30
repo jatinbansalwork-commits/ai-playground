@@ -2,6 +2,7 @@
 
 import { CaseStudyFaq } from "@/components/case-studies/case-study-faq";
 import { CaseStudyHero } from "@/components/case-studies/case-study-hero";
+import { CaseStudyPasswordGate } from "@/components/case-studies/case-study-password-gate";
 import {
   PolicyCopilotAdministratorTwoWorlds,
   PolicyCopilotConfigurationVsConversation,
@@ -49,7 +50,8 @@ export default function CiscoPolicyCopilotContent() {
         notice="Designs are recreated from memory; original files are under Cisco IP."
       />
 
-      <CaseStudyWide>
+      <CaseStudyPasswordGate slug={SLUG} title="Cisco Policy Copilot">
+        <CaseStudyWide>
         <div className="flex justify-center text-center">
           <CaseStudyH1>
             Every firewall policy starts with a conversation.
@@ -545,6 +547,7 @@ export default function CiscoPolicyCopilotContent() {
         </CaseStudyWide>
         <CaseStudyFaq items={POLICY_COPILOT_FAQ_ITEMS} />
       </CaseStudyProse>
+      </CaseStudyPasswordGate>
     </>
   );
 }

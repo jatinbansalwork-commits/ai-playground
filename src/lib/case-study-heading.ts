@@ -8,7 +8,7 @@ export function slugifyCaseStudyHeading(text: string): string {
     .slice(0, 64);
 }
 
-/** Split "Lead: body" list copy for scan-friendly bullets. */
+/** Split "Lead: body" or "Lead — body" list copy for scan-friendly bullets. */
 export function splitCaseStudyListLead(item: string): {
   lead: string | null;
   body: string;
@@ -19,6 +19,15 @@ export function splitCaseStudyListLead(item: string): {
     return {
       lead: item.slice(0, colonIndex + 1),
       body: item.slice(colonIndex + 2),
+    };
+  }
+
+  const emDashIndex = item.indexOf(" — ");
+
+  if (emDashIndex > 0) {
+    return {
+      lead: item.slice(0, emDashIndex + 2),
+      body: item.slice(emDashIndex + 3),
     };
   }
 

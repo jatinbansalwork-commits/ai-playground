@@ -26,6 +26,10 @@ const caseStudyComponents: Record<string, ComponentType> = {
   "kalash-year-end-recap": dynamic(
     () => import("@/components/case-studies/PiggyMutualFund"),
   ),
+  "kalash-mystery-box": dynamic(
+    () => import("@/components/case-studies/KalashMysteryBox"),
+  ),
+  "kalash-coins": dynamic(() => import("@/components/case-studies/KalashCoins")),
   "piggy-reduced-mutual-fund-support-tickets": dynamic(
     () => import("@/components/case-studies/NewProject"),
   ),

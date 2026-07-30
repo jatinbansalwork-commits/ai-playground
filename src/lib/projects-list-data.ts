@@ -1,5 +1,4 @@
 import { cdnAsset } from "@/lib/asset-cdn";
-import { JB_ILLUSTRATIONS } from "@/lib/jb-illustration-library";
 import { getAllCaseStudies } from "@/lib/project-content";
 
 /**
@@ -13,7 +12,14 @@ export interface ProjectRowItem {
   year: string;
   /** Right-hand label on the projects index; falls back to `year` when omitted. */
   listAside?: string;
+  /** Pill tag on the projects index card; falls back to Case Study / Coming Soon. */
+  listTag?: string;
   hoverThumbnail: string;
+  /**
+   * Scale factor for the hover thumb inside the phone frame (crops letterboxing).
+   * Omit when the thumb should fill at 1×.
+   */
+  thumbZoom?: number;
   /**
    * When false, the row matches the list layout but is not a link.
    * Defaults to true for case-study rows.
@@ -23,13 +29,32 @@ export interface ProjectRowItem {
 
 /** Per-slug product info shown instead of the year on the projects index. */
 export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
-  "cisco-policy-copilot": "Reduce Policy Generation Time by 40%",
-  "saltbot-ai-saltmine": "Reimagining Analytics with AI",
-  "freshprints-image-gen-ai": "Image Gen AI",
+  "cisco-policy-copilot": "Reduce policy generation time by 40%",
+  "saltbot-ai-saltmine": "Reimagining analytics with AI",
+  "freshprints-image-gen-ai":
+    "#1 driver of DAU growth for the FreshPrints AI feature",
   "freshprints-design-system":
-    "Stopped UI debates and helped 4 product teams ship faster",
+    "A design system that stopped UI debates and helped 4 product teams ship faster",
+  "kalash-mystery-box": "Bitcoin on every save",
+  "kalash-coins":
+    'Optimised "coin" to gold redemption journey to increase adoption of Kalash\'s rewards loyalty program from 10%–85%',
   "kalash-rewards": "Getting India to save in gold digitally",
-  "piggy-reduced-mutual-fund-support-tickets": "Reduced Support Tickets",
+  "piggy-reduced-mutual-fund-support-tickets": "Reduced support tickets",
+};
+
+/** Per-slug card title overrides on the projects index. */
+export const LIST_TITLE_OVERRIDES: Partial<Record<string, string>> = {
+  "cisco-policy-copilot": "Cisco - Policy Copilot",
+  "freshprints-image-gen-ai": "FreshPrints - Image AI",
+};
+
+/** Per-slug pill tag overrides on the projects index. */
+export const LIST_TAG_OVERRIDES: Partial<Record<string, string>> = {
+  "cisco-policy-copilot": "0-1 Experience",
+  "freshprints-image-gen-ai": "Product Led Growth",
+  "freshprints-design-system": "Design System",
+  "kalash-mystery-box": "Product Led Growth",
+  "kalash-coins": "Product Led Growth",
 };
 
 /**
@@ -40,13 +65,27 @@ export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
  *   cdnAsset("/thumbnails/cisco-hover.jpg");
  */
 export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
-  "cisco-policy-copilot": JB_ILLUSTRATIONS["policy-copilot-projects-hover"],
-  "freshprints-design-system": cdnAsset("/Hover/FP%20DS"),
+  "cisco-policy-copilot":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/9.svg",
+  "freshprints-design-system":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%201321315069.svg",
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
+  "kalash-mystery-box":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%20132131506912.svg",
+  "kalash-coins":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%201244831617.svg",
   "kalash-year-end-recap": cdnAsset("/Hover/Kalash%201%20cover.png"),
   "kalash-rewards": cdnAsset("/Hover/ticker"),
   "piggy-reduced-mutual-fund-support-tickets": cdnAsset("/Hover/intro"),
+  "freshprints-display":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/11.png",
+};
+
+/** Per-slug hover thumb scale inside the phone frame (overflow clipped). */
+const HOVER_THUMB_ZOOM_BY_SLUG: Record<string, number> = {
+  "freshprints-image-gen-ai": 1.44,
+  "kalash-coins": 1.15,
 };
 
 /** Square 1:1 placeholder until real hover assets are uploaded. */
@@ -65,6 +104,7 @@ const HIDDEN_PROJECT_SLUGS = new Set([
   "kalash-year-end-recap",
   "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
+  "saltbot-ai-saltmine",
   "saltmine-sync",
 ]);
 
@@ -93,17 +133,42 @@ export function getIndexableCaseStudySlugs(): string[] {
     .map((study) => study.slug);
 }
 
+/** Display order on `/projects` — remaining visible case studies follow registry order. */
+const PROJECTS_INDEX_ORDER = [
+  "cisco-policy-copilot",
+  "freshprints-image-gen-ai",
+  "freshprints-design-system",
+  "kalash-mystery-box",
+  "kalash-coins",
+] as const;
+
+function projectsIndexSortKey(slug: string): number {
+  const index = (PROJECTS_INDEX_ORDER as readonly string[]).indexOf(slug);
+  return index === -1 ? PROJECTS_INDEX_ORDER.length : index;
+}
+
+/** Visible on the index but not linked — Coming Soon cursor on hover. */
+const NON_NAVIGABLE_INDEX_SLUGS = new Set([
+  "kalash-mystery-box",
+  "kalash-coins",
+]);
+
 /** Canonical projects index dataset — titles/years sync from `project-content.ts`. */
 const LIVE_PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
   .filter((study) => !HIDDEN_PROJECT_SLUGS.has(study.slug))
+  .sort(
+    (a, b) => projectsIndexSortKey(a.slug) - projectsIndexSortKey(b.slug),
+  )
   .map((study, index) => ({
     id: String(index + 1),
     slug: study.slug,
-    title: study.title,
+    title: LIST_TITLE_OVERRIDES[study.slug] ?? study.title,
     year: study.year,
     listAside: LIST_ASIDE_OVERRIDES[study.slug],
+    listTag: LIST_TAG_OVERRIDES[study.slug],
     hoverThumbnail: hoverThumbnailForSlug(study.slug),
-    navigable: true,
+    thumbZoom: HOVER_THUMB_ZOOM_BY_SLUG[study.slug],
+    navigable: !NON_NAVIGABLE_INDEX_SLUGS.has(study.slug),
   }));
 
 /**
@@ -115,14 +180,15 @@ const DISPLAY_ONLY_PROJECT_ROWS: {
   row: Omit<ProjectRowItem, "id" | "navigable">;
 }[] = [
   {
-    afterSlug: "freshprints-design-system",
+    afterSlug: "kalash-coins",
     row: {
       slug: "freshprints-display",
       title: "FreshPrints",
       year: "2025",
       listAside:
-        "Increased engagement of the Heal Tool by 15% through a Gen AI feature",
-      hoverThumbnail: HOVER_THUMBNAIL_PLACEHOLDER,
+        "Increased Heal Tool engagement by 15% through a Gen AI feature",
+      listTag: "Product Led Growth",
+      hoverThumbnail: hoverThumbnailForSlug("freshprints-display"),
     },
   },
 ];

@@ -89,7 +89,6 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
         "UX / UI for desktop + mobile",
         "Shipped MVP",
         "Design",
-        "Conceptualization",
         "Dev handoff",
         "Discovery",
         "Audit",
@@ -112,6 +111,43 @@ export const projectDataRegistry: Record<string, CaseStudyContent> = {
       location: "New York, NY",
       infoText:
         "The product didn't have a design system problem. It had a decision problem. Every small UI choice turned into a discussion. Patterns weren't shared. Components couldn't evolve.\n\n\u201CIf it's not in the library, we don't build it.\u201D\n\nSo teams either argued or built one-offs. Delivery slowed down. And a lot of small UX fixes never made it onto the roadmap. I pushed to rebuild the system in a way people would actually use.",
+    },
+  ),
+  "kalash-mystery-box": entry(
+    "kalash-mystery-box",
+    "Kalash Mystery Box",
+    "2023",
+    "Mystery Box is a construct to activate regular users of one business vertical in another.",
+    {
+      services: [
+        "Product Led Growth",
+        "UX / UI for Mobile",
+        "Product Strategy",
+        "Micro-interactions",
+      ],
+      client: "Kalash",
+      location: "Bangalore, India",
+      infoText:
+        "Start your daily savings journey in just 45 seconds with India's digital Gullak Kalash app. Start your investment in 24K digital gold and grow your money.",
+    },
+  ),
+  "kalash-coins": entry(
+    "kalash-coins",
+    "Kalash Coins",
+    "2024",
+    "Optimised coin-to-gold redemption to grow Kalash rewards loyalty adoption from 10% to 85%",
+    {
+      services: [
+        "Product Led Growth",
+        "UX / UI for Mobile",
+        "UX Research",
+        "Shipped MVP",
+        "Dev handoff",
+      ],
+      client: "Kalash",
+      location: "Bangalore, India",
+      infoText:
+        "Kalash Coins redesigned the coin-to-gold redemption journey so Kalash rewards felt clearer and more valuable — lifting loyalty-program adoption from 10% to 85%.",
     },
   ),
   "freshprints-heal-tool": entry(
