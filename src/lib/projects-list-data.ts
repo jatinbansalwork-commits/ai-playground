@@ -68,7 +68,7 @@ export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "cisco-policy-copilot":
     "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/9.svg",
   "freshprints-design-system":
-    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%201321315069.svg",
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/1213.svg",
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
   "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
   "kalash-mystery-box":
