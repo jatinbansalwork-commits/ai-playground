@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/seo/json-ld";
-import { PROJECTS_LIST } from "@/lib/projects-list-data";
+import { isOnSiteCaseStudyRow, PROJECTS_LIST } from "@/lib/projects-list-data";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import {
@@ -25,7 +25,7 @@ export default function ProjectsLayout({
   children: React.ReactNode;
 }>) {
   const collectionItems = [...PROJECTS_LIST]
-    .filter((project) => project.navigable !== false)
+    .filter(isOnSiteCaseStudyRow)
     .map((project) => {
       const content = getCaseStudyContent(project.slug);
       if (!content) return null;
