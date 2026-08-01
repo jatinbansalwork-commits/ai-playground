@@ -7,7 +7,7 @@ import {
   ROUTES,
 } from "@/lib/constants";
 import { EXPERIMENTS_PAGE, EXPERIMENTS_REGISTRY } from "@/lib/experiments-registry";
-import { PROJECTS_LIST } from "@/lib/projects-list-data";
+import { isOnSiteCaseStudyRow, PROJECTS_LIST } from "@/lib/projects-list-data";
 import { PROJECTS_PAGE } from "@/lib/projects-registry";
 import { getCaseStudyContent } from "@/lib/project-content";
 import { buildCareerKnowledgeSection } from "@/lib/ai-chat-career-knowledge";
@@ -92,7 +92,7 @@ function buildCraftHighlights(): string {
 
 /** Curated context injected into the JB_AI system prompt — keep in sync with the live site. */
 export function buildAiChatKnowledge(): string {
-  const caseStudyLines = PROJECTS_LIST.filter((project) => project.navigable !== false)
+  const caseStudyLines = PROJECTS_LIST.filter(isOnSiteCaseStudyRow)
     .map((project) => formatCaseStudyLine(project.slug, project.title, project.year))
     .join("\n\n");
 

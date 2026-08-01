@@ -103,6 +103,7 @@ interface ProjectCardProps {
 function ProjectCard({ project }: ProjectCardProps) {
   const overview = getCaseStudyContent(project.slug)?.overviewText;
   const navigable = project.navigable !== false;
+  const externalHref = project.externalHref;
 
   if (!navigable) {
     return (
@@ -114,6 +115,27 @@ function ProjectCard({ project }: ProjectCardProps) {
       >
         <ProjectCardContent project={project} />
       </div>
+    );
+  }
+
+  if (externalHref) {
+    return (
+      <a
+        href={externalHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={PROJECTS_CARD_CLASS}
+        title={overview}
+        onClick={() => {
+          trackProjectListClick({
+            slug: project.slug,
+            title: project.title,
+            year: project.year,
+          });
+        }}
+      >
+        <ProjectCardContent project={project} />
+      </a>
     );
   }
 

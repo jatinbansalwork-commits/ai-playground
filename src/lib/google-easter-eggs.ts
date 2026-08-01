@@ -1,5 +1,5 @@
 import { PRESENCE_ACCENT, ROUTES } from "@/lib/constants";
-import { PROJECTS_LIST } from "@/lib/projects-list-data";
+import { isOnSiteCaseStudyRow, PROJECTS_LIST } from "@/lib/projects-list-data";
 
 export const BARREL_ROLL_EVENT = "jb-barrel-roll";
 export const ASKEW_EVENT = "jb-askew";
@@ -84,7 +84,7 @@ export function pickFeelingLuckyProject(): {
   title: string;
   href: string;
 } | null {
-  const navigable = PROJECTS_LIST.filter((project) => project.navigable !== false);
+  const navigable = PROJECTS_LIST.filter(isOnSiteCaseStudyRow);
   if (navigable.length === 0) return null;
   const index = Math.floor(Math.random() * navigable.length);
   const project = navigable[index];

@@ -25,12 +25,16 @@ export interface ProjectRowItem {
    * Defaults to true for case-study rows.
    */
   navigable?: boolean;
+  /**
+   * When set, the card opens this URL in a new tab instead of `/projects/[slug]`.
+   */
+  externalHref?: string;
 }
 
 /** Per-slug product info shown instead of the year on the projects index. */
 export const LIST_ASIDE_OVERRIDES: Partial<Record<string, string>> = {
   "cisco-policy-copilot": "Reduce policy generation time by 40%",
-  "saltbot-ai-saltmine": "Reimagining analytics with AI",
+  "saltbot-ai-saltmine": "Reimagining Analytics with AI",
   "freshprints-image-gen-ai":
     "#1 driver of DAU growth for the FreshPrints AI feature",
   "freshprints-design-system":
@@ -51,6 +55,7 @@ export const LIST_TITLE_OVERRIDES: Partial<Record<string, string>> = {
 /** Per-slug pill tag overrides on the projects index. */
 export const LIST_TAG_OVERRIDES: Partial<Record<string, string>> = {
   "cisco-policy-copilot": "Zero to One Experience",
+  "saltbot-ai-saltmine": "Zero to One Experience",
   "freshprints-image-gen-ai": "Product Led Growth",
   "freshprints-design-system": "Design System",
   "kalash-mystery-box": "Product Led Growth",
@@ -70,7 +75,8 @@ export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "freshprints-design-system":
     "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/1213.svg",
   "freshprints-image-gen-ai": cdnAsset("/Hover/FP%20AI"),
-  "saltbot-ai-saltmine": cdnAsset("/Hover/saltbot"),
+  "saltbot-ai-saltmine":
+    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/COVER1.svg",
   "kalash-mystery-box":
     "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/Frame%20132131506912.svg",
   "kalash-coins":
@@ -78,8 +84,6 @@ export const HOVER_THUMBNAIL_OVERRIDES: Partial<Record<string, string>> = {
   "kalash-year-end-recap": cdnAsset("/Hover/Kalash%201%20cover.png"),
   "kalash-rewards": cdnAsset("/Hover/ticker"),
   "piggy-reduced-mutual-fund-support-tickets": cdnAsset("/Hover/intro"),
-  "freshprints-display":
-    "https://vpocozyaql1wuw3p.public.blob.vercel-storage.com/thumbnail/COVER1.svg",
 };
 
 /** Per-slug hover thumb scale inside the phone frame (overflow clipped). */
@@ -104,7 +108,6 @@ const HIDDEN_PROJECT_SLUGS = new Set([
   "kalash-year-end-recap",
   "piggy-reduced-mutual-fund-support-tickets",
   "piggy-personalised-mutual-fund-recommendation",
-  "saltbot-ai-saltmine",
   "saltmine-sync",
 ]);
 
@@ -138,8 +141,9 @@ const PROJECTS_INDEX_ORDER = [
   "cisco-policy-copilot",
   "freshprints-image-gen-ai",
   "freshprints-design-system",
-  "kalash-mystery-box",
+  "saltbot-ai-saltmine",
   "kalash-coins",
+  "kalash-mystery-box",
 ] as const;
 
 function projectsIndexSortKey(slug: string): number {
@@ -150,8 +154,17 @@ function projectsIndexSortKey(slug: string): number {
 /** Visible on the index but not linked — Coming Soon cursor on hover. */
 const NON_NAVIGABLE_INDEX_SLUGS = new Set([
   "kalash-mystery-box",
-  "kalash-coins",
 ]);
+
+/** Per-slug external deck / demo links — open in a new tab from the projects index. */
+export const EXTERNAL_HREF_OVERRIDES: Partial<Record<string, string>> = {
+  "kalash-coins": "https://www.figma.com/deck/noJzkQN8UaCro99JChbUFM",
+};
+
+/** True when the index card links to an on-site `/projects/[slug]` case study. */
+export function isOnSiteCaseStudyRow(project: ProjectRowItem): boolean {
+  return project.navigable !== false && !project.externalHref;
+}
 
 /** Canonical projects index dataset — titles/years sync from `project-content.ts`. */
 const LIVE_PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
@@ -169,45 +182,7 @@ const LIVE_PROJECTS_LIST: ProjectRowItem[] = getAllCaseStudies()
     hoverThumbnail: hoverThumbnailForSlug(study.slug),
     thumbZoom: HOVER_THUMB_ZOOM_BY_SLUG[study.slug],
     navigable: !NON_NAVIGABLE_INDEX_SLUGS.has(study.slug),
+    externalHref: EXTERNAL_HREF_OVERRIDES[study.slug],
   }));
 
-/**
- * Display-only rows — same visual as case-study rows, no navigation.
- * Inserted after `afterSlug` when present; otherwise appended.
- */
-const DISPLAY_ONLY_PROJECT_ROWS: {
-  afterSlug: string;
-  row: Omit<ProjectRowItem, "id" | "navigable">;
-}[] = [
-  {
-    afterSlug: "kalash-coins",
-    row: {
-      slug: "freshprints-display",
-      title: "Saltbot",
-      year: "2025",
-      listAside: "Reimagining Analytics with AI",
-      listTag: "Zero to One Experience",
-      hoverThumbnail: hoverThumbnailForSlug("freshprints-display"),
-    },
-  },
-];
-
-function withDisplayOnlyRows(projects: ProjectRowItem[]): ProjectRowItem[] {
-  const next = [...projects];
-  for (const entry of DISPLAY_ONLY_PROJECT_ROWS) {
-    const insertAt = next.findIndex((project) => project.slug === entry.afterSlug);
-    const row: ProjectRowItem = {
-      ...entry.row,
-      id: `display-${entry.row.slug}`,
-      navigable: false,
-    };
-    if (insertAt === -1) {
-      next.push(row);
-    } else {
-      next.splice(insertAt + 1, 0, row);
-    }
-  }
-  return next.map((project, index) => ({ ...project, id: String(index + 1) }));
-}
-
-export const PROJECTS_LIST: ProjectRowItem[] = withDisplayOnlyRows(LIVE_PROJECTS_LIST);
+export const PROJECTS_LIST: ProjectRowItem[] = LIVE_PROJECTS_LIST;
